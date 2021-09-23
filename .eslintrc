@@ -1,0 +1,8 @@
+{
+  "plugins": ["react", "prettier"],
+  "extends": ["airbnb-typescript-prettier"],
+  "rules": {
+    "prettier/prettier": ["error", { "singleQuote": true }],
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }]
+  }
+}
