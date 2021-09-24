@@ -6,9 +6,13 @@
     "bootstrap": "^5.1.1",
     "clsx": "^1.1.1",
     "date-fns": "^2.18.0",
+    "dotenv": "^10.0.0",
     "effector": "^22.1.1",
     "effector-react": "^22.0.4",
+    "fastify": "^3.21.6",
+    "fastify-websocket": "^4.0.0",
     "fp-ts": "^2.10.5",
+    "i18next": "^21.0.2",
     "io-ts": "^2.2.16",
     "io-ts-types": "^0.5.16",
     "monocle-ts": "^2.3.10",
@@ -19,12 +23,14 @@
     "react-hook-form": "^7.15.4",
     "react-i18next": "^11.12.0",
     "react-scripts": "4.0.3",
+    "reconnecting-websocket": "^4.4.0",
+    "tsc-watch": "^4.5.0",
     "typescript": "^4.4.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "npm-run-all start-server start-ui",
-    "start-server": "ts-node --project tsconfig.server.json src/backend/server.ts",
+    "start": "npm-run-all --parallel start-ui start-server",
+    "start-server": "tsc-watch src/backend/server.ts",
     "start-ui": "react-scripts start",
     "build-ui": "react-scripts build",
     "test": "react-scripts test",
@@ -58,13 +64,13 @@
     "@types/ramda": "^0.27.44",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
+    "@types/ws": "^7.4.7",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "node-sass": "^6.0.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.4.1",
-    "ts-node": "^10.2.1"
+    "prettier": "^2.4.1"
   }
 }
