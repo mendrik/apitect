@@ -9,14 +9,16 @@ import Loader from './frontend/components/Loader'
 const render = (): void =>
   void ReactDOM.render(
     <React.StrictMode>
-      <Suspense fallback={Loader}>
+      <Suspense fallback={<Loader />}>
         <App />
       </Suspense>
     </React.StrictMode>,
     document.getElementById('root')
   )
 
-void initLocales().then(render)
+const start = async () => initLocales().then(render)
+
+void start()
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

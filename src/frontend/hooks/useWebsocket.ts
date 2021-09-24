@@ -1,6 +1,6 @@
-import ReconnectingWebSocket from 'reconnecting-websocket'
-import { useMemo } from 'react'
 import { createEvent } from 'effector'
+import ReconnectingWebSocket from 'reconnecting-websocket'
+
 import { Message } from '../types/message'
 
 const waitForSocket = (socket: ReconnectingWebSocket) =>
@@ -11,18 +11,15 @@ const waitForSocket = (socket: ReconnectingWebSocket) =>
 
 export const messageReceived = createEvent<Message>()
 
-export const useWebsocket = () => {
-  const socket = useMemo(() => {
-    const rws = new ReconnectingWebSocket('ws://localhost:3000', undefined, { debug: true })
-    rws.addEventListener('message', event => messageReceived(JSON.parse(event.data)))
-    return rws
-  }, [])
+const webSocket = new ReconnectingWebSocket('ws://127.0.0.1:3000')
+webSocket.addEventListener('message', event => messageReceived(JSON.parse(event.data)))
 
-  if (socket.readyState !== socket.OPEN) {
-    throw waitForSocket(socket)
+export const useWebsocket = () => {
+  if (webSocket.readyState !== WebSocket.OPEN) {
+    throw waitForSocket(webSocket)
   }
 
   return {
-    send: <T>(payload: T) => socket.send(JSON.stringify(payload))
+    send: <T>(payload: T) => webSocket.send(JSON.stringify(payload))
   }
 }
