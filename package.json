@@ -5,6 +5,7 @@
   "dependencies": {
     "@prisma/client": "^3.1.1",
     "ansicolor": "^1.1.95",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.1.1",
     "clsx": "^1.1.1",
     "date-fns": "^2.18.0",
@@ -19,7 +20,6 @@
     "io-ts-types": "^0.5.16",
     "monocle-ts": "^2.3.10",
     "newtype-ts": "^0.3.4",
-    "prisma": "^3.1.1",
     "ramda": "^0.27.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -33,14 +33,15 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "database:generate": "npx prisma generate --schema database/schema.prisma",
     "database": "docker-compose up",
-    "start": "npm-run-all --parallel database start-ui start-server",
-    "start-server": "tsnd --respawn -P tsconfig.server.json src/backend/server.ts",
-    "start-ui": "react-scripts start",
-    "build-ui": "react-scripts build",
+    "all:start": "npm-run-all --parallel database start-ui start-server",
+    "server:start": "tsnd --respawn -P tsconfig.server.json src/backend/server.ts",
+    "ui:start": "react-scripts start",
+    "ui:build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint --fix src/**/*.{ts,tsx}",
-    "lint-fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -65,7 +66,9 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "@trivago/prettier-plugin-sort-imports": "^2.0.4",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jest": "^26.0.24",
+    "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^12.20.26",
     "@types/ramda": "^0.27.44",
     "@types/react": "^17.0.24",
@@ -78,6 +81,7 @@
     "node-sass": "^6.0.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1",
+    "prisma": "^3.1.1",
     "ts-node-dev": "^1.1.8"
   }
 }

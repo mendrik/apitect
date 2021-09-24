@@ -1,2 +1,4 @@
 PORT = 3000
-DATABASE_URL="postgresql://apitect:apitect42@localhost:5432/apitect?schema=public"
+DATABASE_URL = "postgresql://apitect:apitect42@localhost:5432/apitect?schema=public"
+TOKEN_KEY = "%4pYQk^7J*#&Za"
+PASSWORD_SALT = "9jprn!gQVGK!GE"

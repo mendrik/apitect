@@ -4,8 +4,8 @@ datasource postgresql {
 }
 
 generator client {
-  provider = "prisma-client-ts"
-  output   = "src/backend/model"
+  provider = "prisma-client-js"
+  output   = "../src/backend/model"
   binaryTargets = ["native"]
 }
 
@@ -14,7 +14,7 @@ model User {
   email   String   @unique
   name    String
   role    Role     @default(USER)
-  token   String
+  token   String?
 
   @@map(name: "users")
 }

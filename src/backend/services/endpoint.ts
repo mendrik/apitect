@@ -1,17 +1,26 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import * as t from 'io-ts'
-import { always, applySpec, mapObjIndexed, mergeRight } from 'ramda'
+import jwt from 'jsonwebtoken'
+import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 
 import { decode } from '../../utils/decode'
 import { Promised, resolvePromised } from '../../utils/promise'
+import { PrismaClient, User } from '../model'
+import { HttpError } from '../types/HttpError'
+import { config } from './config'
+import { failOn } from './failOn'
 import { logger } from './logger'
 
+const client = new PrismaClient()
+const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+
 const replyMap = (reply: FastifyReply) => ({
-  OK: <T>(body?: T) =>
-    reply.code(200).header('Content-Type', 'application/json; charset=utf-8').send(body),
-  FORBIDDEN: () => reply.code(400).header('Content-Type', 'application/json; charset=utf-8'),
-  NOT_FOUND: () => reply.code(404).header('Content-Type', 'application/json; charset=utf-8')
+  OK: <T>(body?: T) => reply.code(200).headers(headers).send(body),
+  BAD_REQUEST: <T>(body?: T) => reply.code(400).headers(headers).send(body),
+  FORBIDDEN: () => reply.code(403).headers(headers),
+  NOT_FOUND: () => reply.code(404).headers(headers),
+  CONFLICT: () => reply.code(409).headers(headers)
 })
 
 type Collector = Record<string, t.Any | ((req: FastifyRequest) => Promise<any> | any)>
@@ -25,6 +34,16 @@ export const header =
   <A, O, I>(name: string, decoder: t.Type<A, O, I>) =>
   (req: FastifyRequest): A =>
     decode<A, O, I>(decoder)(req.headers[name] as any)
+
+export const user = (req: FastifyRequest): Promise<User> => {
+  const token = req.headers['x-access-token'] as string
+  try {
+    const id = +jwt.verify(token, `${config.TOKEN_KEY}`)
+    return client.user.findFirst({ where: { id } }).then(failOn<User>(isNil, 'User not found'))
+  } catch (e) {
+    throw new HttpError(403)
+  }
+}
 
 const handleError = (e: Error) => {
   logger.error(`Unexpected error`, { stack: e.stack, message: e.message })

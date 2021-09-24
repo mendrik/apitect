@@ -1,11 +1,9 @@
-import { config } from 'dotenv'
 import Fastify from 'fastify'
 import Ws from 'fastify-websocket'
 
 import { initAuthentication } from './services/authentication'
+import { config } from './services/config'
 import { logger } from './services/logger'
-
-const conf = config({ path: '.server-env' }).parsed!
 
 const fastify = Fastify({ logger: false })
 fastify.register(Ws)
@@ -22,7 +20,7 @@ fastify.get('/', { websocket: true }, (connection, rep) => {
   })
 })
 
-fastify.listen(conf.PORT, (err, address) => {
+fastify.listen(config.PORT, (err, address) => {
   if (err) throw err
   console.log(`Server running on port ${address}`)
 })
