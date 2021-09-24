@@ -9,10 +9,11 @@ const App: FC = () => {
   const { t } = useTranslation()
   const { send } = useWebsocket()
   const test = useStore(appState)
+  console.log(test)
   return (
     <div className="p-3">
       <button type="button" className="btn btn-primary" onClick={() => send({ type: 'Hi' })}>
-        {t('app.name')} {test.click}
+        {t('app.name')}
       </button>
     </div>
   )
