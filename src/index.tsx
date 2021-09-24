@@ -1,10 +1,11 @@
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
-import './index.scss'
+
 import App from './frontend/components/App'
-import reportWebVitals from './frontend/reportWebVitals'
-import { initLocales } from './frontend/locales/locales'
 import Loader from './frontend/components/Loader'
+import { initLocales } from './frontend/locales/locales'
+import reportWebVitals from './frontend/reportWebVitals'
+import './index.scss'
 
 const render = (): void =>
   void ReactDOM.render(

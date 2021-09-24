@@ -1,7 +1,8 @@
 import { createEvent } from 'effector'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
-import { Message } from '../types/message'
+import { decode } from '../../utils/decode'
+import { Message, TMessage } from '../types/message'
 
 const waitForSocket = (socket: ReconnectingWebSocket) =>
   new Promise<any>((resolve, reject) => {
@@ -12,7 +13,10 @@ const waitForSocket = (socket: ReconnectingWebSocket) =>
 export const messageReceived = createEvent<Message>()
 
 const webSocket = new ReconnectingWebSocket('ws://127.0.0.1:3000')
-webSocket.addEventListener('message', event => messageReceived(JSON.parse(event.data)))
+webSocket.addEventListener('message', event => {
+  const message = decode(TMessage)(event.data)
+  messageReceived(message)
+})
 
 export const useWebsocket = () => {
   if (webSocket.readyState !== WebSocket.OPEN) {

@@ -1,12 +1,15 @@
-type Tag = 'HELLO' | 'BYE'
+import * as t from 'io-ts'
 
-interface MessageMap {
-  HELLO: {
-    message: string
-  }
-  BYE: {
-    test: boolean
-  }
-}
+const THello = t.type({
+  type: t.literal('HELLO'),
+  message: t.string
+})
 
-export type Message<U extends Tag = any> = { type: U } & MessageMap[U]
+const TBye = t.type({
+  type: t.literal('BYE'),
+  test: t.boolean
+})
+
+export const TMessage = t.union([THello, TBye])
+
+export type Message = t.TypeOf<typeof TMessage>

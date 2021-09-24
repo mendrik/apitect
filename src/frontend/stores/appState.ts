@@ -1,4 +1,5 @@
 import { createStore } from 'effector'
+
 import { messageReceived } from '../hooks/useWebsocket'
 
 const initial = {
@@ -10,8 +11,12 @@ type AppState = typeof initial
 const appState = createStore<AppState>(initial)
 
 appState.on(messageReceived, (state, payload) => {
-  console.log(payload)
-  return { ...state, click: state.click + 1 }
+  switch (payload.type) {
+    case 'HELLO':
+      return { ...state, click: state.click + 1 }
+    default:
+      return state
+  }
 })
 
 export default appState
