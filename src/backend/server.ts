@@ -1,9 +1,9 @@
 import Fastify from 'fastify'
 import Ws from 'fastify-websocket'
 
+import { logger } from '../utils/logger'
 import { initAuthentication } from './services/authentication'
 import { config } from './services/config'
-import { logger } from './services/logger'
 
 const fastify = Fastify({ logger: false })
 fastify.register(Ws)

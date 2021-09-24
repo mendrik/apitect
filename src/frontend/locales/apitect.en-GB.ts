@@ -1,7 +1,9 @@
 const en = {
   translation: {
     app: {
-      name: 'Apitect'
+      name: 'Apitect',
+      register: 'Register',
+      login: 'Login'
     },
     form: {
       login: {

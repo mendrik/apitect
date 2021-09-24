@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 
 import App from './frontend/components/App'
-import Loader from './frontend/components/Loader'
+import { Login } from './frontend/components/Login'
 import { initLocales } from './frontend/locales/locales'
 import reportWebVitals from './frontend/reportWebVitals'
 import './index.scss'
@@ -10,7 +10,7 @@ import './index.scss'
 const render = (): void =>
   void ReactDOM.render(
     <React.StrictMode>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Login />}>
         <App />
       </Suspense>
     </React.StrictMode>,

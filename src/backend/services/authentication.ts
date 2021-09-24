@@ -1,7 +1,7 @@
 import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { sign } from 'jsonwebtoken'
-import { assoc, isNil } from 'ramda'
+import { assoc, isNil, omit } from 'ramda'
 
 import { propNotEq } from '../../utils/ramda'
 import { PrismaClient } from '../model'
@@ -36,6 +36,7 @@ const login = endpoint(
         .findFirst({ where: { email } })
         .then(failOn(isNil, 'User not found'))
         .then(failOn(propNotEq('password', encryptedPassword), `password don't match`))
+        .then(omit(['password', 'id']))
         .then(OK)
     } catch (e) {
       return FORBIDDEN()

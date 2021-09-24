@@ -7,17 +7,9 @@ import { useId } from '../hooks/useId'
 
 type OwnProps = {
   label: TFuncKey
-  name: string
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const TextInput: FC<OwnProps> = ({
-  label,
-  type = 'text',
-  name,
-  value,
-  className,
-  ...props
-}) => {
+export const TextInput: FC<OwnProps> = ({ label, type = 'text', className, ...props }) => {
   const { t } = useTranslation()
   const { register } = useFormContext()
   const inpId = useId()
@@ -28,8 +20,8 @@ export const TextInput: FC<OwnProps> = ({
         className="form-control"
         id={inpId}
         {...props}
-        {...register(name)}
-        value={value}
+        {...register}
+        placeholder=" "
       />
       <label htmlFor={inpId}>{t(label)}</label>
     </div>

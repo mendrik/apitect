@@ -13,4 +13,8 @@ code {
     monospace;
 }
 
-@import '../node_modules/bootstrap/scss/bootstrap';
+.cursor-pointer {
+  cursor: pointer;
+}
+
+@import "~bootstrap/scss/bootstrap";

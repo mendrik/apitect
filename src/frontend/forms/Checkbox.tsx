@@ -23,7 +23,7 @@ export const Checkbox: FC<OwnProps> = ({ label, checked, name, value, ...props }
         checked={checked}
         {...register(name)}
       />
-      <label className="form-check-label user-select-none" htmlFor={inpId}>
+      <label className="form-check-label user-select-none cursor-pointer" htmlFor={inpId}>
         {t(label)}
       </label>
     </div>
