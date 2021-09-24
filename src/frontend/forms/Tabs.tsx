@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { Children, createContext, FC, ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -16,13 +17,16 @@ type OwnProps = {
 
 export const Tabs: FC<OwnProps> = ({ activeTab = 0, children }) => {
   const { t } = useTranslation()
-  console.log(activeTab, children)
   return (
     <tabContext.Provider value={{ activeTab }}>
       <ul className="nav nav-tabs">
-        {Children.map(children, child => (
+        {Children.map(children, (child, i) => (
           <li className="nav-item">
-            <button type="button" className="nav-link active" aria-current="page">
+            <button
+              type="button"
+              className={clsx('nav-link', { active: i === activeTab })}
+              aria-current="page"
+            >
               {t(child.props.title)}
             </button>
           </li>
