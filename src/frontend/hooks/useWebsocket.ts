@@ -12,7 +12,7 @@ const waitForSocket = (socket: ReconnectingWebSocket) =>
 
 export const messageReceived = createEvent<Message>()
 
-const webSocket = new ReconnectingWebSocket('ws://127.0.0.1:3000')
+const webSocket = new ReconnectingWebSocket('ws://127.0.0.1:3001')
 webSocket.addEventListener('message', event => {
   const message = decode(TMessage)(JSON.parse(event.data))
   messageReceived(message)

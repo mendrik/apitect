@@ -10,7 +10,7 @@ fastify.register(Ws)
 
 initAuthentication(fastify)
 
-fastify.get('/', { websocket: true }, (connection, rep) => {
+fastify.get('/', { websocket: true }, connection => {
   const send = <T>(data: T) => connection.socket.send(JSON.stringify(data))
 
   connection.socket.on('message', (message: Buffer) => {
