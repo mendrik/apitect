@@ -2,15 +2,15 @@ import { config } from 'dotenv'
 import Fastify from 'fastify'
 import Ws from 'fastify-websocket'
 
+import { initAuthentication } from './services/authentication'
 import { logger } from './services/logger'
 
 const conf = config({ path: '.server-env' }).parsed!
 
-const fastify = Fastify({
-  logger: false
-})
-
+const fastify = Fastify({ logger: false })
 fastify.register(Ws)
+
+initAuthentication(fastify)
 
 fastify.get('/', { websocket: true }, (connection, rep) => {
   const send = <T>(data: T) => connection.socket.send(JSON.stringify(data))

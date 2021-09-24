@@ -1,0 +1,25 @@
+datasource postgresql {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-ts"
+  output   = "src/backend/model"
+  binaryTargets = ["native"]
+}
+
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String
+  role    Role     @default(USER)
+  token   String
+
+  @@map(name: "users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
