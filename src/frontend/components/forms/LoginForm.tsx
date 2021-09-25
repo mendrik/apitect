@@ -12,13 +12,13 @@ export const LoginForm: FC = () => {
   const form = useForm<Login>({
     resolver: ioTsResolver(TLogin)
   })
-  const { trigger } = usePromise('doLogin', login)
+  const state = usePromise('doLogin', login)
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(trigger)} noValidate>
-        <TextInput name="email" label="form.login.email" />
-        <TextInput name="password" label="form.login.password" type="password" />
+      <form onSubmit={form.handleSubmit(state.trigger)} noValidate>
+        <TextInput name="email" label="form.fields.email" />
+        <TextInput name="password" label="form.fields.password" type="password" />
         <button type="submit" className="btn btn-primary btn-block">
           Sign in
         </button>

@@ -49,6 +49,7 @@
     "shrink-json": "^0.1.6",
     "usehooks-ts": "^1.0.1",
     "uuid": "^8.3.2",
+    "validator": "^13.6.0",
     "web-vitals": "^1.1.2"
   },
   "eslintConfig": {
@@ -83,6 +84,7 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.0",
     "@types/uuid": "^8.3.1",
+    "@types/validator": "^13.6.3",
     "@types/ws": "^7.4.7",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",

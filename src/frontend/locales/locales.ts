@@ -1,6 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next, TFunction } from 'react-i18next'
 
+import { capitalize } from '../../utils/ramda'
 import en from './apitect.en-GB'
 
 declare module 'react-i18next' {
@@ -21,5 +22,14 @@ export const initLocales = (): Promise<TFunction> =>
     resources,
     react: {
       nsMode: 'fallback'
+    },
+    interpolation: {
+      format: (value, format) => {
+        if (format == null) {
+          return value
+        }
+        if (format === 'capitalize') return capitalize(value)
+        return value
+      }
     }
   })

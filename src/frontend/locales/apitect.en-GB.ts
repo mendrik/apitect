@@ -16,11 +16,15 @@ const en = {
       login: 'Login'
     },
     form: {
-      login: {
+      fields: {
         email: 'E-Mail',
         password: 'Password',
         rememberMe: 'Remember me',
         submit: 'Login'
+      },
+      validation: {
+        validEmail: '$t(form.fields.{{ field }}) is not valid',
+        required: '$t(form.fields.{{ field }}) is required'
       }
     }
   }
