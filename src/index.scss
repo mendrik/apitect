@@ -47,4 +47,10 @@ code {
   height: 64px;
 }
 
+input[required] + label:after {
+  content: '*';
+  color: $color1;
+  font-weight: bold;
+}
+
 @import "~bootstrap/scss/bootstrap";

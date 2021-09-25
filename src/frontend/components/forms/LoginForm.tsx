@@ -10,15 +10,24 @@ import { ModalLink } from '../modals/ModalLink'
 
 export const LoginForm: FC = () => {
   const form = useForm<Login>({
-    resolver: ioTsResolver(TLogin)
+    resolver: ioTsResolver(TLogin),
+    defaultValues: {
+      email: 'andreas@mindmine.fi',
+      password: 'intershop1'
+    }
   })
-  const state = usePromise('doLogin', login)
+  const { trigger } = usePromise('doLogin', login)
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(state.trigger)} noValidate>
-        <TextInput name="email" label="form.fields.email" />
-        <TextInput name="password" label="form.fields.password" type="password" />
+      <form onSubmit={form.handleSubmit(trigger)} noValidate>
+        <TextInput name="email" label="form.fields.email" options={{ required: true }} />
+        <TextInput
+          name="password"
+          label="form.fields.password"
+          type="password"
+          options={{ required: true }}
+        />
         <button type="submit" className="btn btn-primary btn-block">
           Sign in
         </button>
