@@ -1,5 +1,6 @@
-import { useEffect, useReducer, useRef } from 'react'
-import { useIsMounted } from 'usehooks-ts'
+import { useCallback, useReducer, useRef } from 'react'
+
+import { Maybe } from '../../utils/maybe'
 
 type Cache<T> = { [name: string]: T }
 
@@ -16,16 +17,13 @@ export interface State<T> {
   status: Action<T>['type']
 }
 const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T>): State<T> => {
-  const results = useRef<Cache<T>>({})
-  const promiseCache = useRef<Cache<Promise<T>>>({})
+  const promiseCache = useRef<Cache<Maybe<Promise<any>>>>({})
 
   const initialState: State<T> = {
     error: undefined,
     data: undefined,
-    trigger: (...args: any[]) => {
-      promiseCache.current[name] = fn(...args)
-    },
-    status: 'idle'
+    status: 'idle',
+    trigger: () => void 0
   }
 
   // Keep state logic separated
@@ -43,23 +41,41 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
   }
 
   const [state, dispatch] = useReducer(promiseReducer, initialState)
-  const mounted = useIsMounted()
 
-  useEffect(() => {
-    if (mounted() && state.status === 'idle') {
-      dispatch({ type: 'running' })
-      if (results.current[name] != null) {
-        dispatch({ type: 'done', payload: results.current[name] })
+  const trigger = useCallback(
+    (...args: any[]) => {
+      switch (state.status) {
+        case 'idle': {
+          const res = fn(...args)
+            .then(payload => {
+              promiseCache.current[name] = undefined
+              dispatch({ type: 'done', payload })
+              return payload
+            })
+            .catch(e => {
+              console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
+              dispatch({ type: 'error', payload: e as Error })
+            })
+          promiseCache.current[name] = res
+          return res
+        }
+        case 'running': {
+          return promiseCache.current[name]
+        }
+        case 'done': {
+          return Promise.resolve(state.data)
+        }
+        case 'error': {
+          return Promise.reject(state.data)
+        }
+        default:
+          throw Error('unknown state')
       }
-      try {
-        promiseCache.current[name].then((payload: T) => dispatch({ type: 'done', payload }))
-      } catch (e) {
-        dispatch({ type: 'error', payload: e as Error })
-      }
-    }
-  }, [state, promiseCache, mounted, name])
+    },
+    [state, promiseCache, fn, name]
+  )
 
-  return state
+  return { ...state, trigger }
 }
 
 export default usePromise

@@ -14,7 +14,7 @@ export const useRequireLogin = (): State<User> => {
   if (jwt == null) {
     void navigate(addParams({ modal: 'login' }))
   }
-  const state = useInstantPromise<User>('whoami', whoami)
+  const state = useInstantPromise('whoami', whoami)
   if (state.error) {
     throw Promise.resolve('failed to load user')
   }

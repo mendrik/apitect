@@ -12,7 +12,7 @@ export const LoginForm: FC = () => {
   const form = useForm<Login>({
     resolver: ioTsResolver(TLogin)
   })
-  const { trigger } = usePromise('doLogin', data => login(data))
+  const { trigger } = usePromise('doLogin', login)
 
   return (
     <FormProvider {...form}>

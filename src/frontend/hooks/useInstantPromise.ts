@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import usePromise, { State } from './usePromise'
 
-const useInstantPromise = <P = unknown>(
+const useInstantPromise = <P>(
   name: string,
   fn: (...args: any[]) => Promise<P>,
   condition: Pred = T

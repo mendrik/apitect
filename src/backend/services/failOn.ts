@@ -1,11 +1,11 @@
 import { Pred } from 'ramda'
 
 export const failOn =
-  <T>(pred: Pred, message: string) =>
+  <T, E extends Error = Error>(pred: Pred, error: (errData: T) => E) =>
   (data: any): T | never => {
-    const check = (data: any): data is T => pred(data)
+    const check = (c: any): c is T => pred(data)
     if (check(data)) {
-      throw new Error(message)
+      throw error
     }
     return data as T
   }
