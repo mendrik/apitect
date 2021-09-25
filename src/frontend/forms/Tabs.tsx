@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { Children, createContext, FC, HTMLAttributes, ReactElement } from 'react'
+import React, { Children, createContext, FC, HTMLAttributes, ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { OwnProps as TabProps } from './Tab'
@@ -11,12 +11,13 @@ type TabContext = {
 const tabContext = createContext<TabContext>({ activeTab: 0 })
 
 type OwnProps = {
-  activeTab?: number
+  initialTab?: number
   children: ReadonlyArray<ReactElement<TabProps>>
 } & HTMLAttributes<HTMLDivElement>
 
-export const Tabs: FC<OwnProps> = ({ activeTab = 0, children, ...props }) => {
+export const Tabs: FC<OwnProps> = ({ initialTab = 0, children, ...props }) => {
   const { t } = useTranslation()
+  const [activeTab, setTab] = useState(initialTab)
   return (
     <div {...props}>
       <tabContext.Provider value={{ activeTab }}>
@@ -27,6 +28,7 @@ export const Tabs: FC<OwnProps> = ({ activeTab = 0, children, ...props }) => {
                 type="button"
                 className={clsx('nav-link', { active: i === activeTab })}
                 aria-current="page"
+                onClick={() => setTab(i)}
               >
                 {t(child.props.title)}
               </button>

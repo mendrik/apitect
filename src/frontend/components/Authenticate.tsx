@@ -4,9 +4,9 @@ import { Tab } from '../forms/Tab'
 import { Tabs } from '../forms/Tabs'
 import { LoginForm } from './LoginForm'
 
-export const Login: FC = () => {
+export const Authenticate: FC = () => {
   return (
-    <div className="d-flex flex-column justify-content-md-center align-items-center vh-100 p-4">
+    <div className="modal-dialog modal-dialog-centered">
       <Tabs className="min-w-modal">
         <Tab title="app.login">
           <LoginForm />

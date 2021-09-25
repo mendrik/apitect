@@ -5,3 +5,5 @@ export const TUser = t.type({
   email: t.string,
   token: t.string
 })
+
+export type User = t.TypeOf<typeof TUser>

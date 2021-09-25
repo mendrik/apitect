@@ -1,5 +1,11 @@
 import React, { FC } from 'react'
 
-const Loader: FC = () => <div>Loading</div>
+import { ReactComponent as LoadingSvg } from '../assets/loader.svg'
 
-export default Loader
+export const Loader: FC = () => {
+  return (
+    <div className="icon">
+      <LoadingSvg />
+    </div>
+  )
+}

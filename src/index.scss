@@ -8,6 +8,12 @@ body {
   font-size: 1rem;
 }
 
+$color1: #e15b64;
+$color2: #f47e60;
+$color3: #f8b26a;
+$color2: #abbd81;
+
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -21,9 +27,30 @@ code {
   width: fit-content;
 }
 
+.icon-xs {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-sm {
+  width: 25px;
+  height: 25px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
+
+.icon-lg {
+  width: 64px;
+  height: 64px;
+}
+
 .min-w-modal {
   width: 400px;
   max-width: 100%;
+  min-height: 400px;
 }
 
 @import "~bootstrap/scss/bootstrap";

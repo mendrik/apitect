@@ -7,14 +7,14 @@ import { useWebsocket } from '../hooks/useWebsocket'
 import appState from '../stores/appState'
 
 const App: FC = () => {
-  useRequireLogin()
+  const userState = useRequireLogin()
   const { t } = useTranslation()
   const { send } = useWebsocket()
   const test = useStore(appState)
 
   console.log(test, send, t)
 
-  return <div>My App</div>
+  return userState ? <div>My App</div> : null
 }
 
 export default App
