@@ -19,6 +19,7 @@ export const TextInput: FC<OwnProps> = ({ label, type = 'text', className, ...pr
         type={type}
         className="form-control"
         id={inpId}
+        autoComplete="off"
         {...props}
         {...register}
         placeholder=" "

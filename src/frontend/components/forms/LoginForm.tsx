@@ -2,11 +2,11 @@ import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import React, { FC } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Login, TLogin } from '../../backend/types/login'
-import { Checkbox } from '../forms/Checkbox'
-import { TextInput } from '../forms/TextInput'
-import usePromise from '../hooks/usePromise'
-import { login } from '../utils/api'
+import { Login, TLogin } from '../../../backend/types/login'
+import { Checkbox } from '../../forms/Checkbox'
+import { TextInput } from '../../forms/TextInput'
+import usePromise from '../../hooks/usePromise'
+import { login } from '../../utils/api'
 
 export const LoginForm: FC = () => {
   const form = useForm<Login>({

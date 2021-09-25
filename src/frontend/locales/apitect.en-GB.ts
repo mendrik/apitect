@@ -5,6 +5,9 @@ const en = {
       register: 'Register',
       login: 'Login'
     },
+    navbar: {
+      login: 'Login'
+    },
     form: {
       login: {
         email: 'E-Mail',

@@ -1,25 +1,31 @@
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { ErrorBoundary } from 'react-error-boundary'
+import { BrowserRouter } from 'react-router-dom'
 
 import App from './frontend/components/App'
-import { Error } from './frontend/components/Error'
+import { ErrorView } from './frontend/components/ErrorView'
+import { Loader } from './frontend/components/Loader'
+import { Modals } from './frontend/components/Modals'
 import { initLocales } from './frontend/locales/locales'
 import reportWebVitals from './frontend/reportWebVitals'
 import './index.scss'
 
+const myErrorHandler = (error: Error, info: { componentStack: string }) => {
+  console.error(error, info)
+}
+
 const render = (): void =>
   void ReactDOM.render(
     <React.StrictMode>
-      <Suspense fallback={<Error />}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/*">
-              <App />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </Suspense>
+      <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
+        <Suspense fallback={<Loader />}>
+          <BrowserRouter>
+            <App />
+            <Modals />
+          </BrowserRouter>
+        </Suspense>
+      </ErrorBoundary>
     </React.StrictMode>,
     document.getElementById('root')
   )

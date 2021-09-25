@@ -46,6 +46,7 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
     (...args: any[]) => {
       switch (state.status) {
         case 'idle': {
+          dispatch({ type: 'running' })
           const res = fn(...args)
             .then(payload => {
               promiseCache.current[name] = undefined

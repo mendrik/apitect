@@ -1,4 +1,4 @@
-import { T, Pred } from 'ramda'
+import { Pred, T } from 'ramda'
 import { useEffect } from 'react'
 
 import usePromise, { State } from './usePromise'
@@ -10,6 +10,7 @@ const useInstantPromise = <P>(
 ): State<P> => {
   const state = usePromise<P>(name, fn)
   useEffect(() => {
+    console.log(name, state.status, condition())
     if (state.status === 'idle' && condition()) {
       state.trigger()
     }

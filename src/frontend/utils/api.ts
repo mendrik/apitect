@@ -26,4 +26,4 @@ export const del = request('delete')
 export const put = request('put')
 
 export const login = (data: Login) => post('login', TUser, data)
-export const whoami = () => get('whoami', TUser)
+export const whoAmI = () => get('whoami', TUser)

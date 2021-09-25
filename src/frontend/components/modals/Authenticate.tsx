@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 
-import { Tab } from '../forms/Tab'
-import { Tabs } from '../forms/Tabs'
-import { LoginForm } from './LoginForm'
+import { Tab } from '../../forms/Tab'
+import { Tabs } from '../../forms/Tabs'
+import { LoginForm } from '../forms/LoginForm'
 
-export const Authenticate: FC = () => {
+const Authenticate: FC = () => {
   return (
     <div className="modal-dialog modal-dialog-centered">
       <Tabs className="min-w-modal">
@@ -16,3 +16,5 @@ export const Authenticate: FC = () => {
     </div>
   )
 }
+
+export default Authenticate
