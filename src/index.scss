@@ -17,4 +17,13 @@ code {
   cursor: pointer;
 }
 
+.w-fit {
+  width: fit-content;
+}
+
+.min-w-modal {
+  width: 400px;
+  max-width: 100%;
+}
+
 @import "~bootstrap/scss/bootstrap";
