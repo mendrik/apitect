@@ -10,7 +10,6 @@ const useInstantPromise = <P>(
 ): State<P> => {
   const state = usePromise<P>(name, fn)
   useEffect(() => {
-    console.log(name, state.status, condition())
     if (state.status === 'idle' && condition()) {
       state.trigger()
     }

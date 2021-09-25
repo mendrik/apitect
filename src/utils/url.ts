@@ -1,4 +1,4 @@
-import { flip, mapObjIndexed } from 'ramda'
+import { flip, map, mapObjIndexed } from 'ramda'
 
 export const addParams = (
   params: Record<string, string>,
@@ -7,5 +7,12 @@ export const addParams = (
   const url = new URL(current.href)
   const sp = url.searchParams
   mapObjIndexed(flip(sp.set.bind(sp)), params)
+  return url.href.substr(current.origin.length)
+}
+
+export const removeParams = (params: string[], current: Location = document.location): string => {
+  const url = new URL(current.href)
+  const sp = url.searchParams
+  map(sp.delete.bind(sp), params)
   return url.href.substr(current.origin.length)
 }

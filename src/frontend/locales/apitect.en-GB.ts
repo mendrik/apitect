@@ -5,6 +5,13 @@ const en = {
       register: 'Register',
       login: 'Login'
     },
+    modals: {
+      authenticate: {
+        login: {
+          title: 'Login'
+        }
+      }
+    },
     navbar: {
       login: 'Login'
     },

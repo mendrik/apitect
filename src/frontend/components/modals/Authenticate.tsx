@@ -6,8 +6,8 @@ import { LoginForm } from '../forms/LoginForm'
 
 const Authenticate: FC = () => {
   return (
-    <div className="modal-dialog modal-dialog-centered">
-      <Tabs className="min-w-modal">
+    <div>
+      <Tabs className="w-100">
         <Tab title="app.login">
           <LoginForm />
         </Tab>
