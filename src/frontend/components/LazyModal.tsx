@@ -1,5 +1,5 @@
-import { prop } from 'ramda'
-import React, { FC } from 'react'
+import { always, prop } from 'ramda'
+import React, { FC, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -18,22 +18,27 @@ export const LazyModal: FC<OwnProps> = ({ name, from, title }) => {
   const { modal } = useQueryParams()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const [show, setShow] = useState(true)
+  const modalMatch = modal === name
   const modalState = useInstantPromise<FC>(
     `loading-modal-${name}`,
     () => from().then(prop('default')),
-    () => modal === name
+    always(modalMatch)
   )
 
   if (modalState.status === 'error') {
     return console.error(modalState.error)
   }
 
-  return modal === name && modalState.data != null ? (
+  return modalMatch && modalState.data != null ? (
     <Modal
       backdrop="static"
-      animation
-      show
-      onHide={() => navigate(removeParams(['modal']))}
+      show={show}
+      onHide={() => setShow(false)}
+      onExited={() => {
+        navigate(removeParams(['modal']), { replace: true })
+        setShow(true)
+      }}
       centered
     >
       <Modal.Header closeButton>

@@ -18,7 +18,7 @@ export const LoginForm: FC = () => {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(trigger)} noValidate>
         <TextInput name="email" label="form.login.email" />
-        <TextInput name="email" label="form.login.password" type="password" />
+        <TextInput name="password" label="form.login.password" type="password" />
         <button type="submit" className="btn btn-primary btn-block">
           Sign in
         </button>
