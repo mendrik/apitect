@@ -23,6 +23,8 @@ export const logDecodingErrorsTable = (errs: Errors): void => {
   console.table(formatDecodingErrors(errs), ['path', 'expected', 'actual'])
 }
 
+export class DecodingError extends Error {}
+
 export const decode =
   <A, O = A, I = unknown>(decoder: Type<A, O, I>) =>
   (data: I): A => {
@@ -32,5 +34,5 @@ export const decode =
     }
     logger.info('Received not decodeable data', data)
     logDecodingErrorsTable(decoded.left)
-    throw new Error('Decoding failed')
+    throw new DecodingError('Decoding failed')
   }

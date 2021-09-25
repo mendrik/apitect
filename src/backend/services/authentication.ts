@@ -30,17 +30,14 @@ const register = endpoint({ register: body(TRegister) }, async ({ register }, { 
 const login = endpoint(
   { login: body(TLogin) },
   async ({ login: { email, password } }, { OK, FORBIDDEN }) => {
-    try {
-      const encryptedPassword = hashSync(password, config.PASSWORD_SALT)
-      return client.user
-        .findFirst({ where: { email } })
-        .then(failOn(isNil, 'User not found'))
-        .then(failOn(propNotEq('password', encryptedPassword), `password don't match`))
-        .then(omit(['password', 'id']))
-        .then(OK)
-    } catch (e) {
-      return FORBIDDEN()
-    }
+    const encryptedPassword = hashSync(password, config.PASSWORD_SALT)
+    return client.user
+      .findFirst({ where: { email } })
+      .then(failOn(isNil, 'User not found'))
+      .then(failOn(propNotEq('password', encryptedPassword), `Password doesn't match`))
+      .then(omit(['password', 'id']))
+      .then(OK)
+      .catch(FORBIDDEN)
   }
 )
 

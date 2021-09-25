@@ -14,18 +14,7 @@ $color3: #f8b26a;
 $color4: #abbd81;
 $color5: #81afbd;
 
-$theme-colors: (
-  "primary":    $color3,
-  "secondary":  $color5,
-  "success":    #198754,
-  "info":       $color5,
-  "warning":    $color3,
-  "danger":     $color1,
-  "light":      #F8F9FA,
-  "dark":       #212529
-);
-
-$link-color: darken($color3, 30);
+$form-feedback-invalid-color: $color2;
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

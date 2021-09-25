@@ -4,7 +4,7 @@ import * as t from 'io-ts'
 import jwt from 'jsonwebtoken'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 
-import { decode } from '../../utils/decode'
+import { decode, DecodingError } from '../../utils/decode'
 import { logger } from '../../utils/logger'
 import { Promised, resolvePromised } from '../../utils/promise'
 import { PrismaClient, User } from '../model'
@@ -28,7 +28,7 @@ type Collector = Record<string, t.Any | ((req: FastifyRequest) => Promise<any> |
 export const body =
   <A, O, I>(decoder: t.Type<A, O, I>) =>
   (req: FastifyRequest): A =>
-    decode<A, O, I>(decoder)(req.body as any)
+    decode<A, O, I>(decoder)(JSON.parse(req.body as any))
 
 export const header =
   <A, O, I>(name: string, decoder: t.Type<A, O, I>) =>
@@ -45,7 +45,10 @@ export const user = (req: FastifyRequest): Promise<User> => {
   }
 }
 
-const handleError = (e: Error) => {
+const handleError = (reply: FastifyReply) => (e: Error) => {
+  if (e instanceof DecodingError) {
+    return replyMap(reply)['FORBIDDEN']()
+  }
   logger.error(`Unexpected error`, { stack: e.stack, message: e.message })
   throw e
 }
@@ -77,8 +80,10 @@ export const endpoint =
       }
       return dependencyName
     }, dependencies)
-    const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
-    return resolvePromised(resObj)
-      .then(res => body(res, replyMap(reply)))
-      .catch(handleError)
+    try {
+      const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
+      return resolvePromised(resObj).then(res => body(res, replyMap(reply)))
+    } catch (e) {
+      handleError(reply)(e as Error)
+    }
   }
