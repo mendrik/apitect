@@ -3,10 +3,10 @@ import React, { FC } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Login, TLogin } from '../../../backend/types/login'
-import { Checkbox } from '../../forms/Checkbox'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { login } from '../../utils/api'
+import { ModalLink } from '../modals/ModalLink'
 
 export const LoginForm: FC = () => {
   const form = useForm<Login>({
@@ -19,15 +19,12 @@ export const LoginForm: FC = () => {
       <form onSubmit={form.handleSubmit(trigger)} noValidate>
         <TextInput name="email" label="form.login.email" />
         <TextInput name="email" label="form.login.password" type="password" />
-        <div className="d-flex justify-content-around align-items-center mb-4">
-          <Checkbox name="rememberMe" label="form.login.rememberMe" />
-        </div>
         <button type="submit" className="btn btn-primary btn-block">
           Sign in
         </button>
       </form>
       <p className="my-4">
-        <a href="#!">Forgot password?</a>
+        <ModalLink modal="forgot-password">Forgot password?</ModalLink>
       </p>
     </FormProvider>
   )
