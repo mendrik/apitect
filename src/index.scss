@@ -11,8 +11,21 @@ body {
 $color1: #e15b64;
 $color2: #f47e60;
 $color3: #f8b26a;
-$color2: #abbd81;
+$color4: #abbd81;
+$color5: #81afbd;
 
+$theme-colors: (
+  "primary":    $color3,
+  "secondary":  $color5,
+  "success":    #198754,
+  "info":       $color5,
+  "warning":    $color3,
+  "danger":     $color1,
+  "light":      #F8F9FA,
+  "dark":       #212529
+);
+
+$link-color: darken($color3, 30);
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
