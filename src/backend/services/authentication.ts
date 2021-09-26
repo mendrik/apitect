@@ -31,7 +31,7 @@ const register = endpoint({ register: body(TRegister) }, async ({ register }) =>
 })
 
 const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } }) =>
-  pHashSync(password, config.PASSWORD_SALT).then(encryptedPassword =>
+  pHashSync(password, 10).then(encryptedPassword =>
     client.user
       .findFirst({ where: { email } })
       .then(failOn(isNil, httpError(404)))

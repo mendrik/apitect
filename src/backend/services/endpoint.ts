@@ -49,7 +49,7 @@ const handleError = (reply: FastifyReply) => (e: Error) => {
   if (e instanceof HttpError) {
     return reply.code(e.status).send(e.message)
   }
-  logger.error(`Unexpected error`, { stack: e.stack, message: e.message })
+  logger.error(e.message, e.stack)
   reply.code(500).send('Server error')
 }
 
@@ -82,6 +82,7 @@ export const endpoint =
       return resolvePromised(resObj)
         .then(res => body(res))
         .then(OK(reply))
+        .catch(handleError(reply))
     } catch (e) {
       handleError(reply)(e as Error)
     }
