@@ -8,5 +8,5 @@ export class HttpError extends Error implements ServerError {
   }
 }
 
-export const httpError = (status: number, field: string, message: TFuncKey) => () =>
+export const httpError = (status: number, field: string, message: TFuncKey) =>
   new HttpError(status, field, message)

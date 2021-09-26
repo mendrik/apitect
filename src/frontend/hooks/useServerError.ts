@@ -6,8 +6,7 @@ export const useServerError = (e: any, setError: UseFormSetError<any>): void => 
   const { t } = useTranslation()
   useEffect(() => {
     if (e?.field != null) {
-      console.log(t(e.message))
-      setError(e.field, { message: t(e.message, e) as string })
+      setError(e.field, e)
     }
   }, [e, setError, t])
 }

@@ -17,6 +17,6 @@ export const failOn =
   }
 
 export const failUnless =
-  <T, E extends Error = Error>(pred: Pred, error: string | ((errData: T) => E)) =>
+  <T, E extends Error = Error>(pred: Pred, error: Error | string | ((errData: T) => E)) =>
   (data: any): T | never =>
     failOn(complement(pred), error)(data)

@@ -1,6 +1,5 @@
 import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
-import { constants } from 'http2'
 import { sign } from 'jsonwebtoken'
 import { assoc, isNil, omit, prop, propEq } from 'ramda'
 
@@ -21,7 +20,10 @@ const register = endpoint({ register: body(TRegister) }, async ({ register }) =>
     where: { email: register.email }
   })
   if (oldUser != null) {
-    throw httpError(constants.HTTP_STATUS_CONFLICT, 'email', 'validation.server.userExists')
+    throw httpError(409, 'email', 'validation.server.userExists')
+  }
+  if (register.passwordRepeat !== register.password) {
+    throw httpError(400, 'passwordRepeat', 'validation.server.passwordMustMatch')
   }
   const data = assoc('password', hashSync(register.password, 10), register)
   const user = await client.user.create({ data })

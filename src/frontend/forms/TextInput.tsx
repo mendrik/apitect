@@ -1,9 +1,10 @@
 import clsx from 'clsx'
 import React, { FC, InputHTMLAttributes } from 'react'
-import { FieldError, useFormContext } from 'react-hook-form'
 import type { RegisterOptions } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
+import { ErrorInfo } from '../components/ErrorInfo'
 import { useId } from '../hooks/useId'
 
 type OwnProps = {
@@ -20,13 +21,12 @@ export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', classNa
     formState: { errors }
   } = useFormContext()
   const value = watch(props.name)
-  const error: FieldError = errors[props.name]
   const inpId = useId()
   return (
     <div className={clsx('form-floating mb-3 has-validation', className)} {...props}>
       <input
         type={type}
-        className={clsx('form-control ', { 'is-invalid': !!error })}
+        className={clsx('form-control ', { 'is-invalid': errors?.[props.name] != null })}
         id={inpId}
         autoComplete="off"
         {...props}
@@ -36,11 +36,7 @@ export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', classNa
         placeholder=" "
       />
       <label htmlFor={inpId}>{t(label)}</label>
-      {error && (
-        <div className="invalid-feedback">
-          {t(error.message as TFuncKey, { field: props.name })}
-        </div>
-      )}
+      <ErrorInfo name={props.name} />
     </div>
   )
 }

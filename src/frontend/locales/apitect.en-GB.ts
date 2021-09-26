@@ -38,7 +38,8 @@ const en = {
       server: {
         userExists: 'User already exists',
         userNotFound: 'User not found',
-        passwordWrong: 'Wrong password'
+        passwordWrong: 'Wrong password',
+        passwordMustMatch: "Password doesn't match"
       }
     }
   }
