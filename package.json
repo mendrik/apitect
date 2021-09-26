@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "database:migrate": "npx prisma migrate dev --name initialize",
+    "database:migrate": "npx prisma migrate dev",
     "database:generate": "npx prisma generate",
     "database": "docker-compose up",
     "all:start": "npm-run-all --parallel start-ui start-server",

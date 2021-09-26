@@ -11,7 +11,13 @@ import { register } from '../../utils/api'
 
 export const RegisterForm: FC = () => {
   const form = useForm<Register>({
-    resolver: ioTsResolver(TRegister)
+    resolver: ioTsResolver(TRegister),
+    defaultValues: {
+      email: '',
+      name: '',
+      password: '',
+      passwordRepeat: ''
+    }
   })
   const { t } = useTranslation()
   const { trigger, error } = usePromise('doRegister', register)

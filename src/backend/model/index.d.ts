@@ -18,8 +18,9 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
 
 export type User = {
   id: number
-  email: string
   name: string
+  email: string
+  password: string
   role: Role
   token: string | null
 }
@@ -765,24 +766,27 @@ export namespace Prisma {
 
   export type UserMinAggregateOutputType = {
     id: number | null
-    email: string | null
     name: string | null
+    email: string | null
+    password: string | null
     role: Role | null
     token: string | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: number | null
-    email: string | null
     name: string | null
+    email: string | null
+    password: string | null
     role: Role | null
     token: string | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
-    email: number
     name: number
+    email: number
+    password: number
     role: number
     token: number
     _all: number
@@ -799,24 +803,27 @@ export namespace Prisma {
 
   export type UserMinAggregateInputType = {
     id?: true
-    email?: true
     name?: true
+    email?: true
+    password?: true
     role?: true
     token?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
-    email?: true
     name?: true
+    email?: true
+    password?: true
     role?: true
     token?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
-    email?: true
     name?: true
+    email?: true
+    password?: true
     role?: true
     token?: true
     _all?: true
@@ -916,8 +923,9 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: number
-    email: string
     name: string
+    email: string
+    password: string
     role: Role
     token: string | null
     _count: UserCountAggregateOutputType | null
@@ -943,8 +951,9 @@ export namespace Prisma {
 
   export type UserSelect = {
     id?: boolean
-    email?: boolean
     name?: boolean
+    email?: boolean
+    password?: boolean
     role?: boolean
     token?: boolean
   }
@@ -1585,8 +1594,9 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
-    email: 'email',
     name: 'name',
+    email: 'email',
+    password: 'password',
     role: 'role',
     token: 'token'
   };
@@ -1620,16 +1630,18 @@ export namespace Prisma {
     OR?: Enumerable<UserWhereInput>
     NOT?: Enumerable<UserWhereInput>
     id?: IntFilter | number
-    email?: StringFilter | string
     name?: StringFilter | string
+    email?: StringFilter | string
+    password?: StringFilter | string
     role?: EnumRoleFilter | Role
     token?: StringNullableFilter | string | null
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
-    email?: SortOrder
     name?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
     role?: SortOrder
     token?: SortOrder
   }
@@ -1641,8 +1653,9 @@ export namespace Prisma {
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
-    email?: SortOrder
     name?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
     role?: SortOrder
     token?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -1657,61 +1670,69 @@ export namespace Prisma {
     OR?: Enumerable<UserScalarWhereWithAggregatesInput>
     NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
-    email?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
+    email?: StringWithAggregatesFilter | string
+    password?: StringWithAggregatesFilter | string
     role?: EnumRoleWithAggregatesFilter | Role
     token?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type UserCreateInput = {
-    email: string
     name: string
+    email: string
+    password: string
     role?: Role
     token?: string | null
   }
 
   export type UserUncheckedCreateInput = {
     id?: number
-    email: string
     name: string
+    email: string
+    password: string
     role?: Role
     token?: string | null
   }
 
   export type UserUpdateInput = {
-    email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
     token?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
     token?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateManyInput = {
     id?: number
-    email: string
     name: string
+    email: string
+    password: string
     role?: Role
     token?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
-    email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
     token?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | Role
     token?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -1766,8 +1787,9 @@ export namespace Prisma {
 
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
-    email?: SortOrder
     name?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
     role?: SortOrder
     token?: SortOrder
   }
@@ -1778,16 +1800,18 @@ export namespace Prisma {
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
-    email?: SortOrder
     name?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
     role?: SortOrder
     token?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
-    email?: SortOrder
     name?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
     role?: SortOrder
     token?: SortOrder
   }

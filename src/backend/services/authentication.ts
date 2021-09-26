@@ -1,7 +1,7 @@
 import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { sign } from 'jsonwebtoken'
-import { assoc, isNil, omit, prop, propEq } from 'ramda'
+import { assoc, dissoc, isNil, omit, pipe, prop, propEq } from 'ramda'
 
 import { failOn, failUnless } from '../../utils/failOn'
 import { promiseFn } from '../../utils/promise'
@@ -25,9 +25,12 @@ const register = endpoint({ register: body(TRegister) }, async ({ register }) =>
   if (register.passwordRepeat !== register.password) {
     throw httpError(400, 'passwordRepeat', 'validation.server.passwordMustMatch')
   }
-  const data = assoc('password', hashSync(register.password, 10), register)
+  const data = pipe(
+    assoc('password', hashSync(register.password, 10)),
+    dissoc('passwordRepeat')
+  )(register)
   const user = await client.user.create({ data })
-  const token = sign(`${user.id}`, `${config.TOKEN_KEY}`, { expiresIn: '90d' })
+  const token = sign(`${user.id}`, `${config.TOKEN_KEY}`, { expiresIn: '90 days' })
   return client.user.update({ where: { id: user.id }, data: { token } }).then(prop('email'))
 })
 
