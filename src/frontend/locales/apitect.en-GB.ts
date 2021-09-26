@@ -30,7 +30,8 @@ const en = {
       },
       validation: {
         validEmail: '$t(form.fields.{{ field }}) is not valid',
-        required: '$t(form.fields.{{ field }}) is required'
+        required: '$t(form.fields.{{ field }}) is required',
+        password: '$t(form.fields.{{ field }}) must be at least 4 characters long'
       }
     },
     validation: {
