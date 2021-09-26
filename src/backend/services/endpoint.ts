@@ -8,7 +8,7 @@ import { decode, DecodingError } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
 import { logger } from '../../utils/logger'
 import { Promised, resolvePromised } from '../../utils/promise'
-import { prisma, PrismaClient, User } from '../model'
+import { PrismaClient, User } from '../model'
 import { HttpError } from '../types/HttpError'
 import { config } from './config'
 
