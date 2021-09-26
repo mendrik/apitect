@@ -1,14 +1,18 @@
 const en = {
   translation: {
     app: {
-      name: 'Apitect',
-      register: 'Register',
-      login: 'Login'
+      name: 'Apitect'
     },
     modals: {
       authenticate: {
+        title: 'Authentication',
         login: {
-          title: 'Login'
+          title: 'Login',
+          submit: 'Login'
+        },
+        register: {
+          title: 'Register',
+          submit: 'Register'
         }
       }
     },
@@ -17,8 +21,10 @@ const en = {
     },
     form: {
       fields: {
+        name: 'Name',
         email: 'E-Mail',
         password: 'Password',
+        passwordRepeat: 'Repeat password',
         rememberMe: 'Remember me',
         submit: 'Login'
       },

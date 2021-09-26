@@ -6,7 +6,7 @@ export const Modals: FC = () => {
   return (
     <div className="modal">
       <LazyModal
-        title="modals.authenticate.login.title"
+        title="modals.authenticate.title"
         from={() => import('./modals/Authenticate')}
         name="login"
       />

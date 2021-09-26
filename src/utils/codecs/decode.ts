@@ -34,5 +34,5 @@ export const decode =
     }
     logger.info('Received not decodeable data', data)
     logDecodingErrorsTable(decoded.left)
-    throw new DecodingError('Decoding failed')
+    throw new DecodingError(last(decoded.left)?.message ?? 'Decoding failed')
   }

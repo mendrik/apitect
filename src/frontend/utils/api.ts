@@ -1,6 +1,7 @@
 import { Any, OutputOf } from 'io-ts'
 
 import { Login } from '../../backend/types/login'
+import { Register } from '../../backend/types/register'
 import { decode } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
 import { TUser } from '../types/user'
@@ -28,4 +29,5 @@ export const del = request('delete')
 export const put = request('put')
 
 export const login = (data: Login) => post('login', TUser, data)
+export const register = (data: Register) => post('register', TUser, data)
 export const whoAmI = () => get('whoami', TUser)

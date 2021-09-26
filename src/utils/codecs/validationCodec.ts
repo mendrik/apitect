@@ -1,9 +1,8 @@
-import { isRight } from 'fp-ts/Either'
-import i18n from 'i18next'
+import { isLeft, isRight } from 'fp-ts/Either'
 import * as t from 'io-ts'
 import { OutputOf } from 'io-ts'
 import { withValidate } from 'io-ts-types'
-import { complement, isEmpty, last } from 'ramda'
+import { last } from 'ramda'
 import { TFuncKey } from 'react-i18next'
 
 export const validationCodec = <C extends t.Any>(
@@ -15,11 +14,5 @@ export const validationCodec = <C extends t.Any>(
     const validation = codec.validate(input, ctx)
     return isRight(validation) && validate(validation.right)
       ? t.success(input)
-      : t.failure(input, ctx, message ? i18n.t(message, { field: last(ctx)?.key }) : undefined)
+      : t.failure(input, ctx, isLeft(validation) ? last(validation.left)?.message : message)
   })
-
-export const nonEmptyString = validationCodec(
-  t.string,
-  complement(isEmpty),
-  'form.validation.required'
-)

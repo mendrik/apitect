@@ -1,10 +1,12 @@
 import * as t from 'io-ts'
 import v from 'validator'
 
-import { nonEmptyString, validationCodec } from '../../utils/codecs/validationCodec'
+import { emailCodec } from '../../utils/codecs/emailCodec'
+import { nonEmptyString } from '../../utils/codecs/nonEmptyString'
+import { validationCodec } from '../../utils/codecs/validationCodec'
 
 export const TLogin = t.type({
-  email: validationCodec(t.string, v.isEmail, 'form.validation.validEmail'),
+  email: emailCodec,
   password: nonEmptyString
 })
 
