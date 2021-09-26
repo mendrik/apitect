@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 export const useServerError = (e: any, setError: UseFormSetError<any>): void => {
   const { t } = useTranslation()
   useEffect(() => {
-    if (e != null) {
+    if (e?.field != null) {
       setError(e.field, { message: t(e.message) as string })
     }
   }, [e, setError, t])
