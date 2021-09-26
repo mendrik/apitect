@@ -5,12 +5,12 @@ import jwt from 'jsonwebtoken'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 
 import { decode, DecodingError } from '../../utils/codecs/decode'
+import { failOn } from '../../utils/failOn'
 import { logger } from '../../utils/logger'
 import { Promised, resolvePromised } from '../../utils/promise'
 import { PrismaClient, User } from '../model'
 import { HttpError } from '../types/HttpError'
 import { config } from './config'
-import { failOn } from './failOn'
 
 const client = new PrismaClient()
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }

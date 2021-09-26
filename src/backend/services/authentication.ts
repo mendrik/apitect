@@ -2,17 +2,16 @@ import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { constants } from 'http2'
 import { sign } from 'jsonwebtoken'
-import { assoc, isNil, omit, prop } from 'ramda'
+import { assoc, isNil, omit, prop, propEq } from 'ramda'
 
+import { failOn, failUnless } from '../../utils/failOn'
 import { promiseFn } from '../../utils/promise'
-import { propNotEq } from '../../utils/ramda'
 import { PrismaClient } from '../model'
 import { httpError } from '../types/HttpError'
 import { TLogin } from '../types/login'
 import { TRegister } from '../types/register'
 import { config } from './config'
 import { body, endpoint, user } from './endpoint'
-import { failOn } from './failOn'
 
 const client = new PrismaClient()
 const pHashSync = promiseFn(hashSync)
@@ -36,8 +35,8 @@ const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } })
       .findFirst({ where: { email } })
       .then(failOn(isNil, httpError(404, 'email', 'validation.server.userNotFound')))
       .then(
-        failOn(
-          propNotEq('password', encryptedPassword),
+        failUnless(
+          propEq('password', encryptedPassword),
           httpError(403, 'password', 'validation.server.passwordWrong')
         )
       )

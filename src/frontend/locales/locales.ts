@@ -4,12 +4,6 @@ import { initReactI18next, TFunction } from 'react-i18next'
 import { capitalize } from '../../utils/ramda'
 import en from './apitect.en-GB'
 
-declare module 'react-i18next' {
-  export interface Resources {
-    readonly translation: typeof import('./apitect.en-GB').default.translation
-  }
-}
-
 const resources = {
   'en-GB': en
 }
