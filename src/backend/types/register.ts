@@ -1,13 +1,13 @@
 import * as t from 'io-ts'
-import { NonEmptyString } from 'io-ts-types'
 
 import { emailCodec } from '../../utils/codecs/emailCodec'
+import { nonEmptyString } from '../../utils/codecs/nonEmptyString'
 
 export const TRegister = t.type({
-  name: NonEmptyString,
+  name: nonEmptyString,
   email: emailCodec,
-  password: NonEmptyString,
-  passwordRepeat: NonEmptyString
+  password: nonEmptyString,
+  passwordRepeat: nonEmptyString
 })
 
 export type Register = t.TypeOf<typeof TRegister>

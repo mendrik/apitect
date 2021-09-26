@@ -25,7 +25,12 @@ export const LoginForm: FC = () => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(trigger)} noValidate>
-        <TextInput name="email" label="form.fields.email" options={{ required: true }} />
+        <TextInput
+          name="email"
+          label="form.fields.email"
+          type="email"
+          options={{ required: true }}
+        />
         <TextInput
           name="password"
           label="form.fields.password"

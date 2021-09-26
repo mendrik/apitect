@@ -4,9 +4,9 @@ import { OutputOf } from 'io-ts'
 import { withValidate } from 'io-ts-types'
 import { last } from 'ramda'
 
-type Last<T> = T extends readonly [...infer I, infer U] ? U : any
+type Last<T> = T extends readonly [...infer _I, infer U] ? U : any
 
-// wip
+// wip or find out a ready made solution for this
 export const chainCodec = <C extends t.Any, X extends C[]>(...codecs: X): Last<X> =>
   withValidate<t.TypeOf<C>>(codecs, (input: OutputOf<C>, ctx: t.Context) =>
     codecs.reduce((p, c) => {
@@ -15,8 +15,7 @@ export const chainCodec = <C extends t.Any, X extends C[]>(...codecs: X): Last<X
         return isRight(validation)
           ? t.success(input)
           : t.failure(input, ctx, last(validation.left)?.message)
-      } else {
-        return p
       }
+      return p
     }, t.success(input))
   )

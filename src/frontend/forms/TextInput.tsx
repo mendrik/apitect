@@ -36,7 +36,11 @@ export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', classNa
         placeholder=" "
       />
       <label htmlFor={inpId}>{t(label)}</label>
-      {error && <div className="invalid-feedback">{error.message}</div>}
+      {error && (
+        <div className="invalid-feedback">
+          {t(error.message as TFuncKey, { field: props.name })}
+        </div>
+      )}
     </div>
   )
 }
