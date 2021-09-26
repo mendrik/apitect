@@ -1,10 +1,13 @@
 import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
+import { constants } from 'http2'
 import { sign } from 'jsonwebtoken'
-import { assoc, isNil, omit } from 'ramda'
+import { assoc, isNil, omit, prop } from 'ramda'
 
+import { promiseFn } from '../../utils/promise'
 import { propNotEq } from '../../utils/ramda'
 import { PrismaClient } from '../model'
+import { httpError } from '../types/HttpError'
 import { TLogin } from '../types/login'
 import { TRegister } from '../types/register'
 import { config } from './config'
@@ -12,39 +15,37 @@ import { body, endpoint, user } from './endpoint'
 import { failOn } from './failOn'
 
 const client = new PrismaClient()
+const pHashSync = promiseFn(hashSync)
 
-const register = endpoint({ register: body(TRegister) }, async ({ register }, { OK, CONFLICT }) => {
+const register = endpoint({ register: body(TRegister) }, async ({ register }) => {
   const oldUser = await client.user.findFirst({
     where: { email: register.email }
   })
   if (oldUser != null) {
-    return CONFLICT()
+    throw httpError(constants.HTTP_STATUS_CONFLICT)
   }
   const data = assoc('password', hashSync(register.password, config.PASSWORD_SALT), register)
   const user = await client.user.create({ data })
   const token = sign(`${user.id}`, `${config.TOKEN_KEY}`, { expiresIn: '90d' })
-  await client.user.update({ where: { id: user.id }, data: { token } })
-  return OK({ status: `${user.email} created` })
+  return client.user.update({ where: { id: user.id }, data: { token } }).then(prop('email'))
 })
 
-const login = endpoint(
-  { login: body(TLogin) },
-  async ({ login: { email, password } }, { OK, FORBIDDEN }) => {
-    const encryptedPassword = hashSync(password, config.PASSWORD_SALT)
-    return client.user
+const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } }) =>
+  pHashSync(password, config.PASSWORD_SALT).then(encryptedPassword =>
+    client.user
       .findFirst({ where: { email } })
-      .then(failOn(isNil, 'User not found'))
-      .then(failOn(propNotEq('password', encryptedPassword), `Password doesn't match`))
+      .then(failOn(isNil, httpError(404)))
+      .then(
+        failOn(propNotEq('password', encryptedPassword), httpError(403, `Password doesn't match`))
+      )
       .then(omit(['password', 'id']))
-      .then(OK)
-      .catch(FORBIDDEN)
-  }
+  )
 )
 
-const whoami = endpoint({ user }, async ({ user }, { OK }) => OK(user))
+const whomAmI = endpoint({ user }, async ({ user }) => user)
 
 export const initAuthentication = (fastify: FastifyInstance) => {
   fastify.post('/register', register)
   fastify.post('/login', login)
-  fastify.get('/whoami', whoami)
+  fastify.get('/whomAmI', whomAmI)
 }

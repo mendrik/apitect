@@ -15,13 +15,10 @@ import { failOn } from './failOn'
 const client = new PrismaClient()
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
 
-const replyMap = (reply: FastifyReply) => ({
-  OK: <T>(body?: T) => reply.code(200).headers(headers).send(body),
-  BAD_REQUEST: <T>(body?: T) => reply.code(400).headers(headers).send(body),
-  FORBIDDEN: () => reply.code(403).headers(headers),
-  NOT_FOUND: () => reply.code(404).headers(headers),
-  CONFLICT: () => reply.code(409).headers(headers)
-})
+const OK =
+  (reply: FastifyReply) =>
+  <T>(body?: T) =>
+    reply.code(200).headers(headers).send(body)
 
 type Collector = Record<string, t.Any | ((req: FastifyRequest) => Promise<any> | any)>
 
@@ -47,10 +44,13 @@ export const user = (req: FastifyRequest): Promise<User> => {
 
 const handleError = (reply: FastifyReply) => (e: Error) => {
   if (e instanceof DecodingError) {
-    return replyMap(reply)['FORBIDDEN']()
+    return reply.code(400).send(e.message)
+  }
+  if (e instanceof HttpError) {
+    return reply.code(e.status).send(e.message)
   }
   logger.error(`Unexpected error`, { stack: e.stack, message: e.message })
-  throw e
+  reply.code(500).send('Server error')
 }
 
 export const endpoint =
@@ -67,10 +67,7 @@ export const endpoint =
     }
   >(
     dependencies: DEPS,
-    body: (
-      obj: RESOLVED,
-      reply: ReturnType<typeof replyMap>
-    ) => Promise<RouteGenericInterface['Reply']>
+    body: (obj: RESOLVED) => Promise<RouteGenericInterface['Reply']>
   ): RouteHandlerMethod =>
   (req, reply) => {
     const paramObj = mapObjIndexed((dependencyName, dependencyResolver) => {
@@ -82,7 +79,9 @@ export const endpoint =
     }, dependencies)
     try {
       const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
-      return resolvePromised(resObj).then(res => body(res, replyMap(reply)))
+      return resolvePromised(resObj)
+        .then(res => body(res))
+        .then(OK(reply))
     } catch (e) {
       handleError(reply)(e as Error)
     }

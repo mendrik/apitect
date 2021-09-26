@@ -18,3 +18,16 @@ export const resolvePromised: <T>(obj: Promised<T>) => Promise<T> = pipe(
   promiseAll,
   andThen(mergeAll as any)
 )
+
+export const promiseFn =
+  <FUNC extends (...args: any[]) => any>(
+    fn: FUNC
+  ): ((...args: Parameters<FUNC>) => Promise<ReturnType<FUNC>>) =>
+  (...args) =>
+    new Promise((resolve, reject) => {
+      try {
+        resolve(fn(...args))
+      } catch (e) {
+        reject(e)
+      }
+    })

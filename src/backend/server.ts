@@ -5,7 +5,7 @@ import { logger } from '../utils/logger'
 import { initAuthentication } from './services/authentication'
 import { config } from './services/config'
 
-const fastify = Fastify({ logger: false })
+const fastify = Fastify({ logger: true })
 fastify.register(Ws)
 
 initAuthentication(fastify)
