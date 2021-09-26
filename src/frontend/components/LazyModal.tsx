@@ -1,10 +1,11 @@
 import { always, prop } from 'ramda'
-import React, { FC, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { removeParams } from '../../utils/url'
+import { progressContext } from '../contexts/progress'
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 
@@ -18,6 +19,7 @@ export const LazyModal: FC<OwnProps> = ({ name, from, title }) => {
   const { modal } = useQueryParams()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { working } = useContext(progressContext)
   const [show, setShow] = useState(true)
   const modalMatch = modal === name
   const modalState = useInstantPromise<FC>(
@@ -44,6 +46,11 @@ export const LazyModal: FC<OwnProps> = ({ name, from, title }) => {
       <Modal.Header closeButton>
         <Modal.Title>{t(title)}</Modal.Title>
       </Modal.Header>
+      <div className="progress" style={{ height: 4 }}>
+        {working && (
+          <div className="progress-bar progress-bar-striped progress-bar-animated w-100" />
+        )}
+      </div>
       <Modal.Body>
         <modalState.data />
       </Modal.Body>

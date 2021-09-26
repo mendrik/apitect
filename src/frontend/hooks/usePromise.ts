@@ -1,6 +1,7 @@
-import { useCallback, useReducer, useRef } from 'react'
+import { useCallback, useContext, useReducer, useRef } from 'react'
 
 import { Maybe } from '../../utils/maybe'
+import { progressContext } from '../contexts/progress'
 
 type Cache<T> = { [name: string]: T }
 
@@ -18,6 +19,7 @@ export interface State<T> {
 }
 const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T>): State<T> => {
   const promiseCache = useRef<Cache<Maybe<Promise<any>>>>({})
+  const progress = useContext(progressContext)
 
   const initialState: State<T> = {
     error: undefined,
@@ -26,7 +28,6 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
     trigger: () => void 0
   }
 
-  // Keep state logic separated
   const promiseReducer = (state: State<T>, action: Action<T>): State<T> => {
     switch (action.type) {
       case 'running':
@@ -45,7 +46,9 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
   const trigger = useCallback(
     (...args: any[]) => {
       switch (state.status) {
+        case 'error':
         case 'idle': {
+          progress.setWorking(true)
           dispatch({ type: 'running' })
           const res = fn(...args)
             .then(payload => {
@@ -57,6 +60,7 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
               console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
               dispatch({ type: 'error', payload: e as Error })
             })
+            .finally(() => progress.setWorking(false))
           promiseCache.current[name] = res
           return res
         }
@@ -66,14 +70,11 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
         case 'done': {
           return Promise.resolve(state.data)
         }
-        case 'error': {
-          return Promise.reject(state.data)
-        }
         default:
           throw Error('unknown state')
       }
     },
-    [state, promiseCache, fn, name]
+    [state, promiseCache, fn, name, progress]
   )
 
   return { ...state, trigger }

@@ -7,6 +7,7 @@ import App from './frontend/components/App'
 import { ErrorView } from './frontend/components/ErrorView'
 import { Loader } from './frontend/components/Loader'
 import { Modals } from './frontend/components/Modals'
+import { WithProgress } from './frontend/contexts/progress'
 import { initLocales } from './frontend/locales/locales'
 import reportWebVitals from './frontend/reportWebVitals'
 import './index.scss'
@@ -20,10 +21,12 @@ const render = (): void =>
     <React.StrictMode>
       <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
         <Suspense fallback={<Loader />}>
-          <BrowserRouter>
-            <App />
-            <Modals />
-          </BrowserRouter>
+          <WithProgress>
+            <BrowserRouter>
+              <App />
+              <Modals />
+            </BrowserRouter>
+          </WithProgress>
         </Suspense>
       </ErrorBoundary>
     </React.StrictMode>,
