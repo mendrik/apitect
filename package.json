@@ -46,6 +46,7 @@
     "react-router-dom": "^6.0.0-beta.5",
     "react-scripts": "4.0.3",
     "reconnecting-websocket": "^4.4.0",
+    "sherlockjs": "^1.4.2",
     "shrink-json": "^0.1.6",
     "usehooks-ts": "^1.0.1",
     "uuid": "^8.3.2",

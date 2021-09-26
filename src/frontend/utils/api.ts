@@ -2,7 +2,7 @@ import { Any, OutputOf } from 'io-ts'
 
 import { failOn } from '../../backend/services/failOn'
 import { Login } from '../../backend/types/login'
-import { decode } from '../../utils/decode'
+import { decode } from '../../utils/codecs/decode'
 import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
 

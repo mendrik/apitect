@@ -4,7 +4,7 @@ import * as t from 'io-ts'
 import jwt from 'jsonwebtoken'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 
-import { decode, DecodingError } from '../../utils/decode'
+import { decode, DecodingError } from '../../utils/codecs/decode'
 import { logger } from '../../utils/logger'
 import { Promised, resolvePromised } from '../../utils/promise'
 import { PrismaClient, User } from '../model'

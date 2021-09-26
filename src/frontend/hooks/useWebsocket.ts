@@ -1,7 +1,7 @@
 import { createEvent } from 'effector'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
-import { decode } from '../../utils/decode'
+import { decode } from '../../utils/codecs/decode'
 import { Message, TMessage } from '../types/message'
 
 const waitForSocket = (socket: ReconnectingWebSocket) =>
