@@ -26,6 +26,13 @@ const en = {
         validEmail: '$t(form.fields.{{ field }}) is not valid',
         required: '$t(form.fields.{{ field }}) is required'
       }
+    },
+    validation: {
+      server: {
+        userExists: 'User already exists',
+        userNotFound: 'User not found',
+        passwordWrong: 'Wrong password'
+      }
     }
   }
 }

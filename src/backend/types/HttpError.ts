@@ -1,10 +1,12 @@
+import { TFuncKey } from 'react-i18next'
+
 export class HttpError extends Error {
-  constructor(public status: number, message = 'http-error') {
+  constructor(public status: number, public field?: TFuncKey, message = 'http-error') {
     super(message)
   }
 }
 
 export const httpError =
-  (status: number, message = 'http-error') =>
+  (status: number, field: TFuncKey, message = 'http-error') =>
   (...args: any[]) =>
-    new HttpError(status, message)
+    new HttpError(status, field, message)

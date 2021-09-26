@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "database:generate": "npx prisma generate --schema database/schema.prisma",
+    "database:migrate": "npx prisma migrate dev --name initialize",
+    "database:generate": "npx prisma generate",
     "database": "docker-compose up",
     "all:start": "npm-run-all --parallel start-ui start-server",
     "server:start": "tsnd --respawn -P tsconfig.server.json src/backend/server.ts",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.1",
+    "@prisma/client": "^3.1.1",
     "@types/history": "^4.7.9",
     "ansicolor": "^1.1.95",
     "bcryptjs": "^2.4.3",
@@ -34,7 +36,6 @@
     "jsonwebtoken": "^8.5.1",
     "monocle-ts": "^2.3.10",
     "newtype-ts": "^0.3.4",
-    "prisma": "^3.1.1",
     "ramda": "^0.27.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",
@@ -94,8 +95,10 @@
     "node-sass": "^6.0.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1",
+    "prisma": "^3.1.1",
     "ts-node-dev": "^1.1.8",
     "tsc-watch": "^4.5.0",
     "typescript": "^4.4.3"
-  }
+  },
+  "proxy": "http://127.0.0.1:3001"
 }

@@ -43,14 +43,16 @@ export const user = (req: FastifyRequest): Promise<User> => {
 }
 
 const handleError = (reply: FastifyReply) => (e: Error) => {
+  logger.error(e.message, e.stack)
+  const send = (status: number, data: any) =>
+    reply.code(status).send(JSON.stringify({ ...data, status }))
   if (e instanceof DecodingError) {
-    return reply.code(400).send(e.message)
+    send(400, { message: e.message })
   }
   if (e instanceof HttpError) {
-    return reply.code(e.status).send(e.message)
+    send(e.status, { message: e.message, field: e.field })
   }
-  logger.error(e.message, e.stack)
-  reply.code(500).send('Server error')
+  return send(500, { message: 'Server error' })
 }
 
 export const endpoint =

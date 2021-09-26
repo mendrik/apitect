@@ -6,7 +6,7 @@ import { decode } from '../../utils/codecs/decode'
 import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
 
-export const apiUrl = (url: string) => `http://localhost:3001/${url}`
+export const apiUrl = (url: string) => `http://localhost:3000/${url}`
 
 const request =
   (method: string) =>
@@ -16,9 +16,11 @@ const request =
       body: body ? JSON.stringify(body) : null
     })
       .then(failOn<Request>(r => !r.ok, fetchError(`Fetch ${url}`)))
-      .then(v => v.json())
+      .then(v => v.clone().json())
       .then(decode(codec))
-      .catch((e: FetchError<Request>) => e.data.json())
+      .catch(async (e: FetchError<Request>) => {
+        throw await e.data.json()
+      })
 
 export const get = request('get')
 export const post = request('post')

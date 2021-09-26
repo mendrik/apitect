@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Login, TLogin } from '../../../backend/types/login'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
+import { useServerError } from '../../hooks/useServerError'
 import { login } from '../../utils/api'
 import { ModalLink } from '../modals/ModalLink'
 
@@ -16,7 +17,8 @@ export const LoginForm: FC = () => {
       password: 'intershop1'
     }
   })
-  const { trigger } = usePromise('doLogin', login)
+  const { trigger, error } = usePromise('doLogin', login)
+  useServerError(error, form.setError)
 
   return (
     <FormProvider {...form}>
