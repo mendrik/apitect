@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { createContext, FC, useEffect } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 
 import { Fn } from '../../utils/types'
@@ -11,6 +11,10 @@ type OwnProps<T> = {
   success?: Fn
   successView?: JSX.Element
 }
+type FormWrappingContext = {
+  promise: string
+}
+export const formWrappingContext = createContext<FormWrappingContext>({ promise: '' })
 
 export const Form: FC<OwnProps<any>> = ({
   form,
@@ -30,10 +34,12 @@ export const Form: FC<OwnProps<any>> = ({
   return state.status === 'done' && SuccessView != null ? (
     SuccessView
   ) : (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(state.trigger)} noValidate>
-        {children}
-      </form>
-    </FormProvider>
+    <formWrappingContext.Provider value={{ promise: state.name }}>
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(state.trigger)} noValidate>
+          {children}
+        </form>
+      </FormProvider>
+    </formWrappingContext.Provider>
   )
 }

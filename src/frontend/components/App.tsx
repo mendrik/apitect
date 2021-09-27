@@ -9,7 +9,7 @@ import { ErrorView } from './ErrorView'
 import { NotLoggedIn } from './NotLoggedIn'
 
 type UserContext = Omit<State<User>, 'trigger'>
-const userContext = createContext<UserContext>({ status: 'idle' })
+const userContext = createContext<UserContext>({ name: 'whoAmI', status: 'idle' })
 
 const App: FC = () => {
   const userState = useWhoAmI()

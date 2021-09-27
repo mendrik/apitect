@@ -1,18 +1,26 @@
-import React, { createContext, Dispatch, FC, SetStateAction, useState } from 'react'
+import React, { createContext, FC, useState } from 'react'
 
 type ProgressContext = {
-  working: boolean
-  setWorking: Dispatch<SetStateAction<boolean>>
+  isWorking: (progress: string) => boolean
+  setWorking: (progress: string, state: boolean) => void
 }
 
 export const progressContext = createContext<ProgressContext>({
-  working: false,
+  isWorking: () => false,
   setWorking: () => void 0
 })
 
 export const WithProgress: FC = ({ children }) => {
-  const [working, setWorking] = useState(false)
+  const [workMap, setWorkMap] = useState<Record<string, boolean>>({})
   return (
-    <progressContext.Provider value={{ working, setWorking }}>{children}</progressContext.Provider>
+    <progressContext.Provider
+      value={{
+        isWorking: (progress: string): boolean => workMap[progress],
+        setWorking: (progress: string, value: boolean) =>
+          setWorkMap(state => ({ ...state, [progress]: value }))
+      }}
+    >
+      {children}
+    </progressContext.Provider>
   )
 }

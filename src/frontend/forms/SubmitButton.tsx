@@ -1,9 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { FC, useContext } from 'react'
+import { Button } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { Milliseconds } from '../../utils/types'
 import { progressContext } from '../contexts/progress'
+import { formWrappingContext } from './Form'
 
 type OwnProps = {
   localeKey: TFuncKey
@@ -12,16 +14,17 @@ type OwnProps = {
 
 export const SubmitButton: FC<OwnProps> = ({ localeKey, spinnerDelay = 0.3 }) => {
   const { t } = useTranslation()
-  const { working } = useContext(progressContext)
-
+  const { promise } = useContext(formWrappingContext)
+  const { isWorking } = useContext(progressContext)
   return (
-    <motion.button
+    <Button
       type="submit"
-      disabled={working}
-      className="d-flex flex-row btn btn-primary ps-2"
+      disabled={isWorking(promise)}
+      variant="primary"
+      className="d-flex flex-row ps-2"
     >
       <AnimatePresence>
-        {working && (
+        {isWorking(promise) && (
           <motion.span
             className="d-inline-block"
             initial={{
@@ -38,6 +41,6 @@ export const SubmitButton: FC<OwnProps> = ({ localeKey, spinnerDelay = 0.3 }) =>
         )}
       </AnimatePresence>
       <span className="ms-1">{t(localeKey)}</span>
-    </motion.button>
+    </Button>
   )
 }

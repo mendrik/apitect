@@ -16,6 +16,7 @@ export interface State<T> {
   error?: Error
   trigger: (...args: any) => Promise<T>
   status: Action<T>['type']
+  name: string
 }
 const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T>): State<T> => {
   const promiseCache = useRef<Cache<Maybe<Promise<any>>>>({})
@@ -25,7 +26,8 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
     error: undefined,
     data: undefined,
     status: 'idle',
-    trigger: () => Promise.resolve(null as any)
+    trigger: () => Promise.resolve(null as any),
+    name
   }
 
   const promiseReducer = (state: State<T>, action: Action<T>): State<T> => {
@@ -48,7 +50,7 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
       switch (state.status) {
         case 'error':
         case 'idle': {
-          progress.setWorking(true)
+          progress.setWorking(name, true)
           dispatch({ type: 'running' })
           const res = fn(...args)
             .then(payload => {
@@ -60,7 +62,7 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
               console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
               dispatch({ type: 'error', payload: e as Error })
             })
-            .finally(() => progress.setWorking(false))
+            .finally(() => progress.setWorking(name, false))
           promiseCache.current[name] = res
           return res
         }

@@ -52,7 +52,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
         options={{ required: true }}
       />
       <ButtonRow>
-        <SubmitButton localeKey="modals.authenticate.login.submit" />
+        <SubmitButton localeKey="modals.authenticate.register.submit" />
       </ButtonRow>
     </Form>
   )

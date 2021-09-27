@@ -7,6 +7,7 @@ import { TFuncKey, useTranslation } from 'react-i18next'
 import { ErrorInfo } from '../components/ErrorInfo'
 import { progressContext } from '../contexts/progress'
 import { useId } from '../hooks/useId'
+import { formWrappingContext } from './Form'
 
 type OwnProps = {
   label: TFuncKey
@@ -21,7 +22,8 @@ export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', classNa
     register,
     formState: { errors }
   } = useFormContext()
-  const { working } = useContext(progressContext)
+  const { isWorking } = useContext(progressContext)
+  const { promise } = useContext(formWrappingContext)
 
   const value = watch(props.name)
   const inpId = useId()
@@ -35,7 +37,7 @@ export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', classNa
         {...props}
         {...register(props.name, options)}
         value={value}
-        readOnly={props.readOnly || working}
+        readOnly={props.readOnly || isWorking(promise)}
         required={!!options?.required}
         placeholder=" "
       />
