@@ -5,7 +5,10 @@ const en = {
     },
     common: {
       success: 'Success',
-      close: 'Close'
+      close: 'Close',
+      confirm: 'Confirm',
+      delete: 'Delete',
+      yesImSure: 'I am sure!'
     },
     modals: {
       authenticate: {
