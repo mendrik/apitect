@@ -14,7 +14,7 @@ type Action<T> =
 export interface State<T> {
   data?: T
   error?: Error
-  trigger: (...args: any) => void
+  trigger: (...args: any) => Promise<T>
   status: Action<T>['type']
 }
 const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T>): State<T> => {
@@ -25,7 +25,7 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
     error: undefined,
     data: undefined,
     status: 'idle',
-    trigger: () => void 0
+    trigger: () => Promise.resolve(null as any)
   }
 
   const promiseReducer = (state: State<T>, action: Action<T>): State<T> => {
@@ -43,7 +43,7 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
 
   const [state, dispatch] = useReducer(promiseReducer, initialState)
 
-  const trigger = useCallback(
+  const trigger = useCallback<() => Promise<T>>(
     (...args: any[]) => {
       switch (state.status) {
         case 'error':
@@ -65,7 +65,7 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
           return res
         }
         case 'running': {
-          return promiseCache.current[name]
+          return promiseCache.current[name]!
         }
         case 'done': {
           return Promise.resolve(state.data)

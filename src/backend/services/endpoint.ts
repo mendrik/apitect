@@ -47,10 +47,10 @@ const handleError = (reply: FastifyReply) => (e: Error) => {
   const send = (status: number, data: any) =>
     reply.code(status).send(JSON.stringify({ ...data, status }))
   if (e instanceof DecodingError) {
-    send(400, { message: e.message })
+    return send(400, { message: e.message })
   }
   if (e instanceof HttpError) {
-    send(e.status, { message: e.message, field: e.field })
+    return send(e.status, { message: e.message, field: e.field })
   }
   return send(500, { message: 'Server error' })
 }

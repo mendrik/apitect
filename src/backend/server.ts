@@ -1,4 +1,5 @@
 import Fastify from 'fastify'
+import Cors from 'fastify-cors'
 import Ws from 'fastify-websocket'
 
 import { logger } from '../utils/logger'
@@ -7,6 +8,7 @@ import { config } from './services/config'
 
 const fastify = Fastify({ logger: true })
 fastify.register(Ws)
+fastify.register(Cors)
 
 initAuthentication(fastify)
 

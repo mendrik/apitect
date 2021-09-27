@@ -5,6 +5,7 @@ import { State } from '../hooks/usePromise'
 import { useWhoAmI } from '../hooks/useWhoAmI'
 import { User } from '../types/user'
 import Dashboard from './Dashboard'
+import { ErrorView } from './ErrorView'
 import { NotLoggedIn } from './NotLoggedIn'
 
 type UserContext = Omit<State<User>, 'trigger'>
@@ -22,6 +23,7 @@ const App: FC = () => {
   ) : (
     <Routes>
       <Route path="/" element={<NotLoggedIn />} />
+      <Route path="/error" element={<ErrorView />} />
     </Routes>
   )
 }

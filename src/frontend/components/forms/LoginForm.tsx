@@ -1,16 +1,22 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import React, { FC } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { Login, TLogin } from '../../../backend/types/login'
+import { Fn } from '../../../utils/types'
+import { Form } from '../../forms/Form'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
 import { login } from '../../utils/api'
 import { ModalLink } from '../modals/ModalLink'
 
-export const LoginForm: FC = () => {
+type OwnProps = {
+  close: Fn
+}
+
+export const LoginForm: FC<OwnProps> = ({ close }) => {
   const form = useForm<Login>({
     resolver: ioTsResolver(TLogin),
     defaultValues: {
@@ -19,31 +25,24 @@ export const LoginForm: FC = () => {
     }
   })
   const { t } = useTranslation()
-  const { trigger, error } = usePromise('doLogin', login)
-  useServerError(error, form.setError)
+  const submit = usePromise('doLogin', login)
+  useServerError(submit.error, form.setError)
 
   return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(trigger)} noValidate>
-        <TextInput
-          name="email"
-          label="form.fields.email"
-          type="email"
-          options={{ required: true }}
-        />
-        <TextInput
-          name="password"
-          label="form.fields.password"
-          type="password"
-          options={{ required: true }}
-        />
-        <button type="submit" className="btn btn-primary btn-block">
-          {t('modals.authenticate.login.submit')}
-        </button>
-      </form>
+    <Form form={form} state={submit} success={close}>
+      <TextInput name="email" label="form.fields.email" type="email" options={{ required: true }} />
+      <TextInput
+        name="password"
+        label="form.fields.password"
+        type="password"
+        options={{ required: true }}
+      />
+      <button type="submit" className="btn btn-primary btn-block">
+        {t('modals.authenticate.login.submit')}
+      </button>
       <p className="my-4">
         <ModalLink modal="forgot-password">Forgot password?</ModalLink>
       </p>
-    </FormProvider>
+    </Form>
   )
 }

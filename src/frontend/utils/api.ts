@@ -7,7 +7,7 @@ import { failOn } from '../../utils/failOn'
 import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
 
-export const apiUrl = (url: string) => `http://localhost:3000/${url}`
+export const apiUrl = (url: string) => `http://localhost:3001/${url}`
 
 const request =
   (method: string) =>

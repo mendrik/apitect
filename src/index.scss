@@ -12,10 +12,11 @@ $color1: #e15b64;
 $color2: #f47e60;
 $color3: #f8b26a;
 $color4: #abbd81;
-$color5: #81afbd;
+$color5: #1c7fa1;
 
 $form-feedback-invalid-color: $color2;
 $progress-border-radius: 0;
+$link-color: $color5;
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -54,6 +55,10 @@ input[required] + label:after {
   content: '*';
   color: $color1;
   font-weight: bold;
+}
+
+.fs-small {
+  font-size: 75%;
 }
 
 @import "~bootstrap/scss/bootstrap";

@@ -5,3 +5,5 @@ export type ServerError = {
   message: TFuncKey
   field?: string
 }
+
+export type Fn<R = void> = (...args: any[]) => R

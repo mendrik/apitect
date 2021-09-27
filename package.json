@@ -27,6 +27,7 @@
     "effector": "^22.1.1",
     "effector-react": "^22.0.4",
     "fastify": "^3.21.6",
+    "fastify-cors": "^6.0.2",
     "fastify-websocket": "^4.0.0",
     "fp-ts": "^2.10.5",
     "history": "^5.0.1",

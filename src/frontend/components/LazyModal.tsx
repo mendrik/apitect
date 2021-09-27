@@ -1,16 +1,21 @@
 import { always, prop } from 'ramda'
-import React, { FC, useContext, useState } from 'react'
+import React, { FC, useCallback, useContext, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
+import { Fn } from '../../utils/types'
 import { removeParams } from '../../utils/url'
 import { progressContext } from '../contexts/progress'
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 
+export type ModalFC = FC<{
+  close: Fn
+}>
+
 type OwnProps = {
-  from: () => Promise<{ default: FC }>
+  from: () => Promise<{ default: ModalFC }>
   name: string
   title: TFuncKey
 }
@@ -22,27 +27,23 @@ export const LazyModal: FC<OwnProps> = ({ name, from, title }) => {
   const { working } = useContext(progressContext)
   const [show, setShow] = useState(true)
   const modalMatch = modal === name
-  const modalState = useInstantPromise<FC>(
+  const modalState = useInstantPromise<ModalFC>(
     `loading-modal-${name}`,
     () => from().then(prop('default')),
     always(modalMatch)
   )
+
+  const close = useCallback(() => {
+    navigate(removeParams(['modal']), { replace: true })
+    setShow(true)
+  }, [navigate])
 
   if (modalState.status === 'error') {
     return console.error(modalState.error)
   }
 
   return modalMatch && modalState.data != null ? (
-    <Modal
-      backdrop="static"
-      show={show}
-      onHide={() => setShow(false)}
-      onExited={() => {
-        navigate(removeParams(['modal']), { replace: true })
-        setShow(true)
-      }}
-      centered
-    >
+    <Modal backdrop="static" show={show} onHide={() => setShow(false)} onExited={close} centered>
       <Modal.Header closeButton>
         <Modal.Title>{t(title)}</Modal.Title>
       </Modal.Header>
@@ -52,7 +53,7 @@ export const LazyModal: FC<OwnProps> = ({ name, from, title }) => {
         )}
       </div>
       <Modal.Body>
-        <modalState.data />
+        <modalState.data close={close} />
       </Modal.Body>
     </Modal>
   ) : (
