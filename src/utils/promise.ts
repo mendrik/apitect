@@ -1,5 +1,7 @@
 import { andThen, mergeAll, pipe, reduce, toPairs } from 'ramda'
 
+import { Milliseconds } from './types'
+
 export type Promised<T> = {
   [P in keyof T]: T[P] | Promise<T[P]>
 }
@@ -11,7 +13,7 @@ export const resolvePromised: <T>(obj: Promised<T>) => Promise<T> = pipe(
   reduce(
     (acc: any[], [k, v]) => [
       ...acc,
-      v instanceof Promise ? v.then(v => ({ [k]: v })) : Promise.resolve({ [k]: v })
+      v instanceof Promise ? v.then(vv => ({ [k]: vv })) : Promise.resolve({ [k]: v })
     ],
     []
   ),
@@ -31,3 +33,11 @@ export const promiseFn =
         reject(e)
       }
     })
+
+export const delay =
+  (wait: Milliseconds) =>
+  <T>(data: T) =>
+    new Promise<T>(res => setTimeout(() => res(data), wait))
+
+export const delayCatch = (wait: Milliseconds) => (e: unknown) =>
+  new Promise((_res, rej) => setTimeout(() => rej(e), wait))

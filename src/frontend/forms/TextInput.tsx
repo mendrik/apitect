@@ -1,10 +1,11 @@
 import clsx from 'clsx'
-import React, { FC, InputHTMLAttributes } from 'react'
+import React, { FC, InputHTMLAttributes, useContext } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { ErrorInfo } from '../components/ErrorInfo'
+import { progressContext } from '../contexts/progress'
 import { useId } from '../hooks/useId'
 
 type OwnProps = {
@@ -20,6 +21,8 @@ export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', classNa
     register,
     formState: { errors }
   } = useFormContext()
+  const { working } = useContext(progressContext)
+
   const value = watch(props.name)
   const inpId = useId()
   return (
@@ -32,6 +35,7 @@ export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', classNa
         {...props}
         {...register(props.name, options)}
         value={value}
+        readOnly={props.readOnly || working}
         required={!!options?.required}
         placeholder=" "
       />

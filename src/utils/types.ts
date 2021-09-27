@@ -7,3 +7,5 @@ export type ServerError = {
 }
 
 export type Fn<R = void> = (...args: any[]) => R
+
+export type Milliseconds = number

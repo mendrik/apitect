@@ -1,11 +1,12 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import React, { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { Login, TLogin } from '../../../backend/types/login'
 import { Fn } from '../../../utils/types'
+import { ButtonRow } from '../../forms/ButtonRow'
 import { Form } from '../../forms/Form'
+import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
@@ -24,7 +25,6 @@ export const LoginForm: FC<OwnProps> = ({ close }) => {
       password: 'intershop1'
     }
   })
-  const { t } = useTranslation()
   const submit = usePromise('doLogin', login)
   useServerError(submit.error, form.setError)
 
@@ -37,9 +37,9 @@ export const LoginForm: FC<OwnProps> = ({ close }) => {
         type="password"
         options={{ required: true }}
       />
-      <button type="submit" className="btn btn-primary btn-block">
-        {t('modals.authenticate.login.submit')}
-      </button>
+      <ButtonRow>
+        <SubmitButton localeKey="modals.authenticate.login.submit" />
+      </ButtonRow>
       <p className="my-4">
         <ModalLink modal="forgot-password">Forgot password?</ModalLink>
       </p>

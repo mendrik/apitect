@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { Register, TRegister } from '../../../backend/types/register'
+import { ButtonRow } from '../../forms/ButtonRow'
 import { Form } from '../../forms/Form'
+import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { register } from '../../utils/api'
@@ -16,10 +18,10 @@ export const RegisterForm: ModalFC = ({ close }) => {
   const form = useForm<Register>({
     resolver: ioTsResolver(TRegister),
     defaultValues: {
-      email: '',
-      name: '',
-      password: '',
-      passwordRepeat: ''
+      email: 'andreas@mindmine.fi',
+      name: 'Andreas Herd',
+      password: '1234',
+      passwordRepeat: '1234'
     }
   })
   const { t } = useTranslation()
@@ -49,9 +51,9 @@ export const RegisterForm: ModalFC = ({ close }) => {
         type="password"
         options={{ required: true }}
       />
-      <button type="submit" className="btn btn-primary btn-block">
-        {t('modals.authenticate.register.submit')}
-      </button>
+      <ButtonRow>
+        <SubmitButton localeKey="modals.authenticate.login.submit" />
+      </ButtonRow>
     </Form>
   )
 }
