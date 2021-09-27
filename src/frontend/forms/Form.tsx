@@ -9,7 +9,7 @@ type OwnProps<T> = {
   form: UseFormReturn<T>
   state: State<any>
   success?: Fn
-  successView?: FC
+  successView?: JSX.Element
 }
 
 export const Form: FC<OwnProps<any>> = ({
@@ -28,7 +28,7 @@ export const Form: FC<OwnProps<any>> = ({
   }, [state.status, success])
 
   return state.status === 'done' && SuccessView != null ? (
-    <SuccessView />
+    SuccessView
   ) : (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(state.trigger)} noValidate>

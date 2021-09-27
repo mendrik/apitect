@@ -3,6 +3,10 @@ const en = {
     app: {
       name: 'Apitect'
     },
+    common: {
+      success: 'Success',
+      close: 'Close'
+    },
     modals: {
       authenticate: {
         title: 'Authentication',
@@ -12,7 +16,10 @@ const en = {
         },
         register: {
           title: 'Register',
-          submit: 'Register'
+          submit: 'Register',
+          success:
+            'You have successfully registered to Apitect!<br/>' +
+            'We have sent you a confirmation email with a login link inside.'
         }
       }
     },

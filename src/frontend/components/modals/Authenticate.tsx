@@ -14,7 +14,7 @@ const Authenticate: ModalFC = ({ close }) => {
           <LoginForm close={close} />
         </Tab>
         <Tab title="modals.authenticate.register.title">
-          <RegisterForm />
+          <RegisterForm close={close} />
         </Tab>
       </Tabs>
     </div>
