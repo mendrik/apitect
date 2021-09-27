@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { Login, TLogin } from '../../../backend/types/login'
 import { Fn } from '../../../utils/types'
 import { ButtonRow } from '../../forms/ButtonRow'
-import { ConfirmButton } from '../../forms/ConfirmButton'
 import { Form } from '../../forms/Form'
 import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
@@ -39,7 +38,6 @@ export const LoginForm: FC<OwnProps> = ({ close }) => {
         options={{ required: true }}
       />
       <ButtonRow>
-        <ConfirmButton localeKey="common.delete" state={submit} />
         <SubmitButton localeKey="modals.authenticate.login.submit" />
       </ButtonRow>
       <p className="my-4">
