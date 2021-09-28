@@ -32,9 +32,9 @@ export const Form: FC<OwnProps<any>> = ({
 
   useEffect(() => {
     if (success != null && state.status === 'done') {
-      success()
+      success(state.data)
     }
-  }, [state.status, success])
+  }, [state, success])
 
   return state.status === 'done' && SuccessView != null ? (
     SuccessView

@@ -20,7 +20,7 @@ const render = (): void =>
   void ReactDOM.render(
     <React.StrictMode>
       <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader className="vh-100" />}>
           <WithProgress>
             <BrowserRouter>
               <App />

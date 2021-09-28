@@ -2,9 +2,9 @@ import { Any, OutputOf } from 'io-ts'
 
 import { Login } from '../../backend/types/login'
 import { Register } from '../../backend/types/register'
+import { TToken } from '../../backend/types/token'
 import { decode } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
-import { TToken } from '../types/token'
 import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
 
@@ -15,6 +15,10 @@ const request =
   <P, C extends Any>(url: string, codec: C, body?: P): Promise<OutputOf<C>> =>
     fetch(apiUrl(url), {
       method,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('jwt') ?? ''
+      },
       body: body ? JSON.stringify(body) : null
     })
       .then(failOn<Request>(r => !r.ok, fetchError(`Fetch ${url}`)))

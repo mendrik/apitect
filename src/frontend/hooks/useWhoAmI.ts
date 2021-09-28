@@ -6,8 +6,10 @@ import { whoAmI } from '../utils/api'
 import useInstantPromise from './useInstantPromise'
 import { State } from './usePromise'
 
+export const JWT = 'jwt'
+
 export const useWhoAmI = (): State<User> => {
-  const jwt: Maybe<string> = useReadLocalStorage('jwt')
+  const jwt: Maybe<string> = useReadLocalStorage(JWT)
   const state = useInstantPromise('whoAmI', whoAmI, () => jwt != null)
   if (state.error) {
     throw Error('Failed to load user')

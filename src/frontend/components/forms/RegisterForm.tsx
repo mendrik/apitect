@@ -21,8 +21,8 @@ export const RegisterForm: ModalFC = ({ close }) => {
     defaultValues: {
       email: 'andreas@mindmine.fi',
       name: 'Andreas Herd',
-      password: '1234',
-      passwordRepeat: '1234'
+      password: 'qctxExmNQ9FEcZ',
+      passwordRepeat: 'qctxExmNQ9FEcZ'
     }
   })
   const { t } = useTranslation()
