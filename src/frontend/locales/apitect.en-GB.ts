@@ -28,7 +28,8 @@ const en = {
       }
     },
     navbar: {
-      login: 'Login'
+      login: 'Login',
+      logout: 'Logout'
     },
     form: {
       fields: {

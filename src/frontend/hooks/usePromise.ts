@@ -6,16 +6,16 @@ import { progressContext } from '../contexts/progress'
 type Cache<T> = { [name: string]: T }
 
 type Action<T> =
-  | { type: 'idle' }
-  | { type: 'running' }
-  | { type: 'done'; payload: T }
-  | { type: 'error'; payload: Error }
+  | { status: 'idle' }
+  | { status: 'running' }
+  | { status: 'done'; payload: T }
+  | { status: 'error'; payload: Error }
 
 export interface State<T> {
   data?: T
   error?: Error
   trigger: (...args: any) => Promise<T>
-  status: Action<T>['type']
+  status: Action<T>['status']
   name: string
 }
 const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T>): State<T> => {
@@ -26,18 +26,18 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
     error: undefined,
     data: undefined,
     status: 'idle',
-    trigger: () => Promise.resolve(null as any),
+    trigger: () => Promise.resolve<any>(null),
     name
   }
 
   const promiseReducer = (state: State<T>, action: Action<T>): State<T> => {
-    switch (action.type) {
+    switch (action.status) {
       case 'running':
-        return { ...initialState, status: action.type }
+        return { ...initialState, status: action.status, data: undefined }
       case 'done':
-        return { ...initialState, status: action.type, data: action.payload }
+        return { ...initialState, status: action.status, data: action.payload }
       case 'error':
-        return { ...initialState, status: action.type, error: action.payload }
+        return { ...initialState, status: action.status, error: action.payload }
       default:
         return state
     }
@@ -50,20 +50,22 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
       switch (state.status) {
         case 'error':
         case 'idle': {
+          dispatch({ status: 'running' })
           progress.setWorking(name, true)
-          dispatch({ type: 'running' })
           const res = () =>
             fn(...args)
               .then(payload => {
-                promiseCache.current[name] = undefined
-                dispatch({ type: 'done', payload })
+                dispatch({ status: 'done', payload })
                 return payload
               })
               .catch(e => {
                 console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
-                dispatch({ type: 'error', payload: e as Error })
+                dispatch({ status: 'error', payload: e as Error })
               })
-              .finally(() => progress.setWorking(name, false))
+              .finally(() => {
+                promiseCache.current[name] = undefined
+                progress.setWorking(name, false)
+              })
           return (promiseCache.current[name] = res())
         }
         case 'running': {

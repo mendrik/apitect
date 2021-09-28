@@ -8,6 +8,7 @@ import { ErrorView } from './frontend/components/ErrorView'
 import { Loader } from './frontend/components/Loader'
 import { Modals } from './frontend/components/Modals'
 import { WithProgress } from './frontend/contexts/progress'
+import { WithUser } from './frontend/contexts/user'
 import { initLocales } from './frontend/locales/locales'
 import reportWebVitals from './frontend/reportWebVitals'
 import './index.scss'
@@ -22,10 +23,12 @@ const render = (): void =>
       <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
         <Suspense fallback={<Loader className="vh-100" />}>
           <WithProgress>
-            <BrowserRouter>
-              <App />
-              <Modals />
-            </BrowserRouter>
+            <WithUser>
+              <BrowserRouter>
+                <App />
+                <Modals />
+              </BrowserRouter>
+            </WithUser>
           </WithProgress>
         </Suspense>
       </ErrorBoundary>

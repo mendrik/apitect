@@ -1,14 +1,19 @@
-import React, { FC } from 'react'
-import { LogIn } from 'react-feather'
+import React, { FC, useContext } from 'react'
+import { Button } from 'react-bootstrap'
+import { LogIn, LogOut } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { addParams } from '../../utils/url'
 import { ReactComponent as Logo } from '../assets/logo.svg'
+import { userContext } from '../contexts/user'
+import { Spinner } from '../forms/Spinner'
 
 export const Navigation: FC = () => {
+  const userState = useContext(userContext)
   const { t } = useTranslation()
   const navigate = useNavigate()
+
   return (
     <nav className="navbar navbar-light px-2 bg-light shadow-sm flex flex-row justify-content-start">
       <div className="flex-grow-1">
@@ -17,13 +22,16 @@ export const Navigation: FC = () => {
         </button>
       </div>
       <div className="flex-grow-0">
-        <button
-          type="button"
-          className="btn"
-          onClick={() => navigate(addParams({ modal: 'login' }))}
-        >
-          <LogIn className="icon-xs" /> {t('navbar.login')}
-        </button>
+        {userState.data != null ? (
+          <Button variant="light">
+            <LogOut className="icon-xs" /> {userState.data.name}
+          </Button>
+        ) : (
+          <Button onClick={() => navigate(addParams({ modal: 'login' }))}>
+            <Spinner promise="whoAmI" spinnerDelay={0} />
+            <LogIn className="icon-xs" /> {t('navbar.login')}
+          </Button>
+        )}
       </div>
     </nav>
   )
