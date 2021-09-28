@@ -18,7 +18,7 @@ const request =
       method,
       headers: {
         'content-type': 'application/json; charset=utf-8',
-        'x-access-token': localStorage.getItem('jwt') ?? ''
+        'x-access-token': JSON.parse(localStorage.getItem('jwt') ?? '')
       },
       body: body ? JSON.stringify(body) : null
     })

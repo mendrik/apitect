@@ -2,7 +2,7 @@ import { User } from '@prisma/client'
 import { genSaltSync, hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { sign } from 'jsonwebtoken'
-import { assoc, dissoc, isNil, pipe, propEq } from 'ramda'
+import { assoc, dissoc, isNil, omit, pipe, propEq } from 'ramda'
 
 import { failOn, failUnless } from '../../utils/failOn'
 import { promiseFn } from '../../utils/promise'
@@ -28,9 +28,9 @@ const refreshToken = (user: User): Promise<Token> => {
 const register = endpoint({ register: body(TRegister) }, async ({ register }) => {
   await db.user
     .findFirst({ where: { email: register.email } })
-    .then(failUnless(isNil, httpError(409, 'email', 'validation.server.userExists')))
+    .then(failUnless(isNil, httpError(409, 'validation.server.userExists', 'email')))
   if (register.passwordRepeat !== register.password) {
-    throw httpError(400, 'passwordRepeat', 'validation.server.passwordMustMatch')
+    throw httpError(400, 'validation.server.passwordMustMatch', 'passwordRepeat')
   }
   return db.user
     .create({
@@ -46,11 +46,11 @@ const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } })
   pHashSync(password, SALT).then(encryptedPassword =>
     db.user
       .findFirst({ where: { email } })
-      .then(failOn(isNil, httpError(404, 'email', 'validation.server.userNotFound')))
+      .then(failOn(isNil, httpError(404, 'validation.server.userNotFound', 'email')))
       .then(
         failUnless<User>(
           propEq('password', encryptedPassword),
-          httpError(403, 'password', 'validation.server.passwordWrong')
+          httpError(403, 'validation.server.passwordWrong', 'password')
         )
       )
       .then(refreshToken)
@@ -61,7 +61,7 @@ const logout = endpoint({ user }, ({ user }) =>
   db.user.update({ where: { id: user.id }, data: { token: null } })
 )
 
-const whomAmI = endpoint({ user }, async ({ user }) => user)
+const whomAmI = endpoint({ user }, async ({ user }) => omit(['token', 'password'], user))
 
 export const initAuthentication = (fastify: FastifyInstance) => {
   fastify.post('/register', {}, register)

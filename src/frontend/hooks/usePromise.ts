@@ -52,19 +52,19 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
         case 'idle': {
           progress.setWorking(name, true)
           dispatch({ type: 'running' })
-          const res = fn(...args)
-            .then(payload => {
-              promiseCache.current[name] = undefined
-              dispatch({ type: 'done', payload })
-              return payload
-            })
-            .catch(e => {
-              console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
-              dispatch({ type: 'error', payload: e as Error })
-            })
-            .finally(() => progress.setWorking(name, false))
-          promiseCache.current[name] = res
-          return res
+          const res = () =>
+            fn(...args)
+              .then(payload => {
+                promiseCache.current[name] = undefined
+                dispatch({ type: 'done', payload })
+                return payload
+              })
+              .catch(e => {
+                console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
+                dispatch({ type: 'error', payload: e as Error })
+              })
+              .finally(() => progress.setWorking(name, false))
+          return (promiseCache.current[name] = res())
         }
         case 'running': {
           return promiseCache.current[name]!

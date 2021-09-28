@@ -10,7 +10,8 @@ import { decode, DecodingError } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
 import { logger } from '../../utils/logger'
 import { Promised, resolvePromised } from '../../utils/promise'
-import { HttpError } from '../types/HttpError'
+import { Fn } from '../../utils/types'
+import { httpError, HttpError } from '../types/HttpError'
 import db from './client'
 import { config } from './config'
 
@@ -29,7 +30,7 @@ export const body =
     decode<A, O, I>(decoder)(req.body as any)
 
 export const tx = (_req: FastifyRequest) => db.$transaction.bind(db)
-const verifyP: (x: string, y: string) => Promise<User> = promisify(verify) as any
+export const verifyP: Fn<Promise<User>> = promisify<any, any>(verify)
 
 export const header =
   <A, O, I>(name: string, decoder: t.Type<A, O, I>) =>
@@ -37,11 +38,12 @@ export const header =
     decode<A, O, I>(decoder)(req.headers[name] as any)
 
 export const user = (req: FastifyRequest): Promise<User> =>
-  verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`).then(({ id }) =>
-    db.user
-      .findFirst({ where: { id } })
-      .then(failOn<User>(isNil, new HttpError(403, undefined, 'User not found')))
-  )
+  verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`)
+    .then(({ id }) => db.user.findFirst({ where: { id } }))
+    .then(failOn<User>(isNil, httpError(403, 'User not found')))
+    .catch(e => {
+      throw httpError(403, `Unauthorized: ${e.message}`)
+    })
 
 const handleError = (reply: FastifyReply) => (e: Error) => {
   logger.error(e.message, e.stack)

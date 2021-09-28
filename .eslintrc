@@ -7,6 +7,7 @@
   },
   "rules": {
     "no-debugger": "warn",
+    "no-return-assign": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "react/require-default-props": "off",
     "react/jsx-props-no-spreading": "off",
