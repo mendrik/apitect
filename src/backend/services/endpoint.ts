@@ -2,7 +2,7 @@ import { User } from '@prisma/client'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import * as t from 'io-ts'
-import jwt from 'jsonwebtoken'
+import { verify } from 'jsonwebtoken'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 
 import { decode, DecodingError } from '../../utils/codecs/decode'
@@ -37,7 +37,7 @@ export const header =
 export const user = (req: FastifyRequest): Promise<User> => {
   const token = req.headers['x-access-token'] as string
   try {
-    const { id } = jwt.verify(token, `${config.TOKEN_KEY}`) as User
+    const { id } = verify(token, `${config.TOKEN_KEY}`) as User
     return db.user.findFirst({ where: { id } }).then(failOn<User>(isNil, 'User not found'))
   } catch (e) {
     throw new HttpError(403)

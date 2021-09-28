@@ -4,6 +4,7 @@ import { Login } from '../../backend/types/login'
 import { Register } from '../../backend/types/register'
 import { decode } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
+import { TToken } from '../types/token'
 import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
 
@@ -28,6 +29,6 @@ export const post = request('post')
 export const del = request('delete')
 export const put = request('put')
 
-export const login = (data: Login) => post('login', TUser, data)
-export const register = (data: Register) => post('register', TUser, data)
+export const login = (data: Login) => post('login', TToken, data)
+export const register = (data: Register) => post('register', TToken, data)
 export const whoAmI = () => get('whoami', TUser)

@@ -1,7 +1,7 @@
 import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { sign } from 'jsonwebtoken'
-import { assoc, dissoc, isNil, omit, pipe, prop, propEq } from 'ramda'
+import { assoc, dissoc, isNil, pick, pipe, propEq } from 'ramda'
 
 import { failOn, failUnless } from '../../utils/failOn'
 import { promiseFn } from '../../utils/promise'
@@ -16,12 +16,9 @@ const pHashSync = promiseFn(hashSync)
 
 const register = endpoint({ register: body(TRegister), tx }, ({ register, tx }) =>
   tx(async db => {
-    const oldUser = await db.user.findFirst({
-      where: { email: register.email }
-    })
-    if (oldUser != null) {
-      throw httpError(409, 'email', 'validation.server.userExists')
-    }
+    await db.user
+      .findFirst({ where: { email: register.email } })
+      .then(failUnless(isNil, httpError(409, 'email', 'validation.server.userExists')))
     if (register.passwordRepeat !== register.password) {
       throw httpError(400, 'passwordRepeat', 'validation.server.passwordMustMatch')
     }
@@ -31,9 +28,9 @@ const register = endpoint({ register: body(TRegister), tx }, ({ register, tx }) 
     )(register)
     const user = await db.user.create({ data })
     const token = sign({ id: user.id, email: user.email, name: user.name }, `${config.TOKEN_KEY}`, {
-      expiresIn: 60
+      expiresIn: '90d'
     })
-    return db.user.update({ where: { id: user.id }, data: { token } }).then(prop('email'))
+    return db.user.update({ where: { id: user.id }, data: { token } }).then(pick(['token']))
   })
 )
 
@@ -48,7 +45,7 @@ const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } })
           httpError(403, 'password', 'validation.server.passwordWrong')
         )
       )
-      .then(omit(['password', 'id']))
+      .then(pick(['token']))
   )
 )
 
