@@ -16,7 +16,7 @@ const request =
     fetch(apiUrl(url), {
       method,
       headers: {
-        'Content-Type': 'application/json',
+        'content-type': 'application/json; charset=utf-8',
         'x-access-token': localStorage.getItem('jwt') ?? ''
       },
       body: body ? JSON.stringify(body) : null

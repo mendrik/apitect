@@ -25,7 +25,7 @@ type Collector = Record<string, t.Any | ((req: FastifyRequest) => Promise<any> |
 export const body =
   <A, O, I>(decoder: t.Type<A, O, I>) =>
   (req: FastifyRequest): A =>
-    decode<A, O, I>(decoder)(JSON.parse(req.body as any))
+    decode<A, O, I>(decoder)(req.body as any)
 
 export const tx = (_req: FastifyRequest) => db.$transaction.bind(db)
 

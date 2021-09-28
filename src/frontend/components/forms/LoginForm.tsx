@@ -1,8 +1,6 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
-import { pipe, prop } from 'ramda'
 import React, { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { useLocalStorage } from 'usehooks-ts'
 
 import { Login, TLogin } from '../../../backend/types/login'
 import { Fn } from '../../../utils/types'
@@ -12,7 +10,7 @@ import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
-import { JWT } from '../../hooks/useWhoAmI'
+import { useSetJwt } from '../../hooks/useSetJwt'
 import { login } from '../../utils/api'
 import { ModalLink } from '../modals/ModalLink'
 
@@ -30,10 +28,10 @@ export const LoginForm: FC<OwnProps> = ({ close }) => {
   })
   const submit = usePromise('doLogin', login)
   useServerError(submit.error, form.setError)
-  const [, setJWT] = useLocalStorage(JWT, undefined)
+  const setJwt = useSetJwt(close)
 
   return (
-    <Form form={form} state={submit} success={pipe(prop('token'), setJWT, close)}>
+    <Form form={form} state={submit} success={setJwt}>
       <TextInput name="email" label="form.fields.email" type="email" options={{ required: true }} />
       <TextInput
         name="password"

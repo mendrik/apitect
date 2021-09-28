@@ -11,6 +11,7 @@ import { GenericError } from '../../forms/GenericError'
 import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
+import { useSetJwt } from '../../hooks/useSetJwt'
 import { register } from '../../utils/api'
 import { ModalFC } from '../LazyModal'
 import { SuccessView } from '../SuccessView'
@@ -27,6 +28,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
   })
   const { t } = useTranslation()
   const state = usePromise('doRegister', register)
+  const setJwt = useSetJwt(close)
 
   const Success = (
     <SuccessView title="common.success" body="modals.authenticate.register.success">
@@ -39,7 +41,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
   )
 
   return (
-    <Form form={form} state={state} successView={Success}>
+    <Form form={form} state={state} successView={Success} success={setJwt}>
       <TextInput name="name" label="form.fields.name" options={{ required: true }} />
       <TextInput name="email" label="form.fields.email" type="email" options={{ required: true }} />
       <TextInput
