@@ -8,7 +8,8 @@ const en = {
       close: 'Close',
       confirm: 'Confirm',
       delete: 'Delete',
-      yesImSure: 'I am sure!'
+      yesImSure: 'I am sure!',
+      unexpectedError: 'Oops! An unexpected error'
     },
     modals: {
       authenticate: {

@@ -10,28 +10,30 @@ import { TLogin } from '../types/login'
 import { TRegister } from '../types/register'
 import db from './client'
 import { config } from './config'
-import { body, endpoint, user } from './endpoint'
+import { body, endpoint, tx, user } from './endpoint'
 
 const pHashSync = promiseFn(hashSync)
 
-const register = endpoint({ register: body(TRegister) }, async ({ register }) => {
-  const oldUser = await db.user.findFirst({
-    where: { email: register.email }
+const register = endpoint({ register: body(TRegister), tx }, ({ register, tx }) =>
+  tx(async db => {
+    const oldUser = await db.user.findFirst({
+      where: { email: register.email }
+    })
+    if (oldUser != null) {
+      throw httpError(409, 'email', 'validation.server.userExists')
+    }
+    if (register.passwordRepeat !== register.password) {
+      throw httpError(400, 'passwordRepeat', 'validation.server.passwordMustMatch')
+    }
+    const data = pipe(
+      assoc('password', hashSync(register.password, 10)),
+      dissoc('passwordRepeat')
+    )(register)
+    const user = await db.user.create({ data })
+    const token = sign(`${user.id}`, `${config.TOKEN_KEY}`, { expiresIn: 60 })
+    return db.user.update({ where: { id: user.id }, data: { token } }).then(prop('email'))
   })
-  if (oldUser != null) {
-    throw httpError(409, 'email', 'validation.server.userExists')
-  }
-  if (register.passwordRepeat !== register.password) {
-    throw httpError(400, 'passwordRepeat', 'validation.server.passwordMustMatch')
-  }
-  const data = pipe(
-    assoc('password', hashSync(register.password, 10)),
-    dissoc('passwordRepeat')
-  )(register)
-  const user = await db.user.create({ data })
-  const token = sign(`${user.id}`, `${config.TOKEN_KEY}`, { expiresIn: '90 days' })
-  return db.user.update({ where: { id: user.id }, data: { token } }).then(prop('email'))
-})
+)
 
 const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } }) =>
   pHashSync(password, 10).then(encryptedPassword =>

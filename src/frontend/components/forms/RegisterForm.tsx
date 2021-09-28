@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { Register, TRegister } from '../../../backend/types/register'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { Form } from '../../forms/Form'
+import { GenericError } from '../../forms/GenericError'
 import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
@@ -51,6 +52,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
         type="password"
         options={{ required: true }}
       />
+      <GenericError />
       <ButtonRow>
         <SubmitButton localeKey="modals.authenticate.register.submit" />
       </ButtonRow>

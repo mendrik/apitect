@@ -27,6 +27,8 @@ export const body =
   (req: FastifyRequest): A =>
     decode<A, O, I>(decoder)(JSON.parse(req.body as any))
 
+export const tx = (_req: FastifyRequest) => db.$transaction.bind(db)
+
 export const header =
   <A, O, I>(name: string, decoder: t.Type<A, O, I>) =>
   (req: FastifyRequest): A =>
@@ -72,19 +74,20 @@ export const endpoint =
     body: (obj: RESOLVED) => Promise<RouteGenericInterface['Reply']>
   ): RouteHandlerMethod =>
   (req, reply) => {
-    const paramObj = mapObjIndexed((dependencyName, dependencyResolver) => {
-      if ('decode' in dependencyName) {
-        const value: string = mergeRight(req.params as any, req.query as any)?.[dependencyResolver]
-        return always(decode(dependencyName)(value))
-      }
-      return dependencyName
-    }, dependencies)
     try {
+      const paramObj = mapObjIndexed((dependencyName, dependencyResolver) => {
+        if ('decode' in dependencyName) {
+          const value: string = mergeRight(req.params as any, req.query as any)?.[
+            dependencyResolver
+          ]
+          return always(decode(dependencyName)(value))
+        }
+        return dependencyName
+      }, dependencies)
       const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
       return resolvePromised(resObj)
         .then(res => body(res))
         .then(OK(reply))
-        .catch(handleError(reply))
     } catch (e) {
       handleError(reply)(e as Error)
     }

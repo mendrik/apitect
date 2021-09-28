@@ -1,6 +1,7 @@
 import React, { createContext, FC, useEffect } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 
+import { Maybe } from '../../utils/maybe'
 import { Fn } from '../../utils/types'
 import { State } from '../hooks/usePromise'
 import { useServerError } from '../hooks/useServerError'
@@ -13,8 +14,12 @@ type OwnProps<T> = {
 }
 type FormWrappingContext = {
   promise: string
+  error: Maybe<Error>
 }
-export const formWrappingContext = createContext<FormWrappingContext>({ promise: '' })
+export const formWrappingContext = createContext<FormWrappingContext>({
+  promise: '',
+  error: undefined
+})
 
 export const Form: FC<OwnProps<any>> = ({
   form,
@@ -34,7 +39,7 @@ export const Form: FC<OwnProps<any>> = ({
   return state.status === 'done' && SuccessView != null ? (
     SuccessView
   ) : (
-    <formWrappingContext.Provider value={{ promise: state.name }}>
+    <formWrappingContext.Provider value={{ promise: state.name, error: state.error }}>
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(state.trigger)} noValidate>
           {children}
