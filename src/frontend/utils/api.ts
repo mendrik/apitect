@@ -1,4 +1,5 @@
 import { Any, OutputOf } from 'io-ts'
+import { always } from 'ramda'
 
 import { Login } from '../../backend/types/login'
 import { Register } from '../../backend/types/register'
@@ -35,4 +36,4 @@ export const put = request('put')
 
 export const login = (data: Login) => post('login', TToken, data)
 export const register = (data: Register) => post('register', TToken, data)
-export const whoAmI = () => get('whoami', TUser)
+export const whoAmI = () => get('whoami', TUser).catch(always(null))

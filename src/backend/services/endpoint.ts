@@ -4,6 +4,7 @@ import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
+import { promisify } from 'util'
 
 import { decode, DecodingError } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
@@ -28,19 +29,19 @@ export const body =
     decode<A, O, I>(decoder)(req.body as any)
 
 export const tx = (_req: FastifyRequest) => db.$transaction.bind(db)
+const verifyP: (x: string, y: string) => Promise<User> = promisify(verify) as any
 
 export const header =
   <A, O, I>(name: string, decoder: t.Type<A, O, I>) =>
   (req: FastifyRequest): A =>
     decode<A, O, I>(decoder)(req.headers[name] as any)
 
-export const user = (req: FastifyRequest): Promise<User> => {
-  const token = req.raw.headers['x-access-token'] as string
-  const { id } = verify(token, `${config.TOKEN_KEY}`) as User
-  return db.user
-    .findFirst({ where: { id } })
-    .then(failOn<User>(isNil, new HttpError(403, undefined, 'User not found')))
-}
+export const user = (req: FastifyRequest): Promise<User> =>
+  verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`).then(({ id }) =>
+    db.user
+      .findFirst({ where: { id } })
+      .then(failOn<User>(isNil, new HttpError(403, undefined, 'User not found')))
+  )
 
 const handleError = (reply: FastifyReply) => (e: Error) => {
   logger.error(e.message, e.stack)
