@@ -5,18 +5,17 @@ import { assoc, dissoc, isNil, omit, pipe, prop, propEq } from 'ramda'
 
 import { failOn, failUnless } from '../../utils/failOn'
 import { promiseFn } from '../../utils/promise'
-import { PrismaClient } from '../model'
 import { httpError } from '../types/HttpError'
 import { TLogin } from '../types/login'
 import { TRegister } from '../types/register'
+import db from './client'
 import { config } from './config'
 import { body, endpoint, user } from './endpoint'
 
-const client = new PrismaClient()
 const pHashSync = promiseFn(hashSync)
 
 const register = endpoint({ register: body(TRegister) }, async ({ register }) => {
-  const oldUser = await client.user.findFirst({
+  const oldUser = await db.user.findFirst({
     where: { email: register.email }
   })
   if (oldUser != null) {
@@ -29,14 +28,14 @@ const register = endpoint({ register: body(TRegister) }, async ({ register }) =>
     assoc('password', hashSync(register.password, 10)),
     dissoc('passwordRepeat')
   )(register)
-  const user = await client.user.create({ data })
+  const user = await db.user.create({ data })
   const token = sign(`${user.id}`, `${config.TOKEN_KEY}`, { expiresIn: '90 days' })
-  return client.user.update({ where: { id: user.id }, data: { token } }).then(prop('email'))
+  return db.user.update({ where: { id: user.id }, data: { token } }).then(prop('email'))
 })
 
 const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } }) =>
   pHashSync(password, 10).then(encryptedPassword =>
-    client.user
+    db.user
       .findFirst({ where: { email } })
       .then(failOn(isNil, httpError(404, 'email', 'validation.server.userNotFound')))
       .then(

@@ -1,3 +1,4 @@
+import { User } from '@prisma/client'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import * as t from 'io-ts'
@@ -8,11 +9,10 @@ import { decode, DecodingError } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
 import { logger } from '../../utils/logger'
 import { Promised, resolvePromised } from '../../utils/promise'
-import { PrismaClient, User } from '../model'
 import { HttpError } from '../types/HttpError'
+import db from './client'
 import { config } from './config'
 
-const client = new PrismaClient()
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
 
 const OK =
@@ -36,7 +36,7 @@ export const user = (req: FastifyRequest): Promise<User> => {
   const token = req.headers['x-access-token'] as string
   try {
     const id = +jwt.verify(token, `${config.TOKEN_KEY}`)
-    return client.user.findFirst({ where: { id } }).then(failOn<User>(isNil, 'User not found'))
+    return db.user.findFirst({ where: { id } }).then(failOn<User>(isNil, 'User not found'))
   } catch (e) {
     throw new HttpError(403)
   }
