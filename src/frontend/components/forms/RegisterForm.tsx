@@ -30,9 +30,11 @@ export const RegisterForm: ModalFC = ({ close }) => {
 
   const Success = (
     <SuccessView title="common.success" body="modals.authenticate.register.success">
-      <Button onClick={close} variant="primary">
-        {t('common.close')}
-      </Button>
+      <ButtonRow className="mt-4">
+        <Button onClick={close} variant="primary">
+          {t('common.close')}
+        </Button>
+      </ButtonRow>
     </SuccessView>
   )
 

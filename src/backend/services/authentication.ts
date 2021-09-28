@@ -1,3 +1,4 @@
+import { User } from '@prisma/client'
 import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { sign } from 'jsonwebtoken'
@@ -5,6 +6,7 @@ import { assoc, dissoc, isNil, pick, pipe, propEq } from 'ramda'
 
 import { failOn, failUnless } from '../../utils/failOn'
 import { promiseFn } from '../../utils/promise'
+import { assocBy } from '../../utils/ramda'
 import { httpError } from '../types/HttpError'
 import { TLogin } from '../types/login'
 import { TRegister } from '../types/register'
@@ -13,6 +15,11 @@ import { config } from './config'
 import { body, endpoint, tx, user } from './endpoint'
 
 const pHashSync = promiseFn(hashSync)
+
+const token = (user: User): string =>
+  sign({ id: user.id, email: user.email, name: user.name }, `${config.TOKEN_KEY}`, {
+    expiresIn: '90d'
+  })
 
 const register = endpoint({ register: body(TRegister), tx }, ({ register, tx }) =>
   tx(async db => {
@@ -26,11 +33,12 @@ const register = endpoint({ register: body(TRegister), tx }, ({ register, tx }) 
       assoc('password', hashSync(register.password, 10)),
       dissoc('passwordRepeat')
     )(register)
-    const user = await db.user.create({ data })
-    const token = sign({ id: user.id, email: user.email, name: user.name }, `${config.TOKEN_KEY}`, {
-      expiresIn: '90d'
-    })
-    return db.user.update({ where: { id: user.id }, data: { token } }).then(pick(['token']))
+    return db.user
+      .create({ data })
+      .then(assocBy('token', token))
+      .then(user => {
+        return db.user.update({ where: { id: user.id }, data: { token: user.token } })
+      })
   })
 )
 
