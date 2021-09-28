@@ -88,6 +88,7 @@ export const endpoint =
       return resolvePromised(resObj)
         .then(res => body(res))
         .then(OK(reply))
+        .catch(handleError(reply))
     } catch (e) {
       handleError(reply)(e as Error)
     }
