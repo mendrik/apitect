@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 const db = new PrismaClient({
-  errorFormat: 'pretty'
+  errorFormat: 'minimal'
 })
 
 export default db

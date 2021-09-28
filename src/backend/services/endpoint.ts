@@ -37,7 +37,7 @@ export const header =
 export const user = (req: FastifyRequest): Promise<User> => {
   const token = req.headers['x-access-token'] as string
   try {
-    const id = +jwt.verify(token, `${config.TOKEN_KEY}`)
+    const { id } = jwt.verify(token, `${config.TOKEN_KEY}`) as User
     return db.user.findFirst({ where: { id } }).then(failOn<User>(isNil, 'User not found'))
   } catch (e) {
     throw new HttpError(403)

@@ -30,7 +30,9 @@ const register = endpoint({ register: body(TRegister), tx }, ({ register, tx }) 
       dissoc('passwordRepeat')
     )(register)
     const user = await db.user.create({ data })
-    const token = sign(`${user.id}`, `${config.TOKEN_KEY}`, { expiresIn: 60 })
+    const token = sign({ id: user.id, email: user.email, name: user.name }, `${config.TOKEN_KEY}`, {
+      expiresIn: 60
+    })
     return db.user.update({ where: { id: user.id }, data: { token } }).then(prop('email'))
   })
 )

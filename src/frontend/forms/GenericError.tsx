@@ -8,7 +8,7 @@ export const GenericError: FC = () => {
   const { error } = useContext(formWrappingContext)
   const { t } = useTranslation()
   return error && !('field' in error) ? (
-    <Alert variant="danger">
+    <Alert variant="warning">
       <Alert.Heading>{t('common.unexpectedError')}</Alert.Heading>
       {error.message}
     </Alert>
