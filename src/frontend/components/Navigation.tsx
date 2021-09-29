@@ -23,9 +23,12 @@ export const Navigation: FC = () => {
       </div>
       <div className="flex-grow-0">
         {userState.data != null ? (
-          <Button variant="light">
-            <LogOut className="icon-xs" /> {userState.data.name}
-          </Button>
+          <div className="d-flex flex-row gap-2 align-items-center">
+            <div>{userState.data.name}</div>
+            <Button variant="outline-primary">
+              <LogOut className="icon-xs" /> {t('navbar.logout')}
+            </Button>
+          </div>
         ) : (
           <Button onClick={() => navigate(addParams({ modal: 'login' }))}>
             <Spinner promise="whoAmI" spinnerDelay={0} />

@@ -6,7 +6,7 @@ import { Register } from '../../backend/types/register'
 import { TToken } from '../../backend/types/token'
 import { decode } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
-import { safeParse, satiated } from '../../utils/ramda'
+import { satiated } from '../../utils/ramda'
 import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
 
@@ -19,7 +19,7 @@ const request =
       method,
       headers: satiated({
         'content-type': 'application/json; charset=utf-8',
-        'x-access-token': safeParse(localStorage.getItem('jwt'))
+        'x-access-token': localStorage.getItem('jwt')
       }),
       body: body ? JSON.stringify(body) : null
     })
