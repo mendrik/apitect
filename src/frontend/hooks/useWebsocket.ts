@@ -1,8 +1,8 @@
 import { createEvent } from 'effector'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
-import { decode } from '../../utils/codecs/decode'
-import { ClientMessage, ServerMessage, TServerMessage } from '../../utils/messages'
+import { decode } from '../../shared/codecs/decode'
+import { ClientMessage, ServerMessage, TServerMessage } from '../../shared/types/messages'
 
 const waitForSocket = (socket: ReconnectingWebSocket) =>
   new Promise<any>((resolve, reject) => {

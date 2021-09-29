@@ -14,7 +14,7 @@ import {
   tryCatch
 } from 'ramda'
 
-import { Fn } from './types'
+import { Fn } from '../types/generic'
 
 export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]))
 

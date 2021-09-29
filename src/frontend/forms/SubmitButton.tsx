@@ -2,7 +2,7 @@ import React, { FC, useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
-import { Milliseconds } from '../../utils/types'
+import { Milliseconds } from '../../shared/types/generic'
 import { progressContext } from '../contexts/progress'
 import { formWrappingContext } from './Form'
 import { Spinner } from './Spinner'

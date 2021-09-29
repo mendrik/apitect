@@ -1,6 +1,6 @@
 import React, { createContext, FC } from 'react'
 
-import { Maybe } from '../../utils/maybe'
+import { Maybe } from '../../shared/types/generic'
 import { State } from '../hooks/usePromise'
 import { useWhoAmI } from '../hooks/useWhoAmI'
 import { User } from '../types/user'

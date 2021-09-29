@@ -1,8 +1,8 @@
 import * as t from 'io-ts'
 import { NonEmptyString } from 'io-ts-types'
 
-import { enumCodec } from './codecs/enumCodec'
-import { sherlockDate } from './codecs/sherlockCodec'
+import { enumCodec } from '../codecs/enumCodec'
+import { sherlockDate } from '../codecs/sherlockCodec'
 
 export enum BooleanEditor {
   Switch = 'SWITCH',

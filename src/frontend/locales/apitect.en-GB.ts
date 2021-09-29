@@ -4,6 +4,7 @@ const en = {
       name: 'Apitect'
     },
     common: {
+      error: 'Error',
       success: 'Success',
       close: 'Close',
       confirm: 'Confirm',

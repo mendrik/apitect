@@ -1,7 +1,6 @@
 import { pipe, propOr } from 'ramda'
 
-import { Maybe } from '../../utils/maybe'
-import { Fn } from '../../utils/types'
+import { Fn, Maybe } from '../../shared/types/generic'
 
 export const useSetJwt = (
   afterSet: Fn = () => void 0

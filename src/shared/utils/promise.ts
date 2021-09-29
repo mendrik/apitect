@@ -1,6 +1,6 @@
 import { andThen, mergeAll, pipe, reduce, toPairs } from 'ramda'
 
-import { Milliseconds } from './types'
+import { Milliseconds } from '../types/generic'
 
 export type Promised<T> = {
   [P in keyof T]: T[P] | Promise<T[P]>

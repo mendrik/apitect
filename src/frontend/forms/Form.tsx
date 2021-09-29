@@ -1,8 +1,7 @@
 import React, { createContext, FC, useEffect } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 
-import { Maybe } from '../../utils/maybe'
-import { Fn } from '../../utils/types'
+import { Fn, Maybe } from '../../shared/types/generic'
 import { State } from '../hooks/usePromise'
 import { useServerError } from '../hooks/useServerError'
 

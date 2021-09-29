@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 
-import { emailCodec } from '../../utils/codecs/emailCodec'
-import { nonEmptyString } from '../../utils/codecs/nonEmptyString'
+import { emailCodec } from '../codecs/emailCodec'
+import { nonEmptyString } from '../codecs/nonEmptyString'
 
 export const TLogin = t.type({
   email: emailCodec,

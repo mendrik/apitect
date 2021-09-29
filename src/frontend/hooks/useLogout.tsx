@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { Fn } from '../../utils/types'
+import { Fn } from '../../shared/types/generic'
 import { UserContext, userContext } from '../contexts/user'
 import { logout } from '../utils/api'
 import usePromise from './usePromise'

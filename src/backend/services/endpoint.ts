@@ -6,14 +6,14 @@ import { verify } from 'jsonwebtoken'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 import { promisify } from 'util'
 
-import { decode, DecodingError } from '../../utils/codecs/decode'
-import { failOn } from '../../utils/failOn'
-import { logger } from '../../utils/logger'
-import { Promised, resolvePromised } from '../../utils/promise'
-import { Fn } from '../../utils/types'
-import { httpError, HttpError } from '../types/HttpError'
-import db from './client'
+import { decode, DecodingError } from '../../shared/codecs/decode'
+import { httpError, HttpError } from '../../shared/types/HttpError'
+import { Fn } from '../../shared/types/generic'
+import { failOn } from '../../shared/utils/failOn'
+import { logger } from '../../shared/utils/logger'
+import { Promised, resolvePromised } from '../../shared/utils/promise'
 import { config } from './config'
+import db from './database'
 
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
 
@@ -22,7 +22,7 @@ const OK =
   <T>(body?: T) =>
     reply.code(200).headers(headers).send(body)
 
-export const noContent = always(undefined)
+export const noContent = always({})
 
 type Collector = Record<string, t.Any | ((req: FastifyRequest) => Promise<any> | any)>
 

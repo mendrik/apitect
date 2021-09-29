@@ -1,4 +1,4 @@
-import { Maybe } from '../../utils/maybe'
+import { Maybe } from '../../shared/types/generic'
 import { User } from '../types/user'
 import { whoAmI } from '../utils/api'
 import useInstantPromise from './useInstantPromise'

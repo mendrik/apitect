@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { FC, useContext } from 'react'
 
-import { Milliseconds } from '../../utils/types'
+import { Milliseconds } from '../../shared/types/generic'
 import { progressContext } from '../contexts/progress'
 
 type OwnProps = {

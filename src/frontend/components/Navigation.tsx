@@ -4,7 +4,7 @@ import { LogIn } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { addParams } from '../../utils/url'
+import { addParams } from '../../shared/utils/url'
 import { ReactComponent as Logo } from '../assets/logo.svg'
 import { useLogout } from '../hooks/useLogout'
 

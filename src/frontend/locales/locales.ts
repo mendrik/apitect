@@ -1,7 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next, TFunction } from 'react-i18next'
 
-import { capitalize } from '../../utils/ramda'
+import { capitalize } from '../../shared/utils/ramda'
 import en from './apitect.en-GB'
 
 const resources = {

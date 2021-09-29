@@ -4,8 +4,8 @@ import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { Fn } from '../../utils/types'
-import { removeParams } from '../../utils/url'
+import { Fn } from '../../shared/types/generic'
+import { removeParams } from '../../shared/utils/url'
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 
