@@ -9,12 +9,13 @@ import { failOn } from '../../utils/failOn'
 import { satiated } from '../../utils/ramda'
 import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
+import { PromiseCache } from './promiseCache'
 
 export const apiUrl = (url: string) => `http://localhost:3001/${url}`
 
 const request =
   (method: string) =>
-  <P, C extends Any>(url: string, codec: C, body?: P): Promise<OutputOf<C>> =>
+  <P, C extends Any>(url: string, codec?: C, body?: P): Promise<OutputOf<C>> =>
     fetch(apiUrl(url), {
       method,
       headers: satiated({
@@ -25,17 +26,22 @@ const request =
     })
       .then(failOn<Request>(r => !r.ok, fetchError(`Fetch ${url}`)))
       .then(v => v.clone().json())
-      .then(decode(codec))
+      .then(json => (codec ? decode(codec)(json) : undefined))
       .catch(async (e: FetchError<Request>) => {
         throw await e.data.json()
       })
+
+const promiseCache = new PromiseCache('300ms')
+const cachedRequest = <T>(req: () => Promise<T>) => promiseCache.get(req, req) as Promise<T>
 
 export const get = request('get')
 export const post = request('post')
 export const del = request('delete')
 export const put = request('put')
 
-export const logout = () => get('logout', TToken).then(() => localStorage.removeItem('jwt'))
+export const logout = () => del('logout')
 export const login = (data: Login) => post('login', TToken, data)
 export const register = (data: Register) => post('register', TToken, data)
-export const whoAmI = () => get('whoami', TUser).catch(always(null))
+
+const cachedWhoAmI = () => get('whoami', TUser).catch(always(null))
+export const whoAmI = () => cachedRequest(cachedWhoAmI)

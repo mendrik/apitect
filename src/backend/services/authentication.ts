@@ -12,7 +12,7 @@ import { TRegister } from '../types/register'
 import { Token } from '../types/token'
 import db from './client'
 import { config } from './config'
-import { body, endpoint, user } from './endpoint'
+import { body, endpoint, noContent, user } from './endpoint'
 
 const pHashSync = promiseFn(hashSync)
 
@@ -58,7 +58,7 @@ const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } })
 )
 
 const logout = endpoint({ user }, ({ user }) =>
-  db.user.update({ where: { id: user.id }, data: { token: null } })
+  db.user.update({ where: { id: user.id }, data: { token: null } }).then(noContent)
 )
 
 const whomAmI = endpoint({ user }, async ({ user }) => omit(['token', 'password'], user))
@@ -66,6 +66,6 @@ const whomAmI = endpoint({ user }, async ({ user }) => omit(['token', 'password'
 export const initAuthentication = (fastify: FastifyInstance) => {
   fastify.post('/register', {}, register)
   fastify.post('/login', login)
-  fastify.get('/logout', logout)
+  fastify.delete('/logout', logout)
   fastify.get('/whoami', whomAmI)
 }

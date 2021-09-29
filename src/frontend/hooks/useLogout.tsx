@@ -9,5 +9,12 @@ export const useLogout = (): [UserContext, Fn<Promise<any>>] => {
   const userState = useContext(userContext)
   const doLogout = usePromise('doLogout', logout)
 
-  return [userState, () => doLogout.trigger().then(userState.trigger)]
+  return [
+    userState,
+    () =>
+      doLogout
+        .trigger()
+        .then(() => localStorage.removeItem('jwt'))
+        .then(userState.trigger)
+  ]
 }

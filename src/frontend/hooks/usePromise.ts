@@ -11,12 +11,11 @@ type Action<T> =
 export interface State<T> {
   data?: T
   error?: Error
-  trigger: (...args: any) => Promise<T>
+  trigger: (...args: any) => Promise<T | void>
   status: Action<T>['status']
   name: string
 }
 const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T>): State<T> => {
-  const promiseCache = useRef<Map<string, Promise<any>>>(new Map())
   const progress = useContext(progressContext)
 
   const initialState = useRef<State<T>>({
@@ -42,39 +41,24 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
 
   const [state, dispatch] = useReducer(promiseReducer, initialState.current)
 
-  const trigger = useCallback<() => Promise<T>>(
+  const trigger = useCallback(
     (...args: any[]) => {
-      console.log(state.name, state.status)
-      switch (state.status) {
-        case 'error':
-        case 'done':
-        case 'idle': {
-          dispatch({ status: 'running' })
-          progress.setWorking(name, true)
-          const res = () =>
-            fn(...args)
-              .then(payload => {
-                dispatch({ status: 'done', payload })
-                return payload
-              })
-              .catch(e => {
-                console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
-                dispatch({ status: 'error', payload: e as Error })
-              })
-              .finally(() => {
-                promiseCache.current.delete(name)
-                progress.setWorking(name, false)
-              })
-          return promiseCache.current.set(name, res()).get(name) as any
-        }
-        case 'running': {
-          return promiseCache.current.get(name)
-        }
-        default:
-          throw Error('unknown state')
-      }
+      dispatch({ status: 'running' })
+      progress.setWorking(name, true)
+      return fn(...args)
+        .then(payload => {
+          dispatch({ status: 'done', payload })
+          return payload
+        })
+        .catch(e => {
+          console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
+          dispatch({ status: 'error', payload: e as Error })
+        })
+        .finally(() => {
+          progress.setWorking(name, false)
+        })
     },
-    [state, promiseCache, fn, name, progress]
+    [fn, name, progress]
   )
 
   return { ...state, trigger }

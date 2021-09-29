@@ -22,6 +22,8 @@ const OK =
   <T>(body?: T) =>
     reply.code(200).headers(headers).send(body)
 
+export const noContent = always(undefined)
+
 type Collector = Record<string, t.Any | ((req: FastifyRequest) => Promise<any> | any)>
 
 export const body =
