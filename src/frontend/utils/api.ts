@@ -31,7 +31,7 @@ const request =
         throw await e.data.json()
       })
 
-const promiseCache = new PromiseCache('300ms')
+const promiseCache = new PromiseCache('500ms')
 const cachedRequest = <T>(req: () => Promise<T>) => promiseCache.get(req, req) as Promise<T>
 
 export const get = request('get')
@@ -39,7 +39,7 @@ export const post = request('post')
 export const del = request('delete')
 export const put = request('put')
 
-export const logout = () => del('logout')
+export const logout = () => del('logout').then(() => promiseCache.flush())
 export const login = (data: Login) => post('login', TToken, data)
 export const register = (data: Register) => post('register', TToken, data)
 

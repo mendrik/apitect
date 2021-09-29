@@ -7,7 +7,7 @@ type Duration = number
 type CachedItem<T> = [TimeStamp, T]
 
 export class PromiseCache<T> {
-  private readonly data = new WeakMap<Fn<Promise<T>>, CachedItem<T>>()
+  private data = new WeakMap<Fn<Promise<T>>, CachedItem<T>>()
 
   private readonly ttl: Duration
 
@@ -28,5 +28,9 @@ export class PromiseCache<T> {
       })
     }
     return Promise.resolve(item[1])
+  }
+
+  public flush() {
+    this.data = new WeakMap<Fn<Promise<T>>, CachedItem<T>>()
   }
 }

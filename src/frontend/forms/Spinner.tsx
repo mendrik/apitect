@@ -15,11 +15,10 @@ export const Spinner: FC<OwnProps> = ({ promise, spinnerDelay = 0.4 }) => {
   return (
     <AnimatePresence>
       {isWorking(promise) && (
-        <motion.span
-          className="d-inline-block"
+        <motion.div
           initial={{
             width: 0,
-            height: 16,
+            height: 24,
             overflow: 'hidden'
           }}
           animate={{ width: 24 }}
@@ -28,7 +27,7 @@ export const Spinner: FC<OwnProps> = ({ promise, spinnerDelay = 0.4 }) => {
         >
           <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
           <span className="visually-hidden">Loading...</span>
-        </motion.span>
+        </motion.div>
       )}
     </AnimatePresence>
   )
