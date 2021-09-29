@@ -6,7 +6,7 @@ const Dashboard: FC = () => {
   return (
     <>
       <Navigation />
-      <div>Dashboard</div>
+      <div className="p-4">Dash</div>
     </>
   )
 }
