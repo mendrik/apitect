@@ -1,5 +1,5 @@
 import { User } from '@prisma/client'
-import { genSaltSync, hashSync } from 'bcryptjs'
+import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { sign } from 'jsonwebtoken'
 import { assoc, dissoc, isNil, omit, pipe, propEq } from 'ramda'
@@ -15,8 +15,6 @@ import { config } from './config'
 import { body, endpoint, noContent, user } from './endpoint'
 
 const pHashSync = promiseFn(hashSync)
-
-const SALT = genSaltSync()
 
 const refreshToken = (user: User): Promise<Token> => {
   const token = sign({ id: user.id, email: user.email, name: user.name }, `${config.TOKEN_KEY}`, {
@@ -35,7 +33,7 @@ const register = endpoint({ register: body(TRegister) }, async ({ register }) =>
   return db.user
     .create({
       data: pipe(
-        assoc('password', hashSync(register.password, SALT)),
+        assoc('password', hashSync(register.password, config.SALT)),
         dissoc('passwordRepeat')
       )(register)
     })
@@ -43,7 +41,7 @@ const register = endpoint({ register: body(TRegister) }, async ({ register }) =>
 })
 
 const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } }) =>
-  pHashSync(password, SALT).then(encryptedPassword =>
+  pHashSync(password, config.SALT).then(encryptedPassword =>
     db.user
       .findFirst({ where: { email } })
       .then(failOn(isNil, httpError(404, 'validation.server.userNotFound', 'email')))
