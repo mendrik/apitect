@@ -5,7 +5,7 @@ import { State } from '../hooks/usePromise'
 import { useWhoAmI } from '../hooks/useWhoAmI'
 import { User } from '../types/user'
 
-type UserContext = State<Maybe<User>>
+export type UserContext = State<Maybe<User>>
 
 export const userContext = createContext<UserContext>({
   name: 'whoAmI',

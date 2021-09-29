@@ -3,7 +3,9 @@ import { pipe, propOr } from 'ramda'
 import { Maybe } from '../../utils/maybe'
 import { Fn } from '../../utils/types'
 
-export const useSetJwt = (afterSet: Fn = () => void 0): ((rec: { token: string }) => void) => {
+export const useSetJwt = (
+  afterSet: Fn = () => void 0
+): ((rec: { token: Maybe<string> }) => void) => {
   const setJWT = (jwt: Maybe<string>) =>
     jwt != null ? localStorage.setItem('jwt', jwt) : localStorage.removeItem('jwt')
 

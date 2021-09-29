@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 import { Button } from 'react-bootstrap'
 import { LogIn, LogOut } from 'react-feather'
 import { useTranslation } from 'react-i18next'
@@ -6,17 +6,13 @@ import { useNavigate } from 'react-router-dom'
 
 import { addParams } from '../../utils/url'
 import { ReactComponent as Logo } from '../assets/logo.svg'
-import { userContext } from '../contexts/user'
 import { Spinner } from '../forms/Spinner'
-import usePromise from '../hooks/usePromise'
-import { logout } from '../utils/api'
+import { useLogout } from '../hooks/useLogout'
 
 export const Navigation: FC = () => {
-  const userState = useContext(userContext)
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const doLogout = usePromise('doLogut', logout)
-
+  const [userState, logout] = useLogout()
   return (
     <nav className="navbar navbar-light px-2 bg-light shadow-sm flex flex-row justify-content-start">
       <div className="flex-grow-1">
@@ -28,10 +24,7 @@ export const Navigation: FC = () => {
         {userState.data != null ? (
           <div className="d-flex flex-row gap-2 align-items-center">
             <span>{userState.data.name}</span>
-            <Button
-              variant="outline-primary"
-              onClick={() => doLogout.trigger().then(userState.trigger)}
-            >
+            <Button variant="outline-primary" onClick={logout}>
               <Spinner promise="doLogout" spinnerDelay={100} />
               <LogOut className="icon-xs" /> {t('navbar.logout')}
             </Button>
