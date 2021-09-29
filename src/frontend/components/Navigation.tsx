@@ -1,12 +1,11 @@
 import React, { FC } from 'react'
-import { Button } from 'react-bootstrap'
-import { LogIn, LogOut } from 'react-feather'
+import { Button, NavDropdown } from 'react-bootstrap'
+import { LogIn } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { addParams } from '../../utils/url'
 import { ReactComponent as Logo } from '../assets/logo.svg'
-import { Spinner } from '../forms/Spinner'
 import { useLogout } from '../hooks/useLogout'
 
 export const Navigation: FC = () => {
@@ -22,19 +21,13 @@ export const Navigation: FC = () => {
       </div>
       <div>
         {userState.data != null ? (
-          <div className="d-flex flex-row gap-2 align-items-center">
-            <span>{userState.data.name}</span>
-            <Button variant="outline-primary" onClick={logout} className="ps-2 d-flex">
-              <Spinner promise="doLogout" spinnerDelay={100} />
-              <div className="d-flex gap-1 align-items-center">
-                <LogOut className="icon-xs ms-1" />
-                <span>{t('navbar.logout')}</span>
-              </div>
-            </Button>
-          </div>
+          <NavDropdown id="nav-dropdown-dark-example" title={userState.data.name}>
+            <NavDropdown.Item>Profile</NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item onClick={logout}>{t('navbar.logout')}</NavDropdown.Item>
+          </NavDropdown>
         ) : (
           <Button onClick={() => navigate(addParams({ modal: 'login' }))} className="ps-2 d-flex">
-            <Spinner promise="whoAmI" spinnerDelay={100} />
             <div className="d-flex gap-1 align-items-center">
               <LogIn className="icon-xs ms-1" />
               <span>{t('navbar.login')}</span>
