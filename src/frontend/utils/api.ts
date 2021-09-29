@@ -35,6 +35,7 @@ export const post = request('post')
 export const del = request('delete')
 export const put = request('put')
 
+export const logout = () => get('logout', TToken).then(() => localStorage.removeItem('jwt'))
 export const login = (data: Login) => post('login', TToken, data)
 export const register = (data: Register) => post('register', TToken, data)
 export const whoAmI = () => get('whoami', TUser).catch(always(null))

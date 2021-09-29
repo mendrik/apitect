@@ -1,7 +1,9 @@
 import * as t from 'io-ts'
 
+import { nullable } from '../../utils/codecs/nullable'
+
 export const TToken = t.type({
-  token: t.string
+  token: nullable(t.string)
 })
 
 export type Token = t.TypeOf<typeof TToken>

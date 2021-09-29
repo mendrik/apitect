@@ -5,9 +5,13 @@ import { State } from '../hooks/usePromise'
 import { useWhoAmI } from '../hooks/useWhoAmI'
 import { User } from '../types/user'
 
-type UserContext = Omit<State<Maybe<User>>, 'trigger'>
+type UserContext = State<Maybe<User>>
 
-export const userContext = createContext<UserContext>({ name: 'whoAmI', status: 'idle' })
+export const userContext = createContext<UserContext>({
+  name: 'whoAmI',
+  status: 'idle',
+  trigger: async () => null
+})
 
 export const WithUser: FC = ({ children }) => {
   const userState = useWhoAmI()

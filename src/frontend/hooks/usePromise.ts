@@ -44,8 +44,10 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
 
   const trigger = useCallback<() => Promise<T>>(
     (...args: any[]) => {
+      console.log(state.name, state.status)
       switch (state.status) {
         case 'error':
+        case 'done':
         case 'idle': {
           dispatch({ status: 'running' })
           progress.setWorking(name, true)
@@ -67,9 +69,6 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
         }
         case 'running': {
           return promiseCache.current.get(name)
-        }
-        case 'done': {
-          return Promise.resolve(state.data)
         }
         default:
           throw Error('unknown state')

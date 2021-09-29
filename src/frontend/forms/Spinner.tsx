@@ -19,6 +19,7 @@ export const Spinner: FC<OwnProps> = ({ promise, spinnerDelay = 0.4 }) => {
           className="d-inline-block"
           initial={{
             width: 0,
+            height: 16,
             overflow: 'hidden'
           }}
           animate={{ width: 24 }}

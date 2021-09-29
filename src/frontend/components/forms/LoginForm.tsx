@@ -1,9 +1,10 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Login, TLogin } from '../../../backend/types/login'
 import { Fn } from '../../../utils/types'
+import { userContext } from '../../contexts/user'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { Form } from '../../forms/Form'
 import { SubmitButton } from '../../forms/SubmitButton'
@@ -26,9 +27,10 @@ export const LoginForm: FC<OwnProps> = ({ close }) => {
       password: 'qctxExmNQ9FEcZ'
     }
   })
+  const userState = useContext(userContext)
   const submit = usePromise('doLogin', login)
   useServerError(submit.error, form.setError)
-  const setJwt = useSetJwt(close)
+  const setJwt = useSetJwt(() => userState.trigger().then(close))
 
   return (
     <Form form={form} state={submit} success={setJwt}>
