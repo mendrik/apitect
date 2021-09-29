@@ -1,9 +1,6 @@
 import { useCallback, useContext, useReducer, useRef } from 'react'
 
-import { Maybe } from '../../utils/maybe'
 import { progressContext } from '../contexts/progress'
-
-type Cache<T> = { [name: string]: T }
 
 type Action<T> =
   | { status: 'idle' }
@@ -19,31 +16,31 @@ export interface State<T> {
   name: string
 }
 const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T>): State<T> => {
-  const promiseCache = useRef<Cache<Maybe<Promise<any>>>>({})
+  const promiseCache = useRef<Map<string, Promise<any>>>(new Map())
   const progress = useContext(progressContext)
 
-  const initialState: State<T> = {
+  const initialState = useRef<State<T>>({
     error: undefined,
     data: undefined,
     status: 'idle',
     trigger: () => Promise.resolve<any>(null),
     name
-  }
+  })
 
-  const promiseReducer = (state: State<T>, action: Action<T>): State<T> => {
+  const promiseReducer = useCallback((state: State<T>, action: Action<T>): State<T> => {
     switch (action.status) {
       case 'running':
-        return { ...initialState, status: action.status, data: undefined }
+        return { ...state, status: action.status, data: undefined }
       case 'done':
-        return { ...initialState, status: action.status, data: action.payload }
+        return { ...state, status: action.status, data: action.payload }
       case 'error':
-        return { ...initialState, status: action.status, error: action.payload }
+        return { ...state, status: action.status, error: action.payload }
       default:
         return state
     }
-  }
+  }, [])
 
-  const [state, dispatch] = useReducer(promiseReducer, initialState)
+  const [state, dispatch] = useReducer(promiseReducer, initialState.current)
 
   const trigger = useCallback<() => Promise<T>>(
     (...args: any[]) => {
@@ -63,13 +60,13 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
                 dispatch({ status: 'error', payload: e as Error })
               })
               .finally(() => {
-                promiseCache.current[name] = undefined
+                promiseCache.current.delete(name)
                 progress.setWorking(name, false)
               })
-          return (promiseCache.current[name] = res())
+          return promiseCache.current.set(name, res()).get(name) as any
         }
         case 'running': {
-          return promiseCache.current[name]!
+          return promiseCache.current.get(name)
         }
         case 'done': {
           return Promise.resolve(state.data)

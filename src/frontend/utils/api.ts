@@ -6,6 +6,7 @@ import { Register } from '../../backend/types/register'
 import { TToken } from '../../backend/types/token'
 import { decode } from '../../utils/codecs/decode'
 import { failOn } from '../../utils/failOn'
+import { safeParse, satiated } from '../../utils/ramda'
 import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
 
@@ -16,10 +17,10 @@ const request =
   <P, C extends Any>(url: string, codec: C, body?: P): Promise<OutputOf<C>> =>
     fetch(apiUrl(url), {
       method,
-      headers: {
+      headers: satiated({
         'content-type': 'application/json; charset=utf-8',
-        'x-access-token': JSON.parse(localStorage.getItem('jwt') ?? '')
-      },
+        'x-access-token': safeParse(localStorage.getItem('jwt'))
+      }),
       body: body ? JSON.stringify(body) : null
     })
       .then(failOn<Request>(r => !r.ok, fetchError(`Fetch ${url}`)))
