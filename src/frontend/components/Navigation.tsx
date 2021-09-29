@@ -13,7 +13,7 @@ export const Navigation: FC = () => {
   const navigate = useNavigate()
   const [userState, logout] = useLogout()
   return (
-    <Navbar variant="light" expand="md" className="px-2 shadow-lg">
+    <Navbar variant="light" expand="sm" className="px-2 shadow-lg">
       <Navbar.Brand href="#home">
         <Logo className="logo" style={{ height: 32, marginTop: -5 }} />
       </Navbar.Brand>

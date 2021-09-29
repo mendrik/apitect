@@ -16,9 +16,13 @@ fastify.get('/', { websocket: true }, connection => {
   const send = <T>(data: T) => connection.socket.send(JSON.stringify(data))
 
   connection.socket.on('message', (message: Buffer) => {
-    const parse = JSON.parse(message.toString('utf-8'))
-    logger.info('message', parse)
-    send({ type: 'HELLO', message: 'hi from server' })
+    try {
+      const parse = JSON.parse(message.toString('utf-8'))
+      logger.info('message', parse)
+      send({ type: 'PROJECT', message: 'hi from server' })
+    } catch (e) {
+      logger.error('Error in socket', e)
+    }
   })
 })
 

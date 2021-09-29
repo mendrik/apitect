@@ -2,7 +2,7 @@ import { createEvent } from 'effector'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
 import { decode } from '../../utils/codecs/decode'
-import { Message, TMessage } from '../types/message'
+import { ClientMessage, ServerMessage, TServerMessage } from '../../utils/messages'
 
 const waitForSocket = (socket: ReconnectingWebSocket) =>
   new Promise<any>((resolve, reject) => {
@@ -10,12 +10,16 @@ const waitForSocket = (socket: ReconnectingWebSocket) =>
     socket.addEventListener('error', reject)
   })
 
-export const messageReceived = createEvent<Message>()
+export const messageReceived = createEvent<ServerMessage>()
 
 const webSocket = new ReconnectingWebSocket('ws://127.0.0.1:3001')
 webSocket.addEventListener('message', event => {
-  const message = decode(TMessage)(JSON.parse(event.data))
-  messageReceived(message)
+  try {
+    const message = decode(TServerMessage)(JSON.parse(event.data))
+    messageReceived(message)
+  } catch (e) {
+    console.error(e)
+  }
 })
 
 export const useWebsocket = () => {
@@ -24,6 +28,6 @@ export const useWebsocket = () => {
   }
 
   return {
-    send: <T>(payload: T) => webSocket.send(JSON.stringify(payload))
+    send: (payload: ClientMessage) => webSocket.send(JSON.stringify(payload))
   }
 }

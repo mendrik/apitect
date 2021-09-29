@@ -10,8 +10,8 @@ const appState = createStore<AppState>(initial)
 
 appState.on(messageReceived, (state, payload) => {
   switch (payload.type) {
-    case 'HELLO':
-      console.log(payload.message)
+    case 'PROJECT':
+      console.log(payload)
       return state
     default:
       return state
