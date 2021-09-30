@@ -7,7 +7,7 @@ const Dashboard: FC = () => {
   const { send } = useContext(socketContext)
 
   useEffect(() => {
-    send({ type: 'PROJECT' })
+    send({ type: 'PROJECT' }) // todo: this sends after logout
   })
 
   return (
