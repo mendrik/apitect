@@ -1,5 +1,5 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -28,9 +28,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
   })
   const { t } = useTranslation()
   const state = usePromise('doRegister', register)
-  const { setJwt, user } = useContext(userContext)
-
-  useEffect(() => (user != null ? close() : void 0), [user, close])
+  const { setJwt } = useContext(userContext)
 
   const Success = (
     <SuccessView title="common.success" body="modals.authenticate.register.success">

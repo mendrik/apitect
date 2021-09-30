@@ -1,5 +1,5 @@
-datasource postgresql {
-    provider = "postgresql"
+datasource mysql {
+    provider = "mysql"
     url      = env("DATABASE_URL")
 }
 
@@ -15,7 +15,7 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(USER)
-  token     String?
+  token     String?  @mysql.TinyText
 
   @@map(name: "users")
 }

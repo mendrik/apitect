@@ -1,14 +1,13 @@
 version: '3.7'
 services:
-  postgres:
-    image: postgres:latest
+  database:
+    image: mysql:latest
     restart: always
     environment:
-      - POSTGRES_USER=apitect
-      - POSTGRES_PASSWORD=apitect42
+      - MYSQL_ROOT_PASSWORD=apitect42
     logging:
       options:
         max-size: 10m
         max-file: "3"
     ports:
-      - '5432:5432'
+      - '3306:3306'
