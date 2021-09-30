@@ -52,6 +52,7 @@
     "react-router-dom": "^6.0.0-beta.5",
     "react-scripts": "4.0.3",
     "react-spring": "^9.2.4",
+    "react-use-websocket": "^2.8.0",
     "sherlockjs": "^1.4.2",
     "shrink-json": "^0.1.6",
     "usehooks-ts": "^1.0.1",

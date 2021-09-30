@@ -6,7 +6,9 @@ import { Navigation } from './Navigation'
 const Dashboard: FC = () => {
   const { send } = useContext(socketContext)
 
-  useEffect(() => send({ type: 'PROJECT' }))
+  useEffect(() => {
+    send({ type: 'PROJECT' })
+  })
 
   return (
     <>

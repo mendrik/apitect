@@ -1,9 +1,7 @@
-import React, { createContext, FC, useContext, useEffect, useRef } from 'react'
+import React, { createContext, FC, useContext } from 'react'
+import useWebSocket, { ReadyState } from 'react-use-websocket'
 
-import { decode } from '../../shared/codecs/decode'
-import { Maybe } from '../../shared/types/generic'
-import { ClientMessage, TServerMessage } from '../../shared/types/messages'
-import { messageReceived } from '../events/messages'
+import { ClientMessage } from '../../shared/types/messages'
 import { userContext } from './user'
 
 type SocketContext = {
@@ -14,40 +12,17 @@ export const socketContext = createContext<SocketContext>({ send: () => 0 })
 
 export const WithSocket: FC = ({ children }) => {
   const { jwt } = useContext(userContext)
-  const socket = useRef<Maybe<WebSocket>>()
-  // const [socketState, setSocketState] = useState<WebSocket>()
+  const { sendJsonMessage, readyState } = useWebSocket('ws://127.0.0.1:3001', {
+    protocols: jwt!
+  })
 
-  useEffect(() => {
-    if (jwt != null) {
-      const ws: WebSocket = new WebSocket('ws://127.0.0.1:3001', jwt)
-      Object.defineProperty(ws, 'readyState', {
-        value(v: number) {
-          console.log(v)
-        }
-      })
-
-      ws.addEventListener('message', event => {
-        try {
-          const message = decode(TServerMessage)(JSON.parse(event.data))
-          messageReceived(message)
-        } catch (e) {
-          console.error(e)
-        }
-      })
-      return () => ws.close()
-    }
-    return void 0
-  }, [jwt])
-
-  return (
-    socket && (
-      <socketContext.Provider
-        value={{
-          send: data => console.log(data)
-        }}
-      >
-        {children}
-      </socketContext.Provider>
-    )
-  )
+  return readyState === ReadyState.OPEN ? (
+    <socketContext.Provider
+      value={{
+        send: data => (jwt ? sendJsonMessage(data) : void 0)
+      }}
+    >
+      {children}
+    </socketContext.Provider>
+  ) : null
 }
