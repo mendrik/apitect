@@ -1,4 +1,5 @@
-import React, { createContext, FC, useEffect } from 'react'
+import { identity } from 'ramda'
+import React, { createContext, FC } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 
 import { Fn, Maybe } from '../../shared/types/generic'
@@ -23,24 +24,21 @@ export const formWrappingContext = createContext<FormWrappingContext>({
 export const Form: FC<OwnProps<any>> = ({
   form,
   successView: SuccessView,
-  success,
+  success = identity,
   state,
   children
 }) => {
   useServerError(state.error, form.setError)
-
-  useEffect(() => {
-    if (success != null && state.status === 'done') {
-      success(state.data)
-    }
-  }, [state, success])
 
   return state.status === 'done' && SuccessView != null ? (
     SuccessView
   ) : (
     <formWrappingContext.Provider value={{ promise: state.name, error: state.error }}>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(state.trigger)} noValidate>
+        <form
+          onSubmit={form.handleSubmit((...args) => state.trigger(...args).then(success))}
+          noValidate
+        >
           {children}
         </form>
       </FormProvider>

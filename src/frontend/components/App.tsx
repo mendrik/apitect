@@ -8,7 +8,7 @@ import { NotLoggedIn } from './NotLoggedIn'
 
 const App: FC = () => {
   const userState = useContext(userContext)
-  return userState.data ? (
+  return userState.user ? (
     <Routes>
       <Route path="/" element={<Dashboard />} />
     </Routes>

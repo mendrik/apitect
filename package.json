@@ -5,6 +5,7 @@
   "scripts": {
     "database:migrate": "npx prisma migrate dev",
     "database:generate": "npx prisma generate",
+    "database:push": "npx prisma db push",
     "database": "docker-compose up",
     "all:start": "npm-run-all --parallel start-ui start-server",
     "server:start": "tsnd --respawn -P tsconfig.server.json src/backend/server.ts",
