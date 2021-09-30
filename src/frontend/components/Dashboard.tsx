@@ -1,11 +1,13 @@
-import React, { FC } from 'react'
+import React, { FC, useContext, useEffect } from 'react'
 
-import { safeParse } from '../../shared/utils/ramda'
-import { useSend } from '../hooks/useSend'
+import { socketContext } from '../contexts/socket'
 import { Navigation } from './Navigation'
 
 const Dashboard: FC = () => {
-  useSend({ type: 'AUTHORIZE', jwt: safeParse(localStorage.getItem('jwt'))! })
+  const { send } = useContext(socketContext)
+
+  useEffect(() => send({ type: 'PROJECT' }))
+
   return (
     <>
       <Navigation />

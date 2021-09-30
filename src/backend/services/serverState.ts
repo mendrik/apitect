@@ -1,30 +1,28 @@
 import { createEvent, createStore, Event } from 'effector'
-import { SocketStream } from 'fastify-websocket'
 
 import { ClientMessage } from '../../shared/types/messages'
+import { logger } from '../../shared/utils/logger'
 import { Send } from '../server'
 
-type EventMap<K = ClientMessage['type'], V = Extract<ClientMessage, { type: K }>> = Record<
-  Lowercase<K & string>,
-  OmitThisParameter<Event<{ message: V; send: Send }>>
->
-
-type ServerState = {
-  authorizedConnections: WeakMap<SocketStream, boolean>
+export type Payload<K extends ClientMessage['type']> = {
+  message: Extract<ClientMessage, { type: K }>
+  send: Send
+  userId: number
 }
+
+export type EventMap = {
+  [K in ClientMessage['type']]: Event<Payload<K>>
+}
+
+export const authorizedConnections = new WeakMap<Send, boolean>()
+
+type ServerState = {}
 
 export const eventMap: EventMap = {
-  authorize: createEvent('authorize'),
-  node: createEvent('node'),
-  project: createEvent('project')
+  NODE: createEvent(),
+  PROJECT: createEvent()
 }
 
-export const state = createStore<ServerState>({
-  authorizedConnections: new WeakMap<SocketStream, boolean>()
-})
+export const state = createStore<ServerState>({})
 
-type X = typeof eventMap.authorize
-
-state.on(eventMap.authorize, (state, { message: {}, send }) => {
-  send({})
-})
+state.on(eventMap.PROJECT, (state, { message, send, userId }) => {})

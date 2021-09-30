@@ -1,6 +1,6 @@
 import { createStore } from 'effector'
 
-import { messageReceived } from '../hooks/useWebsocket'
+import { messageReceived } from '../events/messages'
 
 const initial = {}
 

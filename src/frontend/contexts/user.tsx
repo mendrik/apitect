@@ -30,6 +30,7 @@ export const WithUser: FC = ({ children }) => {
   if (state.status === 'running') {
     throw Promise.resolve('Loading user')
   }
+
   return (
     <userContext.Provider
       value={{

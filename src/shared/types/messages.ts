@@ -4,16 +4,11 @@ const ProjectRequest = t.type({
   type: t.literal('PROJECT')
 })
 
-const AuthorizeRequest = t.type({
-  type: t.literal('AUTHORIZE'),
-  jwt: t.string
-})
-
 const NodeRequest = t.type({
   type: t.literal('NODE')
 })
 
-export const TClientMessage = t.union([AuthorizeRequest, ProjectRequest, NodeRequest])
+export const TClientMessage = t.union([ProjectRequest, NodeRequest])
 
 export type ClientMessage = t.TypeOf<typeof TClientMessage>
 
