@@ -22,14 +22,14 @@ const render = (): void =>
     <React.StrictMode>
       <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
         <Suspense fallback={<Loader className="vh-100" />}>
-          <WithProgress>
-            <WithUser>
+          <WithUser>
+            <WithProgress>
               <BrowserRouter>
                 <App />
                 <Modals />
               </BrowserRouter>
-            </WithUser>
-          </WithProgress>
+            </WithProgress>
+          </WithUser>
         </Suspense>
       </ErrorBoundary>
     </React.StrictMode>,
