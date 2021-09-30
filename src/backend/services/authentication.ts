@@ -30,12 +30,20 @@ const register = endpoint({ register: body(TRegister) }, async ({ register }) =>
   if (register.passwordRepeat !== register.password) {
     throw httpError(400, 'validation.server.passwordMustMatch', 'passwordRepeat')
   }
+  const data = pipe(
+    assoc('password', hashSync(register.password, config.SALT)),
+    dissoc('passwordRepeat')
+  )(register)
   return db.user
     .create({
-      data: pipe(
-        assoc('password', hashSync(register.password, config.SALT)),
-        dissoc('passwordRepeat')
-      )(register)
+      data: {
+        ...data,
+        documents: {
+          create: {
+            name: 'Unnamed document'
+          }
+        }
+      }
     })
     .then(refreshToken)
 })

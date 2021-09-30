@@ -1,25 +1,28 @@
 import * as t from 'io-ts'
 
-const ProjectRequest = t.type({
-  type: t.literal('PROJECT')
+import { TDocument } from './document'
+
+const DocumentRequest = t.type({
+  type: t.literal('DOCUMENT')
 })
 
 const NodeRequest = t.type({
   type: t.literal('NODE')
 })
 
-export const TClientMessage = t.union([ProjectRequest, NodeRequest])
+export const TClientMessage = t.union([DocumentRequest, NodeRequest])
 
 export type ClientMessage = t.TypeOf<typeof TClientMessage>
 
-const ProjectResponse = t.type({
-  type: t.literal('PROJECT')
+const DocumentResponse = t.type({
+  type: t.literal('DOCUMENT'),
+  document: TDocument
 })
 
 const NodeResponse = t.type({
   type: t.literal('NODE')
 })
 
-export const TServerMessage = t.union([ProjectResponse, NodeResponse])
+export const TServerMessage = t.union([DocumentResponse, NodeResponse])
 
 export type ServerMessage = t.TypeOf<typeof TServerMessage>

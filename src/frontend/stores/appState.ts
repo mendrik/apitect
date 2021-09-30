@@ -10,7 +10,7 @@ const appState = createStore<AppState>(initial)
 
 appState.on(messageReceived, (state, payload) => {
   switch (payload.type) {
-    case 'PROJECT':
+    case 'DOCUMENT':
       console.log(payload)
       return state
     default:

@@ -3,6 +3,7 @@ import { createEvent, createStore, Event } from 'effector'
 import { ClientMessage } from '../../shared/types/messages'
 import { logger } from '../../shared/utils/logger'
 import { Send } from '../server'
+import db from './database'
 
 export type Payload<K extends ClientMessage['type']> = {
   message: Extract<ClientMessage, { type: K }>
@@ -20,9 +21,11 @@ type ServerState = {}
 
 export const eventMap: EventMap = {
   NODE: createEvent(),
-  PROJECT: createEvent()
+  DOCUMENT: createEvent()
 }
 
 export const state = createStore<ServerState>({})
 
-state.on(eventMap.PROJECT, (state, { message, send, userId }) => {})
+state.on(eventMap.DOCUMENT, (state, { message, send, userId }) => {
+  db.document.findFirst()
+})
