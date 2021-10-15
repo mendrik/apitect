@@ -1,6 +1,8 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import React, { FC, useContext, useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { match } from 'ts-pattern'
 
 import { Fn } from '../../../shared/types/generic'
@@ -14,7 +16,6 @@ import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
 import { login } from '../../utils/api'
-import { ClickLink } from '../ClickLink'
 import ForgotPasswordForm from '../modals/ForgotPasswordForm'
 
 type OwnProps = {
@@ -27,6 +28,7 @@ enum Views {
 }
 
 export const LoginForm: FC<OwnProps> = ({ close }) => {
+  const { t } = useTranslation()
   const [view, setView] = useState<Views>(Views.LOGIN)
   const form = useForm<Login>({
     resolver: ioTsResolver(TLogin),
@@ -58,11 +60,11 @@ export const LoginForm: FC<OwnProps> = ({ close }) => {
         />
         <GenericError />
         <ButtonRow>
+          <Button onClick={() => setView(Views.FORGOT_PASSWORD)} variant="outline-primary">
+            {t('modals.authenticate.login.forgotPassword')}
+          </Button>
           <SubmitButton localeKey="modals.authenticate.login.submit" />
         </ButtonRow>
-        <p className="my-4">
-          <ClickLink onClick={() => setView(Views.FORGOT_PASSWORD)}>Forgot password?</ClickLink>
-        </p>
       </Form>
     ))
 }

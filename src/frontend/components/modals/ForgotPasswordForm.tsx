@@ -35,7 +35,7 @@ const ForgotPasswordForm: ModalFC = ({ close }) => {
       <Alert variant="info">{t('modals.forgotPassword.info')}</Alert>
       <GenericError />
       <ButtonRow>
-        <Button variant="secondary" onClick={close}>
+        <Button variant="outline-primary" onClick={close}>
           {t('common.back')}
         </Button>
         <SubmitButton localeKey="modals.forgotPassword.submit" />

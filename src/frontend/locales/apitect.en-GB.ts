@@ -24,7 +24,8 @@ const en = {
         title: 'Authentication',
         login: {
           title: 'Login',
-          submit: 'Login'
+          submit: 'Login',
+          forgotPassword: 'Forgot password?'
         },
         register: {
           title: 'Register',
