@@ -5,6 +5,7 @@ import { sign } from 'jsonwebtoken'
 import { assoc, dissoc, isNil, omit, pipe, propEq } from 'ramda'
 
 import { httpError } from '../../shared/types/HttpError'
+import { TForgotPassword } from '../../shared/types/forgotPassword'
 import { TLogin } from '../../shared/types/login'
 import { TRegister } from '../../shared/types/register'
 import { Token } from '../../shared/types/token'
@@ -63,6 +64,14 @@ const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } })
   )
 )
 
+const forgotPassword = endpoint(
+  { forgotPassword: body(TForgotPassword) },
+  ({ forgotPassword: { email } }) =>
+    db.user
+      .findFirst({ where: { email } })
+      .then(failOn(isNil, httpError(404, 'validation.server.userNotFound', 'email')))
+)
+
 const logout = endpoint({ user }, ({ user }) =>
   db.user.update({ where: { id: user.id }, data: { token: null } }).then(noContent)
 )
@@ -74,4 +83,5 @@ export const initAuthentication = (fastify: FastifyInstance) => {
   fastify.post('/login', login)
   fastify.delete('/logout', logout)
   fastify.get('/whoami', whomAmI)
+  fastify.put('/forgot-password', forgotPassword)
 }

@@ -43,7 +43,7 @@ export const put = request('put')
 
 export const logout = () => del('logout').then(() => promiseCache.flush())
 export const login = (data: Login) => post('login', TToken, data)
-export const forgotPassword = (data: ForgotPassword) => post('forgot-password', TEmpty, data)
+export const forgotPassword = (data: ForgotPassword) => put('forgot-password', TEmpty, data)
 export const register = (data: Register) => post('register', TToken, data)
 
 export const whoAmI = () => get('whoami', TUser).catch(always(null))
