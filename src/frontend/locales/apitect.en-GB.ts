@@ -7,12 +7,19 @@ const en = {
       error: 'Error',
       success: 'Success',
       close: 'Close',
+      back: 'Back',
       confirm: 'Confirm',
       delete: 'Delete',
       yesImSure: 'I am sure!',
       unexpectedError: 'Oops! An unexpected error'
     },
     modals: {
+      forgotPassword: {
+        title: 'Forgot password?',
+        info: 'If you have forgotten your password, please fill in your email and click the "send" button.',
+        submit: 'Email me a reset link',
+        success: 'We have sent you an email with further instruction on how to reset your password.'
+      },
       authenticate: {
         title: 'Authentication',
         login: {

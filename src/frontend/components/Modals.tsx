@@ -10,6 +10,11 @@ export const Modals: FC = () => {
         from={() => import('./modals/Authenticate')}
         name="login"
       />
+      <LazyModal
+        title="modals.forgotPassword.title"
+        from={() => import('./modals/ForgotPasswordForm')}
+        name="forgot-password"
+      />
     </div>
   )
 }

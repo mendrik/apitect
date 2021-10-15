@@ -55,6 +55,7 @@
     "react-use-websocket": "^2.8.0",
     "sherlockjs": "^1.4.2",
     "shrink-json": "^0.1.6",
+    "ts-pattern": "^3.3.3",
     "usehooks-ts": "^1.0.1",
     "uuid": "^8.3.2",
     "validator": "^13.6.0",

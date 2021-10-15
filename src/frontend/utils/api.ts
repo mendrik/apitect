@@ -2,6 +2,8 @@ import { Any, OutputOf } from 'io-ts'
 import { always } from 'ramda'
 
 import { decode } from '../../shared/codecs/decode'
+import { TEmpty } from '../../shared/types/empty'
+import { ForgotPassword } from '../../shared/types/forgotPassword'
 import { Login } from '../../shared/types/login'
 import { Register } from '../../shared/types/register'
 import { TToken } from '../../shared/types/token'
@@ -41,6 +43,7 @@ export const put = request('put')
 
 export const logout = () => del('logout').then(() => promiseCache.flush())
 export const login = (data: Login) => post('login', TToken, data)
+export const forgotPassword = (data: ForgotPassword) => post('forgot-password', TEmpty, data)
 export const register = (data: Register) => post('register', TToken, data)
 
 export const whoAmI = () => get('whoami', TUser).catch(always(null))
