@@ -9,8 +9,6 @@ const Dashboard: FC = () => {
   const { send } = useContext(socketContext)
   const { document } = useStore(appState)
 
-  console.log(document)
-
   useEffect(() => {
     if (document == null) {
       send({ type: 'DOCUMENT' })
