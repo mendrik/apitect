@@ -1,3 +1,8 @@
 PORT = 3001
 TOKEN_KEY = "%4pYQk^7J*#&Za"
 SALT = "$2a$10$HNubR6xyZTcIgXefN1QCue"
+DB_NAME = "apitect"
+DB_USER = "apitect"
+DB_PASS = "apitect42"
+DB_HOST = "localhost"
+DB_PORT = 27017

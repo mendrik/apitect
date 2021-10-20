@@ -1,6 +1,6 @@
 import { createStore } from 'effector'
 
-import { Document } from '../../shared/types/document'
+import { Document } from '../../shared/types/domain/document'
 import { Maybe } from '../../shared/types/generic'
 import { messageReceived } from '../events/messages'
 

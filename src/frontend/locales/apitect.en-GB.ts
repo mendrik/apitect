@@ -60,7 +60,8 @@ const en = {
         userExists: 'User already exists',
         userNotFound: 'User not found',
         passwordWrong: 'Wrong password',
-        passwordMustMatch: "Password doesn't match"
+        passwordMustMatch: "Password doesn't match",
+        invalidId: 'ID must be a valid UUID'
       }
     }
   }

@@ -1,13 +1,14 @@
 version: '3.7'
 services:
   database:
-    image: mysql:latest
+    image: mongo:latest
+    container_name: mongodb
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=apitect42
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root42
+      MONGO_INITDB_DATABASE: apitect
     ports:
-      - '3306:3306'
+      - 27017:27017
+    volumes:
+        - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro

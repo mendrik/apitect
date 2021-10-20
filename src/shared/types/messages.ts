@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 import { nullable } from 'io-ts/Type'
 
-import { TDocument } from './document'
+import { TDocument } from './domain/document'
 
 const DocumentRequest = t.type({
   type: t.literal('DOCUMENT')

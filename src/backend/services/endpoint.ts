@@ -1,19 +1,20 @@
-import { User } from '@prisma/client'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
+import { WithId } from 'mongodb'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 import { promisify } from 'util'
 
 import { decode, DecodingError } from '../../shared/codecs/decode'
 import { httpError, HttpError } from '../../shared/types/HttpError'
+import { User } from '../../shared/types/domain/user'
 import { Fn } from '../../shared/types/generic'
 import { failOn } from '../../shared/utils/failOn'
 import { logger } from '../../shared/utils/logger'
 import { Promised, resolvePromised } from '../../shared/utils/promise'
 import { config } from './config'
-import db from './database'
+import { collection, CollectionMap } from './database'
 
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
 
@@ -31,18 +32,19 @@ export const body =
   (req: FastifyRequest): A =>
     decode<A, O, I>(decoder)(req.body as any)
 
-export const tx = (_req: FastifyRequest) => db.$transaction.bind(db)
-export const verifyP: Fn<Promise<User>> = promisify<any, any>(verify)
+export const coll = (name: keyof CollectionMap) => (_req: FastifyRequest) => collection(name)
+export const verifyP: Fn<Promise<{ id: string }>> = promisify<any, any>(verify)
 
 export const header =
   <A, O, I>(name: string, decoder: t.Type<A, O, I>) =>
   (req: FastifyRequest): A =>
     decode<A, O, I>(decoder)(req.headers[name] as any)
 
-export const user = (req: FastifyRequest): Promise<User> =>
+export const user = (req: FastifyRequest): Promise<WithId<User>> =>
   verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`)
-    .then(({ id }) => db.user.findFirst({ where: { id } }))
-    .then(failOn<User>(isNil, httpError(403, 'User not found')))
+    // todo decode ObjectId
+    .then(({ id }) => collection('users').then(_ => _.findOne(id)))
+    .then(failOn<WithId<User>>(isNil, httpError(403, 'User not found')))
     .catch(e => {
       throw httpError(403, `Unauthorized: ${e.message}`)
     })

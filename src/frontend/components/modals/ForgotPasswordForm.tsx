@@ -4,7 +4,7 @@ import { Alert, Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import { ForgotPassword, TForgotPassword } from '../../../shared/types/forgotPassword'
+import { ForgotPassword, TForgotPassword } from '../../../shared/types/forms/forgotPassword'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { Form } from '../../forms/Form'
 import { GenericError } from '../../forms/GenericError'
