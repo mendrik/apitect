@@ -7,6 +7,10 @@ const DocumentRequest = t.type({
   type: t.literal('DOCUMENT')
 })
 
+const ResetAppState = t.type({
+  type: t.literal('RESET')
+})
+
 const NodeRequest = t.type({
   type: t.literal('NODE')
 })
@@ -24,6 +28,6 @@ const NodeResponse = t.type({
   type: t.literal('NODE')
 })
 
-export const TServerMessage = t.union([DocumentResponse, NodeResponse])
+export const TServerMessage = t.union([DocumentResponse, NodeResponse, ResetAppState])
 
 export type ServerMessage = t.TypeOf<typeof TServerMessage>

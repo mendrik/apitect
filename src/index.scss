@@ -27,6 +27,10 @@ code {
   cursor: pointer;
 }
 
+.editable {
+  cursor: url("./frontend/assets/input.svg") 0 0, auto;
+}
+
 .w-fit {
   width: fit-content;
 }

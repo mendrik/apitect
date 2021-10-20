@@ -18,6 +18,8 @@ appState.on(messageReceived, (state, payload) => {
   switch (payload.type) {
     case 'DOCUMENT':
       return { ...state, document: payload.document }
+    case 'RESET':
+      return initial
     default:
       return state
   }
