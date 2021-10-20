@@ -1,7 +1,6 @@
 import { createEvent, createStore, Event } from 'effector'
 
 import { ClientMessage } from '../../shared/types/messages'
-import { logger } from '../../shared/utils/logger'
 import { Send } from '../server'
 import db from './database'
 
@@ -26,6 +25,14 @@ export const eventMap: EventMap = {
 
 export const state = createStore<ServerState>({})
 
-state.on(eventMap.DOCUMENT, (state, { message, send, userId }) => {
-  db.document.findFirst()
+state.on(eventMap.DOCUMENT, (state, { send, userId }) => {
+  db.document
+    .findFirst({
+      where: { OR: [{ lastUsedBy: { some: { id: userId } } }, { users: { some: { id: userId } } }] }
+    })
+    .then(document => ({
+      type: 'DOCUMENT' as const,
+      document
+    }))
+    .then(send)
 })

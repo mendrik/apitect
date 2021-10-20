@@ -10,13 +10,15 @@ generator client {
 }
 
 model User {
-  id            Int             @id @default(autoincrement())
-  name          String
-  email         String          @unique
-  password      String
-  role          Role            @default(USER)
-  token         String?         @mysql.TinyText
-  documents     Document[]      @relation("document_user")
+  id                Int             @id @default(autoincrement())
+  name              String
+  email             String          @unique
+  password          String
+  role              Role            @default(USER)
+  token             String?         @mysql.TinyText
+  lastDocument      Document?       @relation(name: "lastUsed", fields: [lastDocumentId], references: [id])
+  lastDocumentId    Int?
+  documents         Document[]      @relation("document_user")
 
   @@map(name: "users")
 }
@@ -26,6 +28,7 @@ model Document {
   name          String
   users         User[]          @relation("document_user")
   nodes         Node[]
+  lastUsedBy    User[]          @relation("lastUsed")
 
   @@map(name: "documents")
 }

@@ -1,18 +1,23 @@
 import { createStore } from 'effector'
 
+import { Document } from '../../shared/types/document'
+import { Maybe } from '../../shared/types/generic'
 import { messageReceived } from '../events/messages'
 
-const initial = {}
+type AppState = {
+  document: Maybe<Document>
+}
 
-type AppState = typeof initial
+const initial: AppState = {
+  document: null
+}
 
 const appState = createStore<AppState>(initial)
 
 appState.on(messageReceived, (state, payload) => {
   switch (payload.type) {
     case 'DOCUMENT':
-      console.log(payload)
-      return state
+      return { ...state, document: payload.document }
     default:
       return state
   }

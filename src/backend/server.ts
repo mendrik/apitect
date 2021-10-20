@@ -11,7 +11,7 @@ const fastify = Fastify({ logger: true })
 fastify.register(Ws)
 fastify.register(Cors)
 
-export type Send = (message: ServerMessage) => void
+export type Send = <T extends ServerMessage>(message: T) => void
 
 initAuthentication(fastify)
 initWebsocket(fastify)
