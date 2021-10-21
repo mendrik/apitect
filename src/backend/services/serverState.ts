@@ -1,13 +1,18 @@
 import { createEvent, createStore, Event } from 'effector'
+import { ObjectId } from 'mongodb'
+import { isNil } from 'ramda'
 
+import { User } from '../../shared/types/domain/user'
 import { ClientMessage } from '../../shared/types/messages'
+import { failOn } from '../../shared/utils/failOn'
+import { field } from '../../shared/utils/ramda'
 import { Send } from '../server'
-import db from './database'
+import { collection } from './database'
 
 export type Payload<K extends ClientMessage['type']> = {
   message: Extract<ClientMessage, { type: K }>
   send: Send
-  userId: number
+  userId: ObjectId
 }
 
 export type EventMap = {
@@ -26,13 +31,7 @@ export const eventMap: EventMap = {
 export const state = createStore<ServerState>({})
 
 state.on(eventMap.DOCUMENT, (state, { send, userId }) => {
-  db.document
-    .findFirst({
-      where: { OR: [{ lastUsedBy: { some: { id: userId } } }, { users: { some: { id: userId } } }] }
-    })
-    .then(document => ({
-      type: 'DOCUMENT' as const,
-      document
-    }))
-    .then(send)
+  void collection('users').then(_ =>
+    _.findOne(userId).then(failOn<User>(isNil, 'user not found')).then(field('lastDocument'))
+  )
 })

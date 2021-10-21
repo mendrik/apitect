@@ -8,13 +8,14 @@ import { decode } from '../../shared/codecs/decode'
 import { ClientMessage, TClientMessage } from '../../shared/types/messages'
 import { logger } from '../../shared/utils/logger'
 import { Send } from '../server'
+import { idCodec } from '../utils/idCodec'
 import { config } from './config'
 import { eventMap, Payload } from './serverState'
 
 const openWebsocket = (connection: SocketStream) => {
   const send: Send = msg => connection.socket.send(JSON.stringify(msg))
   try {
-    const { id: userId } = decode(t.type({ id: t.number }))(
+    const { id: userId } = decode(t.type({ id: idCodec }))(
       verify(connection.socket.protocol, `${config.TOKEN_KEY}`)
     )
     connection.socket.on('message', (buffer: Buffer) => {

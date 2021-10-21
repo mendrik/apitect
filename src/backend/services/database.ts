@@ -1,6 +1,7 @@
 import { Collection, MongoClient } from 'mongodb'
 import { isNil, propOr } from 'ramda'
 
+import { Document } from '../../shared/types/domain/document'
 import { User } from '../../shared/types/domain/user'
 import { failOn } from '../../shared/utils/failOn'
 import { config } from './config'
@@ -20,16 +21,15 @@ const uri = `mongodb+srv://${config.DB_USER}:${config.DB_PASS}@${config.DB_HOST}
 const db = async (): Promise<Record<keyof Collections, Collection>> => {
   const client = new MongoClient(uri)
   await client.connect()
-  const db = client.db(process.env.DB_NAME)
-  console.log(`Successfully connected to database: ${db.databaseName}`)
+  const database = client.db(process.env.DB_NAME)
+  console.log(`Successfully connected to database: ${database.databaseName}`)
   const collections = {}
   return new Proxy(collections, {
     get: (target: any, p: keyof Collections & string): Collection => {
       if (p in Collections) {
-        return db.collection(p)
-      } else {
-        throw `Unsupported collection ${p}`
+        return database.collection(p)
       }
+      throw Error(`Unsupported collection ${p}`)
     }
   })
 }

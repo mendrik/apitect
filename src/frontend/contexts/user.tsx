@@ -1,16 +1,16 @@
 import React, { createContext, FC } from 'react'
 import { useLocalStorage } from 'usehooks-ts'
 
+import { UiUser } from '../../shared/types/domain/user'
 import { Maybe } from '../../shared/types/generic'
 import useInstantPromise from '../hooks/useInstantPromise'
 import { State } from '../hooks/usePromise'
-import { User } from '../types/user'
 import { whoAmI } from '../utils/api'
 
 export type UserContext = {
   jwt: Maybe<string>
   setJwt: (jwt: Maybe<{ token: string }>) => void
-  user: Maybe<User>
+  user: Maybe<UiUser>
   status: State<any>['status']
 }
 
@@ -43,7 +43,7 @@ export const WithUser: FC = ({ children }) => {
           } else {
             localStorage.removeItem('jwt')
           }
-          state.trigger()
+          void state.trigger()
         }
       }}
     >

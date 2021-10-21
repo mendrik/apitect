@@ -2,6 +2,7 @@ import { Any, OutputOf } from 'io-ts'
 import { always } from 'ramda'
 
 import { decode } from '../../shared/codecs/decode'
+import { TUiUser } from '../../shared/types/domain/user'
 import { TEmpty } from '../../shared/types/empty'
 import { ForgotPassword } from '../../shared/types/forms/forgotPassword'
 import { Login } from '../../shared/types/forms/login'
@@ -9,7 +10,6 @@ import { Register } from '../../shared/types/forms/register'
 import { TToken } from '../../shared/types/response/token'
 import { failOn } from '../../shared/utils/failOn'
 import { safeParse, satiated } from '../../shared/utils/ramda'
-import { TUser } from '../types/user'
 import { fetchError, FetchError } from './fetchError'
 import { PromiseCache } from './promiseCache'
 
@@ -46,4 +46,4 @@ export const login = (data: Login) => post('login', TToken, data)
 export const forgotPassword = (data: ForgotPassword) => put('forgot-password', TEmpty, data)
 export const register = (data: Register) => post('register', TToken, data)
 
-export const whoAmI = () => get('whoami', TUser).catch(always(null))
+export const whoAmI = () => get('whoami', TUiUser).catch(always(null))

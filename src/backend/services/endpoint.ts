@@ -2,17 +2,19 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
-import { WithId } from 'mongodb'
-import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
+import { ObjectId, WithId } from 'mongodb'
+import { always, applySpec, assoc, isNil, mapObjIndexed, mergeRight, pipe } from 'ramda'
 import { promisify } from 'util'
 
 import { decode, DecodingError } from '../../shared/codecs/decode'
 import { httpError, HttpError } from '../../shared/types/HttpError'
-import { User } from '../../shared/types/domain/user'
+import { TUiUser, UiUser, User } from '../../shared/types/domain/user'
 import { Fn } from '../../shared/types/generic'
 import { failOn } from '../../shared/utils/failOn'
 import { logger } from '../../shared/utils/logger'
 import { Promised, resolvePromised } from '../../shared/utils/promise'
+import { assocBy } from '../../shared/utils/ramda'
+import { extractId } from '../utils/id'
 import { config } from './config'
 import { collection, CollectionMap } from './database'
 
@@ -42,8 +44,7 @@ export const header =
 
 export const user = (req: FastifyRequest): Promise<WithId<User>> =>
   verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`)
-    // todo decode ObjectId
-    .then(({ id }) => collection('users').then(_ => _.findOne(id)))
+    .then(({ id }) => collection('users').then(_ => _.findOne(ObjectId.createFromHexString(id))))
     .then(failOn<WithId<User>>(isNil, httpError(403, 'User not found')))
     .catch(e => {
       throw httpError(403, `Unauthorized: ${e.message}`)
