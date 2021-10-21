@@ -2,7 +2,7 @@ import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { sign } from 'jsonwebtoken'
 import { ObjectId, WithId } from 'mongodb'
-import { always, assoc, dissoc, isNil, pipe, propEq } from 'ramda'
+import { assoc, dissoc, isNil, pipe, propEq } from 'ramda'
 
 import { httpError } from '../../shared/types/HttpError'
 import { UiUser } from '../../shared/types/domain/user'
@@ -26,11 +26,10 @@ const signedToken = ({ id, email, name }: Record<string, string>) =>
     expiresIn: '90d'
   })
 
-const refreshToken = (user: WithId<User>): Promise<Token> => {
+const refreshToken = async (user: WithId<User>): Promise<Token> => {
   const token = signedToken({ id: user._id.toHexString(), email: user.email, name: user.name })
-  return collection('users')
-    .then(_ => _.updateOne({ _id: user._id }, { token: token }))
-    .then(always({ token }))
+  await collection('users').updateOne({ _id: user._id }, { token: token })
+  return { token }
 }
 
 const register = endpoint(

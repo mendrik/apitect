@@ -42,7 +42,7 @@ export const header =
 
 export const user = (req: FastifyRequest): Promise<WithId<User>> =>
   verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`)
-    .then(({ id }) => collection('users').then(_ => _.findOne(ObjectId.createFromHexString(id))))
+    .then(({ id }) => collection('users').findOne(ObjectId.createFromHexString(id)))
     .then(failOn<WithId<User>>(isNil, httpError(403, 'User not found')))
     .catch(e => {
       throw httpError(403, `Unauthorized: ${e.message}`)

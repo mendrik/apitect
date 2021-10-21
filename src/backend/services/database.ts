@@ -1,10 +1,9 @@
-import { Collection, MongoClient } from 'mongodb'
-import { isNil, propOr } from 'ramda'
+import { Collection as CollectionType, Db, MongoClient } from 'mongodb'
 
-import { failOn } from '../../shared/utils/failOn'
 import { Document } from '../types/document'
 import { User } from '../types/user'
 import { config } from './config'
+import { serverState } from './serverState'
 
 export enum Collections {
   users = 'users',
@@ -16,29 +15,21 @@ export type CollectionMap = {
   documents: Document
 }
 
-const uri = `mongodb+srv://${config.DB_USER}:${config.DB_PASS}@${config.DB_HOST}:${config.DB_PORT}/${config.DB_NAME}?authSource=admin`
-
-const db = async (): Promise<Record<keyof Collections, Collection>> => {
+export const connect = async (): Promise<Db> => {
+  const uri = `mongodb://${config.DB_USER}:${config.DB_PASS}@${config.DB_HOST}:${config.DB_PORT}/${config.DB_NAME}`
+  console.log(`Connecting to database: ${uri}`)
   const client = new MongoClient(uri)
   await client.connect()
-  const database = client.db(process.env.DB_NAME)
-  console.log(`Successfully connected to database: ${database.databaseName}`)
-  const collections = {}
-  return new Proxy(collections, {
-    get: (target: any, p: keyof Collections & string): Collection => {
-      if (p in Collections) {
-        return database.collection(p)
-      }
-      throw Error(`Unsupported collection ${p}`)
-    }
-  })
+  console.log(`Successfully connected to database`)
+  return client.db(process.env.DB_NAME)
 }
 
-export const collection = <
-  K extends keyof CollectionMap & string,
-  R = Collection<CollectionMap[K]>
->(
-  name: K
-): Promise<R> => db().then(propOr(null, name)).then(failOn<R>(isNil, 'collection not found'))
-
-export default db
+export const collection: (
+  name: keyof CollectionMap & string
+) => CollectionType<CollectionMap[typeof name]> = name => {
+  const db = serverState.getState().database
+  if (db == null) {
+    throw Error('Database not found')
+  }
+  return db.collection(name)
+}

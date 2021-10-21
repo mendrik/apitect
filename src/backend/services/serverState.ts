@@ -1,13 +1,14 @@
-import { createEvent, createStore, Event } from 'effector'
-import { ObjectId } from 'mongodb'
+import { createEffect, createEvent, createStore, Event } from 'effector'
+import { Db, ObjectId } from 'mongodb'
 import { isNil } from 'ramda'
 
+import { Maybe } from '../../shared/types/generic'
 import { ClientMessage } from '../../shared/types/messages'
 import { failOn } from '../../shared/utils/failOn'
 import { field } from '../../shared/utils/ramda'
 import { Send } from '../server'
 import { User } from '../types/user'
-import { collection } from './database'
+import { collection, connect } from './database'
 
 export type Payload<K extends ClientMessage['type']> = {
   message: Extract<ClientMessage, { type: K }>
@@ -19,19 +20,25 @@ export type EventMap = {
   [K in ClientMessage['type']]: Event<Payload<K>>
 }
 
-export const authorizedConnections = new WeakMap<Send, boolean>()
-
-type ServerState = {}
+type ServerState = {
+  database: Maybe<Db>
+}
 
 export const eventMap: EventMap = {
   NODE: createEvent(),
   DOCUMENT: createEvent()
 }
 
-export const state = createStore<ServerState>({})
+export const serverState = createStore<ServerState>({
+  database: null
+})
 
-state.on(eventMap.DOCUMENT, (state, { send, userId }) => {
-  void collection('users').then(_ =>
-    _.findOne(userId).then(failOn<User>(isNil, 'user not found')).then(field('lastDocument'))
-  )
+export const initDatabase = createEffect(() => connect())
+
+serverState.on(initDatabase.doneData, (state, database) => ({ ...state, database }))
+serverState.on(eventMap.DOCUMENT, (state, { send, userId }) => {
+  void collection('users')
+    .findOne(userId)
+    .then(failOn<User>(isNil, 'user not found'))
+    .then(field('lastDocument'))
 })
