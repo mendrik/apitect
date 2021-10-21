@@ -18,9 +18,12 @@
     "noEmit": true
   },
   "include": [
-    "src"
+    "src/shared",
+    "src/backend"
   ],
   "exclude": [
-    "src/frontend"
+    "src/index.tsx",
+    "src/frontend/**/*",
+    "node_modules"
   ]
 }
