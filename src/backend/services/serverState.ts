@@ -2,11 +2,11 @@ import { createEvent, createStore, Event } from 'effector'
 import { ObjectId } from 'mongodb'
 import { isNil } from 'ramda'
 
-import { User } from '../../shared/types/domain/user'
 import { ClientMessage } from '../../shared/types/messages'
 import { failOn } from '../../shared/utils/failOn'
 import { field } from '../../shared/utils/ramda'
 import { Send } from '../server'
+import { User } from '../types/user'
 import { collection } from './database'
 
 export type Payload<K extends ClientMessage['type']> = {

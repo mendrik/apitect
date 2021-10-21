@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 import { nullable } from 'io-ts/Type'
 
-import { TDocument } from './domain/document'
+import { TUiDocument } from './domain/document'
 
 const DocumentRequest = t.type({
   type: t.literal('DOCUMENT')
@@ -21,7 +21,7 @@ export type ClientMessage = t.TypeOf<typeof TClientMessage>
 
 export const DocumentResponse = t.type({
   type: t.literal('DOCUMENT'),
-  document: nullable(TDocument)
+  document: nullable(TUiDocument)
 })
 
 const NodeResponse = t.type({

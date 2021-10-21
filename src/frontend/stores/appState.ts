@@ -1,11 +1,11 @@
 import { createStore } from 'effector'
 
-import { Document } from '../../shared/types/domain/document'
+import { UiDocument } from '../../shared/types/domain/document'
 import { Maybe } from '../../shared/types/generic'
 import { messageReceived } from '../events/messages'
 
 type AppState = {
-  document: Maybe<Document>
+  document: Maybe<UiDocument>
 }
 
 const initial: AppState = {

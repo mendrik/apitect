@@ -4,16 +4,15 @@ import { sign } from 'jsonwebtoken'
 import { ObjectId, WithId } from 'mongodb'
 import { always, assoc, dissoc, isNil, pipe, propEq } from 'ramda'
 
-import { decode } from '../../shared/codecs/decode'
 import { httpError } from '../../shared/types/HttpError'
-import { TUiUser, UiUser, User } from '../../shared/types/domain/user'
+import { UiUser } from '../../shared/types/domain/user'
 import { TForgotPassword } from '../../shared/types/forms/forgotPassword'
 import { TLogin } from '../../shared/types/forms/login'
 import { TRegister } from '../../shared/types/forms/register'
 import { Token } from '../../shared/types/response/token'
 import { failOn, failUnless } from '../../shared/utils/failOn'
 import { promiseFn } from '../../shared/utils/promise'
-import { assocBy } from '../../shared/utils/ramda'
+import { User } from '../types/user'
 import { extractId } from '../utils/id'
 import { documentRef, userRef } from '../utils/reference'
 import { config } from './config'
@@ -89,7 +88,12 @@ const logout = endpoint({ user, users: coll('users') }, ({ user, users }) =>
 
 const whomAmI = endpoint(
   { user },
-  async ({ user }): Promise<UiUser> => pipe(assocBy('id', extractId), decode(TUiUser))(user)
+  async ({ user }): Promise<UiUser> => ({
+    name: user.name,
+    email: user.email,
+    id: extractId(user),
+    lastDocument: user.lastDocument.$id.toHexString()
+  })
 )
 
 export const initAuthentication = (fastify: FastifyInstance) => {

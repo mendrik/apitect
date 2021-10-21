@@ -1,10 +1,8 @@
 import * as t from 'io-ts'
 
-import { TRef } from '../../../backend/utils/reference'
-
-export const TDocument = t.type({
+export const TUiDocument = t.type({
   name: t.string,
-  owner: TRef
+  owner: t.string
 })
 
-export type Document = t.TypeOf<typeof TDocument>
+export type UiDocument = t.TypeOf<typeof TUiDocument>

@@ -1,9 +1,9 @@
 import { Collection, MongoClient } from 'mongodb'
 import { isNil, propOr } from 'ramda'
 
-import { Document } from '../../shared/types/domain/document'
-import { User } from '../../shared/types/domain/user'
 import { failOn } from '../../shared/utils/failOn'
+import { Document } from '../types/document'
+import { User } from '../types/user'
 import { config } from './config'
 
 export enum Collections {
