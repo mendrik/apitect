@@ -14,7 +14,7 @@ import { logger } from '../../shared/utils/logger'
 import { Promised, resolvePromised } from '../../shared/utils/promise'
 import { User } from '../types/user'
 import { config } from './config'
-import { collection, CollectionMap } from './database'
+import { collection } from './database'
 
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
 
@@ -32,7 +32,6 @@ export const body =
   (req: FastifyRequest): A =>
     decode<A, O, I>(decoder)(req.body as any)
 
-export const coll = (name: keyof CollectionMap) => (_req: FastifyRequest) => collection(name)
 export const verifyP: Fn<Promise<{ id: string }>> = promisify<any, any>(verify)
 
 export const header =

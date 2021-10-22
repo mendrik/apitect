@@ -17,7 +17,7 @@ import { extractId } from '../utils/id'
 import { documentRef, userRef } from '../utils/reference'
 import { config } from './config'
 import { collection, withTransaction } from './database'
-import { body, coll, endpoint, noContent, user } from './endpoint'
+import { body, endpoint, noContent, user } from './endpoint'
 
 const pHashSync = promiseFn(hashSync)
 
@@ -32,58 +32,60 @@ const refreshToken = async (user: WithId<User>): Promise<Token> => {
   return { token }
 }
 
-const register = endpoint(
-  { register: body(TRegister), users: coll('users'), docs: coll('documents') },
-  ({ register, users, docs }) =>
-    withTransaction(async session => {
-      await users
-        .findOne({ email: register.email })
-        .then(failUnless(isNil, httpError(409, 'validation.server.userExists', 'email')))
-      if (register.passwordRepeat !== register.password) {
-        throw httpError(400, 'validation.server.passwordMustMatch', 'passwordRepeat')
-      }
-      const data = pipe(
-        assoc('password', hashSync(register.password, config.SALT)),
-        dissoc('passwordRepeat')
-      )(register)
-      const docId = new ObjectId()
-      const userId = new ObjectId()
-      const token = {
-        token: signedToken({ id: userId.toHexString(), email: data.email, name: data.name })
-      }
-      await users.insertOne({ _id: userId, ...data, lastDocument: documentRef(docId) }, { session })
-      await docs.insertOne({ name: 'Unknown document', owner: userRef(userId) }, { session })
-      return token
-    })
+const register = endpoint({ register: body(TRegister) }, ({ register }) =>
+  withTransaction(async session => {
+    await collection('users')
+      .findOne({ email: register.email })
+      .then(failUnless(isNil, httpError(409, 'validation.server.userExists', 'email')))
+    if (register.passwordRepeat !== register.password) {
+      throw httpError(400, 'validation.server.passwordMustMatch', 'passwordRepeat')
+    }
+    const data = pipe(
+      assoc('password', hashSync(register.password, config.SALT)),
+      dissoc('passwordRepeat')
+    )(register)
+    const docId = new ObjectId()
+    const userId = new ObjectId()
+    const token = {
+      token: signedToken({ id: userId.toHexString(), email: data.email, name: data.name })
+    }
+    await collection('users').insertOne(
+      { _id: userId, ...data, lastDocument: documentRef(docId), ...token },
+      { session }
+    )
+    await collection('documents').insertOne(
+      { name: 'Unknown document', owner: userRef(userId) },
+      { session }
+    )
+    return token
+  })
 )
 
-const login = endpoint(
-  { login: body(TLogin), users: coll('users') },
-  ({ login: { email, password }, users }) =>
-    pHashSync(password, config.SALT).then(encryptedPassword =>
-      users
-        .findOne({ email })
-        .then(failOn(isNil, httpError(404, 'validation.server.userNotFound', 'email')))
-        .then(
-          failUnless<WithId<User>>(
-            propEq('password', encryptedPassword),
-            httpError(403, 'validation.server.passwordWrong', 'password')
-          )
+const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } }) =>
+  pHashSync(password, config.SALT).then(encryptedPassword =>
+    collection('users')
+      .findOne({ email })
+      .then(failOn(isNil, httpError(404, 'validation.server.userNotFound', 'email')))
+      .then(
+        failUnless<WithId<User>>(
+          propEq('password', encryptedPassword),
+          httpError(403, 'validation.server.passwordWrong', 'password')
         )
-        .then(refreshToken)
-    )
+      )
+      .then(refreshToken)
+  )
 )
 
 const forgotPassword = endpoint(
-  { forgotPassword: body(TForgotPassword), users: coll('users') },
-  ({ forgotPassword: { email }, users }) =>
-    users
+  { forgotPassword: body(TForgotPassword) },
+  ({ forgotPassword: { email } }) =>
+    collection('users')
       .findOne({ email })
       .then(failOn(isNil, httpError(404, 'validation.server.userNotFound', 'email')))
 )
 
-const logout = endpoint({ user, users: coll('users') }, ({ user, users }) =>
-  users.updateOne(user._id, { token: null }).then(noContent)
+const logout = endpoint({ user }, ({ user }) =>
+  collection('users').updateOne(user._id, { token: null }).then(noContent)
 )
 
 const whomAmI = endpoint(

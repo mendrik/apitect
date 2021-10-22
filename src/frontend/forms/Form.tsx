@@ -3,7 +3,7 @@ import React, { createContext, FC } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 
 import { Fn, Maybe } from '../../shared/types/generic'
-import { State } from '../hooks/usePromise'
+import { ExtendedError, State } from '../hooks/usePromise'
 import { useServerError } from '../hooks/useServerError'
 
 type OwnProps<T> = {
@@ -12,10 +12,12 @@ type OwnProps<T> = {
   success?: Fn
   successView?: JSX.Element
 }
+
 type FormWrappingContext = {
   promise: string
-  error: Maybe<Error>
+  error: Maybe<ExtendedError>
 }
+
 export const formWrappingContext = createContext<FormWrappingContext>({
   promise: '',
   error: undefined

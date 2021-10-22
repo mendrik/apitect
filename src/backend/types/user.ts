@@ -9,7 +9,8 @@ export const TUser = t.type({
   name: nonEmptyString,
   email: emailCodec,
   lastDocument: TRef,
-  password: passwordString
+  password: passwordString,
+  token: t.string
 })
 
 export type User = t.TypeOf<typeof TUser>

@@ -1,16 +1,19 @@
 import { useCallback, useContext, useReducer, useRef } from 'react'
+import { Primitives } from 'ts-pattern/lib/types/helpers'
 
 import { progressContext } from '../contexts/progress'
+
+export type ExtendedError = Error & Record<string, Primitives>
 
 type Action<T> =
   | { status: 'idle' }
   | { status: 'running' }
   | { status: 'done'; payload: T }
-  | { status: 'error'; payload: Error }
+  | { status: 'error'; payload: ExtendedError }
 
 export interface State<T> {
   data?: T
-  error?: Error
+  error?: ExtendedError
   trigger: (...args: any) => Promise<T | void>
   status: Action<T>['status']
   name: string
@@ -52,7 +55,7 @@ const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T
         })
         .catch(e => {
           console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
-          dispatch({ status: 'error', payload: e as Error })
+          dispatch({ status: 'error', payload: e as ExtendedError })
         })
         .finally(() => {
           progress.setWorking(name, false)
