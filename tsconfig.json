@@ -18,8 +18,7 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "isolatedModules": true,
-    "traceResolution": true
+    "isolatedModules": true
   },
   "exclude": [
     "src/backend",

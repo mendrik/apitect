@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
-import { nullable } from 'io-ts/Type'
+import { propOr } from 'ramda'
 
+import { decode } from '../codecs/decode'
 import { TUiDocument } from './domain/document'
 
 const DocumentRequest = t.type({
@@ -21,7 +22,7 @@ export type ClientMessage = t.TypeOf<typeof TClientMessage>
 
 export const DocumentResponse = t.type({
   type: t.literal('DOCUMENT'),
-  document: nullable(TUiDocument)
+  payload: TUiDocument
 })
 
 const NodeResponse = t.type({
@@ -31,3 +32,14 @@ const NodeResponse = t.type({
 export const TServerMessage = t.union([DocumentResponse, NodeResponse, ResetAppState])
 
 export type ServerMessage = t.TypeOf<typeof TServerMessage>
+
+export const wrapServerMessage =
+  (payloadCodec: t.Any) =>
+  (payload: any): ServerMessage => {
+    const types = TServerMessage.types
+    const message = types.find(t => propOr(null, 'payload', t.props) === payloadCodec)!
+    return decode<ServerMessage>(message as t.Any)({
+      type: message.props.type.name.replace(/"/g, ''),
+      payload
+    })
+  }

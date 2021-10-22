@@ -14,10 +14,10 @@ const initial: AppState = {
 
 const appState = createStore<AppState>(initial)
 
-appState.on(messageReceived, (state, payload) => {
-  switch (payload.type) {
+appState.on(messageReceived, (state, message) => {
+  switch (message.type) {
     case 'DOCUMENT':
-      return { ...state, document: payload.document }
+      return { ...state, document: message.payload }
     case 'RESET':
       return initial
     default:

@@ -53,7 +53,7 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
       { session }
     )
     await collection('documents').insertOne(
-      { name: 'Unknown document', owner: userId },
+      { _id: docId, name: 'Unknown document', owner: userId },
       { session }
     )
     return token
@@ -84,7 +84,9 @@ const forgotPassword = endpoint(
 )
 
 const logout = endpoint({ user }, ({ user }) =>
-  collection('users').updateOne(user._id, { token: null }).then(noContent)
+  collection('users')
+    .updateOne({ id: user._id }, { $set: { token: null } })
+    .then(noContent)
 )
 
 const whomAmI = endpoint(
