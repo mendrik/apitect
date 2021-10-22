@@ -1,26 +1,12 @@
+version: "3"
 services:
-  mongo1:
-    build: './db'
-    ports:
-      - 27017:27017
+  mongodb:
+    image : flqw/docker-mongo-local-replicaset
+    container_name: mongodb
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root42
-      MONGO_INITDB_DATABASE: apitect
-      MONGO_REPLICA_SET_NAME: rs0
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--keyFile", "/data/mongo.key" ]
-    volumes:
-      - ./db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-  mongo2:
-    build: './db'
+    env_file:
+      - ./.server-env
     ports:
-      - 27018:27017
-    restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--keyFile", "/data/mongo.key" ]
-  mongo3:
-    build: './db'
-    ports:
-      - 27019:27017
-    restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--keyFile", "/data/mongo.key" ]
+      - 27001:27001
+      - 27002:27002
+      - 27003:27003

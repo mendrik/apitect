@@ -1,4 +1,7 @@
 PORT = 3001
 TOKEN_KEY = "%4pYQk^7J*#&Za"
 SALT = "$2a$10$HNubR6xyZTcIgXefN1QCue"
-DATABASE = "mongodb://localhost:27017,localhost:27018,localhost:27019/apitect?replicaSet=rs0"
+DATABASE = "mongodb://localhost:27001,localhost:27002,localhost:27003/db?replicaSet=mongo-rs"
+USERNAME=apitect
+PASSWORD=apitect42
+REPLICA_SET_NAME = "mongo-rs"

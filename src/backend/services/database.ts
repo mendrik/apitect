@@ -4,6 +4,7 @@ import {
   MongoClient,
   TransactionOptions
 } from 'mongodb'
+import { keys, map, pluck } from 'ramda'
 
 import { ensure } from '../../shared/utils/ramda'
 import { Document } from '../types/document'
@@ -29,6 +30,11 @@ export const connect = async (): Promise<MongoClient> => {
   await client.connect()
   console.log(`Successfully connected to database`)
   const db = client.db(dbName)
+  const existing = await db.listCollections().toArray().then(pluck('name'))
+
+  keys(Collections)
+    .filter(name => !existing.includes(name))
+    .forEach(name => db.createCollection(name, {}))
   await db.collection('users').createIndex({ email: 1 }, { unique: true })
   return client
 }

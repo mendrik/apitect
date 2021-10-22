@@ -53,8 +53,7 @@ const register = endpoint(
       }
       await users.insertOne({ _id: userId, ...data, lastDocument: documentRef(docId) }, { session })
       await docs.insertOne({ name: 'Unknown document', owner: userRef(userId) }, { session })
-      throw Error('x')
-      // return token
+      return token
     })
 )
 
