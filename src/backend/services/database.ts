@@ -4,7 +4,7 @@ import {
   MongoClient,
   TransactionOptions
 } from 'mongodb'
-import { keys, map, pluck } from 'ramda'
+import { keys, pluck } from 'ramda'
 
 import { ensure } from '../../shared/utils/ramda'
 import { Document } from '../types/document'
@@ -12,7 +12,7 @@ import { User } from '../types/user'
 import { config } from './config'
 import { serverState } from './serverState'
 
-const dbName = 'apitect'
+const dbName = `${config.MONGO_INITDB_DATABASE}`
 
 export enum Collections {
   users = 'users',

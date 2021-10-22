@@ -58,7 +58,7 @@ const handleError = (reply: FastifyReply) => (e: Error) => {
   if (e instanceof HttpError) {
     return send(e.status, { message: e.message, field: e.field })
   }
-  return send(500, { message: 'Server error' })
+  return send(500, { message: `${e?.constructor?.name ?? 'Error'}: ${e.message}` })
 }
 
 export const endpoint =

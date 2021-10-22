@@ -1,12 +1,12 @@
-version: "3"
+version: "3.7"
 services:
-  mongodb:
-    image : flqw/docker-mongo-local-replicaset
-    container_name: mongodb
+  database:
+    image: mongo
     restart: always
     env_file:
       - ./.server-env
     ports:
-      - 27001:27001
-      - 27002:27002
-      - 27003:27003
+      - 27017:27017
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - ./db/init.js:/docker-entrypoint-initdb.d/init.js:ro

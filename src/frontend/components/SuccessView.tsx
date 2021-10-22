@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
+import robot from '../assets/success.png'
 import { Html } from './Html'
 
 type OwnProps = {
@@ -12,10 +13,10 @@ type OwnProps = {
 export const SuccessView: FC<OwnProps> = ({ title, body, children }) => {
   const { t } = useTranslation()
   return (
-    <Container fluid>
+    <Container fluid className="p-0">
       <Row>
         <Col xs style={{ maxHeight: 150 }} className="d-flex align-items-center">
-          <img src="/src/frontend/assets/success.png" alt="Everything went fine!" />
+          <img src={robot} alt="Everything went fine!" className="mw-100" />
         </Col>
         <Col sm={8}>
           <h3>{t(title)}</h3>
