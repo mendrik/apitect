@@ -3,12 +3,12 @@ import * as t from 'io-ts'
 import { emailCodec } from '../../shared/codecs/emailCodec'
 import { nonEmptyString } from '../../shared/codecs/nonEmptyString'
 import { passwordString } from '../../shared/codecs/passwordString'
-import { TRef } from '../utils/reference'
+import { idCodec } from '../utils/idCodec'
 
 export const TUser = t.type({
   name: nonEmptyString,
   email: emailCodec,
-  lastDocument: TRef,
+  lastDocument: idCodec,
   password: passwordString,
   token: t.string
 })

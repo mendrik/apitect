@@ -14,7 +14,6 @@ import { failOn, failUnless } from '../../shared/utils/failOn'
 import { promiseFn } from '../../shared/utils/promise'
 import { User } from '../types/user'
 import { extractId } from '../utils/id'
-import { documentRef, userRef } from '../utils/reference'
 import { config } from './config'
 import { collection, withTransaction } from './database'
 import { body, endpoint, noContent, user } from './endpoint'
@@ -50,11 +49,11 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
       token: signedToken({ id: userId.toHexString(), email: data.email, name: data.name })
     }
     await collection('users').insertOne(
-      { _id: userId, ...data, lastDocument: documentRef(docId), ...token },
+      { _id: userId, ...data, ...token, lastDocument: docId },
       { session }
     )
     await collection('documents').insertOne(
-      { name: 'Unknown document', owner: userRef(userId) },
+      { name: 'Unknown document', owner: userId },
       { session }
     )
     return token
@@ -94,7 +93,7 @@ const whomAmI = endpoint(
     name: user.name,
     email: user.email,
     id: extractId(user),
-    lastDocument: user.lastDocument.$id.toHexString()
+    lastDocument: user.lastDocument.toHexString()
   })
 )
 

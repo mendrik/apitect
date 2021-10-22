@@ -1,9 +1,10 @@
 import * as t from 'io-ts'
-import { TRef } from '../utils/reference'
+
+import { idCodec } from '../utils/idCodec'
 
 export const TDocument = t.type({
   name: t.string,
-  owner: TRef
+  owner: idCodec
 })
 
 export type Document = t.TypeOf<typeof TDocument>

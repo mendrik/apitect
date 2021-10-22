@@ -53,7 +53,10 @@ export const withTransaction = async <T>(
   const client = ensure(serverState.getState().database)
   const session = client.startSession()
   try {
-    return await session.withTransaction(fn, opt)
+    session.startTransaction(opt)
+    const res = await fn(session)
+    await session.commitTransaction()
+    return res
   } finally {
     await session.endSession()
   }
