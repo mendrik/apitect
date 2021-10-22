@@ -15,7 +15,7 @@ import {
   tryCatch
 } from 'ramda'
 
-import { Fn } from '../types/generic'
+import { Fn, Maybe } from '../types/generic'
 
 export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]))
 
@@ -34,3 +34,10 @@ export const field =
   <T>(p: keyof T) =>
   (obj: T) =>
     prop(p, obj)
+
+export const ensure = <T extends NonNullable<any>>(obj: Maybe<T>): T => {
+  if (obj == null) {
+    throw Error('object must not be null')
+  }
+  return obj
+}

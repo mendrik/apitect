@@ -16,7 +16,7 @@ import { User } from '../types/user'
 import { extractId } from '../utils/id'
 import { documentRef, userRef } from '../utils/reference'
 import { config } from './config'
-import { collection } from './database'
+import { collection, withTransaction } from './database'
 import { body, coll, endpoint, noContent, user } from './endpoint'
 
 const pHashSync = promiseFn(hashSync)
@@ -34,26 +34,28 @@ const refreshToken = async (user: WithId<User>): Promise<Token> => {
 
 const register = endpoint(
   { register: body(TRegister), users: coll('users'), docs: coll('documents') },
-  async ({ register, users, docs }) => {
-    users
-      .findOne({ email: register.email })
-      .then(failUnless(isNil, httpError(409, 'validation.server.userExists', 'email')))
-    if (register.passwordRepeat !== register.password) {
-      throw httpError(400, 'validation.server.passwordMustMatch', 'passwordRepeat')
-    }
-    const data = pipe(
-      assoc('password', hashSync(register.password, config.SALT)),
-      dissoc('passwordRepeat')
-    )(register)
-    const docId = new ObjectId()
-    const userId = new ObjectId()
-    const token = {
-      token: signedToken({ id: userId.toHexString(), email: data.email, name: data.name })
-    }
-    await users.insertOne({ _id: userId, ...data, lastDocument: documentRef(docId) })
-    await docs.insertOne({ name: 'Unknown document', owner: userRef(userId) })
-    return token
-  }
+  ({ register, users, docs }) =>
+    withTransaction(async session => {
+      await users
+        .findOne({ email: register.email })
+        .then(failUnless(isNil, httpError(409, 'validation.server.userExists', 'email')))
+      if (register.passwordRepeat !== register.password) {
+        throw httpError(400, 'validation.server.passwordMustMatch', 'passwordRepeat')
+      }
+      const data = pipe(
+        assoc('password', hashSync(register.password, config.SALT)),
+        dissoc('passwordRepeat')
+      )(register)
+      const docId = new ObjectId()
+      const userId = new ObjectId()
+      const token = {
+        token: signedToken({ id: userId.toHexString(), email: data.email, name: data.name })
+      }
+      await users.insertOne({ _id: userId, ...data, lastDocument: documentRef(docId) }, { session })
+      await docs.insertOne({ name: 'Unknown document', owner: userRef(userId) }, { session })
+      throw Error('x')
+      // return token
+    })
 )
 
 const login = endpoint(

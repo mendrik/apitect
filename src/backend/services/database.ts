@@ -1,9 +1,17 @@
-import { Collection as CollectionType, Db, MongoClient } from 'mongodb'
+import {
+  ClientSession,
+  Collection as CollectionType,
+  MongoClient,
+  TransactionOptions
+} from 'mongodb'
 
+import { ensure } from '../../shared/utils/ramda'
 import { Document } from '../types/document'
 import { User } from '../types/user'
 import { config } from './config'
 import { serverState } from './serverState'
+
+const dbName = 'apitect'
 
 export enum Collections {
   users = 'users',
@@ -15,21 +23,32 @@ export type CollectionMap = {
   documents: Document
 }
 
-export const connect = async (): Promise<Db> => {
-  const uri = `mongodb://${config.DB_USER}:${config.DB_PASS}@${config.DB_HOST}:${config.DB_PORT}/${config.DB_NAME}`
-  console.log(`Connecting to database: ${uri}`)
-  const client = new MongoClient(uri)
+export const connect = async (): Promise<MongoClient> => {
+  console.log(`Connecting to database: ${config.DATABASE}`)
+  const client = new MongoClient(`${config.DATABASE}`)
   await client.connect()
   console.log(`Successfully connected to database`)
-  return client.db(process.env.DB_NAME)
+  const db = client.db(dbName)
+  await db.collection('users').createIndex({ email: 1 }, { unique: true })
+  return client
 }
 
 export const collection: (
   name: keyof CollectionMap & string
 ) => CollectionType<CollectionMap[typeof name]> = name => {
-  const db = serverState.getState().database
-  if (db == null) {
-    throw Error('Database not found')
+  const client = ensure(serverState.getState().database)
+  return client.db(dbName).collection(name)
+}
+
+export const withTransaction = async <T>(
+  fn: (session: ClientSession) => Promise<T>,
+  opt?: TransactionOptions
+) => {
+  const client = ensure(serverState.getState().database)
+  const session = client.startSession()
+  try {
+    return await session.withTransaction(fn, opt)
+  } finally {
+    await session.endSession()
   }
-  return db.collection(name)
 }

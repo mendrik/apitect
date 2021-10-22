@@ -1,14 +1,26 @@
-version: '3.7'
 services:
-  database:
-    image: mongo:latest
-    container_name: mongodb
+  mongo1:
+    build: './db'
+    ports:
+      - 27017:27017
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root42
       MONGO_INITDB_DATABASE: apitect
-    ports:
-      - 27017:27017
+      MONGO_REPLICA_SET_NAME: rs0
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--keyFile", "/data/mongo.key" ]
     volumes:
-        - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  mongo2:
+    build: './db'
+    ports:
+      - 27018:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--keyFile", "/data/mongo.key" ]
+  mongo3:
+    build: './db'
+    ports:
+      - 27019:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--keyFile", "/data/mongo.key" ]

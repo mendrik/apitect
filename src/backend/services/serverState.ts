@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore, Event } from 'effector'
-import { Db, ObjectId } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import { isNil } from 'ramda'
 
 import { Maybe } from '../../shared/types/generic'
@@ -21,7 +21,7 @@ export type EventMap = {
 }
 
 type ServerState = {
-  database: Maybe<Db>
+  database: Maybe<MongoClient>
 }
 
 export const eventMap: EventMap = {

@@ -1,9 +1,4 @@
 PORT = 3001
 TOKEN_KEY = "%4pYQk^7J*#&Za"
 SALT = "$2a$10$HNubR6xyZTcIgXefN1QCue"
-DB_USER = "apitect"
-DB_PASS = "apitect42"
-
-DB_NAME = "apitect"
-DB_HOST = "localhost"
-DB_PORT = 27017
+DATABASE = "mongodb://localhost:27017,localhost:27018,localhost:27019/apitect?replicaSet=rs0"
