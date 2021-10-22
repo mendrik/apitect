@@ -28,7 +28,7 @@ const signedToken = ({ id, email, name }: Record<string, string>) =>
 
 const refreshToken = async (user: WithId<User>): Promise<Token> => {
   const token = signedToken({ id: user._id.toHexString(), email: user.email, name: user.name })
-  await collection('users').updateOne(user._id, { token })
+  await collection('users').updateOne({ _id: user._id }, { $set: { token } })
   return { token }
 }
 
