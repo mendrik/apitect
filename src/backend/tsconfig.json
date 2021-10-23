@@ -1,0 +1,28 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": [
+      "esnext"
+    ],
+    "paths": {
+      "@codecs/*": [
+        "../shared/codecs/*"
+      ],
+      "@ui/*": [
+        "../shared/types/*"
+      ],
+      "@utils/*": [
+        "../shared/utils/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../type-patches"
+    },
+    {
+      "path": "../shared"
+    }
+  ]
+}

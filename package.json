@@ -7,14 +7,15 @@
     "database": "docker-compose up",
     "all:start": "npm-run-all --parallel start-ui start-server",
     "server:start": "tsnd --respawn -P tsconfig.server.json src/backend/server.ts",
-    "ui:start": "react-scripts start",
-    "ui:build": "react-scripts build",
-    "test": "react-scripts test",
+    "ui:start": "craco start",
+    "ui:build": "craco build",
+    "test": "craco test",
     "lint": "eslint --fix src/**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
+    "@craco/craco": "^6.3.0",
     "@hookform/resolvers": "^2.8.1",
     "ansicolor": "^1.1.95",
     "bcryptjs": "^2.4.3",

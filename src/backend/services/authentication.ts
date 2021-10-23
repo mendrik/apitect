@@ -1,18 +1,19 @@
+import { decode } from '@codecs/decode'
+import { TUiUser, UiUser } from '@ui/domain/user'
+import { TForgotPassword } from '@ui/forms/forgotPassword'
+import { TLogin } from '@ui/forms/login'
+import { TRegister } from '@ui/forms/register'
+import { httpError } from '@ui/httpError'
+import { Token } from '@ui/response/token'
+import { failOn, failUnless } from '@utils/failOn'
+import { promiseFn } from '@utils/promise'
+import { id } from '@utils/rename'
 import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { sign } from 'jsonwebtoken'
 import { ObjectId, WithId } from 'mongodb'
 import { assoc, dissoc, isNil, pipe, propEq } from 'ramda'
 
-import { decode } from '@codecs/decode'
-import { httpError } from '@ui/httpError'
-import { TUiUser, UiUser } from '@ui/domain/user'
-import { TForgotPassword } from '@ui/forms/forgotPassword'
-import { TLogin } from '@ui/forms/login'
-import { TRegister } from '@ui/forms/register'
-import { Token } from '@ui/response/token'
-import { failOn, failUnless } from '@utils/failOn'
-import { promiseFn } from '@utils/promise'
 import { User } from '../types/user'
 import { config } from './config'
 import { collection, withTransaction } from './database'
@@ -89,7 +90,7 @@ const logout = endpoint({ user }, ({ user }) =>
     .then(noContent)
 )
 
-const whomAmI = endpoint({ user }, async ({ user }): Promise<UiUser> => decode(TUiUser)((user))
+const whomAmI = endpoint({ user }, async ({ user }): Promise<UiUser> => decode(TUiUser)(id(user)))
 
 export const initAuthentication = (fastify: FastifyInstance) => {
   fastify.post('/register', {}, register)

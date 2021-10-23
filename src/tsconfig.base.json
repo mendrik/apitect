@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "esnext"
-    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -15,15 +12,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
-  },
-  "include": [
-    "src/shared",
-    "src/backend"
-  ],
-  "exclude": [
-    "src/index.tsx",
-    "src/frontend/**/*",
-    "node_modules"
-  ]
+    "noEmit": true,
+    "composite": true
+  }
 }

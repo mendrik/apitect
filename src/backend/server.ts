@@ -1,9 +1,9 @@
-import { ServerMessage } from '@ui/messages'
 import { logger } from '@utils/logger'
 import Fastify from 'fastify'
 import Cors from 'fastify-cors'
 import Ws from 'fastify-websocket'
 
+import { ServerMessage } from '../shared/types/messages'
 import { initAuthentication } from './services/authentication'
 import { config } from './services/config'
 import { initDatabase } from './services/serverState'
