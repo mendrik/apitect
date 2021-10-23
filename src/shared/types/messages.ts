@@ -1,7 +1,7 @@
+import { decode } from '@codecs/decode'
 import * as t from 'io-ts'
 import { propOr } from 'ramda'
 
-import { decode } from '../codecs/decode'
 import { TUiDocument } from './domain/document'
 
 const DocumentRequest = t.type({

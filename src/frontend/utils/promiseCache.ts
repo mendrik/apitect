@@ -1,6 +1,5 @@
+import { Fn } from '@ui/generic'
 import S from 'sherlockjs'
-
-import { Fn } from '../../shared/types/generic'
 
 type TimeStamp = number
 type Duration = number

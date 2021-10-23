@@ -1,3 +1,4 @@
+import { addParams } from '@utils/url'
 import { useStore } from 'effector-react'
 import React, { FC, useContext } from 'react'
 import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap'
@@ -5,7 +6,6 @@ import { LogIn } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { addParams } from '../../shared/utils/url'
 import { ReactComponent as Logo } from '../assets/logo.svg'
 import { userContext } from '../contexts/user'
 import { useLogout } from '../hooks/useLogout'

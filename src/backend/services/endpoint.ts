@@ -1,3 +1,9 @@
+import { decode, DecodingError } from '@codecs/decode'
+import { Fn } from '@ui/generic'
+import { httpError, HttpError } from '@ui/httpError'
+import { failOn } from '@utils/failOn'
+import { logger } from '@utils/logger'
+import { Promised, resolvePromised } from '@utils/promise'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import * as t from 'io-ts'
@@ -6,12 +12,6 @@ import { ObjectId, WithId } from 'mongodb'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 import { promisify } from 'util'
 
-import { decode, DecodingError } from '../../shared/codecs/decode'
-import { httpError, HttpError } from '../../shared/types/HttpError'
-import { Fn } from '../../shared/types/generic'
-import { failOn } from '../../shared/utils/failOn'
-import { logger } from '../../shared/utils/logger'
-import { Promised, resolvePromised } from '../../shared/utils/promise'
 import { User } from '../types/user'
 import { config } from './config'
 import { collection } from './database'
@@ -41,7 +41,7 @@ export const header =
 
 export const user = (req: FastifyRequest): Promise<WithId<User>> =>
   verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`)
-    .then(({ id }) => collection('users').findOne(ObjectId.createFromHexString(id)))
+    .then(({ id }) => collection('users').findOne(new ObjectId(id)))
     .then(failOn<WithId<User>>(isNil, httpError(403, 'User not found')))
     .catch(e => {
       throw httpError(403, `Unauthorized: ${e.message}`)
@@ -88,10 +88,7 @@ export const endpoint =
         return dependencyName
       }, dependencies)
       const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
-      return resolvePromised(resObj)
-        .then(res => body(res))
-        .then(OK(reply))
-        .catch(handleError(reply))
+      return resolvePromised(resObj).then(body).then(OK(reply)).catch(handleError(reply))
     } catch (e) {
       handleError(reply)(e as Error)
     }

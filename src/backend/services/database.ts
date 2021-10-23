@@ -1,3 +1,4 @@
+import { ensure } from '@utils/ramda'
 import {
   ClientSession,
   Collection as CollectionType,
@@ -6,7 +7,6 @@ import {
 } from 'mongodb'
 import { keys, pluck } from 'ramda'
 
-import { ensure } from '../../shared/utils/ramda'
 import { Document } from '../types/document'
 import { User } from '../types/user'
 import { config } from './config'

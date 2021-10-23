@@ -1,3 +1,4 @@
+import { Fn, Maybe } from '@ui/generic'
 import {
   always,
   assoc,
@@ -14,8 +15,6 @@ import {
   toUpper,
   tryCatch
 } from 'ramda'
-
-import { Fn, Maybe } from '../types/generic'
 
 export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]))
 

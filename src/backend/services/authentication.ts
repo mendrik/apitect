@@ -4,16 +4,16 @@ import { sign } from 'jsonwebtoken'
 import { ObjectId, WithId } from 'mongodb'
 import { assoc, dissoc, isNil, pipe, propEq } from 'ramda'
 
-import { httpError } from '../../shared/types/HttpError'
-import { UiUser } from '../../shared/types/domain/user'
-import { TForgotPassword } from '../../shared/types/forms/forgotPassword'
-import { TLogin } from '../../shared/types/forms/login'
-import { TRegister } from '../../shared/types/forms/register'
-import { Token } from '../../shared/types/response/token'
-import { failOn, failUnless } from '../../shared/utils/failOn'
-import { promiseFn } from '../../shared/utils/promise'
+import { decode } from '@codecs/decode'
+import { httpError } from '@ui/httpError'
+import { TUiUser, UiUser } from '@ui/domain/user'
+import { TForgotPassword } from '@ui/forms/forgotPassword'
+import { TLogin } from '@ui/forms/login'
+import { TRegister } from '@ui/forms/register'
+import { Token } from '@ui/response/token'
+import { failOn, failUnless } from '@utils/failOn'
+import { promiseFn } from '@utils/promise'
 import { User } from '../types/user'
-import { extractId } from '../utils/id'
 import { config } from './config'
 import { collection, withTransaction } from './database'
 import { body, endpoint, noContent, user } from './endpoint'
@@ -89,15 +89,7 @@ const logout = endpoint({ user }, ({ user }) =>
     .then(noContent)
 )
 
-const whomAmI = endpoint(
-  { user },
-  async ({ user }): Promise<UiUser> => ({
-    name: user.name,
-    email: user.email,
-    id: extractId(user),
-    lastDocument: user.lastDocument.toHexString()
-  })
-)
+const whomAmI = endpoint({ user }, async ({ user }): Promise<UiUser> => decode(TUiUser)((user))
 
 export const initAuthentication = (fastify: FastifyInstance) => {
   fastify.post('/register', {}, register)

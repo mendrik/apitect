@@ -1,6 +1,6 @@
+import { Fn } from '@ui/generic'
 import { useContext } from 'react'
 
-import { Fn } from '../../shared/types/generic'
 import { userContext } from '../contexts/user'
 import { messageReceived } from '../events/messages'
 import { logout } from '../utils/api'

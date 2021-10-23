@@ -1,10 +1,12 @@
 import * as t from 'io-ts'
 
-const isId = (i: any): i is any => 'toHexString' in i
+type Hex = { toHexString: () => string }
+const isId = (i: any): i is Hex =>
+  i != null && 'toHexString' in i && typeof i.toHexString === 'function'
 
 export const hexString = new t.Type<string>(
   'objectId',
-  isId,
+  isId as any,
   (input, context) => (isId(input) ? t.success(input.toHexString()) : t.failure(input, context)),
   () => 'not supported'
 )

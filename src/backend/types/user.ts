@@ -1,8 +1,8 @@
+import { emailCodec } from '@codecs/emailCodec'
+import { nonEmptyString } from '@codecs/nonEmptyString'
+import { passwordString } from '@codecs/passwordString'
 import * as t from 'io-ts'
 
-import { emailCodec } from '../../shared/codecs/emailCodec'
-import { nonEmptyString } from '../../shared/codecs/nonEmptyString'
-import { passwordString } from '../../shared/codecs/passwordString'
 import { idCodec } from '../utils/idCodec'
 
 export const TUser = t.type({

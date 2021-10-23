@@ -1,6 +1,5 @@
+import { hexString } from '@codecs/hexString'
 import * as t from 'io-ts'
-
-import { hexString } from '../../codecs/hexString'
 
 export const TUiDocument = t.exact(
   t.type({

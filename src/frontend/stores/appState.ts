@@ -1,7 +1,7 @@
+import { UiDocument } from '@ui/domain/document'
+import { Maybe } from '@ui/generic'
 import { createStore } from 'effector'
 
-import { UiDocument } from '../../shared/types/domain/document'
-import { Maybe } from '../../shared/types/generic'
 import { messageReceived } from '../events/messages'
 
 type AppState = {

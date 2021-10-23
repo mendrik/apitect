@@ -1,8 +1,7 @@
+import { addParams } from '@utils/url'
 import clsx from 'clsx'
 import React, { FC } from 'react'
 import { Link, LinkProps } from 'react-router-dom'
-
-import { addParams } from '../../../shared/utils/url'
 
 type OwnProps = {
   modal: string

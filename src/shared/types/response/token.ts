@@ -1,6 +1,5 @@
+import { nullable } from '@codecs/nullable'
 import * as t from 'io-ts'
-
-import { nullable } from '../../codecs/nullable'
 
 export const TToken = t.type({
   token: nullable(t.string)

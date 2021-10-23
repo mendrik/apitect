@@ -1,10 +1,10 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
+import { Register, TRegister } from '@ui/forms/register'
 import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import { Register, TRegister } from '../../../shared/types/forms/register'
 import { userContext } from '../../contexts/user'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { Form } from '../../forms/Form'

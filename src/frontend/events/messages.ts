@@ -1,5 +1,4 @@
+import { ServerMessage } from '@ui/messages'
 import { createEvent } from 'effector'
-
-import { ServerMessage } from '../../shared/types/messages'
 
 export const messageReceived = createEvent<ServerMessage>()
