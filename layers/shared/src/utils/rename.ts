@@ -1,4 +1,4 @@
-import { assoc, keys, pickAll, reduce } from 'ramda'
+import { assoc, converge, keys, mergeDeepRight, omit, pickAll, reduce } from 'ramda'
 
 export type PickRenameMulti<
   R extends { [K: string]: string },
@@ -16,4 +16,4 @@ export const renameProps =
       keys(pickAll(keys(keysMap) as any, obj))
     ) as any
 
-export const id = renameProps({ _id: 'id' } as const)
+export const id = converge(mergeDeepRight, [renameProps({ _id: 'id' } as const), omit(['_id'])])
