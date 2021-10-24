@@ -6,8 +6,8 @@ import { initAuthentication } from './services/authentication'
 import { config } from './services/config'
 import { initDatabase } from './services/serverState'
 import { initWebsocket } from './services/websocket'
-import { ServerMessage } from '../../shared/src/types/messages'
-import { logger } from '../../shared/src/utils/logger'
+import { ServerMessage } from '@shared/types/messages'
+import { logger } from '@shared/utils/logger'
 
 const fastify = Fastify({ logger: true })
 fastify.register(Ws)

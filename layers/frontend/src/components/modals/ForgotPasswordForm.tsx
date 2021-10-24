@@ -1,5 +1,4 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
-import { ForgotPassword, TForgotPassword } from '@ui/forms/forgotPassword'
 import React from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
@@ -15,6 +14,7 @@ import { useServerError } from '../../hooks/useServerError'
 import { forgotPassword } from '../../utils/api'
 import { ModalFC } from '../LazyModal'
 import { SuccessView } from '../SuccessView'
+import { ForgotPassword, TForgotPassword } from '@ui-types/forms/forgotPassword'
 
 const ForgotPasswordForm: ModalFC = ({ close }) => {
   const { t } = useTranslation()

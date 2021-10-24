@@ -9,12 +9,12 @@ import { promisify } from 'util'
 import { User } from '../types/user'
 import { config } from './config'
 import { collection } from './database'
-import { Fn } from '../../../shared/src/types/generic'
-import { decode, DecodingError } from '../../../shared/src/codecs/decode'
-import { HttpError, httpError } from '../../../shared/src/types/httpError'
-import { logger } from '../../../shared/src/utils/logger'
-import { Promised, resolvePromised } from '../../../shared/src/utils/promise'
-import { failOn } from '../../../shared/src/utils/failOn'
+import { Fn } from '@shared/types/generic'
+import { decode, DecodingError } from '@shared/codecs/decode'
+import { HttpError, httpError } from '@shared/types/httpError'
+import { logger } from '@shared/utils/logger'
+import { Promised, resolvePromised } from '@shared/utils/promise'
+import { failOn } from '@shared/utils/failOn'
 
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
 

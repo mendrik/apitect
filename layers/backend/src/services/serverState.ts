@@ -5,11 +5,11 @@ import { isNil } from 'ramda'
 import { Send } from '../server'
 import { User } from '../types/user'
 import { collection, connect } from './database'
-import { ClientMessage, wrapServerMessage } from '../../../shared/src/types/messages'
-import { Maybe } from '../../../shared/src/types/generic'
-import { failOn } from '../../../shared/src/utils/failOn'
-import { TUiDocument } from '../../../shared/src/types/domain/document'
-import { field } from '../../../shared/src/utils/ramda'
+import { ClientMessage, wrapServerMessage } from '@shared/types/messages'
+import { Maybe } from '@shared/types/generic'
+import { failOn } from '@shared/utils/failOn'
+import { TUiDocument } from '@shared/types/domain/document'
+import { field } from '@shared/utils/ramda'
 
 export type Payload<K extends ClientMessage['type']> = {
   message: Extract<ClientMessage, { type: K }>

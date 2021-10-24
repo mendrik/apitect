@@ -1,6 +1,4 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
-import { Login, TLogin } from '@ui/forms/login'
-import { Fn } from '@ui/generic'
 import React, { FC, useContext, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
@@ -17,6 +15,8 @@ import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
 import { login } from '../../utils/api'
 import ForgotPasswordForm from '../modals/ForgotPasswordForm'
+import { Fn } from '@shared/types/generic'
+import { Login, TLogin } from '@shared/types/forms/login'
 
 type OwnProps = {
   close: Fn

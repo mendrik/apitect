@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "create-react start",
-    "build": "create-react build",
-    "test": "create-react test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "lint": "eslint --fix src/**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix"
   },

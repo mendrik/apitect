@@ -1,17 +1,17 @@
-import { decode } from '@codecs/decode'
-import { TUiUser } from '@ui/domain/user'
-import { TEmpty } from '@ui/empty'
-import { ForgotPassword } from '@ui/forms/forgotPassword'
-import { Login } from '@ui/forms/login'
-import { Register } from '@ui/forms/register'
-import { TToken } from '@ui/response/token'
-import { failOn } from '@utils/failOn'
-import { safeParse, satiated } from '@utils/ramda'
 import { Any, OutputOf } from 'io-ts'
 import { always } from 'ramda'
 
 import { fetchError, FetchError } from './fetchError'
 import { PromiseCache } from './promiseCache'
+import { safeParse, satiated } from '@shared/utils/ramda'
+import { failOn } from '@shared/utils/failOn'
+import { decode } from '@shared/codecs/decode'
+import { Login } from '@shared/types/forms/login'
+import { TToken } from '@shared/types/response/token'
+import { ForgotPassword } from '@shared/types/forms/forgotPassword'
+import { TEmpty } from '@shared/types/empty'
+import { Register } from '@shared/types/forms/register'
+import { TUiUser } from '@shared/types/domain/user'
 
 export const apiUrl = (url: string) => `http://localhost:3001/${url}`
 

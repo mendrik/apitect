@@ -1,4 +1,3 @@
-import { addParams } from '@utils/url'
 import { useStore } from 'effector-react'
 import React, { FC, useContext } from 'react'
 import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap'
@@ -10,6 +9,7 @@ import { ReactComponent as Logo } from '../assets/logo.svg'
 import { userContext } from '../contexts/user'
 import { useLogout } from '../hooks/useLogout'
 import appState from '../stores/appState'
+import { addParams } from '@shared/utils/url'
 
 export const Navigation: FC = () => {
   const { t } = useTranslation()
