@@ -1,11 +1,16 @@
-import { ClientSession, Collection as CollectionType, MongoClient, TransactionOptions } from 'mongodb'
+import {
+  ClientSession,
+  Collection as CollectionType,
+  MongoClient,
+  TransactionOptions
+} from 'mongodb'
 import { keys, pluck } from 'ramda'
+import { ensure } from '~shared/utils/ramda'
 
 import { Document } from '../types/document'
 import { User } from '../types/user'
 import { config } from './config'
 import { serverState } from './serverState'
-import { ensure } from '../shared/utils/ramda'
 
 const dbName = `${config.MONGO_INITDB_DATABASE}`
 

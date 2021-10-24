@@ -6,7 +6,7 @@
     "database": "docker-compose up",
     "start": "tsnd --respawn src/server.ts",
     "test": "jest",
-    "lint": "eslint --fix src/**/*.{ts,tsx}",
+    "lint": "eslint \"src/**/*.ts\" \"../shared/src/*.ts\"",
     "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-import { ObjectId } from 'bson'
+import { ObjectId } from 'mongodb'
 
 describe('idCodec', () => {
   it('validates', () => {

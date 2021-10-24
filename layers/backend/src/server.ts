@@ -1,13 +1,13 @@
 import Fastify from 'fastify'
 import Cors from 'fastify-cors'
 import Ws from 'fastify-websocket'
+import { ServerMessage } from '~shared/types/messages'
+import { logger } from '~shared/utils/logger'
 
 import { initAuthentication } from './services/authentication'
 import { config } from './services/config'
 import { initDatabase } from './services/serverState'
 import { initWebsocket } from './services/websocket'
-import { ServerMessage } from './shared/types/messages'
-import { logger } from './shared/utils/logger'
 
 const fastify = Fastify({ logger: true })
 fastify.register(Ws)

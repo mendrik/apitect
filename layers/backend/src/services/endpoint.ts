@@ -5,16 +5,16 @@ import { verify } from 'jsonwebtoken'
 import { ObjectId, WithId } from 'mongodb'
 import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
 import { promisify } from 'util'
+import { decode, DecodingError } from '~shared/codecs/decode'
+import { Fn } from '~shared/types/generic'
+import { HttpError, httpError } from '~shared/types/httpError'
+import { failOn } from '~shared/utils/failOn'
+import { logger } from '~shared/utils/logger'
+import { Promised, resolvePromised } from '~shared/utils/promise'
 
 import { User } from '../types/user'
 import { config } from './config'
 import { collection } from './database'
-import { decode, DecodingError } from '../shared/codecs/decode'
-import { Fn } from '../shared/types/generic'
-import { failOn } from '../shared/utils/failOn'
-import { HttpError, httpError } from '../shared/types/httpError'
-import { logger } from '../shared/utils/logger'
-import { Promised, resolvePromised } from '../shared/utils/promise'
 
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
 
@@ -91,5 +91,6 @@ export const endpoint =
       return resolvePromised(resObj).then(body).then(OK(reply)).catch(handleError(reply))
     } catch (e) {
       handleError(reply)(e as Error)
+      return void 0
     }
   }

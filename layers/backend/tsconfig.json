@@ -5,10 +5,16 @@
     "traceResolution": true,
     "lib": [
       "esnext"
-    ]
+    ],
+    "paths": {
+      "~shared/*": [
+        "../shared/src/*"
+      ]
+    }
   },
   "include": [
-    "src"
+    "src",
+    "../shared/src"
   ],
   "exclude": [
     "node_modules"
