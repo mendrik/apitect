@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Register, TRegister } from '~shared/types/forms/register'
+import { Register, TRegister } from 'shared/types/forms/register'
 
 import { userContext } from '../../contexts/user'
 import { ButtonRow } from '../../forms/ButtonRow'

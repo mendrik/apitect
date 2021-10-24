@@ -1,4 +1,5 @@
 import * as t from 'io-ts'
+
 import { emailCodec } from '../../codecs/emailCodec'
 import { nonEmptyString } from '../../codecs/nonEmptyString'
 

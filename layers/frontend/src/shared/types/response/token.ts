@@ -1,4 +1,5 @@
 import * as t from 'io-ts'
+
 import { nullable } from '../../codecs/nullable'
 
 export const TToken = t.type({

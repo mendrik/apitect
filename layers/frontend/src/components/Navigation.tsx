@@ -4,7 +4,7 @@ import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { LogIn } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { addParams } from '~shared/utils/url'
+import { addParams } from 'shared/utils/url'
 
 import { ReactComponent as Logo } from '../assets/logo.svg'
 import { userContext } from '../contexts/user'

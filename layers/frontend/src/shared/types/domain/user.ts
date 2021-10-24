@@ -1,7 +1,8 @@
 import * as t from 'io-ts'
-import { nonEmptyString } from '../../codecs/nonEmptyString'
+
 import { emailCodec } from '../../codecs/emailCodec'
 import { hexString } from '../../codecs/hexString'
+import { nonEmptyString } from '../../codecs/nonEmptyString'
 
 export const TUiUser = t.exact(
   t.type({

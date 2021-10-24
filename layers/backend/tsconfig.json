@@ -8,13 +8,13 @@
     ],
     "paths": {
       "~shared/*": [
-        "../shared/src/*"
+        "../frontend/src/shared/*"
       ]
     }
   },
   "include": [
     "src",
-    "../shared/src"
+    "../frontend/src/shared"
   ],
   "exclude": [
     "node_modules"

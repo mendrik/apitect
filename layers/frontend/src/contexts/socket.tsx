@@ -1,6 +1,6 @@
 import React, { createContext, FC, useCallback, useContext, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
-import { ClientMessage } from '~shared/types/messages'
+import { ClientMessage } from 'shared/types/messages'
 
 import { messageReceived } from '../events/messages'
 import { userContext } from './user'

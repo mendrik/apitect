@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "lint": "eslint --fix src/**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix"
   },
@@ -17,7 +17,6 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.1.1",
     "clsx": "^1.1.1",
-    "craco": "^0.0.3",
     "date-fns": "^2.18.0",
     "dotenv": "^10.0.0",
     "effector": "22.1.2",

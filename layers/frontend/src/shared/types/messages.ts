@@ -1,8 +1,8 @@
 import * as t from 'io-ts'
 import { propOr } from 'ramda'
 
-import { TUiDocument } from './domain/document'
 import { decode } from '../codecs/decode'
+import { TUiDocument } from './domain/document'
 
 const DocumentRequest = t.type({
   type: t.literal('DOCUMENT')

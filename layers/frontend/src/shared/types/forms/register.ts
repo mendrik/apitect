@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
-import { nonEmptyString } from '../../codecs/nonEmptyString'
+
 import { emailCodec } from '../../codecs/emailCodec'
+import { nonEmptyString } from '../../codecs/nonEmptyString'
 import { passwordString } from '../../codecs/passwordString'
 
 export const TRegister = t.type({

@@ -1,7 +1,7 @@
 import React, { createContext, FC } from 'react'
+import { UiUser } from 'shared/types/domain/user'
+import { Maybe } from 'shared/types/generic'
 import { useLocalStorage } from 'usehooks-ts'
-import { UiUser } from '~shared/types/domain/user'
-import { Maybe } from '~shared/types/generic'
 
 import useInstantPromise from '../hooks/useInstantPromise'
 import { State } from '../hooks/usePromise'
