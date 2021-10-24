@@ -1,0 +1,28 @@
+import { createStore } from 'effector'
+
+import { messageReceived } from '../events/messages'
+import { Maybe } from '@shared/types/generic'
+import { UiDocument } from '@shared/types/domain/document'
+
+type AppState = {
+  document: Maybe<UiDocument>
+}
+
+const initial: AppState = {
+  document: null
+}
+
+const appState = createStore<AppState>(initial)
+
+appState.on(messageReceived, (state, message) => {
+  switch (message.type) {
+    case 'DOCUMENT':
+      return { ...state, document: message.payload }
+    case 'RESET':
+      return initial
+    default:
+      return state
+  }
+})
+
+export default appState
