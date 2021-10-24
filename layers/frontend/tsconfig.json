@@ -1,0 +1,30 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "paths": {
+      "@codecs/*": [
+        "../shared/src/codecs/*"
+      ],
+      "@ui/*": [
+        "../shared/src/types/*"
+      ],
+      "@utils/*": [
+        "../shared/src/utils/*"
+      ]
+    }
+  },
+  "include": [
+    "./src",
+    "../shared/src/**/*"
+  ],
+  "exclude": [
+    "./node_modules"
+  ]
+}
