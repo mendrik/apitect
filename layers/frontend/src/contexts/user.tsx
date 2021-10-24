@@ -27,9 +27,6 @@ export const WithUser: FC = ({ children }) => {
   if (state.error) {
     throw Error('Failed to load user')
   }
-  if (state.status === 'running') {
-    throw Promise.resolve('Loading user')
-  }
 
   return (
     <userContext.Provider
