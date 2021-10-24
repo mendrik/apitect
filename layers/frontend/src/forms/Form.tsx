@@ -1,10 +1,10 @@
 import { identity } from 'ramda'
 import React, { createContext, FC } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
+import { Fn, Maybe } from '~shared/types/generic'
 
 import { ExtendedError, State } from '../hooks/usePromise'
 import { useServerError } from '../hooks/useServerError'
-import { Fn, Maybe } from '../shared/types/generic'
 
 type OwnProps<T> = {
   form: UseFormReturn<T>

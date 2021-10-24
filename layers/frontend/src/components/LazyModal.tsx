@@ -3,11 +3,11 @@ import React, { FC, useCallback, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { Fn } from '~shared/types/generic'
+import { removeParams } from '~shared/utils/url'
 
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
-import { Fn } from '../shared/types/generic'
-import { removeParams } from '../shared/utils/url'
 
 export type ModalFC = FC<{
   close: Fn

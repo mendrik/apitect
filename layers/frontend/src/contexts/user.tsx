@@ -1,11 +1,11 @@
 import React, { createContext, FC } from 'react'
 import { useLocalStorage } from 'usehooks-ts'
+import { UiUser } from '~shared/types/domain/user'
+import { Maybe } from '~shared/types/generic'
 
 import useInstantPromise from '../hooks/useInstantPromise'
 import { State } from '../hooks/usePromise'
 import { whoAmI } from '../utils/api'
-import { Maybe } from '../shared/types/generic'
-import { UiUser } from '../shared/types/domain/user'
 
 export type UserContext = {
   jwt: Maybe<string>

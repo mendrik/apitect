@@ -4,6 +4,8 @@ import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { match } from 'ts-pattern'
+import { Login, TLogin } from '~shared/types/forms/login'
+import { Fn } from '~shared/types/generic'
 
 import { userContext } from '../../contexts/user'
 import { ButtonRow } from '../../forms/ButtonRow'
@@ -15,8 +17,6 @@ import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
 import { login } from '../../utils/api'
 import ForgotPasswordForm from '../modals/ForgotPasswordForm'
-import { Fn } from '../../shared/types/generic'
-import { Login, TLogin } from '../../shared/types/forms/login'
 
 type OwnProps = {
   close: Fn

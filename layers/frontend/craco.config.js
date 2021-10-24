@@ -1,0 +1,36 @@
+const CracoAlias = require('craco-alias')
+
+module.exports = {
+  eslint: {
+    enable: false
+  },
+  webpack: {
+    configure: webpackConfig => ({
+      ...webpackConfig,
+      module: {
+        ...webpackConfig.module,
+        rules: webpackConfig.module.rules.map(rule => {
+          if (!rule.oneOf) return rule
+          return {
+            ...rule,
+            oneOf: rule.oneOf.map(ruleObject => {
+              if (!new RegExp(ruleObject.test).test('.ts') || !ruleObject.include) return ruleObject
+              return { ...ruleObject, include: undefined }
+            })
+          }
+        })
+      }
+    })
+  },
+  plugins: [
+    {
+      plugin: CracoAlias,
+      options: {
+        source: 'tsconfig',
+        baseUrl: './',
+        tsConfigPath: './tsconfig.paths.json',
+        unsafeAllowModulesOutsideOfSrc: true
+      }
+    }
+  ]
+}

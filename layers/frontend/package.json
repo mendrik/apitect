@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "lint": "eslint --fix src/**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix"
   },
@@ -17,6 +17,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.1.1",
     "clsx": "^1.1.1",
+    "craco": "^0.0.3",
     "date-fns": "^2.18.0",
     "dotenv": "^10.0.0",
     "effector": "22.1.2",
@@ -87,6 +88,7 @@
     "@types/uuid": "^8.3.1",
     "@types/validator": "^13.6.3",
     "@types/ws": "^7.4.7",
+    "craco-alias": "^3.0.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "eslint-config-prettier": "^8.3.0",
