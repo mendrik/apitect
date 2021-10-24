@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "traceResolution": true,
+    "rootDirs": [".", "../shared"],
     "lib": [
       "esnext"
     ],

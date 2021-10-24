@@ -3,12 +3,11 @@ import * as t from 'io-ts'
 import { OutputOf } from 'io-ts'
 import { withValidate } from 'io-ts-types'
 import { last } from 'ramda'
-import { TFuncKey } from 'react-i18next'
 
 export const validationCodec = <C extends t.Any>(
   codec: C,
   validate: (d: OutputOf<C>) => boolean,
-  message?: TFuncKey
+  message?: string
 ): C =>
   withValidate<t.TypeOf<C>>(codec, (input: OutputOf<C>, ctx: t.Context) => {
     const validation = codec.validate(input, ctx)

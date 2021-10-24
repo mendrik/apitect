@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "database": "docker-compose up",
-    "start": "tsnd --respawn src/server.ts",
+    "start": "tsnd --respawn -r tsconfig-paths/register src/server.ts",
     "test": "jest",
     "lint": "eslint \"src/**/*.ts\" \"../shared/src/*.ts\"",
     "lint:fix": "npm run lint -- --fix"
@@ -12,12 +12,10 @@
   "dependencies": {
     "ansicolor": "^1.1.95",
     "bcryptjs": "^2.4.3",
-    "bootstrap": "^5.1.1",
     "clsx": "^1.1.1",
     "date-fns": "^2.18.0",
     "dotenv": "^10.0.0",
     "effector": "22.1.2",
-    "effector-react": "^22.0.4",
     "fastify": "^3.21.6",
     "fastify-cors": "^6.0.2",
     "fastify-websocket": "^4.0.0",
@@ -34,14 +32,10 @@
     "sherlockjs": "^1.4.2",
     "shrink-json": "^0.1.6",
     "ts-pattern": "^3.3.3",
-    "usehooks-ts": "^1.0.1",
     "uuid": "^8.3.2",
     "validator": "^13.6.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
     "@trivago/prettier-plugin-sort-imports": "^2.0.4",
     "@types/bcryptjs": "^2.4.2",
     "@types/history": "^4.7.9",
@@ -53,13 +47,13 @@
     "@types/validator": "^13.6.3",
     "@types/ws": "^7.4.7",
     "eslint": "^7.32.0",
-    "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.4.1",
     "source-map-explorer": "^2.5.2",
     "ts-node-dev": "^1.1.8",
     "tsc-watch": "^4.5.0",
+    "tsconfig-paths": "^3.11.0",
     "typescript": "^4.4.3"
   }
 }
