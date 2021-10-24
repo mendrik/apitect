@@ -7,6 +7,11 @@ const isId = (i: any): i is Hex =>
 export const hexString = new t.Type<string>(
   'objectId',
   isId as any,
-  (input, context) => (isId(input) ? t.success(input.toHexString()) : t.failure(input, context)),
+  (input, context) => {
+    if (typeof input === 'string') {
+      return t.success(input)
+    }
+    return isId(input) ? t.success(input.toHexString()) : t.failure(input, context)
+  },
   () => 'not supported'
 )

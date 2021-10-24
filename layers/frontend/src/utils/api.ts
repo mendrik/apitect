@@ -46,4 +46,8 @@ export const login = (data: Login) => post('login', TToken, data)
 export const forgotPassword = (data: ForgotPassword) => put('forgot-password', TEmpty, data)
 export const register = (data: Register) => post('register', TToken, data)
 
-export const whoAmI = () => get('whoami', TUiUser).catch(always(null))
+export const whoAmI = () =>
+  get('whoami', TUiUser).catch(e => {
+    console.warn(e)
+    return null
+  })
