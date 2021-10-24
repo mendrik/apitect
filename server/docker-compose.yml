@@ -9,4 +9,4 @@ services:
       - 27017:27017
     command: ["--replSet", "rs0", "--bind_ip_all"]
     volumes:
-      - ./db/init.js:/docker-entrypoint-initdb.d/init.js:ro
+      - ../database/init.js:/docker-entrypoint-initdb.d/init.js:ro
