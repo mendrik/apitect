@@ -3,7 +3,7 @@ import useWebSocket, { ReadyState } from 'react-use-websocket'
 
 import { messageReceived } from '../events/messages'
 import { userContext } from './user'
-import { ClientMessage } from '@shared/types/messages'
+import { ClientMessage } from '../shared/types/messages'
 
 type SocketContext = {
   send: (data: ClientMessage) => void

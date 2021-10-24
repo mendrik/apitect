@@ -14,7 +14,7 @@ import usePromise from '../../hooks/usePromise'
 import { register } from '../../utils/api'
 import { ModalFC } from '../LazyModal'
 import { SuccessView } from '../SuccessView'
-import { Register, TRegister } from '@shared/types/forms/register'
+import { Register, TRegister } from '../../shared/types/forms/register'
 
 export const RegisterForm: ModalFC = ({ close }) => {
   const form = useForm<Register>({

@@ -14,7 +14,7 @@ import { useServerError } from '../../hooks/useServerError'
 import { forgotPassword } from '../../utils/api'
 import { ModalFC } from '../LazyModal'
 import { SuccessView } from '../SuccessView'
-import { ForgotPassword, TForgotPassword } from '@ui-types/forms/forgotPassword'
+import { ForgotPassword, TForgotPassword } from '../../shared/types/forms/forgotPassword'
 
 const ForgotPasswordForm: ModalFC = ({ close }) => {
   const { t } = useTranslation()

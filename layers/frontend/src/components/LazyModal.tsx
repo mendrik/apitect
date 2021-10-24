@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom'
 
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
-import { removeParams } from '@shared/utils/url'
-import { Fn } from '@shared/types/generic'
+import { Fn } from '../shared/types/generic'
+import { removeParams } from '../shared/utils/url'
 
 export type ModalFC = FC<{
   close: Fn

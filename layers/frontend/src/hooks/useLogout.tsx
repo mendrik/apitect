@@ -4,7 +4,7 @@ import { userContext } from '../contexts/user'
 import { messageReceived } from '../events/messages'
 import { logout } from '../utils/api'
 import usePromise from './usePromise'
-import { Fn } from '@shared/types/generic'
+import { Fn } from '../shared/types/generic'
 
 export const useLogout = (): Fn<Promise<any>> => {
   const { setJwt } = useContext(userContext)

@@ -3,14 +3,14 @@ import { FastifyInstance } from 'fastify'
 import { SocketStream } from 'fastify-websocket'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
-import { decode } from '@shared/codecs/decode'
 
 import { Send } from '../server'
 import { idCodec } from '../utils/idCodec'
 import { config } from './config'
 import { eventMap, Payload } from './serverState'
-import { ClientMessage, TClientMessage } from '@shared/types/messages'
-import { logger } from '@shared/utils/logger'
+import { decode } from '../shared/codecs/decode'
+import { ClientMessage, TClientMessage } from '../shared/types/messages'
+import { logger } from '../shared/utils/logger'
 
 const openWebsocket = (connection: SocketStream) => {
   const send: Send = msg => connection.socket.send(JSON.stringify(msg))

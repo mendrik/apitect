@@ -6,3 +6,4 @@ export const TForgotPassword = t.type({
 })
 
 export type ForgotPassword = t.TypeOf<typeof TForgotPassword>
+

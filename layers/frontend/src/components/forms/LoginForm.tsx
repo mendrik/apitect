@@ -15,8 +15,8 @@ import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
 import { login } from '../../utils/api'
 import ForgotPasswordForm from '../modals/ForgotPasswordForm'
-import { Fn } from '@shared/types/generic'
-import { Login, TLogin } from '@shared/types/forms/login'
+import { Fn } from '../../shared/types/generic'
+import { Login, TLogin } from '../../shared/types/forms/login'
 
 type OwnProps = {
   close: Fn

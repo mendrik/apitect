@@ -4,7 +4,7 @@ import { FormProvider, UseFormReturn } from 'react-hook-form'
 
 import { ExtendedError, State } from '../hooks/usePromise'
 import { useServerError } from '../hooks/useServerError'
-import { Fn, Maybe } from '@shared/types/generic'
+import { Fn, Maybe } from '../shared/types/generic'
 
 type OwnProps<T> = {
   form: UseFormReturn<T>

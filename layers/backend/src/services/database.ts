@@ -5,7 +5,7 @@ import { Document } from '../types/document'
 import { User } from '../types/user'
 import { config } from './config'
 import { serverState } from './serverState'
-import { ensure } from '@shared/utils/ramda'
+import { ensure } from '../shared/utils/ramda'
 
 const dbName = `${config.MONGO_INITDB_DATABASE}`
 
