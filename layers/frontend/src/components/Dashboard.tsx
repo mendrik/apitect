@@ -1,19 +1,10 @@
-import { useStore } from 'effector-react'
-import React, { FC, useContext, useEffect } from 'react'
+import React, { FC } from 'react'
 
-import { socketContext } from '../contexts/socket'
-import appState from '../stores/appState'
+import { useRequest } from '../hooks/useRequest'
 import { Navigation } from './Navigation'
 
 const Dashboard: FC = () => {
-  const { send } = useContext(socketContext)
-  const { document } = useStore(appState)
-
-  useEffect(() => {
-    if (document == null) {
-      send({ type: 'DOCUMENT' })
-    }
-  }, [send, document])
+  useRequest({ type: 'DOCUMENT' })
 
   return (
     <>
