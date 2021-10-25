@@ -18,7 +18,7 @@ export const Navigation: FC = () => {
   const { user } = useContext(userContext)
   const { document } = useStore(appState)
   return (
-    <Navbar variant="light" expand="sm" className="px-2 bg-light shadow-sm">
+    <Navbar variant="light" expand="sm" className="px-2 bevel-bottom">
       <Navbar.Brand href="#home">
         <Logo className="logo" style={{ height: 32, marginTop: -8 }} />
       </Navbar.Brand>

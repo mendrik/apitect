@@ -9,7 +9,7 @@ import { NotLoggedIn } from './NotLoggedIn'
 
 const App: FC = () => {
   const userState = useContext(userContext)
-  if (userState.status === 'running' && userState.user === null) {
+  if (userState.status === 'running') {
     return null
   }
   return userState.user ? (
