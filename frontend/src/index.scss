@@ -22,20 +22,22 @@ $bezelLight: #fff;
 $bezelDark: #ddd;
 
 .bevel-bottom {
-  border-bottom: 1px solid $bezelLight;
-  padding-bottom: 1px;
+  border-bottom: 1px solid $bezelDark;
   position: relative;
-  box-shadow: 0 -4px 5px #eee inset;
 
   &:after {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0px;
+    bottom: -2px;
     height: 1px;
-    background-color: $bezelDark;
+    background-color: $bezelLight;
   }
+}
+
+.bevel-shadow {
+  box-shadow: 0 -4px 5px #eee inset;
 }
 
 code {
