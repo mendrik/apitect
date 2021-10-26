@@ -11,6 +11,7 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
+    "@dnd-kit/core": "^4.0.1",
     "@hookform/resolvers": "2.8.2",
     "ansicolor": "1.1.95",
     "bootstrap": "5.1.3",
