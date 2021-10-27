@@ -1,4 +1,10 @@
-import { DndContext, DragMoveEvent, DragOverlay, useDndMonitor, useDraggable } from '@dnd-kit/core'
+import {
+  DndContext,
+  DragMoveEvent,
+  DragStartEvent,
+  useDndMonitor,
+  useDraggable
+} from '@dnd-kit/core'
 import { pathOr } from 'ramda'
 import React, { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -33,6 +39,9 @@ const Header: FC<HeaderProps> = ({ id, children }) => {
   useDndMonitor({
     onDragMove(event: DragMoveEvent) {
       console.log(event)
+    },
+    onDragStart(event: DragStartEvent) {
+      console.log(event)
     }
   })
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -47,7 +56,6 @@ const Header: FC<HeaderProps> = ({ id, children }) => {
         <Row>{children}</Row>
         <ColResizer {...attributes} {...listeners} />
       </StyledHeader>
-      <DragOverlay />
     </DndContext>
   )
 }

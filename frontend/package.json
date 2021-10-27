@@ -20,6 +20,7 @@
     "dotenv": "10.0.0",
     "effector": "22.1.2",
     "effector-react": "22.0.4",
+    "fantasy-land": "^5.0.0",
     "fp-ts": "2.11.5",
     "framer-motion": "4.1.17",
     "history": "5.0.1",
