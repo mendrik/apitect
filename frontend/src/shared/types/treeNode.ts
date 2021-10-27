@@ -1,5 +1,6 @@
 import fl from 'fantasy-land'
-import { map } from 'ramda'
+import { map, reduce } from 'ramda'
+import { Reduced } from 'ramda/tools'
 
 export enum Strategy {
   Depth,
@@ -18,6 +19,10 @@ export class Queue<T> extends Array<T> {
 
 export class TreeNode<T> {
   constructor(public value: T, public children: TreeNode<T>[]) {}
+
+  get '@@transducer/value'() {
+    return this['value']
+  }
 
   [fl.map] = <R>(fn: (v: T) => R): TreeNode<R> =>
     new TreeNode<R>(
@@ -40,5 +45,8 @@ export class TreeNode<T> {
       arr.push(...el.children.reverse())
     }
     return res
-  }
+  };
+
+  [fl.reduce] = <R>(fn: (acc: R, c: T) => R | Reduced<R>, acc: R) => reduce(fn, acc, this.flatten())
+  reduce = this[fl.reduce]
 }
