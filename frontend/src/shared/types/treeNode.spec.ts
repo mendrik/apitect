@@ -62,7 +62,7 @@ describe('TreeNode', () => {
       name: 'andreas',
       friends: [{ name: 'peter' }, { name: 'thomas', friends: [{ name: 'anja' }] }]
     }
-    const tree = TreeNode.from('friends', 'name')(data)
+    const tree = TreeNode.basedOn('friends', 'name')(data)
     expect(tree.flatten()).toStrictEqual(['andreas', 'peter', 'thomas', 'anja'])
   })
 
@@ -75,7 +75,7 @@ describe('TreeNode', () => {
         { name: 'thomas', age: 43, friends: [{ name: 'anja', age: 39 }] }
       ]
     }
-    const tree = TreeNode.from('friends')(data)
+    const tree = TreeNode.basedOn('friends')(data)
     expect(tree.map(propOr(0, 'age')).flatten()).toStrictEqual([45, 35, 43, 39])
   })
 })

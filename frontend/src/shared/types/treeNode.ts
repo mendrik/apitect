@@ -8,12 +8,12 @@ export enum Strategy {
 }
 
 export class Queue<T> extends Array<T> {
-  pop(): T | undefined {
-    return super.shift()
+  shift(): T | undefined {
+    return super.pop()
   }
 
-  push(...items: T[]): number {
-    return super.push(...items.reverse())
+  unshift(...items: T[]): number {
+    return super.unshift(...items.reverse())
   }
 }
 
@@ -37,14 +37,14 @@ export class TreeNode<T> {
   static [fl.of] = <ST>(value: ST, children: TreeNode<ST>[] = []) =>
     new TreeNode<ST>(value, children)
   static of = TreeNode[fl.of]
-  static from =
+  static basedOn =
     <O>(childrenProp: keyof O & string, valueProp?: keyof O & string) =>
     (obj: O): TreeFrom<O, typeof childrenProp, typeof valueProp> => {
       const value = valueProp ? obj[valueProp] : omit([childrenProp], obj)
       const children = pipe(
         propOr([], childrenProp),
         unless(isArray, defaultTo([])),
-        map(TreeNode.from(childrenProp, valueProp))
+        map(TreeNode.basedOn(childrenProp, valueProp))
       )(obj)
       return TreeNode.of<any>(value, children)
     }
@@ -54,9 +54,9 @@ export class TreeNode<T> {
       strategy === Strategy.Depth ? Array.of<TreeNode<T>>(this) : Queue.of<TreeNode<T>>(this)
     const res = Array.of<T>()
     while (arr.length > 0) {
-      const el = arr.pop()!
+      const el = arr.shift()!
       res.push(el.value)
-      arr.push(...el.children.reverse())
+      arr.unshift(...el.children)
     }
     return res
   };
