@@ -33,6 +33,7 @@ export class TreeNode<T> {
   static [fl.of] = <ST>(value: ST, children: TreeNode<ST>[] = []) =>
     new TreeNode<ST>(value, children)
   static of = TreeNode[fl.of]
+
   static basedOn =
     <O, CP extends keyof O, VP extends keyof O | undefined = undefined>(
       childrenProp: CP,

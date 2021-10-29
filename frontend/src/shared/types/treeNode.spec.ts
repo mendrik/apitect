@@ -1,4 +1,4 @@
-import { add, equals, map, prop } from 'ramda'
+import { add, equals, prop } from 'ramda'
 import { isOdd } from 'ramda-adjunct'
 
 import { Strategy, TreeNode } from './treeNode'

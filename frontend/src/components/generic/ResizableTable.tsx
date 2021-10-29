@@ -1,14 +1,11 @@
-import {
-  DndContext,
-  DragMoveEvent,
-  DragStartEvent,
-  useDndMonitor,
-  useDraggable
-} from '@dnd-kit/core'
+import { DndContext, useDraggable } from '@dnd-kit/core'
+import { fromNullable } from 'fp-ts/Option'
 import { pathOr } from 'ramda'
 import React, { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+
+import { useResize } from '../../hooks/useResize'
 
 export type ColumnData = {
   title: string
@@ -36,27 +33,22 @@ type HeaderProps = {
 }
 
 const Header: FC<HeaderProps> = ({ id, children }) => {
-  useDndMonitor({
-    onDragMove(event: DragMoveEvent) {
-      console.log(event)
-    },
-    onDragStart(event: DragStartEvent) {
-      console.log(event)
-    }
-  })
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id
-  })
-
-  console.log(transform?.x)
+  const { attributes, listeners, setNodeRef, transform, node } = useDraggable({ id })
+  const resize = useResize(node)
+  const w = fromNullable(resize?.width)
+  const d = fromNullable(transform?.x)
 
   return (
-    <DndContext>
-      <StyledHeader className="px-2 py-1 bevel-bottom" ref={setNodeRef}>
-        <Row>{children}</Row>
-        <ColResizer {...attributes} {...listeners} />
-      </StyledHeader>
-    </DndContext>
+    <StyledHeader
+      className="px-2 py-1 bevel-bottom"
+      ref={setNodeRef}
+      style={{
+        width: w ?? 'auto'
+      }}
+    >
+      <Row>{children}</Row>
+      <ColResizer {...attributes} {...listeners} id={id} />
+    </StyledHeader>
   )
 }
 
@@ -90,13 +82,15 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
   const data = useMemo(() => new Array(30).map((_, row) => <Row key={row}>{row}</Row>), [])
 
   return (
-    <StyledGrid>
-      {columns.map((column, col) => (
-        <Column key={col}>
-          <Header id={`header-${col}`}>{column.title}</Header>
-          {data}
-        </Column>
-      ))}
-    </StyledGrid>
+    <DndContext>
+      <StyledGrid>
+        {columns.map((column, col) => (
+          <Column key={col}>
+            <Header id={`header-${col}`}>{column.title}</Header>
+            {data}
+          </Column>
+        ))}
+      </StyledGrid>
+    </DndContext>
   )
 }
