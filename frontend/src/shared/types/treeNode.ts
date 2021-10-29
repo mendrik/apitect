@@ -17,12 +17,8 @@ export class Queue<T> extends Array<T> {
   }
 }
 
-type TreeFrom<O, CP extends keyof O, VP extends keyof O | undefined> = VP extends undefined
-  ? TreeNode<Omit<O, CP>>
-  : TreeNode<O[CP]>
-
 export class TreeNode<T> {
-  constructor(public value: T, public children: TreeNode<T>[]) {}
+  private constructor(public value: T, public children: TreeNode<T>[]) {}
 
   [fl.extract] = () => this.value
   extract = [fl.extract];
@@ -38,15 +34,22 @@ export class TreeNode<T> {
     new TreeNode<ST>(value, children)
   static of = TreeNode[fl.of]
   static basedOn =
-    <O>(childrenProp: keyof O & string, valueProp?: keyof O & string) =>
-    (obj: O): TreeFrom<O, typeof childrenProp, typeof valueProp> => {
-      const value = valueProp ? obj[valueProp] : omit([childrenProp], obj)
+    <O, CP extends keyof O, VP extends keyof O | undefined = undefined>(
+      childrenProp: CP,
+      valueProp?: VP
+    ) =>
+    <O2 extends O>(
+      obj: O2
+    ): VP extends undefined
+      ? TreeNode<Omit<O, typeof childrenProp>>
+      : TreeNode<O[NonNullable<VP>]> => {
+      const value = valueProp != null ? obj[valueProp!] : omit([childrenProp as string], obj)
       const children = pipe(
-        propOr([], childrenProp),
+        propOr([], childrenProp as string),
         unless(isArray, defaultTo([])),
-        map(TreeNode.basedOn(childrenProp, valueProp))
+        map(TreeNode.basedOn<O, CP, VP>(childrenProp, valueProp))
       )(obj)
-      return TreeNode.of<any>(value, children)
+      return TreeNode.of(value, children as TreeNode<any>[]) as any
     }
 
   flatten = (strategy: Strategy = Strategy.Breadth): T[] => {
@@ -67,11 +70,12 @@ export class TreeNode<T> {
   [fl.zero] = () => TreeNode.of(null, [])
   zero = this[fl.zero];
 
-  [fl.equals] = <R>(that: TreeNode<T>) =>
+  [fl.equals] = <R>(that: TreeNode<T>): boolean =>
     equals(this.value, that.value) && equals(this.children, that.children)
   equals = this[fl.equals];
 
-  [fl.concat] = (...nodes: TreeNode<T>[]) => TreeNode.of(this.value, concat(this.children)(nodes))
+  [fl.concat] = (...nodes: TreeNode<T>[]): TreeNode<T> =>
+    TreeNode.of(this.value, concat(this.children)(nodes))
   concat = this[fl.concat];
 
   [fl.filter] = (pred: (v: T) => boolean): TreeNode<T> | undefined =>

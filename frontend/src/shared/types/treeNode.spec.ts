@@ -1,4 +1,4 @@
-import { add, equals, propOr } from 'ramda'
+import { add, equals, map, prop } from 'ramda'
 import { isOdd } from 'ramda-adjunct'
 
 import { Strategy, TreeNode } from './treeNode'
@@ -58,15 +58,24 @@ describe('TreeNode', () => {
   })
 
   it('Can create simple tree', () => {
-    const data = {
+    type Data = {
+      name: string
+      friends?: Data[]
+    }
+    const data: Data = {
       name: 'andreas',
       friends: [{ name: 'peter' }, { name: 'thomas', friends: [{ name: 'anja' }] }]
     }
-    const tree = TreeNode.basedOn('friends', 'name')(data)
+    const tree = TreeNode.basedOn<Data, 'friends', 'name'>('friends', 'name')(data)
     expect(tree.flatten()).toStrictEqual(['andreas', 'peter', 'thomas', 'anja'])
   })
 
   it('Can create object tree', () => {
+    type Data = {
+      name: string
+      age: number
+      friends?: Data[]
+    }
     const data = {
       name: 'andreas',
       age: 45,
@@ -75,7 +84,7 @@ describe('TreeNode', () => {
         { name: 'thomas', age: 43, friends: [{ name: 'anja', age: 39 }] }
       ]
     }
-    const tree = TreeNode.basedOn('friends')(data)
-    expect(tree.map(propOr(0, 'age')).flatten()).toStrictEqual([45, 35, 43, 39])
+    const tree = TreeNode.basedOn<Data, 'friends'>('friends')(data)
+    expect(tree.map(prop('age')).flatten()).toStrictEqual([45, 35, 43, 39])
   })
 })
