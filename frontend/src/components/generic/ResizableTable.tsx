@@ -138,10 +138,9 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
       if (data?.type === Draggables.COLUMN_HEADER) {
         const startWidth = event.active.rect.current.initial?.width ?? NaN
         const deltaX = event.delta.x
-        const width = max(startWidth + deltaX, 200)
-        const next = max(nextWidth - deltaX, 200)
-        grid.current?.style?.setProperty(`--col-width-${data.index}`, `${width}px`)
-        grid.current?.style?.setProperty(`--col-width-${data.index + 1}`, `${next}px`)
+        const style = grid.current?.style
+        style?.setProperty(`--col-width-${data.index}`, `${max(startWidth + deltaX, 200)}px`)
+        style?.setProperty(`--col-width-${data.index + 1}`, `${max(nextWidth - deltaX, 200)}px`)
       }
     }
   })
