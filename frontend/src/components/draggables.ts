@@ -6,7 +6,6 @@ export enum Draggables {
 
 type HeaderDraggable = {
   type: Draggables.COLUMN_HEADER
-  startWidth: Pixels
   index: number
 }
 

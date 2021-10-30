@@ -5,11 +5,11 @@ import {
   useDndMonitor,
   useDraggable
 } from '@dnd-kit/core'
-import { multiply, pathOr, pipe, repeat } from 'ramda'
-import React, { createContext, Dispatch, FC, SetStateAction, useMemo, useState } from 'react'
+import { max, multiply, pathOr, pipe, propOr } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
+import React, { FC, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 
-import { Fr } from '../../shared/types/generic'
 import { Draggable, Draggables } from '../draggables'
 
 export type ColumnData = {
@@ -22,11 +22,15 @@ type OwnProps = {
 
 const StyledGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(${pathOr(1, ['children', 'length'])}, 1fr);
+  grid-template-columns: ${pipe(
+    propOr([], 'children'),
+    mapIndexed((_, i) => `var(--col-width-${i}, 1fr) `)
+  )};
   grid-template-rows: 32px;
   grid-auto-rows: 20px;
   align-items: stretch;
   min-width: ${pipe(pathOr(1, ['children', 'length']), multiply(200))}px;
+  width: 100%;
 `
 
 const StyledHeader = styled.div`
@@ -36,9 +40,10 @@ const StyledHeader = styled.div`
 
 type HeaderProps = {
   index: number
+  last: boolean
 }
 
-const Header: FC<HeaderProps> = ({ index, children }) => {
+const Header: FC<HeaderProps> = ({ index, last, children }) => {
   const id = `header-${index}`
   const { attributes, listeners, setNodeRef, node } = useDraggable({
     id
@@ -46,12 +51,13 @@ const Header: FC<HeaderProps> = ({ index, children }) => {
 
   useDndMonitor({
     onDragStart(event: DragStartEvent) {
-      if (node.current) {
+      if (node.current && event.active.id === id) {
         event.active.data.current = {
           type: Draggables.COLUMN_HEADER,
           startWidth: node.current.getBoundingClientRect().width,
           index
         }
+        console.log(event.active.data.current.startWidth)
       }
     }
   })
@@ -59,7 +65,7 @@ const Header: FC<HeaderProps> = ({ index, children }) => {
   return (
     <StyledHeader className="px-2 py-1 bevel-bottom" ref={setNodeRef}>
       <Row>{children}</Row>
-      <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} />
+      {!last && <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} />}
     </StyledHeader>
   )
 }
@@ -72,9 +78,18 @@ const ColResizer = styled.div`
   left: auto;
   right: -5px;
   top: 0px;
-  background: yellow;
   cursor: col-resize;
   z-index: 1;
+  &:after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background: repeating-linear-gradient(to right, #ddd, #ddd 1px, #fff 1px, #fff 2px);
+    height: 100%;
+    left: 50%;
+    top: 0%;
+    margin-left: -1px;
+  }
 `
 
 const Column = styled.div`
@@ -88,45 +103,52 @@ const Row = styled.div`
   text-overflow: ellipsis;
 `
 
-type ResizableGridContext = {
-  widths: Fr[]
-  setWidths: Dispatch<SetStateAction<Fr[]>>
-}
-const resizableGridContext = createContext<ResizableGridContext>({} as any)
-
 const bodyStyle = document.body.style
 
 export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
-  const [widths, setWidths] = useState<Fr[]>(repeat(columns.length, 1))
   const data = useMemo(() => new Array(30).map((_, row) => <Row key={row}>{row}</Row>), [])
+  const grid = useRef<HTMLDivElement>(null)
 
   useDndMonitor({
     onDragStart(event) {
-      if (event.active.data.current?.type === Draggables.COLUMN_HEADER) {
+      const data = event.active.data.current as Draggable
+      if (data?.type === Draggables.COLUMN_HEADER) {
         bodyStyle.setProperty('cursor', 'col-resize')
       }
     },
     onDragEnd(event: DragEndEvent) {
       bodyStyle.setProperty('cursor', 'default')
+      const data = event.active.data.current as Draggable
+      if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {
+        const totalWidth = grid.current.getBoundingClientRect().width
+        const columns = grid.current.children
+        Array.from(columns).forEach((c, idx) => {
+          const relativeWidth = c.getBoundingClientRect().width / (totalWidth / columns.length)
+          grid.current?.style?.setProperty(`--col-width-${idx}`, `${relativeWidth}fr`)
+        })
+      }
     },
     onDragMove(event: DragMoveEvent) {
       const data = event.active.data.current as Draggable
       if (data?.type === Draggables.COLUMN_HEADER) {
-        console.log(data.index, data.startWidth, event.delta.x)
+        const startWidth = event.active.rect.current.initial?.width ?? NaN
+        const deltaX = event.delta.x
+        const width = max(startWidth + deltaX, 200)
+        grid.current?.style?.setProperty(`--col-width-${data.index}`, `${width}px`)
       }
     }
   })
 
   return (
-    <resizableGridContext.Provider value={{ widths, setWidths }}>
-      <StyledGrid>
-        {columns.map((column, col) => (
-          <Column key={col}>
-            <Header index={col}>{column.title}</Header>
-            {data}
-          </Column>
-        ))}
-      </StyledGrid>
-    </resizableGridContext.Provider>
+    <StyledGrid ref={grid}>
+      {columns.map((column, col) => (
+        <Column key={col}>
+          <Header index={col} last={col === columns.length - 1}>
+            {column.title}
+          </Header>
+          {data}
+        </Column>
+      ))}
+    </StyledGrid>
   )
 }
