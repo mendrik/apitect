@@ -9,7 +9,6 @@ import { ColumnData, ResizableTable } from './generic/ResizableTable'
 
 const columns: ColumnData[] = [
   { title: 'Project tree' },
-  { title: 'Base information' },
   { title: 'English' },
   { title: 'Finnish' },
   { title: 'German' }

@@ -57,14 +57,13 @@ const Header: FC<HeaderProps> = ({ index, last, children }) => {
           startWidth: node.current.getBoundingClientRect().width,
           index
         }
-        console.log(event.active.data.current.startWidth)
       }
     }
   })
 
   return (
     <StyledHeader className="px-2 py-1 bevel-bottom" ref={setNodeRef}>
-      <Row>{children}</Row>
+      <Row className="editable">{children}</Row>
       {!last && <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} />}
     </StyledHeader>
   )
