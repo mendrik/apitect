@@ -7,7 +7,7 @@ import {
 } from '@dnd-kit/core'
 import { max, multiply, pathOr, pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { FC, useMemo, useRef } from 'react'
+import React, { FC, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Draggable, Draggables } from '../draggables'
@@ -107,18 +107,24 @@ const bodyStyle = document.body.style
 export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
   const data = useMemo(() => new Array(30).map((_, row) => <Row key={row}>{row}</Row>), [])
   const grid = useRef<HTMLDivElement>(null)
+  const [nextWidth, setNextWidth] = useState(0)
 
   useDndMonitor({
     onDragStart(event) {
       const data = event.active.data.current as Draggable
       if (data?.type === Draggables.COLUMN_HEADER) {
         bodyStyle.setProperty('cursor', 'col-resize')
+        const width = grid.current?.children.item(data.index + 1)?.getBoundingClientRect().width
+        if (width) {
+          setNextWidth(width)
+        }
       }
     },
     onDragEnd(event: DragEndEvent) {
       bodyStyle.setProperty('cursor', 'default')
       const data = event.active.data.current as Draggable
       if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {
+        // when we are done let's convert pixels to relative units
         const totalWidth = grid.current.getBoundingClientRect().width
         const columns = grid.current.children
         Array.from(columns).forEach((c, idx) => {
@@ -133,7 +139,9 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
         const startWidth = event.active.rect.current.initial?.width ?? NaN
         const deltaX = event.delta.x
         const width = max(startWidth + deltaX, 200)
+        const next = max(nextWidth - deltaX, 200)
         grid.current?.style?.setProperty(`--col-width-${data.index}`, `${width}px`)
+        grid.current?.style?.setProperty(`--col-width-${data.index + 1}`, `${next}px`)
       }
     }
   })
