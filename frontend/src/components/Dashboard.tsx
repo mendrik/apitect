@@ -1,3 +1,4 @@
+import { DndContext } from '@dnd-kit/core'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
@@ -29,7 +30,9 @@ const Dashboard: FC = () => {
     <AppFrame>
       <Navigation />
       <Scroller>
-        <ResizableTable columns={columns} />
+        <DndContext>
+          <ResizableTable columns={columns} />
+        </DndContext>
       </Scroller>
     </AppFrame>
   )

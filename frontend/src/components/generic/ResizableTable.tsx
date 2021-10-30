@@ -1,11 +1,16 @@
-import { DndContext, useDraggable } from '@dnd-kit/core'
-import { fromNullable } from 'fp-ts/Option'
-import { pathOr } from 'ramda'
-import React, { FC, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+import {
+  DragEndEvent,
+  DragMoveEvent,
+  DragStartEvent,
+  useDndMonitor,
+  useDraggable
+} from '@dnd-kit/core'
+import { multiply, pathOr, pipe, repeat } from 'ramda'
+import React, { createContext, Dispatch, FC, SetStateAction, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-import { useResize } from '../../hooks/useResize'
+import { Fr } from '../../shared/types/generic'
+import { Draggable, Draggables } from '../draggables'
 
 export type ColumnData = {
   title: string
@@ -17,10 +22,11 @@ type OwnProps = {
 
 const StyledGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(${pathOr(1, ['children', 'length'])}, minmax(270px, 1fr));
+  grid-template-columns: repeat(${pathOr(1, ['children', 'length'])}, 1fr);
   grid-template-rows: 32px;
   grid-auto-rows: 20px;
   align-items: stretch;
+  min-width: ${pipe(pathOr(1, ['children', 'length']), multiply(200))}px;
 `
 
 const StyledHeader = styled.div`
@@ -29,25 +35,31 @@ const StyledHeader = styled.div`
 `
 
 type HeaderProps = {
-  id: string
+  index: number
 }
 
-const Header: FC<HeaderProps> = ({ id, children }) => {
-  const { attributes, listeners, setNodeRef, transform, node } = useDraggable({ id })
-  const resize = useResize(node)
-  const w = fromNullable(resize?.width)
-  const d = fromNullable(transform?.x)
+const Header: FC<HeaderProps> = ({ index, children }) => {
+  const id = `header-${index}`
+  const { attributes, listeners, setNodeRef, node } = useDraggable({
+    id
+  })
+
+  useDndMonitor({
+    onDragStart(event: DragStartEvent) {
+      if (node.current) {
+        event.active.data.current = {
+          type: Draggables.COLUMN_HEADER,
+          startWidth: node.current.getBoundingClientRect().width,
+          index
+        }
+      }
+    }
+  })
 
   return (
-    <StyledHeader
-      className="px-2 py-1 bevel-bottom"
-      ref={setNodeRef}
-      style={{
-        width: w ?? 'auto'
-      }}
-    >
+    <StyledHeader className="px-2 py-1 bevel-bottom" ref={setNodeRef}>
       <Row>{children}</Row>
-      <ColResizer {...attributes} {...listeners} id={id} />
+      <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} />
     </StyledHeader>
   )
 }
@@ -76,21 +88,45 @@ const Row = styled.div`
   text-overflow: ellipsis;
 `
 
-export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
-  const { t } = useTranslation()
+type ResizableGridContext = {
+  widths: Fr[]
+  setWidths: Dispatch<SetStateAction<Fr[]>>
+}
+const resizableGridContext = createContext<ResizableGridContext>({} as any)
 
+const bodyStyle = document.body.style
+
+export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
+  const [widths, setWidths] = useState<Fr[]>(repeat(columns.length, 1))
   const data = useMemo(() => new Array(30).map((_, row) => <Row key={row}>{row}</Row>), [])
 
+  useDndMonitor({
+    onDragStart(event) {
+      if (event.active.data.current?.type === Draggables.COLUMN_HEADER) {
+        bodyStyle.setProperty('cursor', 'col-resize')
+      }
+    },
+    onDragEnd(event: DragEndEvent) {
+      bodyStyle.setProperty('cursor', 'default')
+    },
+    onDragMove(event: DragMoveEvent) {
+      const data = event.active.data.current as Draggable
+      if (data?.type === Draggables.COLUMN_HEADER) {
+        console.log(data.index, data.startWidth, event.delta.x)
+      }
+    }
+  })
+
   return (
-    <DndContext>
+    <resizableGridContext.Provider value={{ widths, setWidths }}>
       <StyledGrid>
         {columns.map((column, col) => (
           <Column key={col}>
-            <Header id={`header-${col}`}>{column.title}</Header>
+            <Header index={col}>{column.title}</Header>
             {data}
           </Column>
         ))}
       </StyledGrid>
-    </DndContext>
+    </resizableGridContext.Provider>
   )
 }
