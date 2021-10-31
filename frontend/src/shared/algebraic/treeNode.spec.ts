@@ -66,7 +66,7 @@ describe('TreeNode', () => {
       name: 'andreas',
       friends: [{ name: 'peter' }, { name: 'thomas', friends: [{ name: 'anja' }] }]
     }
-    const tree = TreeNode.basedOn<Data, 'friends', 'name'>('friends', 'name')(data)
+    const tree = TreeNode.from<Data, 'friends', 'name'>('friends', 'name')(data)
     expect(tree.toArray()).toStrictEqual(['andreas', 'peter', 'thomas', 'anja'])
   })
 
@@ -84,7 +84,7 @@ describe('TreeNode', () => {
         { name: 'thomas', age: 43, friends: [{ name: 'anja', age: 39 }] }
       ]
     }
-    const tree = TreeNode.basedOn<Data, 'friends'>('friends')(data)
+    const tree = TreeNode.from<Data, 'friends'>('friends')(data)
     expect(tree.map(prop('age')).toArray()).toStrictEqual([45, 35, 43, 39])
   })
 
@@ -102,7 +102,7 @@ describe('TreeNode', () => {
         { name: 'thomas', age: 43, friends: [{ name: 'anja', age: 39 }] }
       ]
     }
-    const tree = TreeNode.basedOn<Data, 'friends'>('friends')(data)
+    const tree = TreeNode.from<Data, 'friends'>('friends')(data)
     expect(tree.first(propEq('age', 43))).toHaveProperty(['value', 'name'], 'thomas')
   })
 })

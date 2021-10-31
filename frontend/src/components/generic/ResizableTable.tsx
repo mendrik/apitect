@@ -7,25 +7,26 @@ import {
 } from '@dnd-kit/core'
 import { max, multiply, pathOr, pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { FC, useMemo, useRef, useState } from 'react'
+import React, { FC, ReactNode, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
   columns: JSX.Element[]
+  children: ReactNode[]
 }
 
-const StyledGrid = styled.div`
+const StyledGrid = styled.div<{ columns: any[] }>`
   display: grid;
   grid-template-columns: ${pipe(
-    propOr([], 'children'),
+    propOr([], 'columns'),
     mapIndexed((_, i) => `var(--col-width-${i}, 1fr) `)
   )};
   grid-template-rows: 32px;
   grid-auto-rows: 20px;
   align-items: stretch;
-  min-width: ${pipe(pathOr(1, ['children', 'length']), multiply(200))}px;
+  min-width: ${pipe(pathOr(1, ['columns', 'length']), multiply(200))}px;
   width: 100%;
 `
 
@@ -101,9 +102,10 @@ const Row = styled.div`
 const bodyStyle = document.body.style
 
 export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
-  const data = useMemo(() => new Array(30).map((_, row) => <Row key={row}>{row}</Row>), [])
   const grid = useRef<HTMLDivElement>(null)
   const [nextWidth, setNextWidth] = useState(0)
+
+  console.assert(columns.length === children.length, 'Children count must match column count')
 
   useDndMonitor({
     onDragStart(event) {
@@ -142,15 +144,15 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
   })
 
   return (
-    <StyledGrid ref={grid}>
+    <StyledGrid ref={grid} columns={columns}>
       {columns.map((column, col) => (
         <Column key={col}>
           <Header index={col} last={col === columns.length - 1}>
             {column}
           </Header>
-          {data}
         </Column>
       ))}
+      {children}
     </StyledGrid>
   )
 }

@@ -1,12 +1,15 @@
 import { DndContext } from '@dnd-kit/core'
+import { useStore } from 'effector-react'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
 import { useRequest } from '../hooks/useRequest'
+import { treeStore } from '../stores/treeStore'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { ResizableTable } from './generic/ResizableTable'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
+import { VisualNodeTemplate } from './specific/VisualNodeTemplate'
 
 const columns: JSX.Element[] = [
   <ProjectTreeHeader />,
@@ -26,13 +29,20 @@ const Scroller = styled.div`
 
 const Dashboard: FC = () => {
   useRequest({ type: 'DOCUMENT' })
+  const tree = useStore(treeStore)
 
   return (
     <AppFrame>
       <Navigation />
       <Scroller>
         <DndContext>
-          <ResizableTable columns={columns} />
+          <ResizableTable columns={columns}>
+            <VisualNodeTemplate node={tree} />
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+          </ResizableTable>
         </DndContext>
       </Scroller>
     </AppFrame>

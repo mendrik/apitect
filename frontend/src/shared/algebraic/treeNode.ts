@@ -1,8 +1,8 @@
-import fl from 'fantasy-land'
+import * as fl from 'fantasy-land'
 import { concat, defaultTo, equals, map, omit, pipe, prop, propOr, reduce, unless } from 'ramda'
 import { isArray } from 'ramda-adjunct'
 
-import { Maybe } from './generic'
+import { Maybe } from '../types/generic'
 
 export enum Strategy {
   Depth,
@@ -36,7 +36,7 @@ export class TreeNode<T> {
     new TreeNode<ST>(value, children)
   static of = TreeNode[fl.of]
 
-  static basedOn =
+  static from =
     <O, CP extends keyof O, VP extends keyof O | undefined = undefined>(
       childrenProp: CP,
       valueProp?: VP
@@ -50,7 +50,7 @@ export class TreeNode<T> {
       const children = pipe(
         propOr([], childrenProp as string),
         unless(isArray, defaultTo([])),
-        map(TreeNode.basedOn<O, CP, VP>(childrenProp, valueProp))
+        map(TreeNode.from<O, CP, VP>(childrenProp, valueProp))
       )(obj)
       return TreeNode.of(value, children as TreeNode<any>[]) as any
     }
