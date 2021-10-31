@@ -1,4 +1,4 @@
-import { add, equals, prop } from 'ramda'
+import { add, equals, prop, propEq } from 'ramda'
 import { isOdd } from 'ramda-adjunct'
 
 import { Strategy, TreeNode } from './treeNode'
@@ -10,7 +10,7 @@ describe('TreeNode', () => {
       TreeNode.of(3, [TreeNode.of(4, [TreeNode.of(5)]), TreeNode.of(6)]),
       TreeNode.of(7)
     ])
-    expect(x.flatten(Strategy.Depth)).toStrictEqual([1, 2, 3, 4, 5, 6, 7])
+    expect(x.toArray(Strategy.Depth)).toStrictEqual([1, 2, 3, 4, 5, 6, 7])
   })
 
   it('Flatten breadth first', () => {
@@ -19,7 +19,7 @@ describe('TreeNode', () => {
       TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
       TreeNode.of(4, [TreeNode.of(6)])
     ])
-    expect(x.flatten()).toStrictEqual([1, 2, 3, 4, 5, 6, 7])
+    expect(x.toArray()).toStrictEqual([1, 2, 3, 4, 5, 6, 7])
   })
 
   it('Map tree', () => {
@@ -28,7 +28,7 @@ describe('TreeNode', () => {
       TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
       TreeNode.of(4, [TreeNode.of(6)])
     ])
-    expect(x.map(n => `${n}`).flatten()).toStrictEqual(['1', '2', '3', '4', '5', '6', '7'])
+    expect(x.map(n => `${n}`).toArray()).toStrictEqual(['1', '2', '3', '4', '5', '6', '7'])
   })
 
   it('Reduce tree', () => {
@@ -46,7 +46,7 @@ describe('TreeNode', () => {
       TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
       TreeNode.of(4, [TreeNode.of(6)])
     ])
-    expect(x.filter(isOdd)?.flatten()).toStrictEqual([1, 3, 5, 7])
+    expect(x.filter(isOdd)?.toArray()).toStrictEqual([1, 3, 5, 7])
   })
 
   it('Tree equals', () => {
@@ -67,7 +67,7 @@ describe('TreeNode', () => {
       friends: [{ name: 'peter' }, { name: 'thomas', friends: [{ name: 'anja' }] }]
     }
     const tree = TreeNode.basedOn<Data, 'friends', 'name'>('friends', 'name')(data)
-    expect(tree.flatten()).toStrictEqual(['andreas', 'peter', 'thomas', 'anja'])
+    expect(tree.toArray()).toStrictEqual(['andreas', 'peter', 'thomas', 'anja'])
   })
 
   it('Can create object tree', () => {
@@ -85,6 +85,24 @@ describe('TreeNode', () => {
       ]
     }
     const tree = TreeNode.basedOn<Data, 'friends'>('friends')(data)
-    expect(tree.map(prop('age')).flatten()).toStrictEqual([45, 35, 43, 39])
+    expect(tree.map(prop('age')).toArray()).toStrictEqual([45, 35, 43, 39])
+  })
+
+  it('Finds node by predicate', () => {
+    type Data = {
+      name: string
+      age: number
+      friends?: Data[]
+    }
+    const data = {
+      name: 'andreas',
+      age: 45,
+      friends: [
+        { name: 'peter', age: 35 },
+        { name: 'thomas', age: 43, friends: [{ name: 'anja', age: 39 }] }
+      ]
+    }
+    const tree = TreeNode.basedOn<Data, 'friends'>('friends')(data)
+    expect(tree.first(propEq('age', 43))).toHaveProperty(['value', 'name'], 'thomas')
   })
 })

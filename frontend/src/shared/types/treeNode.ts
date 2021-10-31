@@ -1,6 +1,8 @@
 import fl from 'fantasy-land'
-import { concat, defaultTo, equals, map, omit, pipe, propOr, reduce, unless } from 'ramda'
+import { concat, defaultTo, equals, map, omit, pipe, prop, propOr, reduce, unless } from 'ramda'
 import { isArray } from 'ramda-adjunct'
+
+import { Maybe } from './generic'
 
 export enum Strategy {
   Depth,
@@ -53,19 +55,22 @@ export class TreeNode<T> {
       return TreeNode.of(value, children as TreeNode<any>[]) as any
     }
 
-  flatten = (strategy: Strategy = Strategy.Breadth): T[] => {
+  flatten = (strategy: Strategy = Strategy.Breadth): TreeNode<T>[] => {
     const arr =
       strategy === Strategy.Depth ? Array.of<TreeNode<T>>(this) : Queue.of<TreeNode<T>>(this)
-    const res = Array.of<T>()
+    const res = Array.of<TreeNode<T>>()
     while (arr.length > 0) {
       const el = arr.shift()!
-      res.push(el.value)
+      res.push(el)
       arr.unshift(...el.children)
     }
     return res
-  };
+  }
 
-  [fl.reduce] = <R>(fn: (acc: R, c: T) => R, acc: R) => reduce(fn, acc, this.flatten())
+  toArray = (strategy: Strategy = Strategy.Breadth): T[] =>
+    this.flatten(strategy).map(prop('value'));
+
+  [fl.reduce] = <R>(fn: (acc: R, c: T) => R, acc: R) => reduce(fn, acc, this.toArray())
   reduce = this[fl.reduce];
 
   [fl.zero] = () => TreeNode.of(null, [])
@@ -79,7 +84,7 @@ export class TreeNode<T> {
     TreeNode.of(this.value, concat(this.children)(nodes))
   concat = this[fl.concat];
 
-  [fl.filter] = (pred: (v: T) => boolean): TreeNode<T> | undefined =>
+  [fl.filter] = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
     pred(this.value)
       ? TreeNode.of(
           this.value,
@@ -87,4 +92,7 @@ export class TreeNode<T> {
         )
       : undefined
   filter = this[fl.filter]
+
+  first = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
+    this.flatten(Strategy.Depth).find(node => pred(node.value))
 }

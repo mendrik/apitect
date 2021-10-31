@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { PlusCircle } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 
+import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'
 
 type OwnProps = {
@@ -14,9 +15,7 @@ export const ProjectTreeHeader: FC<OwnProps> = ({ prop, children }) => {
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div>Project tree</div>
-      <a href={''} className="d-block icon-xs">
-        <PlusCircle className="d-block icon-xs" />
-      </a>
+      <Icon icon={PlusCircle} />
     </Tuple>
   )
 }

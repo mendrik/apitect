@@ -67,6 +67,18 @@ code {
   height: 16px;
 }
 
+a.icon-xs {
+  border-radius: 5px;
+  padding: 3px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid transparent;
+  &:hover {
+    border: 1px dotted $bezelDark;
+    background-color: white;
+  }
+}
+
 .icon-sm {
   width: 25px;
   height: 25px;
