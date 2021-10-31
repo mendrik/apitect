@@ -5,13 +5,14 @@ import styled from 'styled-components'
 import { useRequest } from '../hooks/useRequest'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
-import { ColumnData, ResizableTable } from './generic/ResizableTable'
+import { ResizableTable } from './generic/ResizableTable'
 
-const columns: ColumnData[] = [
-  { title: 'Project tree' },
-  { title: 'English' },
-  { title: 'Finnish' },
-  { title: 'German' }
+const columns: JSX.Element[] = [
+  <div>Project tree</div>,
+  <div>English</div>,
+  <div>German</div>,
+  <div>Finnish</div>,
+  <div>Polish</div>
 ]
 
 const Scroller = styled.div`

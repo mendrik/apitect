@@ -10,14 +10,10 @@ import { mapIndexed } from 'ramda-adjunct'
 import React, { FC, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import { Draggable, Draggables } from '../draggables'
-
-export type ColumnData = {
-  title: string
-}
+import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
-  columns: ColumnData[]
+  columns: JSX.Element[]
 }
 
 const StyledGrid = styled.div`
@@ -150,7 +146,7 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
       {columns.map((column, col) => (
         <Column key={col}>
           <Header index={col} last={col === columns.length - 1}>
-            {column.title}
+            {column}
           </Header>
           {data}
         </Column>

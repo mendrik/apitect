@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import robot from '../assets/success.png'
-import { Html } from './Html'
+import { Html } from './generic/Html'
 
 type OwnProps = {
   title: TFuncKey

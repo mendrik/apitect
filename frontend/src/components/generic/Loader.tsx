@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import React, { FC, HTMLAttributes } from 'react'
 
-import { ReactComponent as LoadingSvg } from '../assets/loader.svg'
+import { ReactComponent as LoadingSvg } from '../../assets/loader.svg'
 
 type OwnProps = HTMLAttributes<HTMLDivElement>
 
