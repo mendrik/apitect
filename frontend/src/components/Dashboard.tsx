@@ -6,9 +6,10 @@ import { useRequest } from '../hooks/useRequest'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { ResizableTable } from './generic/ResizableTable'
+import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
 
 const columns: JSX.Element[] = [
-  <div>Project tree</div>,
+  <ProjectTreeHeader />,
   <div>English</div>,
   <div>German</div>,
   <div>Finnish</div>,

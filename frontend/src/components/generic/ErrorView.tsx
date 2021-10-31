@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 
+import { ReactComponent as ErrorSvg } from '../../assets/error.svg'
 import { Navigation } from '../Navigation'
-import { ReactComponent as ErrorSvg } from '../assets/error.svg'
 
 export const ErrorView: FC = () => {
   return (
