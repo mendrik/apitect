@@ -44,7 +44,7 @@ export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
         ) : (
           <Icon icon={CheckCircle} onClick={initialView} />
         )}
-        <div className="input-spacer">
+        <div className="input-spacer w-100">
           <AnimatePresence exitBeforeEnter>
             {view === View.Edit && (
               <motion.div {...horizontalGrowth}>

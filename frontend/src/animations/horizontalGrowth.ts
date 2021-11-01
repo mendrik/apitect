@@ -1,13 +1,14 @@
 export const horizontalGrowth = {
   initial: {
-    width: 0
+    width: 0,
+    duration: 300
   },
   animate: {
+    type: 'tween',
     width: '100%',
-    duration: 0.4
+    duration: '1s'
   },
   exit: {
-    width: 0,
-    duration: 0.4
+    width: 0
   }
 }
