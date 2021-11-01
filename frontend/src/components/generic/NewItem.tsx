@@ -1,12 +1,14 @@
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { FC, HTMLAttributes } from 'react'
+import { pipe } from 'ramda'
+import React, { FC, forwardRef, HTMLAttributes, useRef } from 'react'
 import { CheckCircle, Icon as IconProp, PlusCircle } from 'react-feather'
 import styled from 'styled-components'
 
 import { horizontalGrowth } from '../../animations/horizontalGrowth'
+import { useKeyTriggers } from '../../hooks/useKeyTriggers'
 import { useViews } from '../../hooks/useViews'
-import { Icon } from './Icon'
+import { Icon, OwnProps as IconProps } from './Icon'
 import { Scale, Tuple } from './Tuple'
 
 type OwnProps = {
@@ -35,26 +37,39 @@ enum View {
   Edit
 }
 
+const RefIcon = forwardRef<HTMLButtonElement, IconProps>((props, ref) => (
+  <Icon {...props} forwardRef={ref} />
+))
+
 export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
   const { view, editView, initialView } = useViews(View.Initial, View)
+  const focusIcon = () => iconRef.current?.focus()
+  const iconRef = useRef<HTMLButtonElement>(null)
+
+  const ref = useKeyTriggers({
+    onConfirm: pipe(initialView),
+    onCancel: pipe(initialView, focusIcon)
+  })
+
   return (
     <div className={clsx('', className)} {...props}>
       <Tuple first={Scale.CONTENT} second={Scale.MAX}>
         {view === View.Initial ? (
-          <Icon icon={PlusCircle} onClick={editView} />
+          <RefIcon icon={PlusCircle} onClick={editView} ref={iconRef} />
         ) : (
           <Icon icon={CheckCircle} onClick={initialView} />
         )}
         <div className="input-spacer w-100">
-          <AnimatePresence initial={false}>
+          <AnimatePresence>
             {view === View.Edit && (
               <motion.div
                 {...horizontalGrowth}
                 layoutId="new-item"
                 style={{ width: 0, padding: 2 }}
                 className="overflow-hidden"
+                /*onAnimationComplete={() => console.log('start')}*/
               >
-                <EmptyEdit className="w-100" autoFocus />
+                <EmptyEdit className="w-100" autoFocus ref={ref} />
               </motion.div>
             )}
           </AnimatePresence>

@@ -19,7 +19,7 @@ export const Navigation: FC = () => {
   const { document } = useStore(appState)
   return (
     <Navbar variant="light" expand="sm" className="px-2 bevel-bottom bevel-shadow">
-      <Navbar.Brand href="#home">
+      <Navbar.Brand href="#home" tabIndex={-1}>
         <Logo className="logo" style={{ height: 32, marginTop: -8 }} />
       </Navbar.Brand>
       <Navbar.Text className="editable">{document?.name}</Navbar.Text>

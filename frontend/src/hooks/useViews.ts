@@ -15,8 +15,12 @@ export const useViews = <T extends string, TEnumValue extends string | number>(
   // prettier-ignore
   const methods = useMemo(() => reduce((p, v) => ({
     ...p,
-    [`${v.toLowerCase()}View`]: () => setView(anEnum[v])
-  }), {} as ViewMethods<T>, keys(anEnum)), [anEnum])
+    [`${v.toLowerCase()}View`]: (ev: Event) => {
+      ev.preventDefault()
+      console.log(v)
+      setView(anEnum[v])
+    }
+  }), {} as ViewMethods<T>, keys(anEnum)), [])
 
   return {
     view,

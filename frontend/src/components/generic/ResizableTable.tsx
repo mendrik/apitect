@@ -61,7 +61,9 @@ const Header: FC<HeaderProps> = ({ index, last, children }) => {
   return (
     <StyledHeader className="px-2 py-1 bevel-bottom" ref={setNodeRef}>
       <Row className="editable">{children}</Row>
-      {!last && <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} />}
+      {!last && (
+        <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} tabIndex={-1} />
+      )}
     </StyledHeader>
   )
 }
