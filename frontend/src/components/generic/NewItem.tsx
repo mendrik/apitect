@@ -1,8 +1,10 @@
 import clsx from 'clsx'
+import { AnimatePresence, motion } from 'framer-motion'
 import React, { FC, HTMLAttributes } from 'react'
-import { Icon as IconProp, PlusCircle } from 'react-feather'
+import { CheckCircle, Icon as IconProp, PlusCircle } from 'react-feather'
 import styled from 'styled-components'
 
+import { horizontalGrowth } from '../../animations/horizontalGrowth'
 import { useViews } from '../../hooks/useViews'
 import { Icon } from './Icon'
 import { Scale, Tuple } from './Tuple'
@@ -21,7 +23,9 @@ const EmptyEdit = styled.input`
   padding-left: 5px;
   &:focus,
   &:active {
-    border: 1px solid 0c55bf;
+    border: 1px solid #0c88c4;
+    outline: none;
+    box-shadow: 0 2px 3px rgba(120, 120, 120, 0.2) inset;
   }
 `
 
@@ -31,12 +35,24 @@ enum View {
 }
 
 export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
-  const { view, editView } = useViews(View.Initial, View)
+  const { view, editView, initialView } = useViews(View.Initial, View)
   return (
     <div className={clsx('', className)} {...props}>
       <Tuple first={Scale.CONTENT} second={Scale.MAX}>
-        <Icon icon={PlusCircle} onClick={editView} />
-        {view === View.Edit ? <EmptyEdit className="me-2" /> : <div className="input-spacer" />}
+        {view === View.Initial ? (
+          <Icon icon={PlusCircle} onClick={editView} />
+        ) : (
+          <Icon icon={CheckCircle} onClick={initialView} />
+        )}
+        <div className="input-spacer">
+          <AnimatePresence exitBeforeEnter>
+            {view === View.Edit && (
+              <motion.div {...horizontalGrowth}>
+                <EmptyEdit className="me-2" autoFocus />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </Tuple>
     </div>
   )

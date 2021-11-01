@@ -8,7 +8,7 @@ type OwnProps = {
 export const Icon: FC<OwnProps> = ({ icon: IconCmp, ...props }) => {
   return (
     <a type="button" className="d-block icon-xs" {...props}>
-      <IconCmp className="d-block icon-xs" />
+      <IconCmp className="d-block icon-xs user-select-none" />
     </a>
   )
 }
