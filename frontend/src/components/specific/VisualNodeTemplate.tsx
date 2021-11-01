@@ -1,5 +1,6 @@
 import { map } from 'ramda'
 import React, { FC } from 'react'
+import styled from 'styled-components'
 
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { VisualNode } from '../../stores/treeStore'
@@ -10,9 +11,13 @@ type OwnProps = {
   node: TreeNode<VisualNode>
 }
 
-export const VisualNodeTemplate: FC<OwnProps> = ({ node }) => {
+export const Column = styled.div`
+  padding: 0.5rem;
+`
+
+export const VisualNodeTemplate: FC<OwnProps> = ({ node, children }) => {
   return (
-    <div>
+    <Column>
       {node.value.name != '' && (
         <Tuple first={Scale.MAX} second={Scale.CONTENT}>
           <div>{node.value.name}</div>
@@ -26,6 +31,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ node }) => {
           </li>
         ))}
       </NotEmptyList>
-    </div>
+      {children}
+    </Column>
   )
 }

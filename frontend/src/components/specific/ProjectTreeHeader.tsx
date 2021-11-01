@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react'
 import React, { FC, useCallback, useContext } from 'react'
-import { PlusCircle } from 'react-feather'
+import { Menu } from 'react-feather'
 
 import { socketContext } from '../../contexts/socket'
 import { Operation } from '../../shared/types/clientMessages'
@@ -26,7 +26,7 @@ export const ProjectTreeHeader: FC<OwnProps> = ({ prop, children }) => {
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div>Project tree</div>
-      <Icon icon={PlusCircle} onClick={createNode} />
+      <Icon icon={Menu} onClick={createNode} />
     </Tuple>
   )
 }

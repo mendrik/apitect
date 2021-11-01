@@ -5,8 +5,8 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 1rem;
@@ -47,7 +47,7 @@ $bezelDark: #ddd;
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
 
 .cursor-pointer {
@@ -73,6 +73,7 @@ a.icon-xs {
   width: 24px;
   height: 24px;
   border: 1px solid transparent;
+
   &:hover {
     border: 1px dotted $bezelDark;
     background-color: white;
@@ -101,11 +102,15 @@ input[required] + label:after {
 }
 
 .scale-0 {
-  transform: scale(0,0);
+  transform: scale(0, 0);
 }
 
 .fs-small {
   font-size: 75%;
+}
+
+.input-spacer {
+  height: 32px;
 }
 
 @import "~bootstrap/scss/bootstrap";
