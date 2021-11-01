@@ -1,7 +1,10 @@
-import React, { FC } from 'react'
+import { useStore } from 'effector-react'
+import React, { FC, useCallback, useContext } from 'react'
 import { PlusCircle } from 'react-feather'
-import { useTranslation } from 'react-i18next'
 
+import { socketContext } from '../../contexts/socket'
+import { Operation } from '../../shared/types/clientMessages'
+import { treeStore } from '../../stores/treeStore'
 import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'
 
@@ -10,12 +13,20 @@ type OwnProps = {
 }
 
 export const ProjectTreeHeader: FC<OwnProps> = ({ prop, children }) => {
-  const { t } = useTranslation()
+  const { send } = useContext(socketContext)
+  const root = useStore(treeStore)
+  const createNode = useCallback(() => {
+    send({
+      type: 'NODE',
+      operation: Operation.Upsert,
+      position: root.children.length
+    })
+  }, [send, root])
 
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div>Project tree</div>
-      <Icon icon={PlusCircle} />
+      <Icon icon={PlusCircle} onClick={createNode} />
     </Tuple>
   )
 }

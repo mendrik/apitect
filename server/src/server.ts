@@ -4,9 +4,9 @@ import Ws from 'fastify-websocket'
 import { ServerMessage } from '~shared/types/serverMessages'
 import { logger } from '~shared/utils/logger'
 
+import { initDatabase } from './services'
 import { initAuthentication } from './services/authentication'
 import { config } from './services/config'
-import { initDatabase } from './services/serverState'
 import { initWebsocket } from './services/websocket'
 
 const fastify = Fastify({ logger: true })

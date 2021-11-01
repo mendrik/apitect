@@ -1,16 +1,10 @@
 import { createEffect, createEvent, createStore, Event } from 'effector'
 import { MongoClient, ObjectId } from 'mongodb'
-import { isNil } from 'ramda'
-import { TUiDocument } from '~shared/types/domain/document'
-import { Maybe } from '~shared/types/generic'
 import { ClientMessage } from '~shared/types/clientMessages'
-import { wrapServerMessage } from '~shared/types/serverMessages'
-import { failOn } from '~shared/utils/failOn'
-import { field } from '~shared/utils/ramda'
+import { Maybe } from '~shared/types/generic'
 
 import { Send } from '../server'
-import { User } from '../types/user'
-import { collection, connect } from './database'
+import { connect } from './database'
 
 export type Payload<K extends ClientMessage['type']> = {
   message: Extract<ClientMessage, { type: K }>
@@ -38,16 +32,3 @@ export const serverState = createStore<ServerState>({
 export const initDatabase = createEffect(() => connect())
 
 serverState.on(initDatabase.doneData, (state, database) => ({ ...state, database }))
-serverState.on(eventMap.DOCUMENT, (state, { send, userId }) => {
-  void collection('users')
-    .findOne({ _id: userId })
-    .then(failOn<User>(isNil, 'user not found'))
-    .then(field('lastDocument'))
-    .then(docId =>
-      collection('documents')
-        .findOne({ _id: docId })
-        .then(failOn(isNil, `Document ${docId} not found`))
-    )
-    .then(wrapServerMessage(TUiDocument))
-    .then(send)
-})
