@@ -7,7 +7,7 @@ import {
 } from '@dnd-kit/core'
 import { max, multiply, pathOr, pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { FC, ReactNode, useRef, useState } from 'react'
+import React, { FC, ReactNode, useRef } from 'react'
 import styled from 'styled-components'
 
 import { Draggable, Draggables } from '../../utils/draggables'
@@ -103,7 +103,6 @@ const bodyStyle = document.body.style
 
 export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
   const grid = useRef<HTMLDivElement>(null)
-  const [nextWidth, setNextWidth] = useState(0)
 
   console.assert(columns.length === children.length, 'Children count must match column count')
 
@@ -112,10 +111,24 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
       const data = event.active.data.current as Draggable
       if (data?.type === Draggables.COLUMN_HEADER) {
         bodyStyle.setProperty('cursor', 'col-resize')
-        const width = grid.current?.children.item(data.index + 1)?.getBoundingClientRect().width
-        if (width) {
-          setNextWidth(width)
+        const nextWidth = grid.current?.children.item(data.index + 1)?.getBoundingClientRect().width
+        if (nextWidth) {
+          event.active.data.current = {
+            ...event.active.data.current,
+            nextWidth
+          }
         }
+      }
+    },
+    onDragMove(event: DragMoveEvent) {
+      const data = event.active.data.current as Draggable
+      if (data?.type === Draggables.COLUMN_HEADER) {
+        const startWidth = event.active.rect.current.initial?.width ?? NaN
+        const nextWidth = data.nextWidth
+        const deltaX = event.delta.x
+        const style = grid.current?.style
+        style?.setProperty(`--col-width-${data.index}`, `${max(startWidth + deltaX, 200)}px`)
+        style?.setProperty(`--col-width-${data.index + 1}`, `${max(nextWidth - deltaX, 200)}px`)
       }
     },
     onDragEnd(event: DragEndEvent) {
@@ -124,21 +137,14 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
       if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {
         // when we are done let's convert pixels to relative units
         const totalWidth = grid.current.getBoundingClientRect().width
-        const columns = grid.current.children
-        Array.from(columns).forEach((c, idx) => {
-          const relativeWidth = c.getBoundingClientRect().width / (totalWidth / columns.length)
-          grid.current?.style?.setProperty(`--col-width-${idx}`, `${relativeWidth}fr`)
+        const children = grid.current.children
+        const ar = totalWidth / columns.length
+        requestAnimationFrame(() => {
+          Array.from(columns).forEach((_, idx) => {
+            const relativeWidth = children[idx].getBoundingClientRect().width / ar
+            grid.current?.style?.setProperty(`--col-width-${idx}`, `${relativeWidth.toFixed(4)}fr`)
+          })
         })
-      }
-    },
-    onDragMove(event: DragMoveEvent) {
-      const data = event.active.data.current as Draggable
-      if (data?.type === Draggables.COLUMN_HEADER) {
-        const startWidth = event.active.rect.current.initial?.width ?? NaN
-        const deltaX = event.delta.x
-        const style = grid.current?.style
-        style?.setProperty(`--col-width-${data.index}`, `${max(startWidth + deltaX, 200)}px`)
-        style?.setProperty(`--col-width-${data.index + 1}`, `${max(nextWidth - deltaX, 200)}px`)
       }
     }
   })
