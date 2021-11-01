@@ -11,7 +11,21 @@ export type VisualNode = {
 const rootNode = TreeNode.of<VisualNode>({ name: '', open: true, edit: false })
 export const treeStore = createStore<TreeNode<VisualNode>>(rootNode)
 
-export const api = createApi(treeStore, {
-  createNode: (root, node) => root,
-  deleteNode: (root, node) => root
-})
+type ApiArgs = {
+  createNode: TreeNode<VisualNode>
+  deleteNode: TreeNode<VisualNode>
+}
+
+type StateApi<T, Api> = {
+  [K in keyof Api]: Api[K] extends any[]
+    ? (state: T, ...args: Api[K]) => T
+    : (state: T, args: Api[K]) => T
+}
+
+export const api = createApi<TreeNode<VisualNode>, StateApi<TreeNode<VisualNode>, ApiArgs>>(
+  treeStore,
+  {
+    createNode: (root, node) => root,
+    deleteNode: (root, node) => root
+  }
+)

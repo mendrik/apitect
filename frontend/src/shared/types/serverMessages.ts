@@ -4,21 +4,9 @@ import { propOr } from 'ramda'
 import { decode } from '../codecs/decode'
 import { TUiDocument } from './domain/document'
 
-const DocumentRequest = t.type({
-  type: t.literal('DOCUMENT')
-})
-
 const ResetAppState = t.type({
   type: t.literal('RESET')
 })
-
-const NodeRequest = t.type({
-  type: t.literal('NODE')
-})
-
-export const TClientMessage = t.union([DocumentRequest, NodeRequest])
-
-export type ClientMessage = t.TypeOf<typeof TClientMessage>
 
 export const DocumentResponse = t.type({
   type: t.literal('DOCUMENT'),

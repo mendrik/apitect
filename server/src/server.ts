@@ -1,7 +1,7 @@
 import Fastify from 'fastify'
 import Cors from 'fastify-cors'
 import Ws from 'fastify-websocket'
-import { ServerMessage } from '~shared/types/messages'
+import { ServerMessage } from '~shared/types/serverMessages'
 import { logger } from '~shared/utils/logger'
 
 import { initAuthentication } from './services/authentication'

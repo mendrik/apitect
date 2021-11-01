@@ -4,7 +4,7 @@ import { SocketStream } from 'fastify-websocket'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
 import { decode } from '~shared/codecs/decode'
-import { ClientMessage, TClientMessage } from '~shared/types/messages'
+import { ClientMessage, TClientMessage } from '~shared/types/clientMessages'
 import { logger } from '~shared/utils/logger'
 
 import { Send } from '../server'
