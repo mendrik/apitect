@@ -1,4 +1,6 @@
 import clsx from 'clsx'
+import { find, findLast } from 'ramda'
+import { isNotNil } from 'ramda-adjunct'
 import React, { FC } from 'react'
 import { match } from 'ts-pattern'
 
@@ -13,7 +15,7 @@ export enum Orientation {
 }
 
 type OwnProps = {
-  children: [JSX.Element, JSX.Element]
+  children: JSX.Element[]
   first: Scale
   second: Scale
   orientation?: Orientation
@@ -44,10 +46,10 @@ export const Tuple: FC<OwnProps> = ({
       })}
     >
       <div className="d-flex align-items-center" style={{ flexBasis: getFlexBasis(first) }}>
-        {children[0]}
+        {find(isNotNil, children)}
       </div>
       <div className="d-flex align-items-center" style={{ flexBasis: getFlexBasis(second) }}>
-        {children[1]}
+        {findLast(isNotNil, children)}
       </div>
     </div>
   )

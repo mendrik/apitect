@@ -7,9 +7,9 @@ import styled from 'styled-components'
 
 import { horizontalGrowth } from '../../animations/horizontalGrowth'
 import { useKeyTriggers } from '../../hooks/useKeyTriggers'
-import { useViews } from '../../hooks/useViews'
 import { Icon, OwnProps as IconProps } from './Icon'
 import { Scale, Tuple } from './Tuple'
+import { useViews } from './View'
 
 type OwnProps = {
   icon: IconProp
@@ -37,14 +37,14 @@ enum View {
   Edit
 }
 
-const RefIcon = forwardRef<HTMLButtonElement, IconProps>((props, ref) => (
-  <Icon {...props} forwardRef={ref} />
-))
+const RefIcon = forwardRef<HTMLButtonElement, { view: string | number } & IconProps>(
+  (props, ref) => <Icon {...props} forwardRef={ref} />
+)
 
 export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
-  const { view, editView, initialView } = useViews(View.Initial, View)
   const focusIcon = () => iconRef.current?.focus()
   const iconRef = useRef<HTMLButtonElement>(null)
+  const { WithViews, initialView, editView, view } = useViews(View.Initial, View)
 
   const ref = useKeyTriggers({
     onConfirm: pipe(initialView),
@@ -52,29 +52,28 @@ export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
   })
 
   return (
-    <div className={clsx('', className)} {...props}>
-      <Tuple first={Scale.CONTENT} second={Scale.MAX}>
-        {view === View.Initial ? (
-          <RefIcon icon={PlusCircle} onClick={editView} ref={iconRef} />
-        ) : (
-          <Icon icon={CheckCircle} onClick={initialView} />
-        )}
-        <div className="input-spacer w-100">
-          <AnimatePresence>
-            {view === View.Edit && (
-              <motion.div
-                {...horizontalGrowth}
-                layoutId="new-item"
-                style={{ width: 0, padding: 2 }}
-                className="overflow-hidden"
-                /*onAnimationComplete={() => console.log('start')}*/
-              >
-                <EmptyEdit className="w-100" autoFocus ref={ref} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </Tuple>
-    </div>
+    <WithViews>
+      <div className={clsx('', className)} {...props}>
+        <Tuple first={Scale.CONTENT} second={Scale.MAX}>
+          <RefIcon view={View.Initial} icon={PlusCircle} onClick={editView} ref={iconRef} />
+          <Icon view={View.Edit} icon={CheckCircle} onClick={initialView} />
+          <div className="input-spacer w-100">
+            <AnimatePresence>
+              {view === View.Edit && (
+                <motion.div
+                  {...horizontalGrowth}
+                  layoutId="new-item"
+                  style={{ width: 0, padding: 2 }}
+                  className="overflow-hidden"
+                  /*onAnimationComplete={() => console.log('start')}*/
+                >
+                  <EmptyEdit className="w-100" autoFocus ref={ref} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </Tuple>
+      </div>
+    </WithViews>
   )
 }

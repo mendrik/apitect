@@ -13,7 +13,7 @@ export const useKeyTriggers = ({ onConfirm, onCancel }: OwnProps): RefObject<HTM
   const ref = useRef<HTMLInputElement>(null)
 
   useEventListener('keyup', when(propEq<any>('key', 'Escape'), onCancel), ref)
-  useEventListener('keyup', when(propEq<any>('key', 'Enter'), onConfirm), ref)
+  useEventListener('keypress', when(propEq<any>('key', 'Enter'), onConfirm), ref)
   useEventListener('focusout', onCancel, ref)
 
   return ref
