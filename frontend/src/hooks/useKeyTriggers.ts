@@ -14,7 +14,7 @@ export const useKeyTriggers = ({ onConfirm, onCancel }: OwnProps): RefObject<HTM
 
   useEventListener('keyup', when(propEq<any>('key', 'Escape'), onCancel), ref)
   useEventListener('keypress', when(propEq<any>('key', 'Enter'), onConfirm), ref)
-  useEventListener('focusout', onCancel, ref)
+  useEventListener('blur', onCancel, ref)
 
   return ref
 }

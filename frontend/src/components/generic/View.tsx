@@ -1,5 +1,5 @@
 import { keys, reduce } from 'ramda'
-import React, { createContext, FC, useCallback, useMemo, useState } from 'react'
+import React, { createContext, FC, useCallback, useRef, useState } from 'react'
 
 import { Fn } from '../../shared/types/generic'
 
@@ -26,26 +26,23 @@ export const useViews = <T extends string, E extends string | number>(
     [view]
   )
 
-  const methods = useMemo(
-    () =>
-      reduce(
-        (p, v) => ({
-          ...p,
-          [`${v.toLowerCase()}View`]: (ev: Event) => {
-            ev.preventDefault()
-            console.log(v)
-            setView(anEnum[v])
-          }
-        }),
-        {} as ViewMethods<T>,
-        keys(anEnum)
-      ),
-    []
+  const methods = useRef(
+    reduce(
+      (p, v) => ({
+        ...p,
+        [`${v.toLowerCase()}View`]: (ev: Event) => {
+          ev.preventDefault()
+          setView(anEnum[v])
+        }
+      }),
+      {} as ViewMethods<T>,
+      keys(anEnum)
+    )
   )
 
   return {
     view,
     WithViews,
-    ...methods
+    ...methods.current
   }
 }

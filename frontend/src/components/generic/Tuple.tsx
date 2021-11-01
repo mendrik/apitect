@@ -1,6 +1,5 @@
 import clsx from 'clsx'
-import { find, findLast } from 'ramda'
-import { isNotNil } from 'ramda-adjunct'
+import { isNil, reject } from 'ramda'
 import React, { FC } from 'react'
 import { match } from 'ts-pattern'
 
@@ -36,6 +35,10 @@ export const Tuple: FC<OwnProps> = ({
   gap = 0,
   children
 }) => {
+  const items = reject(isNil, children)
+
+  console.log(children.map(i => i === null))
+
   return (
     <div
       className={clsx(`d-flex justify-content-between gap-${gap}`, {
@@ -46,10 +49,10 @@ export const Tuple: FC<OwnProps> = ({
       })}
     >
       <div className="d-flex align-items-center" style={{ flexBasis: getFlexBasis(first) }}>
-        {find(isNotNil, children)}
+        {items[0]}
       </div>
       <div className="d-flex align-items-center" style={{ flexBasis: getFlexBasis(second) }}>
-        {findLast(isNotNil, children)}
+        {items[1]}
       </div>
     </div>
   )

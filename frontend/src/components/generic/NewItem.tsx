@@ -42,9 +42,9 @@ const RefIcon = forwardRef<HTMLButtonElement, { view: string | number } & IconPr
 )
 
 export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
-  const focusIcon = () => iconRef.current?.focus()
-  const iconRef = useRef<HTMLButtonElement>(null)
   const { WithViews, initialView, editView, view } = useViews(View.Initial, View)
+  const iconRef = useRef<HTMLButtonElement>(null)
+  const focusIcon = () => iconRef.current?.focus()
 
   const ref = useKeyTriggers({
     onConfirm: pipe(initialView),

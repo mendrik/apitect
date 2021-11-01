@@ -6,5 +6,6 @@ export const withView =
   <T extends object>(fc: FC<T>): FC<T & { view?: string | number }> =>
   ({ view: viewLock, ...props }) => {
     const { view } = useContext(ViewContext)
-    return view == null || view === viewLock ? fc(props as any) : null
+    console.log(viewLock == null || view === viewLock)
+    return viewLock == null || view === viewLock ? fc(props as any) : null
   }
