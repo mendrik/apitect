@@ -1,14 +1,15 @@
-export const horizontalGrowth = {
-  initial: {
-    width: 0,
-    duration: 300
-  },
-  animate: {
-    type: 'tween',
-    width: '100%',
-    duration: '1s'
-  },
+import { AnimationProps } from 'framer-motion'
+
+export const horizontalGrowth: AnimationProps = {
   exit: {
     width: 0
+  },
+  animate: {
+    width: '100%'
+  },
+  transition: {
+    type: 'spring',
+    stiffness: 500,
+    damping: 50
   }
 }

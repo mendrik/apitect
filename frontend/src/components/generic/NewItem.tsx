@@ -15,12 +15,13 @@ type OwnProps = {
 
 const EmptyEdit = styled.input`
   width: 100%;
-  margin: 2px;
+  margin: 0;
   border: 1px dotted #ddd;
   background-color: white;
   border-radius: 2px;
   font-size: 1rem;
   padding-left: 5px;
+  color: #0c88c4;
   &:focus,
   &:active {
     border: 1px solid #0c88c4;
@@ -45,10 +46,15 @@ export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
           <Icon icon={CheckCircle} onClick={initialView} />
         )}
         <div className="input-spacer w-100">
-          <AnimatePresence exitBeforeEnter>
+          <AnimatePresence initial={false}>
             {view === View.Edit && (
-              <motion.div {...horizontalGrowth}>
-                <EmptyEdit className="me-2" autoFocus />
+              <motion.div
+                {...horizontalGrowth}
+                layoutId="new-item"
+                style={{ width: 0, padding: 2 }}
+                className="overflow-hidden"
+              >
+                <EmptyEdit className="w-100" autoFocus />
               </motion.div>
             )}
           </AnimatePresence>
