@@ -4,7 +4,8 @@ import styled from 'styled-components'
 
 export enum Scale {
   CONTENT = 'content',
-  MAX = 'max'
+  MAX = 'max',
+  AUTO = 'auto'
 }
 
 export enum Orientation {
@@ -14,18 +15,24 @@ export enum Orientation {
 
 type OwnProps = {
   children: JSX.Element[]
-  first: Scale
-  second: Scale
+  first?: Scale
+  second?: Scale
   orientation?: Orientation
   gap?: number
 }
 
 const StyledTuple = styled.div`
+  &.first-auto > *:first-child {
+    flex-basis: auto;
+  }
   &.first-content > *:first-child {
     flex-basis: fit-content;
   }
   &.first-max > *:nth-child(1) {
     flex-basis: 100%;
+  }
+  &.second-auto > *:first-child {
+    flex-basis: auto;
   }
   &.second-content > *:first-child {
     flex-basis: 100%;
@@ -37,8 +44,8 @@ const StyledTuple = styled.div`
 
 export const Tuple: FC<OwnProps> = ({
   orientation = Orientation.Horizontal,
-  first,
-  second,
+  first = Scale.AUTO,
+  second = Scale.AUTO,
   gap = 0,
   children
 }) => (

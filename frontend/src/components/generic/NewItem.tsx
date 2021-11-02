@@ -54,7 +54,7 @@ export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
   return (
     <WithViews>
       <div className={clsx('', className)} {...props}>
-        <Tuple first={Scale.CONTENT} second={Scale.MAX}>
+        <Tuple first={Scale.CONTENT}>
           <RefIcon view={View.Initial} icon={PlusCircle} onClick={editView} ref={iconRef} />
           <Icon view={View.Edit} icon={CheckCircle} onClick={initialView} />
           <div className="input-spacer w-100">
@@ -65,7 +65,6 @@ export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
                   layoutId="new-item"
                   style={{ width: 0, padding: 2 }}
                   className="overflow-hidden"
-                  /*onAnimationComplete={() => console.log('start')}*/
                 >
                   <EmptyEdit className="w-100" autoFocus ref={ref} />
                 </motion.div>
