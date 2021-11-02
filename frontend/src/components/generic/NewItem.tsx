@@ -1,11 +1,12 @@
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { pipe } from 'ramda'
-import React, { FC, forwardRef, HTMLAttributes, useRef } from 'react'
+import React, { FC, forwardRef, HTMLAttributes, KeyboardEvent, useRef } from 'react'
 import { CheckCircle, Icon as IconProp, PlusCircle } from 'react-feather'
 import styled from 'styled-components'
 
 import { horizontalGrowth } from '../../animations/horizontalGrowth'
+import { ReactComponent as Loader } from '../../assets/inlineLoader.svg'
 import { useKeyTriggers } from '../../hooks/useKeyTriggers'
 import { useView } from '../../hooks/useView'
 import { Icon, OwnProps as IconProps } from './Icon'
@@ -13,6 +14,7 @@ import { Scale, Tuple } from './Tuple'
 
 type OwnProps = {
   icon: IconProp
+  createTask: (item: string) => Promise<void>
 } & HTMLAttributes<HTMLDivElement>
 
 const EmptyEdit = styled.input`
@@ -34,20 +36,24 @@ const EmptyEdit = styled.input`
 
 enum View {
   Initial,
-  Edit
+  Edit,
+  Confirming
 }
 
 const RefIcon = forwardRef<HTMLButtonElement, IconProps>((props, ref) => (
   <Icon {...props} forwardRef={ref} />
 ))
 
-const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
-  const { initialView, editView, view } = useView(View)
+const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
+  const { initialView, editView, confirmingView, view } = useView(View)
   const iconRef = useRef<HTMLButtonElement>(null)
   const focusIcon = () => iconRef.current?.focus()
 
   const ref = useKeyTriggers({
-    onConfirm: pipe(initialView),
+    onConfirm: async (ev: KeyboardEvent<HTMLInputElement>) => {
+      confirmingView()
+      await createTask(ev.currentTarget.value).then(initialView)
+    },
     onCancel: pipe(initialView, focusIcon)
   })
 
@@ -56,9 +62,14 @@ const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
       <Tuple first={Scale.CONTENT}>
         {view === View.Initial && <RefIcon icon={PlusCircle} onClick={editView} ref={iconRef} />}
         {view === View.Edit && <Icon icon={CheckCircle} onClick={initialView} />}
+        {view === View.Confirming && (
+          <div className="icon-xs d-flex align-items-center" style={{ padding: 1 }}>
+            <Loader style={{ width: 22, height: 22 }} />
+          </div>
+        )}
         <div className="input-spacer w-100">
           <AnimatePresence>
-            {view === View.Edit && (
+            {view !== View.Initial && (
               <motion.div
                 {...horizontalGrowth}
                 style={{ width: 0, padding: 2 }}

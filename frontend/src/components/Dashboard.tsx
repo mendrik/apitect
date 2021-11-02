@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import { useRequest } from '../hooks/useRequest'
 import { treeStore } from '../stores/treeStore'
+import { wait } from '../utils/wait'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { NewItem } from './generic/NewItem'
@@ -39,7 +40,7 @@ const Dashboard: FC = () => {
         <DndContext>
           <ResizableTable columns={columns}>
             <VisualNodeTemplate node={tree}>
-              <NewItem icon={Plus} />
+              <NewItem icon={Plus} createTask={wait(1)} />
             </VisualNodeTemplate>
             <Column>A</Column>
             <Column>B</Column>

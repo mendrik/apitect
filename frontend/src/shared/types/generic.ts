@@ -1,6 +1,7 @@
 export type Fn<R = void> = (...args: any[]) => R
 
 export type Milliseconds = number
+export type Seconds = number
 export type Fr = number
 export type Pixels = number
 

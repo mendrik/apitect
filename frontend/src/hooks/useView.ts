@@ -17,7 +17,7 @@ export const useView = <T extends string, E extends string | number>(anEnum: {
       (p, v) => ({
         ...p,
         [`${v.toLowerCase()}View`]: (ev: Event) => {
-          ev.preventDefault()
+          ev?.preventDefault()
           setView(anEnum[v])
         }
       }),
