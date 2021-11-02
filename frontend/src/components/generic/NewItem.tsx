@@ -41,8 +41,8 @@ const RefIcon = forwardRef<HTMLButtonElement, { view: string | number } & IconPr
   (props, ref) => <Icon {...props} forwardRef={ref} />
 )
 
-export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
-  const { WithViews, initialView, editView, view } = useViews(View.Initial, View)
+const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
+  const { WithViews, initialView, editView, view } = useViews(View)
   const iconRef = useRef<HTMLButtonElement>(null)
   const focusIcon = () => iconRef.current?.focus()
 
@@ -62,7 +62,6 @@ export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
               {view === View.Edit && (
                 <motion.div
                   {...horizontalGrowth}
-                  layoutId="new-item"
                   style={{ width: 0, padding: 2 }}
                   className="overflow-hidden"
                 >
@@ -76,3 +75,5 @@ export const NewItem: FC<OwnProps> = ({ className, icon, ...props }) => {
     </WithViews>
   )
 }
+
+export { NewItem }

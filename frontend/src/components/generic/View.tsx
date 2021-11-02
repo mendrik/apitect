@@ -14,10 +14,12 @@ type ViewMethods<T extends string> = {
 export const ViewContext = createContext<ViewContextType<string | number>>({} as any)
 
 export const useViews = <T extends string, E extends string | number>(
-  initial: E,
-  anEnum: { [key in T]: E }
+  anEnum: {
+    [key in T]: E
+  },
+  initial?: E
 ) => {
-  const [view, setView] = useState<E>(initial)
+  const [view, setView] = useState<E>(initial ?? (0 as any))
 
   const WithViews: FC = useCallback(
     ({ children }) => {
