@@ -90,10 +90,6 @@ const ColResizer = styled.div`
   }
 `
 
-const Column = styled.div`
-  display: block;
-`
-
 const Row = styled.div`
   display: block;
   white-space: nowrap;
@@ -154,11 +150,11 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
   return (
     <StyledGrid ref={grid} columns={columns}>
       {columns.map((column, col) => (
-        <Column key={col}>
+        <div key={col}>
           <Header index={col} last={col === columns.length - 1}>
             {column}
           </Header>
-        </Column>
+        </div>
       ))}
       {children}
     </StyledGrid>

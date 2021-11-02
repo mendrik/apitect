@@ -14,7 +14,7 @@ import { Navigation } from './Navigation'
 import { NewItem } from './generic/NewItem'
 import { ResizableTable } from './generic/ResizableTable'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
-import { Column, VisualNodeTemplate } from './specific/VisualNodeTemplate'
+import { VisualNodeTemplate } from './specific/VisualNodeTemplate'
 
 const columns: JSX.Element[] = [
   <ProjectTreeHeader />,
@@ -22,6 +22,10 @@ const columns: JSX.Element[] = [
   <div>German</div>,
   <div>Finnish</div>
 ]
+
+const Column = styled.div`
+  padding: 0.5rem;
+`
 
 const Scroller = styled.div`
   max-width: 100%;
@@ -47,9 +51,11 @@ const Dashboard: FC = () => {
       <Scroller>
         <DndContext>
           <ResizableTable columns={columns}>
-            <VisualNodeTemplate node={tree} root>
-              <NewItem icon={Plus} createTask={wait(1)} />
-            </VisualNodeTemplate>
+            <Column>
+              <VisualNodeTemplate node={tree} root>
+                <NewItem icon={Plus} createTask={wait(1)} />
+              </VisualNodeTemplate>
+            </Column>
             <Column>A</Column>
             <Column>B</Column>
             <Column>C</Column>
