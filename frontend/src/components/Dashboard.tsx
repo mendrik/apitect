@@ -1,6 +1,6 @@
 import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import React, { FC, useMemo } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 import { Plus } from 'react-feather'
 import styled from 'styled-components'
 
@@ -36,16 +36,27 @@ const Scroller = styled.div`
 
 const Dashboard: FC = () => {
   const { tree } = useStore(appStore)
+  const [, forceRender] = useState(false)
 
   const visualTree = useMemo(() => {
     const t = TreeNode.from<UiNode, 'children'>('children')(tree)
-    return t.map<VisualNode>(t => ({
-      name: t.name,
-      open: false
-    }))
+    return t.map(
+      t =>
+        new Proxy<VisualNode>(
+          {
+            name: t.name,
+            open: false
+          },
+          {
+            set<T extends VisualNode>(target: T, prop: keyof T, value: any): boolean {
+              target[prop] = value
+              forceRender(s => !s)
+              return true
+            }
+          }
+        )
+    )
   }, [tree])
-
-  console.log(visualTree)
 
   return (
     <AppFrame>
