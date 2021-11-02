@@ -27,6 +27,7 @@ const NodeGrid = styled.div`
   display: grid;
   grid-template-columns: 20px auto 20px;
   align-items: center;
+  user-select: none;
   & > :last-child {
     justify-self: end;
   }
