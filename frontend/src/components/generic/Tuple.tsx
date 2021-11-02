@@ -1,11 +1,10 @@
 import clsx from 'clsx'
-import { isNil, reject } from 'ramda'
 import React, { FC } from 'react'
-import { match } from 'ts-pattern'
+import styled from 'styled-components'
 
 export enum Scale {
-  CONTENT,
-  MAX
+  CONTENT = 'content',
+  MAX = 'max'
 }
 
 export enum Orientation {
@@ -21,12 +20,20 @@ type OwnProps = {
   gap?: number
 }
 
-const getFlexBasis = (scale: Scale): string => {
-  return match(scale)
-    .with(Scale.MAX, () => '100%')
-    .with(Scale.CONTENT, () => 'fit-content')
-    .otherwise(() => 'auto')
-}
+const StyledTuple = styled.div`
+  &.first-content > *:first-child {
+    flex-basis: fit-content;
+  }
+  &.first-max > *:nth-child(1) {
+    flex-basis: 100%;
+  }
+  &.second-content > *:first-child {
+    flex-basis: 100%;
+  }
+  &.second-content > *:nth-child(1) {
+    flex-basis: fit-content;
+  }
+`
 
 export const Tuple: FC<OwnProps> = ({
   orientation = Orientation.Horizontal,
@@ -34,26 +41,19 @@ export const Tuple: FC<OwnProps> = ({
   second,
   gap = 0,
   children
-}) => {
-  const items = reject(isNil, children)
-
-  console.log(children.map(i => i === null))
-
-  return (
-    <div
-      className={clsx(`d-flex justify-content-between gap-${gap}`, {
+}) => (
+  <StyledTuple
+    className={clsx(
+      `d-flex justify-content-between gap-${gap} align-items-center`,
+      {
         'flex-row': orientation === Orientation.Horizontal,
         'flex-col': orientation === Orientation.Vertical,
         'w-100': orientation === Orientation.Horizontal,
         'h-100': orientation === Orientation.Vertical
-      })}
-    >
-      <div className="d-flex align-items-center" style={{ flexBasis: getFlexBasis(first) }}>
-        {items[0]}
-      </div>
-      <div className="d-flex align-items-center" style={{ flexBasis: getFlexBasis(second) }}>
-        {items[1]}
-      </div>
-    </div>
-  )
-}
+      },
+      `first-${first} second-${second}`
+    )}
+  >
+    {children}
+  </StyledTuple>
+)
