@@ -10,7 +10,7 @@ type ViewMethods<T extends string> = {
 export const useView = <T extends string, E extends string | number>(anEnum: {
   [K in T]: E
 }) => {
-  const [view, setView] = useState<E>(anEnum as any[0])
+  const [view, setView] = useState<E>((anEnum as any)[(anEnum as any)[0]] as any)
 
   const methods = useRef(
     reduce(
