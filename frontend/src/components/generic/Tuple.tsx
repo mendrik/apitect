@@ -14,7 +14,6 @@ export enum Orientation {
 }
 
 type OwnProps = {
-  children: JSX.Element[]
   first?: Scale
   second?: Scale
   orientation?: Orientation
