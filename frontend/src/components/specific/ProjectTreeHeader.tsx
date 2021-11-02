@@ -4,7 +4,7 @@ import { Menu } from 'react-feather'
 
 import { socketContext } from '../../contexts/socket'
 import { Operation } from '../../shared/types/clientMessages'
-import { treeStore } from '../../stores/treeStore'
+import appStore from '../../stores/appStore'
 import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'
 
@@ -14,14 +14,14 @@ type OwnProps = {
 
 export const ProjectTreeHeader: FC<OwnProps> = ({ prop, children }) => {
   const { send } = useContext(socketContext)
-  const root = useStore(treeStore)
+  const { document } = useStore(appStore)
   const createNode = useCallback(() => {
     send({
       type: 'NODE',
       operation: Operation.Upsert,
-      position: root.children.length
+      position: document?.tree.children.length
     })
-  }, [send, root])
+  }, [send, document?.tree])
 
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>

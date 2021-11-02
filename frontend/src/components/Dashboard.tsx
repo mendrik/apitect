@@ -5,7 +5,9 @@ import { Plus } from 'react-feather'
 import styled from 'styled-components'
 
 import { useRequest } from '../hooks/useRequest'
-import { treeStore } from '../stores/treeStore'
+import { TreeNode } from '../shared/algebraic/treeNode'
+import { UiNode } from '../shared/types/domain/tree'
+import appStore from '../stores/appStore'
 import { wait } from '../utils/wait'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
@@ -31,7 +33,13 @@ const Scroller = styled.div`
 
 const Dashboard: FC = () => {
   useRequest({ type: 'DOCUMENT' })
-  const tree = useStore(treeStore)
+  const { document } = useStore(appStore)
+
+  if (document == null) {
+    return null
+  }
+
+  const tree = TreeNode.from<UiNode, 'children'>('children')(document.tree)
 
   return (
     <AppFrame>
@@ -39,7 +47,7 @@ const Dashboard: FC = () => {
       <Scroller>
         <DndContext>
           <ResizableTable columns={columns}>
-            <VisualNodeTemplate node={tree}>
+            <VisualNodeTemplate node={tree} root>
               <NewItem icon={Plus} createTask={wait(1)} />
             </VisualNodeTemplate>
             <Column>A</Column>

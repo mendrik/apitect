@@ -12,9 +12,9 @@ const initial: AppState = {
   document: null
 }
 
-const appState = createStore<AppState>(initial)
+const appStore = createStore<AppState>(initial)
 
-appState.on(messageReceived, (state, message) => {
+appStore.on(messageReceived, (state, message) => {
   switch (message.type) {
     case 'DOCUMENT':
       return { ...state, document: message.payload }
@@ -25,4 +25,4 @@ appState.on(messageReceived, (state, message) => {
   }
 })
 
-export default appState
+export default appStore

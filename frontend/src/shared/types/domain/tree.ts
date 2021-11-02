@@ -8,8 +8,10 @@ export type UiNode = {
 }
 
 export const TUiNode: t.Type<UiNode> = t.recursion('node', () =>
-  t.type({
-    name: t.string,
-    children: withDefault(t.array(TUiNode), [])
-  })
+  t.exact(
+    t.type({
+      name: t.string,
+      children: withDefault(t.array(TUiNode), [])
+    })
+  )
 )

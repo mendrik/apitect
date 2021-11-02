@@ -1,33 +1,41 @@
-import { map } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
 import { TreeNode } from '../../shared/algebraic/treeNode'
-import { VisualNode } from '../../stores/treeStore'
 import { NotEmptyList } from '../generic/NotEmptyList'
 import { Scale, Tuple } from '../generic/Tuple'
 
 type OwnProps = {
-  node: TreeNode<VisualNode>
+  node: TreeNode<{ name: string }>
+  root: boolean
 }
 
 export const Column = styled.div`
   padding: 0.5rem;
 `
 
-export const VisualNodeTemplate: FC<OwnProps> = ({ node, children }) => {
+const Ol = styled.ol`
+  padding: 0;
+  margin: 0;
+  list-style: none;
+`
+
+const ListWrap: FC = ({ children }) => <Ol>{children}</Ol>
+
+export const VisualNodeTemplate: FC<OwnProps> = ({ root, node, children }) => {
   return (
     <Column>
-      {node.value.name != '' && (
+      {!root && (
         <Tuple first={Scale.MAX} second={Scale.CONTENT}>
           <div>{node.value.name}</div>
           <div>-</div>
         </Tuple>
       )}
-      <NotEmptyList list={node.children}>
-        {map(node => (
-          <li>
-            <VisualNodeTemplate node={node} />
+      <NotEmptyList list={node.children} as={ListWrap}>
+        {mapIndexed((node, idx) => (
+          <li key={idx}>
+            <VisualNodeTemplate node={node} root={false} />
           </li>
         ))}
       </NotEmptyList>
