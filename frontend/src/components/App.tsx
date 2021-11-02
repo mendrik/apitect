@@ -6,17 +6,20 @@ import { userContext } from '../contexts/user'
 import Dashboard from './Dashboard'
 import { NotLoggedIn } from './NotLoggedIn'
 import { ErrorView } from './generic/ErrorView'
+import { WaitForDocument } from './specific/WaitForDocument'
 
 const App: FC = () => {
   const userState = useContext(userContext)
-  if (userState.status === 'running') {
+  if (userState.status === 'running' || document == null) {
     return null
   }
   return userState.user ? (
     <WithSocket>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
+      <WaitForDocument>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+        </Routes>
+      </WaitForDocument>
     </WithSocket>
   ) : (
     <Routes>

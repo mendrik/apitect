@@ -1,10 +1,9 @@
 import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import { Plus } from 'react-feather'
 import styled from 'styled-components'
 
-import { useRequest } from '../hooks/useRequest'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { UiNode } from '../shared/types/domain/tree'
 import appStore from '../stores/appStore'
@@ -14,7 +13,7 @@ import { Navigation } from './Navigation'
 import { NewItem } from './generic/NewItem'
 import { ResizableTable } from './generic/ResizableTable'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
-import { VisualNodeTemplate } from './specific/VisualNodeTemplate'
+import { VisualNode, VisualNodeTemplate } from './specific/VisualNodeTemplate'
 
 const columns: JSX.Element[] = [
   <ProjectTreeHeader />,
@@ -36,14 +35,17 @@ const Scroller = styled.div`
 `
 
 const Dashboard: FC = () => {
-  useRequest({ type: 'DOCUMENT' })
-  const { document } = useStore(appStore)
+  const { tree } = useStore(appStore)
 
-  if (document == null) {
-    return null
-  }
+  const visualTree = useMemo(() => {
+    const t = TreeNode.from<UiNode, 'children'>('children')(tree)
+    return t.map<VisualNode>(t => ({
+      name: t.name,
+      open: false
+    }))
+  }, [tree])
 
-  const tree = TreeNode.from<UiNode, 'children'>('children')(document.tree)
+  console.log(visualTree)
 
   return (
     <AppFrame>
@@ -52,7 +54,7 @@ const Dashboard: FC = () => {
         <DndContext>
           <ResizableTable columns={columns}>
             <Column>
-              <VisualNodeTemplate node={tree} root>
+              <VisualNodeTemplate node={visualTree} depth={0}>
                 <NewItem icon={Plus} createTask={wait(1)} />
               </VisualNodeTemplate>
             </Column>

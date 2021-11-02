@@ -78,4 +78,12 @@ input[required] + label:after {
   height: 32px;
 }
 
+.thin {
+  font-weight: 300;
+}
+
+.thick {
+  font-weight: 600;
+}
+
 @import "~bootstrap/scss/bootstrap";
