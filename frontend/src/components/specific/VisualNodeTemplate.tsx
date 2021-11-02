@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { NotEmptyList } from '../generic/NotEmptyList'
+import { focus } from '../styled/focus'
 
 export type VisualNode = {
   name: string
@@ -23,15 +24,18 @@ const Ol = styled.ol`
   list-style: none;
 `
 
-const NodeGrid = styled.div`
+const NodeGrid = focus(styled.div`
   display: grid;
   grid-template-columns: 20px auto 20px;
   align-items: center;
   user-select: none;
+  & > :first-child {
+    justify-self: center;
+  }
   & > :last-child {
     justify-self: end;
   }
-`
+`)
 
 const RootWrap: FC = ({ children }) => <Ol>{children}</Ol>
 const ListWrap: FC = ({ children }) => <Ol className="ps-3">{children}</Ol>
@@ -41,7 +45,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth, node, children: footer
   return (
     <div>
       {depth > 0 && (
-        <NodeGrid>
+        <NodeGrid tabIndex={0}>
           {hasChildren ? (
             node.value.open ? (
               <MinusSquare

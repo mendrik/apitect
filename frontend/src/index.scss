@@ -86,4 +86,9 @@ input[required] + label:after {
   font-weight: 600;
 }
 
+.focus {
+  border: 1px solid #0c88c4;
+  outline: none;
+}
+
 @import "~bootstrap/scss/bootstrap";
