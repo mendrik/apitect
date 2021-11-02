@@ -52,7 +52,7 @@ const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
   const ref = useKeyTriggers({
     onConfirm: async (ev: KeyboardEvent<HTMLInputElement>) => {
       confirmingView()
-      await createTask(ev.currentTarget.value).then(initialView)
+      await createTask(ev.currentTarget.value).then(initialView).then(focusIcon)
     },
     onCancel: pipe(initialView, focusIcon)
   })
