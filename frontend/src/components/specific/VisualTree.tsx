@@ -1,9 +1,14 @@
 import { useStore } from 'effector-react'
+import { path, pipe, prop, propEq, when } from 'ramda'
 import React, { FC, useMemo, useRef, useState } from 'react'
+import { useEventListener } from 'usehooks-ts'
 
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { UiNode } from '../../shared/types/domain/tree'
+import { Maybe } from '../../shared/types/generic'
+import { next } from '../../shared/utils/ramda'
 import appStore from '../../stores/appStore'
+import { domElementById, focus } from '../../utils/focus'
 import { VisualNode, VisualNodeTemplate } from './VisualNodeTemplate'
 
 export const VisualTree: FC = ({ children }) => {
@@ -18,7 +23,7 @@ export const VisualTree: FC = ({ children }) => {
           {
             id: t.id,
             name: t.name,
-            open: false
+            open: t.id === tree.id
           },
           {
             set<T extends VisualNode>(target: T, prop: keyof T, value: any): boolean {
@@ -31,12 +36,21 @@ export const VisualTree: FC = ({ children }) => {
     )
   }, [tree])
 
-  /*const focusedNode = () => visualTree.first()
+  // prettier-ignore
+  const nextNode = (): Maybe<VisualNode> => {
+    const list =
+      visualTree.reduceAlt(
+        (acc, n) => n.value.open ? [...acc, n] : acc,
+        [] as TreeNode<VisualNode>[]
+      ).flatMap(prop('children')).map(prop('value')) ?? []
+    const id = document.activeElement?.id
+    return next(propEq('id', id))(list)
+  }
 
-  const arrowDown = when(propEq<any>('key', 'ArrowDown'), pipe(nextNode, dom))
+  const arrowDown = when(propEq<any>('key', 'ArrowDown'), pipe(nextNode, domElementById, focus))
 
-  useEventListener('keyup', , treeRef)
-*/
+  useEventListener('keyup', arrowDown, treeRef)
+
   return (
     <div ref={treeRef}>
       <VisualNodeTemplate node={visualTree} depth={0}>

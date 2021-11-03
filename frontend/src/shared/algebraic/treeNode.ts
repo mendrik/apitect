@@ -67,8 +67,12 @@ export class TreeNode<T> {
   toArray = (strategy: Strategy = Strategy.Breadth): T[] =>
     this.flatten(strategy).map(prop('value'));
 
-  [fl.reduce] = <R>(fn: (acc: R, c: T) => R, acc: R) => reduce(fn, acc, this.toArray())
-  reduce = this[fl.reduce];
+  [fl.reduce] = <R>(fn: (acc: R, c: T) => R, acc: R) =>
+    reduce(fn, acc, this.toArray(Strategy.Depth))
+  reduce = this[fl.reduce]
+
+  reduceAlt = <R>(fn: (acc: R, c: TreeNode<T>) => R, acc: R) =>
+    reduce(fn, acc, this.flatten(Strategy.Depth));
 
   [fl.zero] = () => TreeNode.of(null, [])
   zero = this[fl.zero];

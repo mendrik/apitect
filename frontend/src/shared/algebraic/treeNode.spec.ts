@@ -7,19 +7,23 @@ describe('TreeNode', () => {
   it('Flatten depth first', () => {
     const x = TreeNode.of(1, [
       TreeNode.of(2),
-      TreeNode.of(3, [TreeNode.of(4, [TreeNode.of(5)]), TreeNode.of(6)]),
-      TreeNode.of(7)
+      TreeNode.of(3, [
+        TreeNode.of(4, [TreeNode.of(5), TreeNode.of(6)]),
+        TreeNode.of(7, [TreeNode.of(8)])
+      ]),
+      TreeNode.of(9)
     ])
-    expect(x.toArray(Strategy.Depth)).toStrictEqual([1, 2, 3, 4, 5, 6, 7])
+    expect(x.flatten(Strategy.Depth).map(prop('value'))).toStrictEqual([1, 2, 3, 4, 5, 6, 7, 8, 9])
   })
 
   it('Flatten breadth first', () => {
     const x = TreeNode.of(1, [
       TreeNode.of(2),
-      TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
-      TreeNode.of(4, [TreeNode.of(6)])
+      TreeNode.of(3, [TreeNode.of(6, [TreeNode.of(9)])]),
+      TreeNode.of(4, [TreeNode.of(7)]),
+      TreeNode.of(5, [TreeNode.of(8)])
     ])
-    expect(x.toArray()).toStrictEqual([1, 2, 3, 4, 5, 6, 7])
+    expect(x.toArray()).toStrictEqual([1, 2, 3, 4, 5, 6, 7, 8, 9])
   })
 
   it('Map tree', () => {
@@ -31,13 +35,24 @@ describe('TreeNode', () => {
     expect(x.map(n => `${n}`).toArray()).toStrictEqual(['1', '2', '3', '4', '5', '6', '7'])
   })
 
-  it('Reduce tree', () => {
+  it('Reduce tree (depth)', () => {
+    // prettier-ignore
     const x = TreeNode.of(1, [
-      TreeNode.of(2),
-      TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
-      TreeNode.of(4, [TreeNode.of(6)])
+      TreeNode.of(2, [TreeNode.of(3)]),
+      TreeNode.of(4, [TreeNode.of(5)])
     ])
-    expect(x.reduce(add, 0)).toBe(28)
+    expect(x.reduce((acc, n) => [...acc, n], [] as number[])).toStrictEqual([1, 2, 3, 4, 5])
+  })
+
+  it('ReduceAlt tree (depth)', () => {
+    // prettier-ignore
+    const x = TreeNode.of(1, [
+      TreeNode.of(2, [TreeNode.of(3)]),
+      TreeNode.of(4, [TreeNode.of(5)])
+    ])
+    expect(x.reduceAlt((acc, n) => [...acc, n.value], [] as number[])).toStrictEqual([
+      1, 2, 3, 4, 5
+    ])
   })
 
   it('Filter tree', () => {

@@ -1,12 +1,19 @@
 import {
   always,
+  aperture,
+  append,
   assoc,
   compose,
   converge,
+  defaultTo,
+  find,
   head,
   identity,
   join,
   juxt,
+  last,
+  pipe,
+  Pred,
   prop,
   reduce,
   tail,
@@ -41,3 +48,18 @@ export const ensure = <T extends NonNullable<any>>(obj: Maybe<T>): T => {
   }
   return obj
 }
+
+// prettier-ignore
+const $next: (p:Pred) => <T>(l: T[]) => Maybe<T> = (pred: Pred) =>
+  pipe<any, any, any, any, any>(
+    converge(append, [head, identity]),
+    aperture(2),
+    find(pipe(head, pred)),
+    defaultTo([]),
+    last
+  )
+
+export const next =
+  (pred: Pred) =>
+  <T>(list: T[]): Maybe<T> =>
+    list.length < 2 ? head(list) : $next(pred)(list)
