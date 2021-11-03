@@ -5,8 +5,6 @@ import {
   assoc,
   compose,
   converge,
-  defaultTo,
-  find,
   head,
   identity,
   join,
@@ -16,11 +14,13 @@ import {
   Pred,
   prop,
   reduce,
+  reverse,
   tail,
   toPairs,
   toUpper,
   tryCatch
 } from 'ramda'
+import { findOr } from 'ramda-adjunct'
 
 import { Fn, Maybe } from '../types/generic'
 
@@ -51,20 +51,19 @@ export const ensure = <T extends NonNullable<any>>(obj: Maybe<T>): T => {
 
 // prettier-ignore
 const $next: (p:Pred) => <T>(l: T[]) => Maybe<T> = (pred: Pred) =>
-  pipe<any, any, any, any, any>(
+  pipe<any, any, any, any,any>(
     converge(append, [head, identity]),
     aperture(2),
-    find(pipe(head, pred)),
-    defaultTo([]),
+    findOr([], pipe(head, pred)),
     last
   )
 
 export const next =
   (pred: Pred) =>
   <T>(list: T[]): Maybe<T> =>
-    list.length < 2 ? head(list) : $next(pred)(list)
+    $next(pred)(list)
 
 export const prev =
   (pred: Pred) =>
   <T>(list: T[]): Maybe<T> =>
-    next(pred)(list.reverse())
+    $next(pred)(reverse(list))

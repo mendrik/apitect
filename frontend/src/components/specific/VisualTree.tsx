@@ -16,6 +16,7 @@ const visibleNodes = (root: TreeNode<VisualNode>) =>
     .flatten(Strategy.Depth)
     .filter(n => n.parent?.value.open !== false)
     .map(prop('value'))
+    .slice(1)
 
 export const VisualTree: FC = ({ children }) => {
   const { tree } = useStore(appStore)
