@@ -1,5 +1,5 @@
 import { cond, curry, identity, keys, map, mapObjIndexed, reduce, T } from 'ramda'
-import { isPrototypeOf } from 'ramda-adjunct'
+import { isArray, isPlainObj } from 'ramda-adjunct'
 
 export type PickRenameMulti<
   R extends { [K: string]: string },
@@ -35,8 +35,8 @@ type DeepRename = <MAP extends Record<string, string>>(
 
 export const deepRename: DeepRename = curry(keyMap =>
   cond([
-    [isPrototypeOf(Object), (v: any) => mapObjIndexed(deepRename(keyMap))(renameProps(keyMap)(v))],
-    [isPrototypeOf(Array), v => map(deepRename(keyMap), v)],
+    [isPlainObj, (v: any) => mapObjIndexed(deepRename(keyMap))(renameProps(keyMap)(v))],
+    [isArray, v => map(deepRename(keyMap), v)],
     [T, identity]
   ])
 )

@@ -19,4 +19,14 @@ describe('rename', () => {
     expect(renamed.document.id).toEqual(3)
     expect(renamed.document).not.toHaveProperty('_id')
   })
+
+  it('_id converter ignores Date/ObjectId', () => {
+    class ObjectId {
+      constructor(public x: number) {}
+    }
+
+    const obj = { _id: new ObjectId(1), date: new Date() }
+    const renamed = convertUnderscoreIds(obj)
+    expect(renamed.date).toBeInstanceOf(Date)
+  })
 })

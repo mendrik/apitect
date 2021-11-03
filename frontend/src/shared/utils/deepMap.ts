@@ -1,5 +1,5 @@
 import { cond, curry, map, mapObjIndexed, T } from 'ramda'
-import { isPrototypeOf } from 'ramda-adjunct'
+import { isArray, isPlainObj } from 'ramda-adjunct'
 
 import { Fn } from '../types/generic'
 
@@ -18,8 +18,8 @@ type DeepMap = <V, R>(fn: (v: V) => R) => <O>(obj: O) => $DeepMap<O, V, R>
 
 export const deepMap: DeepMap = curry((fn: Fn) =>
   cond([
-    [isPrototypeOf(Object), v => mapObjIndexed(deepMap(fn), v)],
-    [isPrototypeOf(Array), v => map(deepMap(fn), v)],
+    [isPlainObj, v => mapObjIndexed(deepMap(fn), v)],
+    [isArray, v => map(deepMap(fn), v)],
     [T, fn]
   ])
 )
