@@ -12,7 +12,7 @@ const Button = styled.button`
   appearance: none;
   border: none;
   background-color: transparent;
-  padding: 2px;
+  padding: 3px;
   margin: 0;
   border-radius: 5px;
   border: 1px solid transparent;
@@ -28,6 +28,7 @@ const Button = styled.button`
 
   &:hover {
     border: 1px dotted $bezelDark;
+    color: black;
 
     svg {
       filter: drop-shadow(1px 1px 1px #aaa);
@@ -38,7 +39,7 @@ const Button = styled.button`
 export const Icon: FC<OwnProps> = ({ icon: IconCmp, forwardRef, ...props }) => {
   return (
     <Button className="d-block icon-xs" {...props} tabIndex={0} ref={forwardRef}>
-      <IconCmp className="d-block user-select-none" width={16} height={16} />
+      <IconCmp className="d-block user-select-none" width={14} height={14} />
     </Button>
   )
 }
