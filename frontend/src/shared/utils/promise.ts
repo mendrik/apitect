@@ -1,4 +1,5 @@
 import { andThen, mergeAll, pipe, reduce, toPairs } from 'ramda'
+
 import { Milliseconds } from '../types/generic'
 
 export type Promised<T> = {
