@@ -1,4 +1,4 @@
-import { add, equals, prop, propEq } from 'ramda'
+import { equals, prop, propEq } from 'ramda'
 import { isOdd } from 'ramda-adjunct'
 
 import { Strategy, TreeNode } from './treeNode'
@@ -42,17 +42,6 @@ describe('TreeNode', () => {
       TreeNode.of(4, [TreeNode.of(5)])
     ])
     expect(x.reduce((acc, n) => [...acc, n], [] as number[])).toStrictEqual([1, 2, 3, 4, 5])
-  })
-
-  it('ReduceAlt tree (depth)', () => {
-    // prettier-ignore
-    const x = TreeNode.of(1, [
-      TreeNode.of(2, [TreeNode.of(3)]),
-      TreeNode.of(4, [TreeNode.of(5)])
-    ])
-    expect(x.reduceAlt((acc, n) => [...acc, n.value], [] as number[])).toStrictEqual([
-      1, 2, 3, 4, 5
-    ])
   })
 
   it('Filter tree', () => {

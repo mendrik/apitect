@@ -20,10 +20,13 @@ export class Queue<T> extends Array<T> {
 }
 
 export class TreeNode<T> {
-  private constructor(public value: T, public children: TreeNode<T>[]) {}
+  public parent?: TreeNode<T>
+  private constructor(public value: T, public children: TreeNode<T>[]) {
+    children.forEach(c => (c.parent = this))
+  }
 
   [fl.map] = <R>(fn: (v: T) => R): TreeNode<R> =>
-    new TreeNode<R>(
+    TreeNode.of<R>(
       fn(this.value),
       map(c => c[fl.map](fn), this.children)
     )
@@ -69,10 +72,7 @@ export class TreeNode<T> {
 
   [fl.reduce] = <R>(fn: (acc: R, c: T) => R, acc: R) =>
     reduce(fn, acc, this.toArray(Strategy.Depth))
-  reduce = this[fl.reduce]
-
-  reduceAlt = <R>(fn: (acc: R, c: TreeNode<T>) => R, acc: R) =>
-    reduce(fn, acc, this.flatten(Strategy.Depth));
+  reduce = this[fl.reduce];
 
   [fl.zero] = () => TreeNode.of(null, [])
   zero = this[fl.zero];
@@ -89,7 +89,7 @@ export class TreeNode<T> {
     pred(this.value)
       ? TreeNode.of(
           this.value,
-          this.children.filter(n => pred(n.value))
+          this.children.filter(n => n.filter(pred))
         )
       : undefined
   filter = this[fl.filter]

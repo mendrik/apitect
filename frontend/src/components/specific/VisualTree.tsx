@@ -1,15 +1,21 @@
 import { useStore } from 'effector-react'
-import { path, pipe, prop, propEq, when } from 'ramda'
+import { find, pipe, prop, propEq, when } from 'ramda'
 import React, { FC, useMemo, useRef, useState } from 'react'
 import { useEventListener } from 'usehooks-ts'
 
-import { TreeNode } from '../../shared/algebraic/treeNode'
+import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { UiNode } from '../../shared/types/domain/tree'
-import { Maybe } from '../../shared/types/generic'
-import { next } from '../../shared/utils/ramda'
+import { Fn, Maybe } from '../../shared/types/generic'
+import { next, prev } from '../../shared/utils/ramda'
 import appStore from '../../stores/appStore'
 import { domElementById, focus } from '../../utils/focus'
 import { VisualNode, VisualNodeTemplate } from './VisualNodeTemplate'
+
+const visibleNodes = (root: TreeNode<VisualNode>) =>
+  root
+    .flatten(Strategy.Depth)
+    .filter(n => n.parent?.value.open !== false)
+    .map(prop('value'))
 
 export const VisualTree: FC = ({ children }) => {
   const { tree } = useStore(appStore)
@@ -36,20 +42,45 @@ export const VisualTree: FC = ({ children }) => {
     )
   }, [tree])
 
-  // prettier-ignore
-  const nextNode = (): Maybe<VisualNode> => {
-    const list =
-      visualTree.reduceAlt(
-        (acc, n) => n.value.open ? [...acc, n] : acc,
-        [] as TreeNode<VisualNode>[]
-      ).flatMap(prop('children')).map(prop('value')) ?? []
-    const id = document.activeElement?.id
-    return next(propEq('id', id))(list)
-  }
+  const activeId = () => document.activeElement?.id
 
-  const arrowDown = when(propEq<any>('key', 'ArrowDown'), pipe(nextNode, domElementById, focus))
+  const nextFocusNode = (): Maybe<VisualNode> =>
+    next(propEq('id', activeId()))(visibleNodes(visualTree))
 
-  useEventListener('keyup', arrowDown, treeRef)
+  const prevFocusNode = (): Maybe<VisualNode> =>
+    prev(propEq('id', activeId()))(visibleNodes(visualTree))
+
+  const curFocusNode = (): Maybe<VisualNode> =>
+    find(propEq('id', activeId()), visibleNodes(visualTree))
+
+  const keyHandler = (key: string, fn: Fn) => when(propEq<any>('key', key), fn)
+
+  useEventListener(
+    'keyup',
+    keyHandler('ArrowDown', pipe(nextFocusNode, domElementById, focus)),
+    treeRef
+  )
+  useEventListener(
+    'keyup',
+    keyHandler('ArrowUp', pipe(prevFocusNode, domElementById, focus)),
+    treeRef
+  )
+  useEventListener(
+    'keyup',
+    keyHandler(
+      'ArrowRight',
+      pipe(curFocusNode, n => n && (n.open = true))
+    ),
+    treeRef
+  )
+  useEventListener(
+    'keyup',
+    keyHandler(
+      'ArrowLeft',
+      pipe(curFocusNode, n => n && (n.open = false))
+    ),
+    treeRef
+  )
 
   return (
     <div ref={treeRef}>

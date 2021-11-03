@@ -63,3 +63,8 @@ export const next =
   (pred: Pred) =>
   <T>(list: T[]): Maybe<T> =>
     list.length < 2 ? head(list) : $next(pred)(list)
+
+export const prev =
+  (pred: Pred) =>
+  <T>(list: T[]): Maybe<T> =>
+    next(pred)(list.reverse())
