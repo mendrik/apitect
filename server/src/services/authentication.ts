@@ -55,7 +55,10 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
     )
     await collection('documents').insertOne(
       {
-        _id: docId, name: 'Unknown document', owner: userId, tree: {
+        _id: docId,
+        name: 'Unknown document',
+        owner: userId,
+        tree: {
           name: 'root',
           children: []
         }

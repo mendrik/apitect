@@ -1,4 +1,5 @@
-import { assoc, converge, keys, mergeDeepRight, omit, pickAll, reduce } from 'ramda'
+import { cond, curry, identity, keys, map, mapObjIndexed, reduce, T } from 'ramda'
+import { isPrototypeOf } from 'ramda-adjunct'
 
 export type PickRenameMulti<
   R extends { [K: string]: string },
@@ -8,12 +9,36 @@ export type PickRenameMulti<
 }
 
 export const renameProps =
-  <MAP extends { [K: string]: string }>(keysMap: MAP) =>
+  <MAP extends Record<string, string>>(keysMap: MAP) =>
   <T extends { readonly [s in keyof MAP]: any }>(obj: T): PickRenameMulti<MAP, T> =>
     reduce(
-      (acc, key) => assoc(keysMap[key], obj[key], acc),
+      (acc, key) =>
+        key in keysMap
+          ? { ...acc, [keysMap[key as keyof MAP]]: obj[key] }
+          : { ...acc, [key]: obj[key] },
       {},
-      keys(pickAll(keys(keysMap) as any, obj))
+      keys(obj)
     ) as any
 
-export const id = converge(mergeDeepRight, [renameProps({ _id: 'id' } as const), omit(['_id'])])
+// prettier-ignore
+type $DeepRename<O, MAP extends Record<string, string>> = {
+  [K in keyof O]: O[K] extends { [K in keyof MAP]: any }
+    ? $DeepRename<PickRenameMulti<MAP, O[K]>, MAP>
+    : O[K] extends [infer H, ...infer Tail]
+      ? [$DeepRename<H, MAP>, ...$DeepRename<Tail, MAP>]
+      : O[K]
+}
+
+type DeepRename = <MAP extends Record<string, string>>(
+  map: MAP
+) => <O extends { [s in keyof MAP]: any }>(obj: O) => $DeepRename<PickRenameMulti<MAP, O>, MAP>
+
+export const deepRename: DeepRename = curry(keyMap =>
+  cond([
+    [isPrototypeOf(Object), (v: any) => mapObjIndexed(deepRename(keyMap))(renameProps(keyMap)(v))],
+    [isPrototypeOf(Array), v => map(deepRename(keyMap), v)],
+    [T, identity]
+  ])
+)
+
+export const id = deepRename({ _id: 'id' } as const)

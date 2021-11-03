@@ -32,6 +32,9 @@ const NodeGrid = focus(styled.div`
   & > :first-child {
     justify-self: center;
   }
+  & > :nth-child(2) {
+    cursor: pointer;
+  }
   & > :last-child {
     justify-self: end;
   }

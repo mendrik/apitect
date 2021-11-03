@@ -1,19 +1,12 @@
 import { DndContext } from '@dnd-kit/core'
-import { useStore } from 'effector-react'
-import React, { FC, useMemo, useState } from 'react'
-import { Plus } from 'react-feather'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 
-import { TreeNode } from '../shared/algebraic/treeNode'
-import { UiNode } from '../shared/types/domain/tree'
-import appStore from '../stores/appStore'
-import { wait } from '../utils/wait'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
-import { NewItem } from './generic/NewItem'
 import { ResizableTable } from './generic/ResizableTable'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
-import { VisualNode, VisualNodeTemplate } from './specific/VisualNodeTemplate'
+import { VisualTree } from './specific/VisualTree'
 
 const columns: JSX.Element[] = [
   <ProjectTreeHeader />,
@@ -35,29 +28,6 @@ const Scroller = styled.div`
 `
 
 const Dashboard: FC = () => {
-  const { tree } = useStore(appStore)
-  const [, forceRender] = useState(false)
-
-  const visualTree = useMemo(() => {
-    const t = TreeNode.from<UiNode, 'children'>('children')(tree)
-    return t.map(
-      t =>
-        new Proxy<VisualNode>(
-          {
-            name: t.name,
-            open: false
-          },
-          {
-            set<T extends VisualNode>(target: T, prop: keyof T, value: any): boolean {
-              target[prop] = value
-              forceRender(s => !s)
-              return true
-            }
-          }
-        )
-    )
-  }, [tree])
-
   return (
     <AppFrame>
       <Navigation />
@@ -65,9 +35,7 @@ const Dashboard: FC = () => {
         <DndContext>
           <ResizableTable columns={columns}>
             <Column>
-              <VisualNodeTemplate node={visualTree} depth={0}>
-                <NewItem icon={Plus} createTask={wait(1)} />
-              </VisualNodeTemplate>
+              <VisualTree />
             </Column>
             <Column>A</Column>
             <Column>B</Column>
