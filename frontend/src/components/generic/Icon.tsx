@@ -1,5 +1,5 @@
+import { TablerIcon as IconProp } from '@tabler/icons'
 import React, { FC, ForwardedRef, HTMLAttributes } from 'react'
-import { Icon as IconProp } from 'react-feather'
 import styled from 'styled-components'
 
 export type OwnProps = {
@@ -12,7 +12,7 @@ const Button = styled.button`
   appearance: none;
   border: none;
   background-color: transparent;
-  padding: 3px;
+  padding: 2px;
   margin: 0;
   border-radius: 5px;
   border: 1px solid transparent;
@@ -38,7 +38,7 @@ const Button = styled.button`
 export const Icon: FC<OwnProps> = ({ icon: IconCmp, forwardRef, ...props }) => {
   return (
     <Button className="d-block icon-xs" {...props} tabIndex={0} ref={forwardRef}>
-      <IconCmp className="d-block user-select-none" style={{ width: 16, height: 16 }} />
+      <IconCmp className="d-block user-select-none" width={16} height={16} />
     </Button>
   )
 }

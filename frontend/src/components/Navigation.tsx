@@ -1,7 +1,7 @@
+import { IconLogin } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React, { FC, useContext } from 'react'
 import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap'
-import { LogIn } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { addParams } from 'shared/utils/url'
@@ -35,7 +35,7 @@ export const Navigation: FC = () => {
           ) : (
             <Button onClick={() => navigate(addParams({ modal: 'login' }))} className="ps-2 d-flex">
               <div className="d-flex gap-1 align-items-center">
-                <LogIn className="icon-xs ms-1" />
+                <IconLogin className="icon-xs ms-1" />
                 <span>{t('navbar.login')}</span>
               </div>
             </Button>

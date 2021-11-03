@@ -51,7 +51,7 @@ export const VisualTree: FC = ({ children }) => {
   const prevFocusNode = (): Maybe<VisualNode> => prev(propEq('id', activeId()))(visualNodes)
   const curFocusNode = (): Maybe<VisualNode> => find(propEq('id', activeId()), visualNodes)
   const keyHandler = (key: string, fn: Fn) =>
-    useEventListener('keyup', when(propEq<any>('key', key), fn), treeRef)
+    useEventListener('keydown', when(propEq<any>('key', key), fn), treeRef)
 
   keyHandler('ArrowDown', pipe(nextFocusNode, domElementById, focus))
   keyHandler('ArrowUp', pipe(prevFocusNode, domElementById, focus))

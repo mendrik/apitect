@@ -1,7 +1,7 @@
+import { IconChevronRight, IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { FC } from 'react'
-import { ArrowRight, MinusSquare, PlusSquare } from 'react-feather'
 import styled from 'styled-components'
 
 import { TreeNode } from '../../shared/algebraic/treeNode'
@@ -52,14 +52,14 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth, node, children: footer
         <NodeGrid tabIndex={0} id={node.value.id}>
           {hasChildren ? (
             node.value.open ? (
-              <MinusSquare
+              <IconSquareMinus
                 width={12}
                 color="#adb5bd"
                 style={{ cursor: 'pointer' }}
                 onClick={() => (node.value.open = false)}
               />
             ) : (
-              <PlusSquare
+              <IconSquarePlus
                 width={12}
                 color="#adb5bd"
                 style={{ cursor: 'pointer' }}
@@ -71,7 +71,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth, node, children: footer
           )}
           <div className={clsx('text-truncate', { thin: !hasChildren })}>{node.value.name}</div>
           {!hasChildren ? (
-            <ArrowRight width={12} color="#adb5bd" style={{ cursor: 'pointer' }} />
+            <IconChevronRight width={14} color="#adb5bd" style={{ cursor: 'pointer' }} />
           ) : (
             <div />
           )}

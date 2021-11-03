@@ -1,8 +1,8 @@
+import { IconCircleCheck, IconCirclePlus, TablerIcon as IconProp } from '@tabler/icons'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { pipe } from 'ramda'
 import React, { FC, forwardRef, HTMLAttributes, KeyboardEvent, useRef } from 'react'
-import { CheckCircle, Icon as IconProp, PlusCircle } from 'react-feather'
 import styled from 'styled-components'
 
 import { horizontalGrowth } from '../../animations/horizontalGrowth'
@@ -60,8 +60,10 @@ const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
   return (
     <div className={clsx('', className)} {...props}>
       <Tuple first={Scale.CONTENT}>
-        {view === View.Initial && <RefIcon icon={PlusCircle} onClick={editView} ref={iconRef} />}
-        {view === View.Edit && <Icon icon={CheckCircle} onClick={initialView} />}
+        {view === View.Initial && (
+          <RefIcon icon={IconCirclePlus} onClick={editView} ref={iconRef} />
+        )}
+        {view === View.Edit && <Icon icon={IconCircleCheck} onClick={initialView} />}
         {view === View.Confirming && (
           <div className="icon-xs d-flex align-items-center" style={{ padding: 1 }}>
             <Loader style={{ width: 22, height: 22 }} />
