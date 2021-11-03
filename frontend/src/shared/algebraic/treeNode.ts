@@ -97,5 +97,13 @@ export class TreeNode<T> {
   first = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
     this.flatten(Strategy.Depth).find(node => pred(node.value))
 
-  toString = () => JSON.stringify(this, (key, value) => (isFunction(value) ? undefined : value), 2)
+  pathToRoot = (): T[] =>
+    this.parent ? [this.parent.value].concat(...this.parent.pathToRoot()) : []
+
+  toString = () =>
+    JSON.stringify(
+      this,
+      (key, value) => (key === 'parent' || isFunction(value) ? undefined : value),
+      2
+    )
 }

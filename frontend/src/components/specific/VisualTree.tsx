@@ -1,5 +1,6 @@
 import { useStore } from 'effector-react'
 import { find, pipe, prop, propEq, when } from 'ramda'
+import { isTrue } from 'ramda-adjunct'
 import React, { FC, useMemo, useRef, useState } from 'react'
 import { useEventListener } from 'usehooks-ts'
 
@@ -14,7 +15,7 @@ import { VisualNode, VisualNodeTemplate } from './VisualNodeTemplate'
 const visibleNodes = (root: TreeNode<VisualNode>) =>
   root
     .flatten(Strategy.Depth)
-    .filter(n => n.parent?.value.open !== false)
+    .filter(n => n.pathToRoot().map(prop('open')).every(isTrue))
     .map(prop('value'))
     .slice(1)
 
