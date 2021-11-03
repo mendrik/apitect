@@ -21,7 +21,7 @@ const visibleNodes = (root: TreeNode<VisualNode>) =>
 
 export const VisualTree: FC = ({ children }) => {
   const { tree } = useStore(appStore)
-  const [, forceRender] = useState(false)
+  const [render, forceRender] = useState(false)
   const treeRef = useRef<HTMLDivElement>(null)
   const visualTree = useMemo(() => {
     const t = TreeNode.from<UiNode, 'children'>('children')(tree)
@@ -43,45 +43,29 @@ export const VisualTree: FC = ({ children }) => {
         )
     )
   }, [tree])
+  const visualNodes = useMemo(() => visibleNodes(visualTree), [visualTree, render])
 
   const activeId = () => document.activeElement?.id
 
-  const nextFocusNode = (): Maybe<VisualNode> =>
-    next(propEq('id', activeId()))(visibleNodes(visualTree))
+  const nextFocusNode = (): Maybe<VisualNode> => next(propEq('id', activeId()))(visualNodes)
 
-  const prevFocusNode = (): Maybe<VisualNode> =>
-    prev(propEq('id', activeId()))(visibleNodes(visualTree))
+  const prevFocusNode = (): Maybe<VisualNode> => prev(propEq('id', activeId()))(visualNodes)
 
-  const curFocusNode = (): Maybe<VisualNode> =>
-    find(propEq('id', activeId()), visibleNodes(visualTree))
+  const curFocusNode = (): Maybe<VisualNode> => find(propEq('id', activeId()), visualNodes)
 
-  const keyHandler = (key: string, fn: Fn) => when(propEq<any>('key', key), fn)
+  const keyHandler = (key: string, fn: Fn) => {
+    useEventListener('keyup', when(propEq<any>('key', key), fn), treeRef)
+  }
 
-  useEventListener(
-    'keyup',
-    keyHandler('ArrowDown', pipe(nextFocusNode, domElementById, focus)),
-    treeRef
+  keyHandler('ArrowDown', pipe(nextFocusNode, domElementById, focus))
+  keyHandler('ArrowUp', pipe(prevFocusNode, domElementById, focus))
+  keyHandler(
+    'ArrowRight',
+    pipe(curFocusNode, n => n && (n.open = true))
   )
-  useEventListener(
-    'keyup',
-    keyHandler('ArrowUp', pipe(prevFocusNode, domElementById, focus)),
-    treeRef
-  )
-  useEventListener(
-    'keyup',
-    keyHandler(
-      'ArrowRight',
-      pipe(curFocusNode, n => n && (n.open = true))
-    ),
-    treeRef
-  )
-  useEventListener(
-    'keyup',
-    keyHandler(
-      'ArrowLeft',
-      pipe(curFocusNode, n => n && (n.open = false))
-    ),
-    treeRef
+  keyHandler(
+    'ArrowLeft',
+    pipe(curFocusNode, n => n && (n.open = false))
   )
 
   return (
