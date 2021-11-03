@@ -9,6 +9,7 @@ import { NotEmptyList } from '../generic/NotEmptyList'
 import { focus } from '../styled/focus'
 
 export type VisualNode = {
+  id: string
   name: string
   open: boolean
 }
@@ -46,9 +47,9 @@ const ListWrap: FC = ({ children }) => <Ol className="ps-3">{children}</Ol>
 export const VisualNodeTemplate: FC<OwnProps> = ({ depth, node, children: footer }) => {
   const hasChildren = isNotNilOrEmpty(node.children)
   return (
-    <div>
+    <>
       {depth > 0 && (
-        <NodeGrid tabIndex={0}>
+        <NodeGrid tabIndex={0} id={node.value.id}>
           {hasChildren ? (
             node.value.open ? (
               <MinusSquare
@@ -86,6 +87,6 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth, node, children: footer
         </NotEmptyList>
       )}
       {footer}
-    </div>
+    </>
   )
 }

@@ -1,6 +1,6 @@
 import * as fl from 'fantasy-land'
 import { concat, defaultTo, equals, map, omit, pipe, prop, propOr, reduce, unless } from 'ramda'
-import { isArray } from 'ramda-adjunct'
+import { isArray, isFunction } from 'ramda-adjunct'
 
 import { Maybe } from '../types/generic'
 
@@ -21,9 +21,6 @@ export class Queue<T> extends Array<T> {
 
 export class TreeNode<T> {
   private constructor(public value: T, public children: TreeNode<T>[]) {}
-
-  [fl.extract] = () => this.value
-  extract = [fl.extract];
 
   [fl.map] = <R>(fn: (v: T) => R): TreeNode<R> =>
     new TreeNode<R>(
@@ -95,4 +92,6 @@ export class TreeNode<T> {
 
   first = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
     this.flatten(Strategy.Depth).find(node => pred(node.value))
+
+  toString = () => JSON.stringify(this, (key, value) => (isFunction(value) ? undefined : value), 2)
 }
