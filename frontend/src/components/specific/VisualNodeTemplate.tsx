@@ -16,7 +16,7 @@ export type VisualNode = {
 
 type OwnProps = {
   node: TreeNode<VisualNode>
-  depth: number
+  depth?: number
 }
 
 const Ol = styled.ol`
@@ -44,7 +44,7 @@ const NodeGrid = focus(styled.div`
 const RootWrap: FC = ({ children }) => <Ol>{children}</Ol>
 const ListWrap: FC = ({ children }) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNodeTemplate: FC<OwnProps> = ({ depth, node, children: footer }) => {
+export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: footer }) => {
   const hasChildren = isNotNilOrEmpty(node.children)
   return (
     <>

@@ -23,26 +23,27 @@ export const VisualTree: FC = ({ children }) => {
   const { tree } = useStore(appStore)
   const [render, forceRender] = useState(false)
   const treeRef = useRef<HTMLDivElement>(null)
-  const visualTree = useMemo(() => {
-    const t = TreeNode.from<UiNode, 'children'>('children')(tree)
-    return t.map(
-      t =>
-        new Proxy<VisualNode>(
-          {
-            id: t.id,
-            name: t.name,
-            open: t.id === tree.id
-          },
-          {
-            set<T extends VisualNode>(target: T, prop: keyof T, value: any): boolean {
-              target[prop] = value
-              forceRender(s => !s)
-              return true
+  const visualTree = useMemo(
+    () =>
+      TreeNode.from<UiNode, 'children'>('children')(tree).map(
+        t =>
+          new Proxy<VisualNode>(
+            {
+              id: t.id,
+              name: t.name,
+              open: t.id === tree.id // or local storage memory
+            },
+            {
+              set<T extends VisualNode>(target: T, prop: keyof T, value: any): boolean {
+                target[prop] = value
+                forceRender(s => !s)
+                return true
+              }
             }
-          }
-        )
-    )
-  }, [tree])
+          )
+      ),
+    [tree]
+  )
   const visualNodes = useMemo(() => visibleNodes(visualTree), [visualTree, render])
 
   const activeId = () => document.activeElement?.id
@@ -66,9 +67,7 @@ export const VisualTree: FC = ({ children }) => {
 
   return (
     <div ref={treeRef}>
-      <VisualNodeTemplate node={visualTree} depth={0}>
-        {children}
-      </VisualNodeTemplate>
+      <VisualNodeTemplate node={visualTree}>{children}</VisualNodeTemplate>
     </div>
   )
 }
