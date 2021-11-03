@@ -28,11 +28,7 @@ export const VisualTree: FC = ({ children }) => {
       TreeNode.from<UiNode, 'children'>('children')(tree).map(
         t =>
           new Proxy<VisualNode>(
-            {
-              id: t.id,
-              name: t.name,
-              open: t.id === tree.id // or local storage memory
-            },
+            { id: t.id, name: t.name, open: t.id === tree.id },
             {
               set<T extends VisualNode>(target: T, prop: keyof T, value: any): boolean {
                 target[prop] = value
@@ -54,16 +50,13 @@ export const VisualTree: FC = ({ children }) => {
   const keyHandler = (key: string, fn: Fn) =>
     useEventListener('keydown', when(propEq<any>('key', key), fn), treeRef)
 
-  keyHandler('ArrowDown', pipe(nextFocusNode, domElementById, focus))
-  keyHandler('ArrowUp', pipe(prevFocusNode, domElementById, focus))
-  keyHandler(
-    'ArrowRight',
-    pipe(curFocusNode, n => n && (n.open = true))
-  )
-  keyHandler(
-    'ArrowLeft',
-    pipe(curFocusNode, n => n && (n.open = false))
-  )
+  // prettier-ignore
+  {
+    keyHandler('ArrowDown', pipe(nextFocusNode, domElementById, focus))
+    keyHandler('ArrowUp', pipe(prevFocusNode, domElementById, focus))
+    keyHandler('ArrowRight', pipe(curFocusNode, n => n && (n.open = true)))
+    keyHandler('ArrowLeft', pipe(curFocusNode, n => n && (n.open = false)))
+  }
 
   return (
     <div ref={treeRef}>
