@@ -41,4 +41,4 @@ export const deepRename: DeepRename = curry(keyMap =>
   ])
 )
 
-export const id = deepRename({ _id: 'id' } as const)
+export const convertUnderscoreIds = deepRename({ _id: 'id' } as const)

@@ -12,7 +12,7 @@ import { httpError } from '~shared/types/httpError'
 import { Token } from '~shared/types/response/token'
 import { failOn, failUnless } from '~shared/utils/failOn'
 import { promiseFn } from '~shared/utils/promise'
-import { id } from '~shared/utils/rename'
+import { convertUnderscoreIds } from '~shared/utils/rename'
 
 import { User } from '../types/user'
 import { config } from './config'
@@ -46,6 +46,7 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
     )(register)
     const docId = new ObjectId()
     const userId = new ObjectId()
+    const rootId = new ObjectId()
     const token = {
       token: signedToken({ id: userId.toHexString(), email: data.email, name: data.name })
     }
@@ -59,6 +60,7 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
         name: 'Unknown document',
         owner: userId,
         tree: {
+          _id: rootId,
           name: 'root',
           children: []
         }
@@ -98,7 +100,10 @@ const logout = endpoint({ user }, ({ user }) =>
     .then(noContent)
 )
 
-const whomAmI = endpoint({ user }, async ({ user }): Promise<UiUser> => decode(TUiUser)(id(user)))
+const whomAmI = endpoint({ user }, async ({ user }): Promise<UiUser> => {
+  console.log(user)
+  return decode(TUiUser)(convertUnderscoreIds(user))
+})
 
 export const initAuthentication = (fastify: FastifyInstance) => {
   fastify.post('/register', {}, register)

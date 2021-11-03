@@ -2,6 +2,7 @@ import * as t from 'io-ts'
 import { propOr } from 'ramda'
 
 import { decode } from '../codecs/decode'
+import { convertUnderscoreIds } from '../utils/rename'
 import { TUiDocument } from './domain/document'
 
 const ResetAppState = t.type({
@@ -28,6 +29,6 @@ export const wrapServerMessage =
     const message = types.find(t => propOr(null, 'payload', t.props) === payloadCodec)!
     return decode<ServerMessage>(message as t.Any)({
       type: message.props.type.name.replace(/"/g, ''),
-      payload
+      payload: convertUnderscoreIds(payload)
     })
   }
