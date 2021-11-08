@@ -2,14 +2,14 @@ import { IconCircleCheck, IconCirclePlus, TablerIcon as IconProp } from '@tabler
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { pipe } from 'ramda'
-import React, { FC, forwardRef, HTMLAttributes, KeyboardEvent, useRef } from 'react'
+import React, { FC, HTMLAttributes, KeyboardEvent, useRef } from 'react'
 import styled from 'styled-components'
 
 import { horizontalGrowth } from '../../animations/horizontalGrowth'
 import { ReactComponent as Loader } from '../../assets/inlineLoader.svg'
 import { useKeyTriggers } from '../../hooks/useKeyTriggers'
 import { useView } from '../../hooks/useView'
-import { Icon, OwnProps as IconProps } from './Icon'
+import { Icon } from './Icon'
 import { Scale, Tuple } from './Tuple'
 
 type OwnProps = {
@@ -40,10 +40,6 @@ enum View {
   Confirming
 }
 
-const RefIcon = forwardRef<HTMLButtonElement, IconProps>((props, ref) => (
-  <Icon {...props} forwardRef={ref} />
-))
-
 const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
   const { initialView, editView, confirmingView, view } = useView(View)
   const iconRef = useRef<HTMLButtonElement>(null)
@@ -60,9 +56,7 @@ const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
   return (
     <div className={clsx('', className)} {...props}>
       <Tuple first={Scale.CONTENT}>
-        {view === View.Initial && (
-          <RefIcon icon={IconCirclePlus} onClick={editView} ref={iconRef} />
-        )}
+        {view === View.Initial && <Icon icon={IconCirclePlus} onClick={editView} />}
         {view === View.Edit && <Icon icon={IconCircleCheck} onClick={initialView} />}
         {view === View.Confirming && (
           <div className="icon-xs d-flex align-items-center" style={{ padding: 3 }}>

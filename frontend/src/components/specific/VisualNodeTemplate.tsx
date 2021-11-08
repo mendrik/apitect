@@ -1,4 +1,4 @@
-import { IconChevronDown, IconChevronRight } from '@tabler/icons'
+import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
@@ -61,13 +61,14 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
               icon={IconChevronRight}
               onClick={() => (node.value.open = !node.value.open)}
               iconClasses={clsx('rotate', { deg90: node.value.open })}
-              focus={false}
               size={14}
             />
           ) : (
             <div />
           )}
-          <div className={clsx('text-truncate', { thin: !hasChildren })}>{node.value.name}</div>
+          <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.value.name}>
+            {node.value.name}
+          </div>
         </NodeGrid>
       )}
       {(node.value.open || depth === 0) && (
