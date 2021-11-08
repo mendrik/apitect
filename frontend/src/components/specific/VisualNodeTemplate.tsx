@@ -1,4 +1,4 @@
-import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
+import { IconChevronDown, IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { FC } from 'react'
@@ -51,26 +51,17 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           tabIndex={0}
           id={node.value.id}
           className="gap-1"
-          onFocus={() => selectNode(node)}
+          onBlur={() => selectNode()}
+          onFocus={() => selectNode(node.value)}
         >
           {hasChildren ? (
-            node.value.open ? (
-              <Icon
-                icon={IconSquareMinus}
-                onClick={() => (node.value.open = false)}
-                focus={false}
-                size={14}
-                className="gray-icon"
-              />
-            ) : (
-              <Icon
-                icon={IconSquarePlus}
-                onClick={() => (node.value.open = true)}
-                size={14}
-                focus={false}
-                className="gray-icon"
-              />
-            )
+            <Icon
+              icon={IconChevronRight}
+              onClick={() => (node.value.open = !node.value.open)}
+              iconClasses={clsx('rotate', { deg90: node.value.open })}
+              focus={false}
+              size={14}
+            />
           ) : (
             <div />
           )}

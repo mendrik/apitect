@@ -10,6 +10,7 @@ export type OwnProps = {
   focus?: boolean
   tooltip?: string
   size?: number
+  iconClasses?: string
 } & HTMLAttributes<HTMLButtonElement>
 
 const Button = styled.button`
@@ -58,6 +59,7 @@ export const Icon: FC<OwnProps> = ({
   forwardRef,
   focus = true,
   size = 16,
+  iconClasses,
   ...props
 }) => (
   <WithTooltip tooltip={tooltip}>
@@ -67,7 +69,12 @@ export const Icon: FC<OwnProps> = ({
       tabIndex={focus ? 0 : -1}
       ref={forwardRef}
     >
-      <IconCmp className="d-block user-select-none" width={size} height={size} stroke={1} />
+      <IconCmp
+        className={clsx('d-block user-select-none', iconClasses)}
+        width={size}
+        height={size}
+        stroke={1}
+      />
     </Button>
   </WithTooltip>
 )

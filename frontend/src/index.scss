@@ -111,4 +111,13 @@ input[required] + label:after {
   }
 }
 
+.rotate {
+  transition: all 0.2s ease-in-out;
+  transform-origin: center;
+
+  &.deg90 {
+    transform: rotate(90deg);
+  }
+}
+
 @import "~bootstrap/scss/bootstrap";

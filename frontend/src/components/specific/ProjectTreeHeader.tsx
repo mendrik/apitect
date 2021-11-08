@@ -9,15 +9,14 @@ import { Scale, Tuple } from '../generic/Tuple'
 export const ProjectTreeHeader: FC = () => (
   <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
     <div className="text-truncate">Project tree</div>
-    <div className="d-grid" style={{ gridTemplateColumns: 'repeat(3,1fr)' }}>
+    <div className="d-grid" style={{ gridTemplateColumns: 'repeat(2,1fr)' }}>
       <Icon
         icon={IconFolderPlus}
-        focus={true}
+        focus={false}
         tooltip="Create a new node"
         onPointerDown={preventDefault(() => openModal('new-node'))}
       />
       <Icon icon={IconFileImport} className="gray-icon" />
-      <Icon icon={IconMenu2} className="gray-icon" />
     </div>
   </Tuple>
 )

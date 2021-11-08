@@ -2,14 +2,16 @@ import { createStore } from 'effector'
 import { omit } from 'ramda'
 import { UiDocument } from 'shared/types/domain/document'
 
+import { VisualNode } from '../components/specific/VisualNodeTemplate'
 import { messageReceived } from '../events/messages'
 import { selectNode } from '../events/tree'
+import { TreeNode } from '../shared/algebraic/treeNode'
 import { UiNode } from '../shared/types/domain/tree'
 
 type AppState = {
   document: Omit<UiDocument, 'tree'>
   tree: UiNode
-  selectedNode?: UiNode
+  selectedNode?: VisualNode
 }
 
 const initial: AppState = {
@@ -30,6 +32,6 @@ appStore.on(messageReceived, (state, message) => {
   }
 })
 
-appStore.on(selectNode, (state, selectNode) => ({ ...state, selectNode }))
+appStore.on(selectNode, (state, selectedNode) => ({ ...state, selectedNode }))
 
 export default appStore
