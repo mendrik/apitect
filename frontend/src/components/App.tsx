@@ -17,6 +17,7 @@ const App: FC = () => {
     <WithSocket>
       <WaitForDocument>
         <Routes>
+          <Route path="/error" element={<ErrorView />} />
           <Route path="/" element={<Dashboard />} />
         </Routes>
       </WaitForDocument>

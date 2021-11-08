@@ -14,6 +14,9 @@ const en = {
       unexpectedError: 'Oops! An unexpected error'
     },
     modals: {
+      newNode: {
+        title: 'Create new node'
+      },
       forgotPassword: {
         title: 'Forgot password?',
         info: 'If you have forgotten your password, please fill in your email and click the "send" button.',
