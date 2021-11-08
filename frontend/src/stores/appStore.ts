@@ -4,8 +4,7 @@ import { UiDocument } from 'shared/types/domain/document'
 
 import { VisualNode } from '../components/specific/VisualNodeTemplate'
 import { messageReceived } from '../events/messages'
-import { selectNode } from '../events/tree'
-import { TreeNode } from '../shared/algebraic/treeNode'
+import { deselectNode, selectNode } from '../events/tree'
 import { UiNode } from '../shared/types/domain/tree'
 
 type AppState = {
@@ -33,5 +32,6 @@ appStore.on(messageReceived, (state, message) => {
 })
 
 appStore.on(selectNode, (state, selectedNode) => ({ ...state, selectedNode }))
+appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
 
 export default appStore

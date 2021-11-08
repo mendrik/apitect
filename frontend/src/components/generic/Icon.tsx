@@ -7,6 +7,7 @@ export type OwnProps = {
   icon: IconProp
   size?: number
   iconClasses?: string
+  disabled?: boolean
 } & HTMLAttributes<HTMLButtonElement>
 
 const Button = styled.button`
@@ -20,26 +21,38 @@ const Button = styled.button`
   border: 1px solid transparent;
   outline: none;
 
-  &.focus:focus {
-    border: 1px dotted #999;
+  &[disabled] {
+    pointer-events: none;
   }
 
-  &.focus:active {
-    background-color: white;
-  }
+  &:not([disabled]) {
+    &.focus:focus {
+      border: 1px dotted #999;
+    }
 
-  &:hover {
-    border: 1px dotted $bezelDark;
-    color: black;
+    &.focus:active {
+      background-color: white;
+    }
 
-    svg {
-      filter: drop-shadow(1px 1px 1px #aaa);
+    &:hover {
+      border: 1px dotted $bezelDark;
+      color: black;
+
+      svg {
+        filter: drop-shadow(1px 1px 1px #aaa);
+      }
     }
   }
 `
 
-export const Icon: FC<OwnProps> = ({ icon: IconCmp, size = 16, iconClasses, ...props }) => (
-  <Button className={clsx('d-block')} {...props} tabIndex={-1}>
+export const Icon: FC<OwnProps> = ({
+  icon: IconCmp,
+  disabled = false,
+  size = 16,
+  iconClasses,
+  ...props
+}) => (
+  <Button className={clsx('d-block')} {...props} tabIndex={-1} disabled={disabled}>
     <IconCmp
       className={clsx('d-block user-select-none', iconClasses)}
       width={size}
