@@ -15,7 +15,8 @@ const en = {
     },
     modals: {
       newNode: {
-        title: 'Create new node'
+        title: 'Create new node',
+        submit: 'Create'
       },
       forgotPassword: {
         title: 'Forgot password?',
@@ -46,6 +47,8 @@ const en = {
     form: {
       fields: {
         name: 'Name',
+        nodeName: 'Name',
+        nodeType: 'Type',
         email: 'E-Mail',
         password: 'Password',
         passwordRepeat: 'Repeat password',

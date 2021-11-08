@@ -67,3 +67,5 @@ export const prev =
   (pred: Pred) =>
   <T>(list: T[]): Maybe<T> =>
     $next(pred)(reverse(list))
+
+export const isNumeric: Pred = (str: string) => !isNaN(Number(str))

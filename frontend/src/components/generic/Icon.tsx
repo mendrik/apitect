@@ -21,7 +21,15 @@ const Button = styled.button`
   border: 1px solid transparent;
   outline: none;
 
+  svg {
+    color: #333;
+    transition: all 0.2s ease-in-out;
+  }
+
   &[disabled] {
+    svg {
+      color: #999;
+    }
     pointer-events: none;
   }
 
@@ -36,10 +44,10 @@ const Button = styled.button`
 
     &:hover {
       border: 1px dotted $bezelDark;
-      color: black;
 
       svg {
-        filter: drop-shadow(1px 1px 1px #aaa);
+        color: black;
+        filter: drop-shadow(1px 1px 1px #999);
       }
     }
   }

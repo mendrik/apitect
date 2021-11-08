@@ -1,4 +1,4 @@
-import { IconFileImport, IconFolderOff, IconFolderPlus, IconTrash } from '@tabler/icons'
+import { IconEdit, IconFileImport, IconFolderOff, IconFolderPlus, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React, { FC } from 'react'
 
@@ -16,12 +16,12 @@ export const ProjectTreeHeader: FC = () => {
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate editable">Project tree</div>
       <div className="d-grid" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
+        <Icon icon={IconTrash} disabled={selectedNode == null} />
+        <Icon icon={IconFolderOff} onClick={() => deselectNode()} disabled={selectedNode == null} />
         <WithTooltip tooltipText="Create a new node">
           <Icon icon={IconFolderPlus} onPointerDown={preventDefault(() => openModal('new-node'))} />
         </WithTooltip>
-        <Icon icon={IconFolderOff} onClick={() => deselectNode()} disabled={selectedNode == null} />
-        <Icon icon={IconTrash} />
-        <Icon icon={IconFileImport} />
+        <Icon icon={IconEdit} disabled={selectedNode == null} />
       </div>
     </Tuple>
   )
