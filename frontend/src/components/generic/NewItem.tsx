@@ -65,8 +65,8 @@ const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
         )}
         {view === View.Edit && <Icon icon={IconCircleCheck} onClick={initialView} />}
         {view === View.Confirming && (
-          <div className="icon-xs d-flex align-items-center" style={{ padding: 1 }}>
-            <Loader style={{ width: 22, height: 22 }} />
+          <div className="icon-xs d-flex align-items-center" style={{ padding: 3 }}>
+            <Loader style={{ width: 18, height: 18 }} />
           </div>
         )}
         <div className="input-spacer w-100">

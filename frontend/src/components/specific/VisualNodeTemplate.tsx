@@ -5,6 +5,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 
 import { TreeNode } from '../../shared/algebraic/treeNode'
+import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 import { focus } from '../styled/focus'
 
@@ -49,32 +50,28 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
   return (
     <>
       {depth > 0 && (
-        <NodeGrid tabIndex={0} id={node.value.id}>
+        <NodeGrid tabIndex={0} id={node.value.id} className="gap-1">
           {hasChildren ? (
             node.value.open ? (
-              <IconSquareMinus
-                width={12}
-                color="#adb5bd"
-                style={{ cursor: 'pointer' }}
+              <Icon
+                icon={IconSquareMinus}
                 onClick={() => (node.value.open = false)}
+                focus={false}
+                className="gray-icon"
               />
             ) : (
-              <IconSquarePlus
-                width={12}
-                color="#adb5bd"
-                style={{ cursor: 'pointer' }}
+              <Icon
+                icon={IconSquarePlus}
                 onClick={() => (node.value.open = true)}
+                focus={false}
+                className="gray-icon"
               />
             )
           ) : (
             <div />
           )}
           <div className={clsx('text-truncate', { thin: !hasChildren })}>{node.value.name}</div>
-          {!hasChildren ? (
-            <IconChevronRight width={14} color="#adb5bd" style={{ cursor: 'pointer' }} />
-          ) : (
-            <div />
-          )}
+          {!hasChildren ? <Icon icon={IconChevronRight} /> : <div />}
         </NodeGrid>
       )}
       {(node.value.open || depth === 0) && (

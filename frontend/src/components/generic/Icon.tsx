@@ -1,10 +1,12 @@
 import { TablerIcon as IconProp } from '@tabler/icons'
+import clsx from 'clsx'
 import React, { FC, ForwardedRef, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 
 export type OwnProps = {
   icon: IconProp
   forwardRef?: ForwardedRef<HTMLButtonElement>
+  focus?: boolean
 } & HTMLAttributes<HTMLButtonElement>
 
 const Button = styled.button`
@@ -17,12 +19,12 @@ const Button = styled.button`
   border-radius: 5px;
   border: 1px solid transparent;
 
-  &:focus {
+  &.focus:focus {
     border: 1px dotted #999;
     outline: none;
   }
 
-  &:active {
+  &.focus:active {
     background-color: white;
   }
 
@@ -36,9 +38,9 @@ const Button = styled.button`
   }
 `
 
-export const Icon: FC<OwnProps> = ({ icon: IconCmp, forwardRef, ...props }) => {
+export const Icon: FC<OwnProps> = ({ icon: IconCmp, forwardRef, focus = true, ...props }) => {
   return (
-    <Button className="d-block icon-xs" {...props} tabIndex={0} ref={forwardRef}>
+    <Button className={clsx('d-block icon-xs', { focus })} {...props} tabIndex={0} ref={forwardRef}>
       <IconCmp className="d-block user-select-none" width={14} height={14} />
     </Button>
   )
