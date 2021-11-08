@@ -12,7 +12,6 @@ export const ProjectTreeHeader: FC = () => (
     <div className="d-grid" style={{ gridTemplateColumns: 'repeat(3,1fr)' }}>
       <Icon
         icon={IconFolderPlus}
-        className="gray-icon"
         focus={true}
         tooltip="Create a new node"
         onPointerDown={preventDefault(() => openModal('new-node'))}

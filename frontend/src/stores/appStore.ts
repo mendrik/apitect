@@ -3,11 +3,13 @@ import { omit } from 'ramda'
 import { UiDocument } from 'shared/types/domain/document'
 
 import { messageReceived } from '../events/messages'
+import { selectNode } from '../events/tree'
 import { UiNode } from '../shared/types/domain/tree'
 
 type AppState = {
   document: Omit<UiDocument, 'tree'>
   tree: UiNode
+  selectedNode?: UiNode
 }
 
 const initial: AppState = {
@@ -27,5 +29,7 @@ appStore.on(messageReceived, (state, message) => {
       return state
   }
 })
+
+appStore.on(selectNode, (state, selectNode) => ({ ...state, selectNode }))
 
 export default appStore

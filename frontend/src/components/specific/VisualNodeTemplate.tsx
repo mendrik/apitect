@@ -4,6 +4,7 @@ import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
+import { selectNode } from '../../events/tree'
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
@@ -46,7 +47,12 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
   return (
     <>
       {depth > 0 && (
-        <NodeGrid tabIndex={0} id={node.value.id} className="gap-1">
+        <NodeGrid
+          tabIndex={0}
+          id={node.value.id}
+          className="gap-1"
+          onFocus={() => selectNode(node)}
+        >
           {hasChildren ? (
             node.value.open ? (
               <Icon
