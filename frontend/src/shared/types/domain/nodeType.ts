@@ -5,6 +5,7 @@ import {
   IconDatabase,
   IconDeviceFloppy,
   IconForms,
+  IconPalette,
   IconToggleLeft,
   TablerIcon
 } from '@tabler/icons'
@@ -16,7 +17,8 @@ export enum NodeType {
   Number = 'NUMBER',
   Date = 'DATE',
   Binary = 'BINARY',
-  Array = 'ARRAY'
+  Array = 'ARRAY',
+  Color = 'COLOR'
 }
 
 export const iconMap: Record<NodeType, TablerIcon> = {
@@ -26,5 +28,6 @@ export const iconMap: Record<NodeType, TablerIcon> = {
   [NodeType.Date]: IconCalendar,
   [NodeType.String]: IconForms,
   [NodeType.Number]: IconCalculator,
-  [NodeType.Object]: IconAffiliate
+  [NodeType.Object]: IconAffiliate,
+  [NodeType.Color]: IconPalette
 }

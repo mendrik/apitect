@@ -86,7 +86,7 @@ const NewNode: ModalFC = ({}) => {
           </TypeGrid>
         )}
       />
-      <ButtonRow>
+      <ButtonRow className="mt-4">
         <SubmitButton localeKey="modals.newNode.submit" />
       </ButtonRow>
     </SocketForm>
