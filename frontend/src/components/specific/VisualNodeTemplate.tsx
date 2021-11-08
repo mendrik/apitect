@@ -59,6 +59,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
+              onPointerUp={() => document.getElementById(node.value.id)?.focus()}
               onClick={() => (node.value.open = !node.value.open)}
               iconClasses={clsx('rotate', { deg90: node.value.open })}
               size={14}
