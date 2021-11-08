@@ -51,6 +51,7 @@ const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
 
   const ref = useKeyTriggers({
     onConfirm: async (ev: KeyboardEvent<HTMLInputElement>) => {
+      console.log('dang')
       confirmingView()
       await createTask(ev.currentTarget.value).then(initialView).then(focusIcon)
     },
@@ -66,7 +67,7 @@ const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
         {view === View.Edit && <Icon icon={IconCircleCheck} onClick={initialView} />}
         {view === View.Confirming && (
           <div className="icon-xs d-flex align-items-center" style={{ padding: 3 }}>
-            <Loader style={{ width: 18, height: 18 }} />
+            <Loader style={{ width: 16, height: 16 }} />
           </div>
         )}
         <div className="input-spacer w-100">

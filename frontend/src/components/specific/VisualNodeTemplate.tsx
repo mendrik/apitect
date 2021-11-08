@@ -37,9 +37,6 @@ const NodeGrid = focus(styled.div`
   & > :nth-child(2) {
     cursor: pointer;
   }
-  & > :last-child {
-    justify-self: end;
-  }
 `)
 
 const RootWrap: FC = ({ children }) => <Ol>{children}</Ol>
@@ -71,7 +68,6 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
             <div />
           )}
           <div className={clsx('text-truncate', { thin: !hasChildren })}>{node.value.name}</div>
-          {!hasChildren ? <Icon icon={IconChevronRight} /> : <div />}
         </NodeGrid>
       )}
       {(node.value.open || depth === 0) && (

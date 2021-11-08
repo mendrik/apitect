@@ -18,10 +18,10 @@ const Button = styled.button`
   margin: 0;
   border-radius: 5px;
   border: 1px solid transparent;
+  outline: none;
 
   &.focus:focus {
     border: 1px dotted #999;
-    outline: none;
   }
 
   &.focus:active {
@@ -40,8 +40,13 @@ const Button = styled.button`
 
 export const Icon: FC<OwnProps> = ({ icon: IconCmp, forwardRef, focus = true, ...props }) => {
   return (
-    <Button className={clsx('d-block icon-xs', { focus })} {...props} tabIndex={0} ref={forwardRef}>
-      <IconCmp className="d-block user-select-none" width={14} height={14} />
+    <Button
+      className={clsx('d-block icon-xs', { focus })}
+      {...props}
+      tabIndex={focus ? 0 : -1}
+      ref={forwardRef}
+    >
+      <IconCmp className="d-block user-select-none" width={14} height={14} stroke={1} />
     </Button>
   )
 }

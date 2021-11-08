@@ -1,4 +1,4 @@
-import { IconMenu2, IconSearch, IconCirclePlus, IconInfoCircle } from '@tabler/icons'
+import { IconInfoCircle, IconMenu2 } from '@tabler/icons'
 import React, { FC } from 'react'
 
 import { Icon } from '../generic/Icon'
