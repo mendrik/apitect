@@ -7,6 +7,7 @@ const en = {
       error: 'Error',
       success: 'Success',
       close: 'Close',
+      cancel: 'Cancel',
       back: 'Back',
       confirm: 'Confirm',
       delete: 'Delete',

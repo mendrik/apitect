@@ -3,7 +3,9 @@ import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { map, pipe, toLower, values } from 'ramda'
 import React from 'react'
+import { Button } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { ButtonRow } from '../../forms/ButtonRow'
@@ -48,7 +50,8 @@ const TypeGrid = styled.ul`
   }
 `
 
-const NewNode: ModalFC = ({}) => {
+const NewNode: ModalFC = ({ close }) => {
+  const { t } = useTranslation()
   const { selectedNode } = useStore(appStore)
   const form = useForm<NewNodeType>({
     resolver: ioTsResolver(TNewNode),
@@ -87,6 +90,9 @@ const NewNode: ModalFC = ({}) => {
         )}
       />
       <ButtonRow className="mt-4">
+        <Button variant="outline-secondary" onClick={close}>
+          {t('common.cancel')}
+        </Button>
         <SubmitButton localeKey="modals.newNode.submit" />
       </ButtonRow>
     </SocketForm>
