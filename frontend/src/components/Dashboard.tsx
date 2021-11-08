@@ -38,9 +38,8 @@ const Dashboard: FC = () => {
         <DndContext>
           <ResizableTable columns={columns}>
             <Column>
-              <VisualTree>
-                <NewItem icon={IconCirclePlus} createTask={() => delayP(2000)} />
-              </VisualTree>
+              <VisualTree />
+              <NewItem icon={IconCirclePlus} createTask={() => delayP(2000)} />
             </Column>
             <Column>A</Column>
             <Column>B</Column>

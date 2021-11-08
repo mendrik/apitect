@@ -2,8 +2,8 @@ import { useStore } from 'effector-react'
 import { find, pipe, prop, propEq, when } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
 import React, { FC, useMemo, useRef, useState } from 'react'
-import { useEventListener } from 'usehooks-ts'
 
+import { useEvent } from '../../hooks/useEvent'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { UiNode } from '../../shared/types/domain/tree'
 import { Fn, Maybe } from '../../shared/types/generic'
@@ -48,7 +48,7 @@ export const VisualTree: FC = ({ children }) => {
   const prevFocusNode = (): Maybe<VisualNode> => prev(propEq('id', activeId()))(visualNodes)
   const curFocusNode = (): Maybe<VisualNode> => find(propEq('id', activeId()), visualNodes)
   const keyHandler = (key: string, fn: Fn) =>
-    useEventListener('keydown', when(propEq<any>('key', key), fn), treeRef)
+    useEvent('keydown', when(propEq<any>('key', key), fn), treeRef)
 
   // prettier-ignore
   {
