@@ -13,10 +13,10 @@ export const ProjectTreeHeader: FC = () => (
       <Icon
         icon={IconFolderPlus}
         focus={false}
-        tooltip="Create a new node"
+        tooltipText="Create a new node"
         onPointerDown={preventDefault(() => openModal('new-node'))}
       />
-      <Icon icon={IconFileImport} className="gray-icon" />
+      <Icon icon={IconFileImport} />
     </div>
   </Tuple>
 )

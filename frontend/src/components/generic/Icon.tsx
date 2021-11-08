@@ -8,7 +8,7 @@ export type OwnProps = {
   icon: IconProp
   forwardRef?: ForwardedRef<HTMLButtonElement>
   focus?: boolean
-  tooltip?: string
+  tooltipText?: string
   size?: number
   iconClasses?: string
 } & HTMLAttributes<HTMLButtonElement>
@@ -55,14 +55,14 @@ const WithTooltip: FC<{ tooltip?: string }> = ({ tooltip, children }) =>
 
 export const Icon: FC<OwnProps> = ({
   icon: IconCmp,
-  tooltip,
+  tooltipText,
   forwardRef,
   focus = true,
   size = 16,
   iconClasses,
   ...props
 }) => (
-  <WithTooltip tooltip={tooltip}>
+  <WithTooltip tooltip={tooltipText}>
     <Button
       className={clsx('d-block icon-xs', { focus })}
       {...props}

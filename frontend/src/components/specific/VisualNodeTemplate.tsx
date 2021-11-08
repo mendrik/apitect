@@ -1,11 +1,13 @@
 import { IconChevronDown, IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
+import { useStore } from 'effector-react'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
 import { selectNode } from '../../events/tree'
 import { TreeNode } from '../../shared/algebraic/treeNode'
+import appStore from '../../stores/appStore'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
@@ -44,14 +46,14 @@ const ListWrap: FC = ({ children }) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: footer }) => {
   const hasChildren = isNotNilOrEmpty(node.children)
+  const { selectedNode } = useStore(appStore)
   return (
     <>
       {depth > 0 && (
         <NodeGrid
           tabIndex={0}
           id={node.value.id}
-          className="gap-1"
-          onBlur={() => selectNode()}
+          className={clsx('gap-1', { selectedNode: selectedNode?.id === node.value.id })}
           onFocus={() => selectNode(node.value)}
         >
           {hasChildren ? (

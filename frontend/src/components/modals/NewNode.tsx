@@ -6,6 +6,7 @@ import { ModalFC } from '../LazyModal'
 
 const NewNode: ModalFC = ({}) => {
   const { selectedNode } = useStore(appStore)
+  console.log(document.activeElement, selectedNode)
   return <div>{selectedNode?.name}</div>
 }
 

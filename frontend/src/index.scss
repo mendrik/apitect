@@ -120,4 +120,9 @@ input[required] + label:after {
   }
 }
 
+.selectedNode {
+  background-color: #d9e8b5;
+  border-radius: 4px;
+}
+
 @import "~bootstrap/scss/bootstrap";
