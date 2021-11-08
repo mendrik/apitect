@@ -1,4 +1,4 @@
-import { IconChevronRight, IconSquareMinus, IconSquarePlus } from '@tabler/icons'
+import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { FC } from 'react'
@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
-import { focus } from '../styled/focus'
 
 export type VisualNode = {
   id: string
@@ -26,7 +25,7 @@ const Ol = styled.ol`
   list-style: none;
 `
 
-const NodeGrid = focus(styled.div`
+const NodeGrid = styled.div`
   display: grid;
   grid-template-columns: 20px auto 20px;
   align-items: center;
@@ -37,7 +36,7 @@ const NodeGrid = focus(styled.div`
   & > :nth-child(2) {
     cursor: pointer;
   }
-`)
+`
 
 const RootWrap: FC = ({ children }) => <Ol>{children}</Ol>
 const ListWrap: FC = ({ children }) => <Ol className="ps-3">{children}</Ol>
@@ -54,12 +53,14 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
                 icon={IconSquareMinus}
                 onClick={() => (node.value.open = false)}
                 focus={false}
+                size={14}
                 className="gray-icon"
               />
             ) : (
               <Icon
                 icon={IconSquarePlus}
                 onClick={() => (node.value.open = true)}
+                size={14}
                 focus={false}
                 className="gray-icon"
               />

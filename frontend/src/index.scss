@@ -95,4 +95,20 @@ input[required] + label:after {
   outline: none;
 }
 
+*:focus {
+  position: relative;
+  outline: none;
+
+  &:before {
+    content: '';
+    position: absolute;
+    border: 1px dotted #999;
+    border-radius: 4px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
 @import "~bootstrap/scss/bootstrap";

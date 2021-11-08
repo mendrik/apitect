@@ -1,12 +1,15 @@
 import { TablerIcon as IconProp } from '@tabler/icons'
 import clsx from 'clsx'
 import React, { FC, ForwardedRef, HTMLAttributes } from 'react'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import styled from 'styled-components'
 
 export type OwnProps = {
   icon: IconProp
   forwardRef?: ForwardedRef<HTMLButtonElement>
   focus?: boolean
+  tooltip?: string
+  size?: number
 } & HTMLAttributes<HTMLButtonElement>
 
 const Button = styled.button`
@@ -38,15 +41,33 @@ const Button = styled.button`
   }
 `
 
-export const Icon: FC<OwnProps> = ({ icon: IconCmp, forwardRef, focus = true, ...props }) => {
-  return (
+const IconTooltip = styled(Tooltip)``
+
+const WithTooltip: FC<{ tooltip?: string }> = ({ tooltip, children }) =>
+  tooltip != null ? (
+    <OverlayTrigger overlay={<IconTooltip>{tooltip}</IconTooltip>} delay={0}>
+      <>{children}</>
+    </OverlayTrigger>
+  ) : (
+    <>{children}</>
+  )
+
+export const Icon: FC<OwnProps> = ({
+  icon: IconCmp,
+  tooltip,
+  forwardRef,
+  focus = true,
+  size = 16,
+  ...props
+}) => (
+  <WithTooltip tooltip={tooltip}>
     <Button
       className={clsx('d-block icon-xs', { focus })}
       {...props}
       tabIndex={focus ? 0 : -1}
       ref={forwardRef}
     >
-      <IconCmp className="d-block user-select-none" width={14} height={14} stroke={1} />
+      <IconCmp className="d-block user-select-none" width={size} height={size} stroke={1} />
     </Button>
-  )
-}
+  </WithTooltip>
+)
