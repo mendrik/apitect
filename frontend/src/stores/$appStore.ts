@@ -34,6 +34,8 @@ $appStore.on(messageReceived, (state, message) => {
       }
     case 'RESET':
       return initial
+    case 'NODE_CREATED':
+      return { ...state, selectedNode: message.payload }
     default:
       return state
   }

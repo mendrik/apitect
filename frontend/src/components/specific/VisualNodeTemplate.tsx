@@ -44,6 +44,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
   const hasChildren = isNotNilOrEmpty(node.children)
   const { selectedNode } = useStore($appStore)
   const open = openNodes[node.value.id]
+
   return (
     <>
       {depth > 0 && (
@@ -57,7 +58,6 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onPointerUp={() => document.getElementById(node.value.id)?.focus()}
               onClick={() => openNode([node.value.id, !open])}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}

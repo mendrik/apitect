@@ -3,7 +3,9 @@ import { propEq } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
 import { TUiDocument } from '~shared/types/domain/document'
+import { TUiNode } from '~shared/types/domain/tree'
 import { wrapServerMessage } from '~shared/types/serverMessages'
+import { convertUnderscoreIds } from '~shared/utils/rename'
 
 import { Node, TNode } from '../types/tree'
 import { collection } from './database'
@@ -18,17 +20,23 @@ serverState.on(eventMap.NEW_NODE, (state, { send, userId, message: newNode }) =>
       ? tree.first(propEq('_id', new ObjectId(newNode.parentNode)))!
       : tree
 
-    parent.children.splice(parent.children.length,0, TreeNode.of<Node>({
+    const node = decode(TNode)({
       name: newNode.name,
       children: [],
       nodeType: newNode.nodeType,
       _id: new ObjectId()
-    }))
+    })
+    parent.children.splice(parent.children.length,0, TreeNode.of<Node>(node))
 
     const docTree = decode(TNode)(tree.extract())
 
     collection('documents')
       .updateOne({ _id: doc._id }, { $set: { 'tree': docTree } })
-      .then(() => getLastDocument(userId).then(wrapServerMessage(TUiDocument))).then(send)
+      .then(() => getLastDocument(userId).then(wrapServerMessage(TUiDocument)))
+      .then(send)
+      .then(() => send({
+        type: 'NODE_CREATED',
+        payload: decode(TUiNode)(convertUnderscoreIds(node))
+      }))
   })
 })
