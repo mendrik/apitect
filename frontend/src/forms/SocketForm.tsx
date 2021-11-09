@@ -1,20 +1,32 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
-import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form'
-import { UnpackNestedValue } from 'react-hook-form/dist/types/form'
+import React, { PropsWithChildren, ReactElement, useContext } from 'react'
+import { FormProvider, UseFormReturn } from 'react-hook-form'
 
-type OwnProps<T> = {
-  form: UseFormReturn<T>
-  onValid: (data: UnpackNestedValue<T>) => void
+import { socketContext } from '../contexts/socket'
+import { ClientMessage } from '../shared/types/clientMessages'
+
+type FormData<T extends ClientMessage['type']> = Omit<Extract<ClientMessage, { type: T }>, 'type'>
+
+type OwnProps<T extends ClientMessage['type']> = {
+  submitMessage: T
+  form: UseFormReturn<FormData<T>>
 }
 
-export const SocketForm = <T extends FieldValues>({
-  onValid,
+export const SocketForm = <T extends ClientMessage['type']>({
+  submitMessage,
   form,
   children
 }: PropsWithChildren<OwnProps<T>>): ReactElement | null => {
+  const { send } = useContext(socketContext)
+
   return (
-    <FormProvider<T> {...form}>
-      <form onSubmit={form.handleSubmit(onValid)} noValidate>
+    <FormProvider {...form}>
+      <form
+        onSubmit={form.handleSubmit(data => {
+          console.log(data)
+          send({ type: submitMessage, ...data } as ClientMessage)
+        })}
+        noValidate
+      >
         {children}
       </form>
     </FormProvider>

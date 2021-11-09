@@ -1,4 +1,4 @@
-import React, { createContext, FC, useCallback, useContext, useEffect } from 'react'
+import React, { createContext, FC, useContext, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { ClientMessage } from 'shared/types/clientMessages'
 
@@ -7,12 +7,10 @@ import { userContext } from './user'
 
 type SocketContext = {
   send: (data: ClientMessage) => void
-  sendP: (data: ClientMessage) => Promise<void>
 }
 
 export const socketContext = createContext<SocketContext>({
-  send: () => 0,
-  sendP: () => Promise.reject()
+  send: () => 0
 })
 
 export const WithSocket: FC = ({ children }) => {
@@ -27,9 +25,12 @@ export const WithSocket: FC = ({ children }) => {
     }
   }, [lastMessage])
 
-  const send = useCallback(data => (jwt ? sendJsonMessage(data) : void 0), [jwt, sendJsonMessage])
   return readyState === ReadyState.OPEN ? (
-    <socketContext.Provider value={{ send, sendP: data => Promise.resolve(send(data)) }}>
+    <socketContext.Provider
+      value={{
+        send: sendJsonMessage
+      }}
+    >
       {children}
     </socketContext.Provider>
   ) : null

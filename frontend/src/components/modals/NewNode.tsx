@@ -2,13 +2,12 @@ import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { map, pipe, toLower, values, when } from 'ramda'
-import React, { useContext } from 'react'
+import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { socketContext } from '../../contexts/socket'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { SocketForm } from '../../forms/SocketForm'
 import { SubmitButton } from '../../forms/SubmitButton'
@@ -53,22 +52,18 @@ const TypeGrid = styled.ul`
 const NewNode: ModalFC = ({ close }) => {
   const { t } = useTranslation()
   const { selectedNode } = useStore($appStore)
-  const { sendP } = useContext(socketContext)
 
   const form = useForm<NewNodeType>({
     resolver: ioTsResolver(TNewNode),
     defaultValues: {
       parentNode: selectedNode?.id,
       nodeType: NodeType.Object,
-      name: ''
+      name: 'New node'
     }
   })
 
   return (
-    <SocketForm<NewNodeType>
-      form={form}
-      onValid={data => sendP({ type: 'NEW_NODE', ...data }).then(close)}
-    >
+    <SocketForm submitMessage="NEW_NODE" form={form}>
       <TextInput
         name="name"
         label="form.fields.nodeName"
