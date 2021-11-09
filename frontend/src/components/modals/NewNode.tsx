@@ -63,7 +63,7 @@ const NewNode: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm submitMessage="NEW_NODE" form={form}>
+    <SocketForm submitMessage="NEW_NODE" form={form} onSuccess={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"

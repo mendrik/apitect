@@ -1,17 +1,8 @@
-import React, { createContext, FC, useContext, useEffect } from 'react'
+import React, { FC, useContext, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
-import { ClientMessage } from 'shared/types/clientMessages'
 
-import { messageReceived } from '../events/messages'
+import { messageReceived, socketEstablished } from '../events/messages'
 import { userContext } from './user'
-
-type SocketContext = {
-  send: (data: ClientMessage) => void
-}
-
-export const socketContext = createContext<SocketContext>({
-  send: () => 0
-})
 
 export const WithSocket: FC = ({ children }) => {
   const { jwt } = useContext(userContext)
@@ -19,19 +10,13 @@ export const WithSocket: FC = ({ children }) => {
     protocols: jwt!
   })
 
+  useEffect(() => void socketEstablished(sendJsonMessage), [])
+
   useEffect(() => {
     if (lastMessage?.data) {
       messageReceived(JSON.parse(lastMessage?.data))
     }
   }, [lastMessage])
 
-  return readyState === ReadyState.OPEN ? (
-    <socketContext.Provider
-      value={{
-        send: sendJsonMessage
-      }}
-    >
-      {children}
-    </socketContext.Provider>
-  ) : null
+  return readyState === ReadyState.OPEN ? <>{children}</> : null
 }

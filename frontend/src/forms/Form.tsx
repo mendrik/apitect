@@ -9,7 +9,7 @@ import { useServerError } from '../hooks/useServerError'
 type OwnProps<T> = {
   form: UseFormReturn<T>
   state: State<any>
-  success?: Fn
+  onSuccess?: Fn
   successView?: JSX.Element
 }
 
@@ -26,7 +26,7 @@ export const formWrappingContext = createContext<FormWrappingContext>({
 export const Form: FC<OwnProps<any>> = ({
   form,
   successView: SuccessView,
-  success = identity,
+  onSuccess = identity,
   state,
   children
 }) => {
@@ -38,7 +38,7 @@ export const Form: FC<OwnProps<any>> = ({
     <formWrappingContext.Provider value={{ promise: state.name, error: state.error }}>
       <FormProvider {...form}>
         <form
-          onSubmit={form.handleSubmit((...args) => state.trigger(...args).then(success))}
+          onSubmit={form.handleSubmit((...args) => state.trigger(...args).then(onSuccess))}
           noValidate
         >
           {children}

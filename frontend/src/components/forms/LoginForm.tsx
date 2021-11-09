@@ -45,7 +45,7 @@ export const LoginForm: FC<OwnProps> = ({ close }) => {
   return match(view)
     .with(Views.FORGOT_PASSWORD, () => <ForgotPasswordForm close={() => setView(Views.LOGIN)} />)
     .otherwise(() => (
-      <Form form={form} state={submit} success={setJwt}>
+      <Form form={form} state={submit} onSuccess={setJwt}>
         <TextInput
           name="email"
           label="form.fields.email"
