@@ -1,5 +1,3 @@
-import { Pixels } from '../shared/types/generic'
-
 export enum Draggables {
   COLUMN_HEADER = 'COLUMN_HEADER'
 }

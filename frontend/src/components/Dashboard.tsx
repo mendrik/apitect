@@ -1,12 +1,9 @@
 import { DndContext } from '@dnd-kit/core'
-import { IconCirclePlus } from '@tabler/icons'
-import { delayP } from 'ramda-adjunct'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
-import { NewItem } from './generic/NewItem'
 import { ResizableTable } from './generic/ResizableTable'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
 import { VisualTree } from './specific/VisualTree'

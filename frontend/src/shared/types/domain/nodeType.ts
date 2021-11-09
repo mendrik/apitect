@@ -10,7 +10,6 @@ import {
   IconMap2,
   IconPalette,
   IconRelationOneToOne,
-  IconSquareRoot2,
   IconToggleLeft,
   TablerIcon
 } from '@tabler/icons'
