@@ -2,6 +2,8 @@ import { ObjectId } from 'mongodb'
 import { propEq } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
+import { TUiDocument } from '~shared/types/domain/document'
+import { wrapServerMessage } from '~shared/types/serverMessages'
 
 import { Node, TNode } from '../types/tree'
 import { collection } from './database'
@@ -25,7 +27,8 @@ serverState.on(eventMap.NEW_NODE, (state, { send, userId, message: newNode }) =>
 
     const docTree = decode(TNode)(tree.extract())
 
-    return collection('documents')
+    collection('documents')
       .updateOne({ _id: doc._id }, { $set: { 'tree': docTree } })
+      .then(() => getLastDocument(userId).then(wrapServerMessage(TUiDocument))).then(send)
   })
 })
