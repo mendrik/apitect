@@ -30,7 +30,13 @@ export class TreeNode<T> {
       fn(this.value),
       map(c => c[fl.map](fn), this.children)
     )
-  map = this[fl.map]
+  map = this[fl.map];
+
+  [fl.extract] = (): T => ({
+    ...this.value,
+    children: this.children.map(c => c[fl.extract]())
+  })
+  extract = this[fl.extract]
 
   static [fl.of] = <ST>(value: ST, children: TreeNode<ST>[] = []) =>
     new TreeNode<ST>(value, children)
@@ -41,11 +47,7 @@ export class TreeNode<T> {
       childrenProp: CP,
       valueProp?: VP
     ) =>
-    <O2 extends O>(
-      obj: O2
-    ): VP extends undefined
-      ? TreeNode<Omit<O, typeof childrenProp>>
-      : TreeNode<O[NonNullable<VP>]> => {
+    <O2 extends O>(obj: O2): VP extends undefined ? TreeNode<O> : TreeNode<O[NonNullable<VP>]> => {
       const value = valueProp != null ? obj[valueProp!] : omit([childrenProp as string], obj)
       const children = pipe(
         propOr([], childrenProp as string),
