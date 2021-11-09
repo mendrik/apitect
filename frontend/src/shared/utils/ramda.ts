@@ -5,6 +5,7 @@ import {
   assoc,
   compose,
   converge,
+  either,
   head,
   identity,
   join,
@@ -13,6 +14,7 @@ import {
   pipe,
   Pred,
   prop,
+  propEq,
   reduce,
   reverse,
   tail,
@@ -69,3 +71,5 @@ export const prev =
     $next(pred)(reverse(list))
 
 export const isNumeric: Pred = (str: string) => !isNaN(Number(str))
+
+export const spaceOrEnter = either(propEq<any>('code', 'Space'), propEq<any>('key', 'Enter'))

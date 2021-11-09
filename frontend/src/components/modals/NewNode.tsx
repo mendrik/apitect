@@ -1,7 +1,8 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import { map, pipe, propEq, toLower, values, when } from 'ramda'
+import { map, pipe, toLower, values, when } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -14,7 +15,7 @@ import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '../../shared/types/forms/newNode'
-import { capitalize } from '../../shared/utils/ramda'
+import { capitalize, spaceOrEnter } from '../../shared/utils/ramda'
 import appStore from '../../stores/appStore'
 import { ModalFC } from '../LazyModal'
 
@@ -82,7 +83,7 @@ const NewNode: ModalFC = ({ close }) => {
                   role="button"
                   tabIndex={0}
                   onClick={() => field.onChange(nodeType)}
-                  onKeyDown={when(propEq<any>('key', 'Space'), () => field.onChange(nodeType))}
+                  onKeyDown={when(spaceOrEnter, () => field.onChange(nodeType))}
                   className={clsx({ selected: field.value === nodeType })}
                 >
                   <Icon focusable="false" role="img" size={30} stroke={1} />
