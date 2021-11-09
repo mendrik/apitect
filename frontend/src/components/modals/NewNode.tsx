@@ -74,13 +74,13 @@ const NewNode: ModalFC = ({ close }) => {
         name="nodeType"
         defaultValue={NodeType.Object}
         render={({ field }) => (
-          <TypeGrid>
+          <TypeGrid role="grid" data-wrap-cols="true" data-wrap-rows="true">
             {map(nodeType => {
               const Icon = iconMap[nodeType]
               return (
                 <li
                   key={nodeType}
-                  role="button"
+                  role="gridcell"
                   tabIndex={0}
                   onClick={() => field.onChange(nodeType)}
                   onKeyDown={when(spaceOrEnter, () => field.onChange(nodeType))}
