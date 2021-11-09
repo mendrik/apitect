@@ -1,7 +1,6 @@
 import * as t from 'io-ts'
 
-import { enumCodec } from '../codecs/enumCodec'
-import { hexString } from '../codecs/hexString'
+import { TNewNode } from './forms/newNode'
 
 const DocumentRequest = t.type({
   type: t.literal('DOCUMENT')
@@ -12,16 +11,17 @@ export enum Operation {
   Upsert
 }
 
-export const NodeRequest = t.intersection([
+export const NewNodeRequest = t.intersection([
   t.type({
-    type: t.literal('NODE'),
-    operation: enumCodec('crud', Operation)
+    type: t.literal('NEW_NODE')
   }),
-  t.partial({
-    nodeId: hexString,
-    position: t.number
-  })
+  TNewNode
 ])
 
-export const TClientMessage = t.union([DocumentRequest, NodeRequest])
+export const DeleteNodeRequest = t.type({
+  type: t.literal('DEL_NODE'),
+  id: t.string
+})
+
+export const TClientMessage = t.union([DocumentRequest, NewNodeRequest, DeleteNodeRequest])
 export type ClientMessage = t.TypeOf<typeof TClientMessage>

@@ -18,9 +18,9 @@ const initial: AppState = {
   tree: null
 } as any
 
-const appStore = createStore<AppState>(initial)
+const $appStore = createStore<AppState>(initial)
 
-appStore.on(messageReceived, (state, message) => {
+$appStore.on(messageReceived, (state, message) => {
   switch (message.type) {
     case 'DOCUMENT':
       return { ...state, document: omit(['tree'], message.payload), tree: message.payload.tree }
@@ -31,7 +31,7 @@ appStore.on(messageReceived, (state, message) => {
   }
 })
 
-appStore.on(selectNode, (state, selectedNode) => ({ ...state, selectedNode }))
-appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
+$appStore.on(selectNode, (state, selectedNode) => ({ ...state, selectedNode }))
+$appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
 
-export default appStore
+export default $appStore

@@ -7,9 +7,13 @@ import { userContext } from './user'
 
 type SocketContext = {
   send: (data: ClientMessage) => void
+  sendP: (data: ClientMessage) => Promise<void>
 }
 
-export const socketContext = createContext<SocketContext>({ send: () => 0 })
+export const socketContext = createContext<SocketContext>({
+  send: () => 0,
+  sendP: () => Promise.reject()
+})
 
 export const WithSocket: FC = ({ children }) => {
   const { jwt } = useContext(userContext)
@@ -25,6 +29,8 @@ export const WithSocket: FC = ({ children }) => {
 
   const send = useCallback(data => (jwt ? sendJsonMessage(data) : void 0), [jwt, sendJsonMessage])
   return readyState === ReadyState.OPEN ? (
-    <socketContext.Provider value={{ send }}>{children}</socketContext.Provider>
+    <socketContext.Provider value={{ send, sendP: data => Promise.resolve(send(data)) }}>
+      {children}
+    </socketContext.Provider>
   ) : null
 }

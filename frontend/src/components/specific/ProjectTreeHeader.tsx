@@ -4,14 +4,14 @@ import React, { FC } from 'react'
 
 import { openModal } from '../../events/modals'
 import { deselectNode } from '../../events/tree'
-import appStore from '../../stores/appStore'
+import $appStore from '../../stores/$appStore'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'
 import { WithTooltip } from '../generic/WithTooltip'
 
 export const ProjectTreeHeader: FC = () => {
-  const { selectedNode } = useStore(appStore)
+  const { selectedNode } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate editable">Project tree</div>

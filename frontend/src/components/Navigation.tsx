@@ -9,14 +9,14 @@ import { addParams } from 'shared/utils/url'
 import { ReactComponent as Logo } from '../assets/logo.svg'
 import { userContext } from '../contexts/user'
 import { useLogout } from '../hooks/useLogout'
-import appStore from '../stores/appStore'
+import $appStore from '../stores/$appStore'
 
 export const Navigation: FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const logout = useLogout()
   const { user } = useContext(userContext)
-  const { document } = useStore(appStore)
+  const { document } = useStore($appStore)
   return (
     <Navbar variant="light" expand="sm" className="px-2 bevel-bottom bevel-shadow">
       <Navbar.Brand href="#home" tabIndex={-1}>

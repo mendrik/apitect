@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import { selectNode } from '../../events/tree'
 import { TreeNode } from '../../shared/algebraic/treeNode'
-import appStore from '../../stores/appStore'
+import $appStore from '../../stores/$appStore'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
@@ -46,7 +46,7 @@ const ListWrap: FC = ({ children }) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: footer }) => {
   const hasChildren = isNotNilOrEmpty(node.children)
-  const { selectedNode } = useStore(appStore)
+  const { selectedNode } = useStore($appStore)
   return (
     <>
       {depth > 0 && (

@@ -2,12 +2,13 @@ import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { map, pipe, toLower, values, when } from 'ramda'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
+import { socketContext } from '../../contexts/socket'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { SocketForm } from '../../forms/SocketForm'
 import { SubmitButton } from '../../forms/SubmitButton'
@@ -15,7 +16,7 @@ import { TextInput } from '../../forms/TextInput'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '../../shared/types/forms/newNode'
 import { capitalize, spaceOrEnter } from '../../shared/utils/ramda'
-import appStore from '../../stores/appStore'
+import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../LazyModal'
 
 const TypeGrid = styled.ul`
@@ -51,7 +52,9 @@ const TypeGrid = styled.ul`
 
 const NewNode: ModalFC = ({ close }) => {
   const { t } = useTranslation()
-  const { selectedNode } = useStore(appStore)
+  const { selectedNode } = useStore($appStore)
+  const { sendP } = useContext(socketContext)
+
   const form = useForm<NewNodeType>({
     resolver: ioTsResolver(TNewNode),
     defaultValues: {
@@ -62,7 +65,10 @@ const NewNode: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm form={form} onValid={close}>
+    <SocketForm<NewNodeType>
+      form={form}
+      onValid={data => sendP({ type: 'NEW_NODE', ...data }).then(close)}
+    >
       <TextInput
         name="name"
         label="form.fields.nodeName"

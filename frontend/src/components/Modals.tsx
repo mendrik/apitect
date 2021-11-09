@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom'
 
 import { openModal } from '../events/modals'
 import { addParams } from '../shared/utils/url'
-import appStore from '../stores/appStore'
+import $appStore from '../stores/$appStore'
 import { LazyModal } from './LazyModal'
 
 export const Modals: FC = () => {
   const navigate = useNavigate()
 
-  useEffect(() => appStore.watch(openModal, (_state, modal) => navigate(addParams({ modal }))))
+  useEffect(() => $appStore.watch(openModal, (_state, modal) => navigate(addParams({ modal }))))
 
   return (
     <div className="modal">

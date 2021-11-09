@@ -8,7 +8,7 @@ import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { UiNode } from '../../shared/types/domain/tree'
 import { Fn, Maybe } from '../../shared/types/generic'
 import { next, prev } from '../../shared/utils/ramda'
-import appStore from '../../stores/appStore'
+import $appStore from '../../stores/$appStore'
 import { domElementById, focus } from '../../utils/focus'
 import { VisualNode, VisualNodeTemplate } from './VisualNodeTemplate'
 
@@ -20,7 +20,7 @@ const visibleNodes = (root: TreeNode<VisualNode>) =>
     .slice(1)
 
 export const VisualTree: FC = ({ children }) => {
-  const { tree } = useStore(appStore)
+  const { tree } = useStore($appStore)
   const [render, forceRender] = useState(false)
   const treeRef = useRef<HTMLDivElement>(null)
   const visualTree = useMemo(
