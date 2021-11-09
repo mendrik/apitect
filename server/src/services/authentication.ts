@@ -4,6 +4,7 @@ import { sign } from 'jsonwebtoken'
 import { ObjectId, WithId } from 'mongodb'
 import { assoc, dissoc, isNil, pipe, propEq } from 'ramda'
 import { decode } from '~shared/codecs/decode'
+import { NodeType } from '~shared/types/domain/nodeType'
 import { TUiUser, UiUser } from '~shared/types/domain/user'
 import { TForgotPassword } from '~shared/types/forms/forgotPassword'
 import { TLogin } from '~shared/types/forms/login'
@@ -62,6 +63,7 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
         tree: {
           _id: rootId,
           name: 'root',
+          nodeType: NodeType.Object,
           children: []
         }
       },
