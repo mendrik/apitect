@@ -1,5 +1,6 @@
 import {
   IconAffiliate,
+  IconBlockquote,
   IconCalculator,
   IconCalendar,
   IconDatabase,
@@ -25,7 +26,7 @@ export enum NodeType {
   Array = 'ARRAY',
   Color = 'COLOR',
   Location = 'LOCATION',
-  Formula = 'FORMULA',
+  RichText = 'RICHTEXT',
   Reference = 'REFERENCE'
 }
 
@@ -40,6 +41,6 @@ export const iconMap: Record<NodeType, TablerIcon> = {
   [NodeType.Object]: IconAffiliate,
   [NodeType.Color]: IconPalette,
   [NodeType.Location]: IconMap2,
-  [NodeType.Formula]: IconSquareRoot2,
+  [NodeType.RichText]: IconBlockquote,
   [NodeType.Reference]: IconRelationOneToOne
 }

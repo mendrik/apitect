@@ -7,7 +7,7 @@ import { NodeType } from '../domain/nodeType'
 
 export const TNewNode = t.type({
   name: nonEmptyString,
-  type: nullable(enumCodec('nodeType', NodeType)),
+  nodeType: nullable(enumCodec('nodeType', NodeType)),
   parentNode: nullable(t.string)
 })
 

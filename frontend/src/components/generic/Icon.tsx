@@ -58,11 +58,20 @@ export const Icon: FC<OwnProps> = ({
   disabled = false,
   size = 16,
   iconClasses,
+  tabIndex = -1,
   ...props
 }) => (
-  <Button className={clsx('d-block')} {...props} tabIndex={-1} disabled={disabled}>
+  <Button
+    type="button"
+    className={clsx('d-block')}
+    {...props}
+    tabIndex={tabIndex}
+    disabled={disabled}
+  >
     <IconCmp
       className={clsx('d-block user-select-none', iconClasses)}
+      focusable="false"
+      role="img"
       width={size}
       height={size}
       stroke={1}

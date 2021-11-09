@@ -1,10 +1,4 @@
-import {
-  DragEndEvent,
-  DragMoveEvent,
-  DragStartEvent,
-  useDndMonitor,
-  useDraggable
-} from '@dnd-kit/core'
+import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
 import { max, multiply, pathOr, pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { FC, ReactNode, useRef } from 'react'
@@ -61,9 +55,7 @@ const Header: FC<HeaderProps> = ({ index, last, children }) => {
   return (
     <StyledHeader className="px-2 py-1 bevel-bottom" ref={setNodeRef}>
       <div>{children}</div>
-      {!last && (
-        <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} tabIndex={-1} />
-      )}
+      {!last && <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} />}
     </StyledHeader>
   )
 }
@@ -111,7 +103,7 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
         }
       }
     },
-    onDragMove(event: DragMoveEvent) {
+    onDragMove(event) {
       const data = event.active.data.current as Draggable
       if (data?.type === Draggables.COLUMN_HEADER) {
         const startWidth = event.active.rect.current.initial?.width ?? NaN
@@ -122,7 +114,7 @@ export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
         style?.setProperty(`--col-width-${data.index + 1}`, `${max(nextWidth - deltaX, 200)}px`)
       }
     },
-    onDragEnd(event: DragEndEvent) {
+    onDragEnd(event) {
       bodyStyle.setProperty('cursor', 'default')
       const data = event.active.data.current as Draggable
       if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {

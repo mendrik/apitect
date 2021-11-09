@@ -1,7 +1,7 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import { map, pipe, toLower, values } from 'ramda'
+import { map, pipe, propEq, toLower, values, when } from 'ramda'
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -17,7 +17,6 @@ import { NewNode as NewNodeType, TNewNode } from '../../shared/types/forms/newNo
 import { capitalize } from '../../shared/utils/ramda'
 import appStore from '../../stores/appStore'
 import { ModalFC } from '../LazyModal'
-import { Icon } from '../generic/Icon'
 
 const TypeGrid = styled.ul`
   display: grid;
@@ -57,7 +56,8 @@ const NewNode: ModalFC = ({ close }) => {
     resolver: ioTsResolver(TNewNode),
     defaultValues: {
       parentNode: selectedNode?.id,
-      type: NodeType.Object
+      nodeType: NodeType.Object,
+      name: ''
     }
   })
 
@@ -70,22 +70,26 @@ const NewNode: ModalFC = ({ close }) => {
         options={{ required: true }}
       />
       <Controller
-        name="type"
+        name="nodeType"
+        defaultValue={NodeType.Object}
         render={({ field }) => (
           <TypeGrid>
-            {map(
-              nodeType => (
+            {map(nodeType => {
+              const Icon = iconMap[nodeType]
+              return (
                 <li
                   key={nodeType}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => field.onChange(nodeType)}
+                  onKeyDown={when(propEq<any>('key', 'Space'), () => field.onChange(nodeType))}
                   className={clsx({ selected: field.value === nodeType })}
                 >
-                  <Icon icon={iconMap[nodeType]} size={30} />
+                  <Icon focusable="false" role="img" size={30} stroke={1} />
                   {pipe(toLower, capitalize)(nodeType)}
                 </li>
-              ),
-              values(NodeType)
-            )}
+              )
+            }, values(NodeType))}
           </TypeGrid>
         )}
       />
