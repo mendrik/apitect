@@ -8,6 +8,7 @@ import { Register } from 'shared/types/forms/register'
 import { TToken } from 'shared/types/response/token'
 import { failOn } from 'shared/utils/failOn'
 import { safeParse, satiated } from 'shared/utils/ramda'
+
 import { logAndRecover } from '../shared/utils/logAndRecover'
 import { fetchError, FetchError } from './fetchError'
 import { PromiseCache } from './promiseCache'
