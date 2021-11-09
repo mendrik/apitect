@@ -14,11 +14,11 @@ export const DocumentResponse = t.type({
   payload: TUiDocument
 })
 
-const NodeResponse = t.type({
-  type: t.literal('NODE')
+const NodeCreatedResponse = t.type({
+  type: t.literal('NODE_CREATED')
 })
 
-export const TServerMessage = t.union([DocumentResponse, NodeResponse, ResetAppState])
+export const TServerMessage = t.union([DocumentResponse, NodeCreatedResponse, ResetAppState])
 
 export type ServerMessage = t.TypeOf<typeof TServerMessage>
 

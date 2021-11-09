@@ -6,11 +6,6 @@ const DocumentRequest = t.type({
   type: t.literal('DOCUMENT')
 })
 
-export enum Operation {
-  Delete,
-  Upsert
-}
-
 export const NewNodeRequest = t.intersection([
   t.type({
     type: t.literal('NEW_NODE')
