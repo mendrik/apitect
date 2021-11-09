@@ -1,7 +1,8 @@
 import { createEvent } from 'effector'
 
-import { VisualNode } from '../components/specific/VisualNodeTemplate'
+import { UiNode } from '../shared/types/domain/tree'
 
-export const selectNode = createEvent<VisualNode | undefined>()
+export const openNode = createEvent<[string, boolean]>()
+export const selectNode = createEvent<UiNode | undefined>()
 export const deselectNode = createEvent()
-export const deleteNode = createEvent<VisualNode>()
+export const deleteNode = createEvent<UiNode>()

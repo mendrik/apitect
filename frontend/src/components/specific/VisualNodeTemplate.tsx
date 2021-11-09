@@ -5,20 +5,15 @@ import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
-import { selectNode } from '../../events/tree'
+import { openNode, selectNode } from '../../events/tree'
 import { TreeNode } from '../../shared/algebraic/treeNode'
+import { UiNode } from '../../shared/types/domain/tree'
 import $appStore from '../../stores/$appStore'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
-export type VisualNode = {
-  id: string
-  name: string
-  open: boolean
-}
-
 type OwnProps = {
-  node: TreeNode<VisualNode>
+  node: TreeNode<UiNode>
   depth?: number
 }
 
@@ -45,14 +40,17 @@ const RootWrap: FC = ({ children }) => <Ol>{children}</Ol>
 const ListWrap: FC = ({ children }) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: footer }) => {
+  const { openNodes } = useStore($appStore)
   const hasChildren = isNotNilOrEmpty(node.children)
   const { selectedNode } = useStore($appStore)
+  const open = openNodes[node.value.id]
   return (
     <>
       {depth > 0 && (
         <NodeGrid
           tabIndex={0}
           id={node.value.id}
+          key={node.value.id}
           className={clsx('gap-1', { selectedNode: selectedNode?.id === node.value.id })}
           onFocus={() => selectNode(node.value)}
         >
@@ -60,8 +58,8 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
             <Icon
               icon={IconChevronRight}
               onPointerUp={() => document.getElementById(node.value.id)?.focus()}
-              onClick={() => (node.value.open = !node.value.open)}
-              iconClasses={clsx('rotate', { deg90: node.value.open })}
+              onClick={() => openNode([node.value.id, !open])}
+              iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
           ) : (
@@ -72,7 +70,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           </div>
         </NodeGrid>
       )}
-      {(node.value.open || depth === 0) && (
+      {(open || depth === 0) && (
         <NotEmptyList list={node.children} as={depth === 0 ? RootWrap : ListWrap}>
           {mapIndexed((node, idx) => (
             <li key={idx}>
