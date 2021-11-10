@@ -2,7 +2,7 @@ import { ObjectId, WithId } from 'mongodb'
 import { isNil } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { TUiDocument } from '~shared/types/domain/document'
-import { wrapServerMessage } from '~shared/types/serverMessages'
+import { sendAsServerMessage } from '~shared/types/serverMessages'
 import { failOn } from '~shared/utils/failOn'
 import { field } from '~shared/utils/ramda'
 
@@ -26,5 +26,5 @@ export const getLastDocument = (userId: ObjectId): Promise<WithId<Document>> =>
     )
 
 serverState.on(eventMap.DOCUMENT, (state, { send, userId }) => {
-  void getLastDocument(userId).then(wrapServerMessage(TUiDocument)).then(send)
+  void getLastDocument(userId).then(sendAsServerMessage(TUiDocument, send))
 })

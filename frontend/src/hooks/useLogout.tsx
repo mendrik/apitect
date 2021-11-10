@@ -14,5 +14,5 @@ export const useLogout = (): Fn<Promise<any>> => {
     doLogout
       .trigger()
       .then(() => setJwt(undefined))
-      .then(() => messageReceived({ type: 'RESET' }))
+      .then(() => messageReceived({ type: 'RESET', payload: undefined }))
 }

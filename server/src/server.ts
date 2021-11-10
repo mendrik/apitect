@@ -1,7 +1,6 @@
 import Fastify from 'fastify'
 import Cors from 'fastify-cors'
 import Ws from 'fastify-websocket'
-import { ServerMessage } from '~shared/types/serverMessages'
 import { logger } from '~shared/utils/logger'
 
 import { initDatabase } from './services'
@@ -12,8 +11,6 @@ import { initWebsocket } from './services/websocket'
 const fastify = Fastify({ logger: true })
 fastify.register(Ws)
 fastify.register(Cors)
-
-export type Send = <T extends ServerMessage>(message: T) => void
 
 void initDatabase()
   .then(() => {

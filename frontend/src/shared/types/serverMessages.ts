@@ -5,8 +5,14 @@ import { decode } from '../codecs/decode'
 import { convertUnderscoreIds } from '../utils/rename'
 import { TUiDocument } from './domain/document'
 
+export type Send = <T extends ServerMessage['type']>(
+  type: T,
+  payload: Extract<ServerMessage, { type: T }>['payload']
+) => void
+
 const ResetAppState = t.type({
-  type: t.literal('RESET')
+  type: t.literal('RESET'),
+  payload: t.undefined
 })
 
 export const DocumentResponse = t.type({
@@ -19,17 +25,31 @@ const NodeCreatedResponse = t.type({
   payload: t.string
 })
 
-export const TServerMessage = t.union([DocumentResponse, NodeCreatedResponse, ResetAppState])
+const NodeDeleteResponse = t.type({
+  type: t.literal('NODE_DELETED'),
+  payload: t.type({
+    position: t.number,
+    parentNode: t.string
+  })
+})
+
+export const TServerMessage = t.union([
+  DocumentResponse,
+  NodeCreatedResponse,
+  NodeDeleteResponse,
+  ResetAppState
+])
 
 export type ServerMessage = t.TypeOf<typeof TServerMessage>
 
-export const wrapServerMessage =
-  (payloadCodec: t.Any) =>
-  (payload: any): ServerMessage => {
+export const sendAsServerMessage =
+  (payloadCodec: t.Any, send: Send) =>
+  (payload: any): void => {
     const types = TServerMessage.types
     const message = types.find(t => propOr(null, 'payload', t.props) === payloadCodec)!
-    return decode<ServerMessage>(message as t.Any)({
+    const validMessage = decode<ServerMessage>(message as t.Any)({
       type: message.props.type.name.replace(/"/g, ''),
       payload: convertUnderscoreIds(payload)
     })
+    send(validMessage.type, validMessage.payload)
   }

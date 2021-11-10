@@ -4,9 +4,8 @@ import { TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
 import { TUiDocument } from '~shared/types/domain/document'
 import { Maybe } from '~shared/types/generic'
-import { wrapServerMessage } from '~shared/types/serverMessages'
+import { Send, sendAsServerMessage } from '~shared/types/serverMessages'
 
-import { Send } from '../server'
 import { Node, TNode } from '../types/tree'
 import { collection } from './database'
 import { getLastDocument, toTreeNode } from './document'
@@ -22,8 +21,7 @@ const withNode =
       const docTree = decode(TNode)(tree.extract())
       return collection('documents')
         .updateOne({ _id: doc._id }, { $set: { tree: docTree } })
-        .then(() => getLastDocument(userId).then(wrapServerMessage(TUiDocument)))
-        .then(send)
+        .then(() => getLastDocument(userId).then(sendAsServerMessage(TUiDocument, send)))
         .then(always(res))
     })
 
@@ -41,10 +39,7 @@ serverState.on(eventMap.NEW_NODE, (state, { send, userId, message: newNode }) =>
     parent.children.splice(parent.children.length,0, TreeNode.of<Node>(node))
     return node
   })
-  .then(node => send({
-    type: 'NODE_CREATED',
-    payload: node._id.toHexString()
-  })))
+  .then(node => send('NODE_CREATED', node._id.toHexString())))
 
 serverState.on(
   eventMap.DEL_NODE,
@@ -56,8 +51,13 @@ serverState.on(
     )(node => {
       const parent = node?.parent
       if (parent != null) {
-        const index = findIndex(pathEq(['value', '_id'], node!.value._id), parent.children)
-        parent.children.splice(index, 1)
+        const position = findIndex(pathEq(['value', '_id'], node!.value._id), parent.children)
+        parent.children.splice(position, 1)
+        return { parent, position }
+      } else {
+        throw Error('no parent found in tree')
       }
-    })
+    }).then(({ parent, position }) =>
+      send('NODE_DELETED', { parentNode: parent.value._id.toHexString(), position })
+    )
 )

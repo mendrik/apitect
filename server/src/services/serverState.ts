@@ -2,8 +2,8 @@ import { createEffect, createEvent, createStore, Event } from 'effector'
 import { MongoClient, ObjectId } from 'mongodb'
 import { ClientMessage } from '~shared/types/clientMessages'
 import { Maybe } from '~shared/types/generic'
+import { Send } from '~shared/types/serverMessages'
 
-import { Send } from '../server'
 import { connect } from './database'
 
 export type Payload<K extends ClientMessage['type']> = {
