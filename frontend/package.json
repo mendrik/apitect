@@ -21,6 +21,7 @@
     "date-fns": "2.25.0",
     "dotenv": "10.0.0",
     "effector": "22.1.2",
+    "effector-logger": "^0.13.1",
     "effector-react": "22.0.4",
     "fantasy-land": "5.0.0",
     "fp-ts": "2.11.5",

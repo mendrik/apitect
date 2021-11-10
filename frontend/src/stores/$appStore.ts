@@ -1,4 +1,4 @@
-import { createStore } from 'effector'
+import { createStore } from 'effector-logger'
 import { omit, propEq } from 'ramda'
 import { UiDocument } from 'shared/types/domain/document'
 
@@ -76,8 +76,11 @@ $appStore.on(selectNode, (state, selectedNode) => {
     .first(propEq<any>('id', selectedNode?.id))
     ?.pathToRoot()
     .reduce((p, c) => ({ ...p, [c.id]: true }), {})
-  console.log('selecting', selectedNode)
-  return { ...state, selectedNode, openNodes: { ...state.openNodes, ...openNodes } }
+  return {
+    ...state,
+    selectedNode: selectedNode ? { ...selectedNode } : undefined,
+    openNodes: { ...state.openNodes, ...openNodes }
+  }
 })
 $appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
 $appStore.on(openNodeState, (state, [node, open]) => ({

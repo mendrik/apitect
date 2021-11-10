@@ -52,7 +52,6 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           id={node.id}
           key={node.id}
           className={clsx('gap-1', { selectedNode: selectedNode?.id === node.id })}
-          onFocus={() => selectNode(node)}
         >
           {hasChildren ? (
             <Icon
@@ -64,7 +63,11 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           ) : (
             <div />
           )}
-          <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.name}>
+          <div
+            className={clsx('text-truncate', { thin: !hasChildren })}
+            title={node.name}
+            onClick={() => selectNode(node)}
+          >
             {node.name}
           </div>
         </NodeGrid>

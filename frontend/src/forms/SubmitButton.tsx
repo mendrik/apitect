@@ -21,7 +21,7 @@ export const SubmitButton: FC<OwnProps> = ({ localeKey, spinnerDelay = 0.4 }) =>
       type="submit"
       disabled={isWorking(promise)}
       variant="primary"
-      className="d-flex flex-row ps-2"
+      className="d-flex flex-row ps-2 justify-content-center"
     >
       <Spinner spinnerDelay={spinnerDelay} promise={promise} />
       <span className="ms-1">{t(localeKey)}</span>
