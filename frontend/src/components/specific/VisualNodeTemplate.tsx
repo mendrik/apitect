@@ -6,14 +6,13 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 
 import { closeNode, openNode, selectNode } from '../../events/tree'
-import { TreeNode } from '../../shared/algebraic/treeNode'
 import { UiNode } from '../../shared/types/domain/tree'
 import $appStore from '../../stores/$appStore'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
 type OwnProps = {
-  node: TreeNode<UiNode>
+  node: UiNode
   depth?: number
 }
 
@@ -43,32 +42,30 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
   const { openNodes } = useStore($appStore)
   const hasChildren = isNotNilOrEmpty(node.children)
   const { selectedNode } = useStore($appStore)
-  const open = openNodes[node.value.id]
+  const open = openNodes[node.id]
 
   return (
     <>
       {depth > 0 && (
         <NodeGrid
           tabIndex={0}
-          id={node.value.id}
-          key={node.value.id}
-          className={clsx('gap-1', { selectedNode: selectedNode?.id === node.value.id })}
-          onFocus={() => selectNode(node.value)}
+          id={node.id}
+          key={node.id}
+          className={clsx('gap-1', { selectedNode: selectedNode?.id === node.id })}
+          onFocus={() => selectNode(node)}
         >
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() =>
-                openNodes[node.value.id] ? closeNode(node.value) : openNode(node.value)
-              }
+              onClick={() => (openNodes[node.id] ? closeNode(node) : openNode(node))}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
           ) : (
             <div />
           )}
-          <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.value.name}>
-            {node.value.name}
+          <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.name}>
+            {node.name}
           </div>
         </NodeGrid>
       )}
