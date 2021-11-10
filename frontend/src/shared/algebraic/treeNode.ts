@@ -1,5 +1,17 @@
 import * as fl from 'fantasy-land'
-import { concat, defaultTo, equals, map, omit, pipe, prop, propOr, reduce, unless } from 'ramda'
+import {
+  concat,
+  defaultTo,
+  equals,
+  map,
+  omit,
+  pipe,
+  prop,
+  propOr,
+  reduce,
+  unless,
+  without
+} from 'ramda'
 import { isArray, isFunction } from 'ramda-adjunct'
 
 import { Maybe } from '../types/generic'
