@@ -11,12 +11,16 @@ import { Scale, Tuple } from '../generic/Tuple'
 import { WithTooltip } from '../generic/WithTooltip'
 
 export const ProjectTreeHeader: FC = () => {
-  const { selectedNode } = useStore($appStore)
+  const { selectedNode, sendMessage } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate editable">Project tree</div>
       <HGrid>
-        <Icon icon={IconTrash} disabled={selectedNode == null} />
+        <Icon
+          icon={IconTrash}
+          onClick={() => sendMessage({ type: 'DEL_NODE', id: selectedNode!.id })}
+          disabled={selectedNode == null}
+        />
         <Icon icon={IconFolderOff} onClick={() => deselectNode()} disabled={selectedNode == null} />
         <WithTooltip tooltipText="Create a new node">
           <Icon icon={IconFolderPlus} onClick={() => openModal('new-node')} />

@@ -5,9 +5,9 @@ import { ClientMessage } from '../shared/types/clientMessages'
 import $appStore from '../stores/$appStore'
 
 export const useRequest = (message: ClientMessage) => {
-  const { sendJsonMessage } = useStore($appStore)
+  const { sendMessage } = useStore($appStore)
 
   useEffect(() => {
-    sendJsonMessage(message)
+    sendMessage(message)
   }, [])
 }

@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { propEq } from 'ramda'
+import { findIndex, pathEq, propEq } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
 import { TUiDocument } from '~shared/types/domain/document'
@@ -40,3 +40,23 @@ serverState.on(eventMap.NEW_NODE, (state, { send, userId, message: newNode }) =>
       }))
   })
 })
+
+serverState.on(
+  eventMap.DEL_NODE,
+  (state, { send, userId, message }) =>
+    void getLastDocument(userId).then(doc => {
+      const tree = toTreeNode(doc.tree)
+      const nodeId = new ObjectId(message.id)
+      const node = tree.first(propEq('_id', nodeId))
+      const parent = node?.parent
+      if (parent != null) {
+        const index = findIndex(pathEq(['value', '_id'], nodeId), parent.children)
+        parent.children.splice(index, 1)
+        const docTree = decode(TNode)(tree.extract())
+        collection('documents')
+          .updateOne({ _id: doc._id }, { $set: { tree: docTree } })
+          .then(() => getLastDocument(userId).then(wrapServerMessage(TUiDocument)))
+          .then(send)
+      }
+    })
+)

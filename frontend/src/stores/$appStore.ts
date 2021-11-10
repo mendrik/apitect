@@ -1,17 +1,17 @@
 import { createStore } from 'effector'
 import { omit } from 'ramda'
-import { SendJsonMessage } from 'react-use-websocket/dist/lib/types'
 import { UiDocument } from 'shared/types/domain/document'
 
 import { messageReceived, socketEstablished } from '../events/messages'
 import { deselectNode, openNode, selectNode } from '../events/tree'
+import { ClientMessage } from '../shared/types/clientMessages'
 import { UiNode } from '../shared/types/domain/tree'
 
 type AppState = {
   document: Omit<UiDocument, 'tree'>
   tree: UiNode
   selectedNode?: UiNode
-  sendJsonMessage: SendJsonMessage
+  sendMessage: <T extends ClientMessage>(message: T) => void
   openNodes: Record<string, boolean>
 }
 
@@ -43,7 +43,10 @@ $appStore.on(messageReceived, (state, message) => {
 
 $appStore.on(selectNode, (state, selectedNode) => ({ ...state, selectedNode }))
 $appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
-$appStore.on(socketEstablished, (state, sendJsonMessage) => ({ ...state, sendJsonMessage }))
+$appStore.on(socketEstablished, (state, sendJsonMessage) => ({
+  ...state,
+  sendMessage: sendJsonMessage
+}))
 $appStore.on(openNode, (state, [id, open]) => ({
   ...state,
   openNodes: { ...state.openNodes, [id]: open }

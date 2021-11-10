@@ -21,13 +21,13 @@ export const SocketForm = <T extends ClientMessage['type']>({
   children,
   onSuccess
 }: PropsWithChildren<OwnProps<T>>): ReactElement | null => {
-  const { sendJsonMessage } = useStore($appStore)
+  const { sendMessage } = useStore($appStore)
 
   return (
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(data => {
-          sendJsonMessage({ type: submitMessage, ...data })
+          sendMessage(decode(TClientMessage)({ type: submitMessage, ...data }))
           void onSuccess?.(data)
         })}
         noValidate
