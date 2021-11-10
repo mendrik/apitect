@@ -1,18 +1,16 @@
 import { useStore } from 'effector-react'
-import { either, pipe, prop, propEq, when } from 'ramda'
+import { cond, pipe, prop, propEq } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
-import React, { FC, useRef } from 'react'
+import React, { FC, useCallback } from 'react'
 
 import { openModal } from '../../events/modals'
 import { closeNode, deleteNode, openNode, selectNode } from '../../events/tree'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
-import { useEvent } from '../../hooks/useEvent'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { UiNode } from '../../shared/types/domain/tree'
-import { Fn, Maybe } from '../../shared/types/generic'
+import { Maybe } from '../../shared/types/generic'
 import { next, prev } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
-import { preventDefault } from '../../utils/preventDefault'
 import { VisualNodeTemplate } from './VisualNodeTemplate'
 
 const visibleNodes = (root: UiNode, openNodes: Record<string, boolean>) =>
@@ -29,7 +27,6 @@ const visibleNodes = (root: UiNode, openNodes: Record<string, boolean>) =>
 
 export const VisualTree: FC = ({ children }) => {
   const { tree, openNodes, selectedNode } = useStore($appStore)
-  const treeRef = useRef<HTMLDivElement>(null)
   const visualNodes = () => visibleNodes(tree, openNodes)
 
   useDefinedEffect(
@@ -37,25 +34,24 @@ export const VisualTree: FC = ({ children }) => {
     selectedNode
   )
 
-  const nextFocusNode = (): Maybe<UiNode> => next(propEq('id', selectedNode?.id))(visualNodes())
-  const prevFocusNode = (): Maybe<UiNode> => prev(propEq('id', selectedNode?.id))(visualNodes())
-  const keyHandler = (key: string, fn: Fn) =>
-    useEvent(
-      'keydown',
-      when(either(propEq<any>('code', key), propEq<any>('key', key)), preventDefault(fn)),
-      treeRef
-    )
+  const nextNode = (): Maybe<UiNode> => next(propEq('id', selectedNode?.id))(visualNodes())
+  const prevNode = (): Maybe<UiNode> => prev(propEq('id', selectedNode?.id))(visualNodes())
 
-  keyHandler('Space', () => selectNode())
-  keyHandler('n', () => openModal('new-node'))
-  keyHandler('Delete', () => deleteNode(selectedNode))
-  keyHandler('ArrowDown', pipe(nextFocusNode, selectNode))
-  keyHandler('ArrowUp', pipe(prevFocusNode, selectNode))
-  keyHandler('ArrowRight', () => openNode(selectedNode))
-  keyHandler('ArrowLeft', () => closeNode(selectedNode))
+  const keyMap = useCallback(
+    cond([
+      [propEq('key', 'ArrowDown'), pipe(nextNode, selectNode)],
+      [propEq('key', 'ArrowUp'), pipe(prevNode, selectNode)],
+      [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
+      [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
+      [propEq('key', 'Delete'), () => deleteNode(selectedNode)],
+      [propEq('key', 'Space'), () => selectNode()],
+      [propEq('key', 'n'), () => openModal('new-node')]
+    ]),
+    [selectedNode]
+  )
 
   return (
-    <div ref={treeRef}>
+    <div onKeyDown={keyMap}>
       <VisualNodeTemplate node={tree}>{children}</VisualNodeTemplate>
     </div>
   )

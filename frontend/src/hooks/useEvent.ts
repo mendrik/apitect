@@ -1,21 +1,15 @@
-import { MutableRefObject, useCallback, useEffect } from 'react'
+import { MutableRefObject, useEffect } from 'react'
 
-export const useEvent = <U extends Event>(
+export const useEvent = (
   event: string,
-  handler: (ev: U) => void,
+  handler: EventListener,
   ref: MutableRefObject<EventTarget | null>,
   options?: boolean | AddEventListenerOptions
 ): void => {
-  const eventListener = useCallback((ev: U) => handler(ev), [handler])
-
   useEffect(() => {
     const element = ref.current
-    if (element != null) {
-      element.addEventListener(event, eventListener as EventListener, options)
-      return () =>
-        element != null
-          ? element.removeEventListener(event, eventListener as EventListener, options)
-          : void 0
-    }
-  }, [ref, handler, event, options])
+    console.log(`Registering event ${event}`)
+    element?.addEventListener(event, handler, options)
+    return () => element?.removeEventListener(event, handler, options)
+  }, [ref, event, handler, options])
 }

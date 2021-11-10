@@ -38,11 +38,20 @@ $appStore.on(messageReceived, (state, message) => {
       }
     case 'RESET':
       return initial
-    case 'NODE_CREATED':
+    case 'NODE_CREATED': {
       const uiRoot = uiTree(state.tree)
       const node = uiRoot.first(propEq('id', message.payload))
       selectNode(node?.value)
       return state
+    }
+    case 'NODE_DELETED': {
+      const uiRoot = uiTree(state.tree)
+      const parent = uiRoot.first(propEq('id', message.payload.parentNode))?.children[
+        message.payload.position - 1
+      ]
+      selectNode(parent?.value)
+      return state
+    }
     default:
       return state
   }
@@ -62,6 +71,7 @@ $appStore.on(selectNode, (state, selectedNode) => {
     .first(propEq<any>('id', selectedNode?.id))
     ?.pathToRoot()
     .reduce((p, c) => ({ ...p, [c.id]: true }), {})
+  console.log('selecting', selectedNode)
   return { ...state, selectedNode, openNodes: { ...state.openNodes, ...openNodes } }
 })
 $appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
