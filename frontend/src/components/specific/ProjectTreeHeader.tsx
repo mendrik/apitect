@@ -16,16 +16,26 @@ export const ProjectTreeHeader: FC = () => {
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate editable">Project tree</div>
       <HGrid>
-        <Icon
-          icon={IconTrash}
-          onClick={() => deleteNode(selectedNode!)}
-          disabled={selectedNode == null}
-        />
-        <Icon icon={IconFolderOff} onClick={() => deselectNode()} disabled={selectedNode == null} />
+        <WithTooltip tooltipText="Delete selected node">
+          <Icon
+            icon={IconTrash}
+            onClick={() => deleteNode(selectedNode!)}
+            disabled={selectedNode == null}
+          />
+        </WithTooltip>
+        <WithTooltip tooltipText="Deselect current node">
+          <Icon
+            icon={IconFolderOff}
+            onClick={() => deselectNode()}
+            disabled={selectedNode == null}
+          />
+        </WithTooltip>
         <WithTooltip tooltipText="Create a new node">
           <Icon icon={IconFolderPlus} onClick={() => openModal('new-node')} />
         </WithTooltip>
-        <Icon icon={IconEdit} disabled={selectedNode == null} />
+        <WithTooltip tooltipText="Edit">
+          <Icon icon={IconEdit} disabled={selectedNode == null} />
+        </WithTooltip>
       </HGrid>
     </Tuple>
   )

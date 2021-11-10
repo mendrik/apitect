@@ -7,8 +7,15 @@ type OwnProps = {
 
 export const WithTooltip: FC<OwnProps> = ({ tooltipText, children }) => {
   return (
-    <OverlayTrigger placement="auto-start" overlay={<Tooltip>{tooltipText}</Tooltip>} delay={0}>
-      {() => children}
+    <OverlayTrigger
+      placement="top"
+      overlay={
+        <Tooltip>
+          <div className="tc-text">{tooltipText}</div>
+        </Tooltip>
+      }
+    >
+      <div>{children}</div>
     </OverlayTrigger>
   )
 }

@@ -1,0 +1,30 @@
+$color: #505f6e;
+
+.tooltip {
+
+  &.show {
+    opacity: 1;
+  }
+
+  .tooltip-inner {
+    font-weight: lighter;
+    font-size: 0.6rem;
+    padding: 2px 5px;
+    background-color: $color;
+    color: white;
+  }
+
+  &[data-popper-placement^="bottom"] .tooltip-arrow::before {
+    border-bottom-color: $color;
+  }
+
+  &[data-popper-placement^="top"] .tooltip-arrow::before {
+    border-top-color: $color;
+  }
+  &[data-popper-placement^="left"] .tooltip-arrow::before {
+    border-left-color: $color;
+  }
+  &[data-popper-placement^="right"] .tooltip-arrow::before {
+    border-right-color: $color;
+  }
+}
