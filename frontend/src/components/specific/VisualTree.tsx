@@ -3,7 +3,7 @@ import { find, pipe, prop, propEq, when } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
 import React, { FC, useMemo, useRef, useState } from 'react'
 
-import { openNode } from '../../events/tree'
+import { deleteNode, openNode } from '../../events/tree'
 import { useEvent } from '../../hooks/useEvent'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { UiNode } from '../../shared/types/domain/tree'
@@ -11,6 +11,7 @@ import { Fn, Maybe } from '../../shared/types/generic'
 import { next, prev } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
 import { domElementById, focus } from '../../utils/focus'
+import { preventDefault } from '../../utils/preventDefault'
 import { VisualNodeTemplate } from './VisualNodeTemplate'
 
 const visibleNodes = (root: TreeNode<UiNode>, openNodes: Record<string, boolean>) =>
@@ -26,7 +27,7 @@ const visibleNodes = (root: TreeNode<UiNode>, openNodes: Record<string, boolean>
     .slice(1)
 
 export const VisualTree: FC = ({ children }) => {
-  const { tree, openNodes } = useStore($appStore)
+  const { tree, openNodes, selectedNode } = useStore($appStore)
   const [, forceRender] = useState(false)
   const treeRef = useRef<HTMLDivElement>(null)
   const visualTree: TreeNode<UiNode> = useMemo(
@@ -54,9 +55,10 @@ export const VisualTree: FC = ({ children }) => {
   const prevFocusNode = (): Maybe<UiNode> => prev(propEq('id', activeId()))(visualNodes())
   const curFocusNode = (): Maybe<UiNode> => find(propEq('id', activeId()), visualNodes())
   const keyHandler = (key: string, fn: Fn) =>
-    useEvent('keydown', when(propEq<any>('key', key), fn), treeRef)
+    useEvent('keydown', when(propEq<any>('key', key), preventDefault(fn)), treeRef)
 
   {
+    keyHandler('Delete', () => (selectedNode ? deleteNode(selectedNode) : void 0))
     keyHandler('ArrowDown', pipe(nextFocusNode, domElementById, focus))
     keyHandler('ArrowUp', pipe(prevFocusNode, domElementById, focus))
     keyHandler(

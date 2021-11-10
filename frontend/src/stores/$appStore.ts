@@ -3,7 +3,7 @@ import { omit } from 'ramda'
 import { UiDocument } from 'shared/types/domain/document'
 
 import { messageReceived, socketEstablished } from '../events/messages'
-import { deselectNode, openNode, selectNode } from '../events/tree'
+import { deleteNode, deselectNode, openNode, selectNode } from '../events/tree'
 import { ClientMessage } from '../shared/types/clientMessages'
 import { UiNode } from '../shared/types/domain/tree'
 
@@ -41,6 +41,13 @@ $appStore.on(messageReceived, (state, message) => {
   }
 })
 
+const send =
+  <T>(fn: (payload: T) => ClientMessage) =>
+  (state: AppState, payload: T) => {
+    state.sendMessage(fn(payload))
+    return state
+  }
+
 $appStore.on(selectNode, (state, selectedNode) => ({ ...state, selectedNode }))
 $appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
 $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
@@ -51,5 +58,9 @@ $appStore.on(openNode, (state, [id, open]) => ({
   ...state,
   openNodes: { ...state.openNodes, [id]: open }
 }))
+$appStore.on(
+  deleteNode,
+  send(node => ({ type: 'DEL_NODE', id: node.id }))
+)
 
 export default $appStore
