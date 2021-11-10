@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { closeNode, openNode, selectNode } from '../../events/tree'
 import { UiNode } from '../../shared/types/domain/tree'
 import $appStore from '../../stores/$appStore'
+import { preventDefault } from '../../utils/preventDefault'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
@@ -52,6 +53,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           id={node.id}
           key={node.id}
           className={clsx('gap-1', { selectedNode: selectedNode?.id === node.id })}
+          onClick={preventDefault(() => selectNode(node))}
         >
           {hasChildren ? (
             <Icon
@@ -63,11 +65,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           ) : (
             <div />
           )}
-          <div
-            className={clsx('text-truncate', { thin: !hasChildren })}
-            title={node.name}
-            onClick={() => selectNode(node)}
-          >
+          <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.name}>
             {node.name}
           </div>
         </NodeGrid>

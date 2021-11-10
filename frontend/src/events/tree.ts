@@ -1,4 +1,4 @@
-import { createEvent } from 'effector-logger'
+import { createEvent } from 'effector'
 
 import { UiNode } from '../shared/types/domain/tree'
 import { Maybe } from '../shared/types/generic'

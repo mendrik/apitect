@@ -1,4 +1,4 @@
-import { createStore } from 'effector-logger'
+import { createStore } from 'effector'
 import { omit, propEq } from 'ramda'
 import { UiDocument } from 'shared/types/domain/document'
 
@@ -27,6 +27,24 @@ const $appStore = createStore<AppState>(initial)
 
 const uiTree = (root: UiNode) => TreeNode.from<UiNode, 'children'>('children')(root)
 
+messageReceived.watch(payload => {
+  console.log(`Message: ${payload.type}`, payload)
+})
+
+const selectedNodeState = (state: AppState, selectedNode: Maybe<UiNode>) =>
+  selectedNode
+    ? {
+        selectedNode,
+        openNodes: {
+          ...state.openNodes,
+          ...uiTree(state.tree)
+            .first(propEq<any>('id', selectedNode.id))
+            ?.pathToRoot()
+            .reduce((p, c) => ({ ...p, [c.id]: true }), {})
+        }
+      }
+    : state
+
 $appStore.on(messageReceived, (state, message) => {
   switch (message.type) {
     case 'DOCUMENT':
@@ -41,16 +59,13 @@ $appStore.on(messageReceived, (state, message) => {
     case 'NODE_CREATED': {
       const uiRoot = uiTree(state.tree)
       const node = uiRoot.first(propEq('id', message.payload))
-      selectNode(node?.value)
-      return state
+      return { ...state, ...selectedNodeState(state, node?.value) }
     }
     case 'NODE_DELETED': {
       const uiRoot = uiTree(state.tree)
-      const parent = uiRoot.first(propEq('id', message.payload.parentNode))?.children[
-        message.payload.position - 1
-      ]
-      selectNode(parent?.value)
-      return state
+      const parent = uiRoot.first(propEq('id', message.payload.parentNode))
+      const node = parent?.children[message.payload.position - 1] ?? parent
+      return { ...state, ...selectedNodeState(state, node?.value) }
     }
     default:
       return state
@@ -71,17 +86,10 @@ const send =
     return state
   }
 
-$appStore.on(selectNode, (state, selectedNode) => {
-  const openNodes = uiTree(state.tree)
-    .first(propEq<any>('id', selectedNode?.id))
-    ?.pathToRoot()
-    .reduce((p, c) => ({ ...p, [c.id]: true }), {})
-  return {
-    ...state,
-    selectedNode: selectedNode ? { ...selectedNode } : undefined,
-    openNodes: { ...state.openNodes, ...openNodes }
-  }
-})
+$appStore.on(selectNode, (state, selectedNode) => ({
+  ...state,
+  ...selectedNodeState(state, selectedNode!)
+}))
 $appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
 $appStore.on(openNodeState, (state, [node, open]) => ({
   ...state,
