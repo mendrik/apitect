@@ -1,8 +1,9 @@
 import { useStore } from 'effector-react'
-import { pipe, prop, propEq, when } from 'ramda'
+import { either, pipe, prop, propEq, when } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
 import React, { FC, useRef } from 'react'
 
+import { openModal } from '../../events/modals'
 import { closeNode, deleteNode, openNode, selectNode } from '../../events/tree'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { useEvent } from '../../hooks/useEvent'
@@ -39,8 +40,14 @@ export const VisualTree: FC = ({ children }) => {
   const nextFocusNode = (): Maybe<UiNode> => next(propEq('id', selectedNode?.id))(visualNodes())
   const prevFocusNode = (): Maybe<UiNode> => prev(propEq('id', selectedNode?.id))(visualNodes())
   const keyHandler = (key: string, fn: Fn) =>
-    useEvent('keydown', when(propEq<any>('key', key), preventDefault(fn)), treeRef)
+    useEvent(
+      'keydown',
+      when(either(propEq<any>('code', key), propEq<any>('key', key)), preventDefault(fn)),
+      treeRef
+    )
 
+  keyHandler('Space', () => selectNode())
+  keyHandler('n', () => openModal('new-node'))
   keyHandler('Delete', () => deleteNode(selectedNode))
   keyHandler('ArrowDown', pipe(nextFocusNode, selectNode))
   keyHandler('ArrowUp', pipe(prevFocusNode, selectNode))

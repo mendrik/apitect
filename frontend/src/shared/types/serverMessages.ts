@@ -1,11 +1,9 @@
 import * as t from 'io-ts'
 import { propOr } from 'ramda'
 
-import { idCodec } from '../../../../server/src/utils/idCodec'
 import { decode } from '../codecs/decode'
 import { convertUnderscoreIds } from '../utils/rename'
 import { TUiDocument } from './domain/document'
-import { TUiNode } from './domain/tree'
 
 const ResetAppState = t.type({
   type: t.literal('RESET')
@@ -18,7 +16,7 @@ export const DocumentResponse = t.type({
 
 const NodeCreatedResponse = t.type({
   type: t.literal('NODE_CREATED'),
-  payload: TUiNode
+  payload: t.string
 })
 
 export const TServerMessage = t.union([DocumentResponse, NodeCreatedResponse, ResetAppState])

@@ -2,13 +2,12 @@ import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { map, pipe, toLower, values, when } from 'ramda'
-import React, { useContext } from 'react'
+import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { userContext } from '../../contexts/user'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { SocketForm } from '../../forms/SocketForm'
 import { SubmitButton } from '../../forms/SubmitButton'
@@ -59,7 +58,7 @@ const NewNode: ModalFC = ({ close }) => {
     defaultValues: {
       parentNode: selectedNode?.id,
       nodeType: NodeType.Object,
-      name: 'New node'
+      name: ''
     }
   })
 
@@ -69,6 +68,7 @@ const NewNode: ModalFC = ({ close }) => {
         name="name"
         label="form.fields.nodeName"
         type="text"
+        autoFocus
         options={{ required: true }}
       />
       <Controller

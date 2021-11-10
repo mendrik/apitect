@@ -3,10 +3,8 @@ import { always, findIndex, pathEq, propEq } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
 import { TUiDocument } from '~shared/types/domain/document'
-import { TUiNode } from '~shared/types/domain/tree'
 import { Maybe } from '~shared/types/generic'
 import { wrapServerMessage } from '~shared/types/serverMessages'
-import { convertUnderscoreIds } from '~shared/utils/rename'
 
 import { Send } from '../server'
 import { Node, TNode } from '../types/tree'
@@ -45,7 +43,7 @@ serverState.on(eventMap.NEW_NODE, (state, { send, userId, message: newNode }) =>
   })
   .then(node => send({
     type: 'NODE_CREATED',
-    payload: decode(TUiNode)(convertUnderscoreIds(node))
+    payload: node._id.toHexString()
   })))
 
 serverState.on(
