@@ -12,6 +12,22 @@ $color: #505f6e;
     padding: 2px 5px;
     background-color: $color;
     color: white;
+
+  }
+
+  &:after {
+    content: attr(data-shortcut);
+    position: absolute;
+    left: calc(100% + 5px);
+    top: 7px;
+    background-color: #e2e8ee;
+    border: .5px solid black;
+    line-height: 0.6rem;
+    padding: 3px 4px;
+    color: black;
+    font-size: 0.6rem;
+    box-shadow: 1px 1px 1px 0 #fff inset, -1px -1px 1px 0 #bbb inset, 1px 1px 3px rgba(60,60,60,.2);
+    border-radius: 3px;
   }
 
   &[data-popper-placement^="bottom"] .tooltip-arrow::before {

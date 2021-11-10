@@ -1,19 +1,16 @@
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 type OwnProps = {
-  tooltipText: string
+  tooltipText: ReactNode
+  shortcut?: string
 }
 
-export const WithTooltip: FC<OwnProps> = ({ tooltipText, children }) => {
+export const WithTooltip: FC<OwnProps> = ({ tooltipText, shortcut, children }) => {
   return (
     <OverlayTrigger
       placement="top"
-      overlay={
-        <Tooltip>
-          <div className="tc-text">{tooltipText}</div>
-        </Tooltip>
-      }
+      overlay={<Tooltip data-shortcut={shortcut}>{tooltipText}</Tooltip>}
     >
       <div>{children}</div>
     </OverlayTrigger>
