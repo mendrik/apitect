@@ -57,6 +57,11 @@ $appStore.on(messageReceived, (state, message) => {
   }
 })
 
+$appStore.on(socketEstablished, (state, sendJsonMessage) => ({
+  ...state,
+  sendMessage: sendJsonMessage
+}))
+
 const send =
   <T>(fn: (payload: NonNullable<T>) => ClientMessage) =>
   (state: AppState, payload: T) => {
@@ -75,10 +80,6 @@ $appStore.on(selectNode, (state, selectedNode) => {
   return { ...state, selectedNode, openNodes: { ...state.openNodes, ...openNodes } }
 })
 $appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
-$appStore.on(socketEstablished, (state, sendJsonMessage) => ({
-  ...state,
-  sendMessage: sendJsonMessage
-}))
 $appStore.on(openNodeState, (state, [node, open]) => ({
   ...state,
   openNodes: { ...state.openNodes, [node.id]: open }
