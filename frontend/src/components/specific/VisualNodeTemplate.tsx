@@ -53,7 +53,7 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           id={node.id}
           key={node.id}
           className={clsx('gap-1', { selectedNode: selectedNode?.id === node.id })}
-          onClick={preventDefault(() => selectNode(node))}
+          onClick={() => selectNode(node)}
         >
           {hasChildren ? (
             <Icon
