@@ -5,7 +5,7 @@ import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
 import { decode } from '~shared/codecs/decode'
 import { ClientMessage, TClientMessage } from '~shared/types/clientMessages'
-import { ServerMessage } from '~shared/types/serverMessages'
+import { Send } from '~shared/types/serverMessages'
 import { logger } from '~shared/utils/logger'
 
 import { idCodec } from '../utils/idCodec'
@@ -13,10 +13,8 @@ import { config } from './config'
 import { eventMap, Payload } from './serverState'
 
 const openWebsocket = (connection: SocketStream) => {
-  const send = <T extends ServerMessage['type']>(
-    type: T,
-    payload: Extract<ServerMessage, { type: T }>['payload']
-  ) => connection.socket.send(JSON.stringify({ type, payload }))
+  const send = <T, P>(type: T, payload: P) =>
+    connection.socket.send(JSON.stringify({ type, payload }))
   try {
     const { id: userId } = decode(t.type({ id: idCodec }))(
       verify(connection.socket.protocol, `${config.TOKEN_KEY}`)
@@ -27,7 +25,7 @@ const openWebsocket = (connection: SocketStream) => {
         const message: ClientMessage = decode(TClientMessage)(data)
         const event = eventMap[message.type] as Event<Payload<typeof message.type>>
         logger.info(`User[${userId}]/${message.type}:`, message)
-        event({ message, send, userId })
+        event({ message, send: send as Send, userId })
       } catch (e) {
         logger.error('Error in socket', e)
       }
