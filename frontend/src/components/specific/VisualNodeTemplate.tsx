@@ -5,7 +5,7 @@ import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
-import { openNode, selectNode } from '../../events/tree'
+import { closeNode, openNode, selectNode } from '../../events/tree'
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { UiNode } from '../../shared/types/domain/tree'
 import $appStore from '../../stores/$appStore'
@@ -58,7 +58,9 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() => openNode([node.value.id, !open])}
+              onClick={() =>
+                openNodes[node.value.id] ? closeNode(node.value) : openNode(node.value)
+              }
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />

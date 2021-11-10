@@ -3,14 +3,15 @@ import { omit } from 'ramda'
 import { UiDocument } from 'shared/types/domain/document'
 
 import { messageReceived, socketEstablished } from '../events/messages'
-import { deleteNode, deselectNode, openNode, selectNode } from '../events/tree'
+import { deleteNode, deselectNode, openNodeState, selectNode } from '../events/tree'
 import { ClientMessage } from '../shared/types/clientMessages'
 import { UiNode } from '../shared/types/domain/tree'
+import { Maybe } from '../shared/types/generic'
 
 type AppState = {
   document: Omit<UiDocument, 'tree'>
   tree: UiNode
-  selectedNode?: UiNode
+  selectedNode: Maybe<UiNode>
   sendMessage: <T extends ClientMessage>(message: T) => void
   openNodes: Record<string, boolean>
 }
@@ -42,9 +43,11 @@ $appStore.on(messageReceived, (state, message) => {
 })
 
 const send =
-  <T>(fn: (payload: T) => ClientMessage) =>
+  <T>(fn: (payload: NonNullable<T>) => ClientMessage) =>
   (state: AppState, payload: T) => {
-    state.sendMessage(fn(payload))
+    if (payload != null) {
+      state.sendMessage(fn(payload!))
+    }
     return state
   }
 
@@ -54,9 +57,9 @@ $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
   ...state,
   sendMessage: sendJsonMessage
 }))
-$appStore.on(openNode, (state, [id, open]) => ({
+$appStore.on(openNodeState, (state, [node, open]) => ({
   ...state,
-  openNodes: { ...state.openNodes, [id]: open }
+  openNodes: { ...state.openNodes, [node.id]: open }
 }))
 $appStore.on(
   deleteNode,
