@@ -3,11 +3,12 @@ import { omit, propEq } from 'ramda'
 import { UiDocument } from 'shared/types/domain/document'
 
 import { messageReceived, socketEstablished } from '../events/messages'
-import { deleteNode, deselectNode, openNodeState, selectNode } from '../events/tree'
+import { deleteNode, openNodeState, selectNode } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { ClientMessage } from '../shared/types/clientMessages'
 import { UiNode } from '../shared/types/domain/tree'
 import { Maybe } from '../shared/types/generic'
+import { logger } from '../shared/utils/logger'
 
 type AppState = {
   document: Omit<UiDocument, 'tree'>
@@ -28,7 +29,7 @@ const $appStore = createStore<AppState>(initial)
 const uiTree = (root: UiNode) => TreeNode.from<UiNode, 'children'>('children')(root)
 
 messageReceived.watch(payload => {
-  console.log(`Message: ${payload.type}`, payload)
+  logger.debug(`Message: ${payload.type}`, payload)
 })
 
 const selectedNodeState = (state: AppState, selectedNode: Maybe<UiNode>) =>
@@ -43,7 +44,7 @@ const selectedNodeState = (state: AppState, selectedNode: Maybe<UiNode>) =>
             .reduce((p, c) => ({ ...p, [c.id]: true }), {})
         }
       }
-    : state
+    : { ...state, selectedNode: undefined }
 
 $appStore.on(messageReceived, (state, message) => {
   switch (message.type) {
@@ -90,7 +91,6 @@ $appStore.on(selectNode, (state, selectedNode) => ({
   ...state,
   ...selectedNodeState(state, selectedNode!)
 }))
-$appStore.on(deselectNode, state => ({ ...state, selectedNode: undefined }))
 $appStore.on(openNodeState, (state, [node, open]) => ({
   ...state,
   openNodes: { ...state.openNodes, [node.id]: open }

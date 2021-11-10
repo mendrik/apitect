@@ -1,9 +1,9 @@
-import { IconEdit, IconFolderOff, IconFolderPlus, IconTrash } from '@tabler/icons'
+import { IconEdit, IconFolderPlus, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React, { FC } from 'react'
 
 import { openModal } from '../../events/modals'
-import { deleteNode, deselectNode } from '../../events/tree'
+import { deleteNode } from '../../events/tree'
 import $appStore from '../../stores/$appStore'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
@@ -20,13 +20,6 @@ export const ProjectTreeHeader: FC = () => {
           <Icon
             icon={IconTrash}
             onClick={() => deleteNode(selectedNode!)}
-            disabled={selectedNode == null}
-          />
-        </WithTooltip>
-        <WithTooltip tooltipText="Deselect current node" shortcut="Space">
-          <Icon
-            icon={IconFolderOff}
-            onClick={() => deselectNode()}
             disabled={selectedNode == null}
           />
         </WithTooltip>
