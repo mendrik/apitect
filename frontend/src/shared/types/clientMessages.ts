@@ -1,5 +1,6 @@
 import * as t from 'io-ts'
 
+import { idCodec } from '../codecs/idCodec'
 import { TNewNode } from './forms/newNode'
 
 const DocumentRequest = t.type({
@@ -15,7 +16,7 @@ export const NewNodeRequest = t.intersection([
 
 export const DeleteNodeRequest = t.type({
   type: t.literal('DEL_NODE'),
-  id: t.string
+  id: idCodec
 })
 
 export const TClientMessage = t.union([DocumentRequest, NewNodeRequest, DeleteNodeRequest])

@@ -1,24 +1,23 @@
 import * as t from 'io-ts'
 
 import { enumCodec } from '../../codecs/enumCodec'
-import { hexString } from '../../codecs/hexString'
+import { idCodec } from '../../codecs/idCodec'
 import { withDefault } from '../../codecs/withDefault'
+import { Id } from './id'
 import { NodeType } from './nodeType'
 
-export type UiNode = {
-  id: string
+export type Node = {
+  id: Id
   name: string
-  type: NodeType
-  children: UiNode[]
+  nodeType: NodeType
+  children: Node[]
 }
 
-export const TUiNode: t.Type<UiNode> = t.recursion('node', () =>
-  t.exact(
-    t.type({
-      id: hexString,
-      name: t.string,
-      type: withDefault(enumCodec('nodeType', NodeType), NodeType.Object),
-      children: withDefault(t.array(TUiNode), [])
-    })
-  )
+export const TNode: t.Type<Node> = t.recursion('node', () =>
+  t.type({
+    id: idCodec as t.Any,
+    name: t.string,
+    nodeType: withDefault(enumCodec('nodeType', NodeType), NodeType.Object),
+    children: withDefault(t.array(TNode), [])
+  })
 )

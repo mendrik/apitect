@@ -1,1 +1,3 @@
-export type ID = string
+export type Id = string & {
+  readonly id: unique symbol
+}

@@ -1,14 +1,11 @@
 import * as t from 'io-ts'
 
-import { hexString } from '../../codecs/hexString'
-import { TUiNode } from './tree'
+import { TNode } from './tree'
 
-export const TUiDocument = t.exact(
-  t.type({
-    name: t.string,
-    owner: hexString,
-    tree: TUiNode
-  })
-)
+export const TDocument = t.type({
+  name: t.string,
+  owner: t.string,
+  tree: TNode
+})
 
-export type UiDocument = t.TypeOf<typeof TUiDocument>
+export type Document = t.TypeOf<typeof TDocument>

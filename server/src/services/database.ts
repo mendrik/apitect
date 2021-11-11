@@ -5,10 +5,10 @@ import {
   TransactionOptions
 } from 'mongodb'
 import { keys, pluck } from 'ramda'
+import { Document } from '~shared/types/domain/document'
+import { User } from '~shared/types/domain/user'
 import { ensure } from '~shared/utils/ramda'
 
-import { Document } from '../types/document'
-import { User } from '../types/user'
 import { config } from './config'
 import { serverState } from './serverState'
 
@@ -36,6 +36,7 @@ export const connect = async (): Promise<MongoClient> => {
     .filter(name => !existing.includes(name))
     .forEach(name => db.createCollection(name, {}))
   await db.collection('users').createIndex({ email: 1 }, { unique: true })
+  await db.collection('documents').createIndex({ id: 1 }, { unique: true })
   return client
 }
 

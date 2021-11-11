@@ -1,30 +1,28 @@
-import { ObjectId, WithId } from 'mongodb'
+import { WithId } from 'mongodb'
 import { isNil } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { TUiDocument } from '~shared/types/domain/document'
-import { sendAsServerMessage } from '~shared/types/serverMessages'
+import { decode } from '~shared/codecs/decode'
+import { idCodec } from '~shared/codecs/idCodec'
+import { Document } from '~shared/types/domain/document'
+import { Id } from '~shared/types/domain/id'
+import { Node } from '~shared/types/domain/tree'
 import { failOn } from '~shared/utils/failOn'
 import { field } from '~shared/utils/ramda'
 
-import { Document } from '../types/document'
-import { Node } from '../types/tree'
-import { User } from '../types/user'
 import { collection } from './database'
 import { eventMap, serverState } from './serverState'
+import { getUser } from './user'
 
 export const toTreeNode = (node: Node) => TreeNode.from<Node, 'children'>('children')(node)
 
-export const getLastDocument = (userId: ObjectId): Promise<WithId<Document>> =>
-  collection('users')
-    .findOne({ _id: userId })
-    .then(failOn<User>(isNil, 'user not found'))
-    .then(field('lastDocument'))
-    .then(docId =>
-      collection('documents')
-        .findOne({ _id: docId })
-        .then(failOn(isNil, `Document ${docId} not found`))
-    )
+export const getLastDocumentId = (email: string): Promise<Id> =>
+  getUser(email).then(field('lastDocument')).then(decode(idCodec))
 
-serverState.on(eventMap.DOCUMENT, (state, { send, userId }) => {
-  void getLastDocument(userId).then(sendAsServerMessage(TUiDocument, send))
+export const getLastDocument = (email: string): Promise<WithId<Document>> =>
+  getLastDocumentId(email)
+    .then(collection('documents').findOne)
+    .then(failOn<WithId<Document>>(isNil, 'document not found'))
+
+serverState.on(eventMap.DOCUMENT, (state, { send, email }) => {
+  void getLastDocument(email).then(send('DOCUMENT'))
 })
