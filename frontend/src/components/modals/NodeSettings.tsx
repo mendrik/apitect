@@ -50,15 +50,10 @@ const content = (nodeType: NodeType) => {
   }
 }
 
-export type SettingsProps = FC<{
-  selectedNode: Node
-  close: Fn
-}>
-
 const NodeSettings: ModalFC = ({ close }) => {
   const { selectedNode } = useStore($appStore)
   const Content = content(selectedNode!.nodeType)
-  return <Content close={close} selectedNode={selectedNode!} />
+  return <Content close={close} />
 }
 
 export default NodeSettings

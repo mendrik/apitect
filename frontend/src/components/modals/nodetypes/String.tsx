@@ -5,17 +5,19 @@ import { useTranslation } from 'react-i18next'
 
 import { SocketForm } from '../../../forms/SocketForm'
 import { TextInput } from '../../../forms/TextInput'
-import {
-  StringSettings,
-  TStringSettings
-} from '../../../shared/types/forms/nodetypes/stringSettings'
-import { SettingsProps } from '../NodeSettings'
+import { NodeType } from '../../../shared/types/domain/nodeType'
+import { NodeSettings } from '../../../shared/types/forms/nodetypes'
+import { TStringSettings } from '../../../shared/types/forms/nodetypes/stringSettings'
+import { ModalFC } from '../../LazyModal'
 
-const String: SettingsProps = ({ close }) => {
+const String: ModalFC = ({ close }) => {
   const { t } = useTranslation()
 
-  const form = useForm<StringSettings>({
-    resolver: ioTsResolver(TStringSettings)
+  const form = useForm<NodeSettings>({
+    resolver: ioTsResolver(TStringSettings),
+    defaultValues: {
+      nodeType: NodeType.String
+    }
   })
 
   return (

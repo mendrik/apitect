@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { SettingsProps } from '../NodeSettings'
+import { ModalFC } from '../../LazyModal'
 
-const Enum: SettingsProps = ({ close }) => {
+const Enum: ModalFC = ({ close }) => {
   const { t } = useTranslation()
 
   return <div>Enumeration</div>

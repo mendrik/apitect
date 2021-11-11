@@ -25,3 +25,5 @@ export const TNodeSettings = t.union([
   TReferenceSettings,
   TStringSettings
 ])
+
+export type NodeSettings = t.TypeOf<typeof TNodeSettings>
