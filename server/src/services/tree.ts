@@ -13,7 +13,7 @@ import { Send } from './websocket'
 
 const withTree =
   (send: Send, email: string) =>
-  <T>(fn: (root: TreeNode<Node>) => ChildOperation<T>): Promise<ChildOperation<T>> =>
+  <T extends Node>(fn: (root: TreeNode<Node>) => ChildOperation<T>): Promise<ChildOperation<T>> =>
     getLastDocument(email).then(doc => {
       const tree = toTreeNode(doc.tree)
       const res = fn(tree)
@@ -30,6 +30,10 @@ const withTree =
         .then(always(res))
     })
 
+const validateTree = <T extends Node>(ops: ChildOperation<T>): ChildOperation<T> => {
+  return ops
+}
+
 serverState.on(
   eventMap.NEW_NODE,
   (state, { send, email, message: newNode }) =>
@@ -44,6 +48,7 @@ serverState.on(
         nodeType: newNode.nodeType
       })
     )
+      .then(validateTree)
       .then(o => o.node)
       .then(failOn<Node>(isNil, 'Node not found'))
       .then(send('NODE_CREATED'))
@@ -57,6 +62,7 @@ serverState.on(
       email
     )(root => root.delete(propEq('id', message.id)))
       .then(failOn<ChildOperation<Node>>(propSatisfies(isNil, 'node'), 'Node not found'))
+      .then(validateTree)
       .then(o => ({
         position: o.position!,
         parentNode: o.parent!.id
