@@ -59,7 +59,7 @@ $appStore.on(messageReceived, (state, message) => {
       return initial
     case 'NODE_CREATED': {
       const uiRoot = uiTree(state.tree)
-      const node = uiRoot.first(propEq('id', message.payload))
+      const node = uiRoot.first(propEq('id', message.payload.id))
       return { ...state, ...selectedNodeState(state, node?.value) }
     }
     case 'NODE_DELETED': {
