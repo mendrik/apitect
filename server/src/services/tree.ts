@@ -1,4 +1,4 @@
-import { always, isNil, prop, propEq } from 'ramda'
+import { always, isNil, prop, propEq, propSatisfies } from 'ramda'
 import { ChildOperation, TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
 import { newId } from '~shared/codecs/idCodec'
@@ -36,16 +36,16 @@ serverState.on(
     void withTree(
       send,
       email
-    )(root => {
-      const node: Node = {
+    )(root =>
+      root.insert(propEq('id', newNode.parentNode), {
         id: newId(),
         name: newNode.name,
         children: [],
         nodeType: newNode.nodeType
-      }
-      return root.insert(propEq('id', newNode.parentNode), node)
-    })
-      .then(o => o.node!)
+      })
+    )
+      .then(o => o.node)
+      .then(failOn<Node>(isNil, 'Node not found'))
       .then(send('NODE_CREATED'))
 )
 
@@ -55,9 +55,8 @@ serverState.on(
     void withTree(
       send,
       email
-    )(root => {
-      return root.delete(propEq('id', message.id))
-    })
+    )(root => root.delete(propEq('id', message.id)))
+      .then(failOn<ChildOperation<Node>>(propSatisfies(isNil, 'node'), 'Node not found'))
       .then(o => ({
         position: o.position!,
         parentNode: o.parent!.id
