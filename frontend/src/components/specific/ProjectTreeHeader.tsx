@@ -1,9 +1,10 @@
-import { IconEdit, IconFolderPlus, IconTrash } from '@tabler/icons'
+import { IconFolderPlus, IconSettings, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React, { FC } from 'react'
 
 import { openModal } from '../../events/modals'
 import { deleteNode } from '../../events/tree'
+import { NodeType } from '../../shared/types/domain/nodeType'
 import $appStore from '../../stores/$appStore'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
@@ -26,8 +27,12 @@ export const ProjectTreeHeader: FC = () => {
         <WithTooltip tooltipText="Create a new node" shortcut="N">
           <Icon icon={IconFolderPlus} onClick={() => openModal('new-node')} />
         </WithTooltip>
-        <WithTooltip tooltipText="Edit" shortcut="E">
-          <Icon icon={IconEdit} disabled={selectedNode == null} />
+        <WithTooltip tooltipText="Settings" shortcut="S">
+          <Icon
+            icon={IconSettings}
+            disabled={selectedNode == null}
+            onClick={() => openModal('node-settings')}
+          />
         </WithTooltip>
       </HGrid>
     </Tuple>

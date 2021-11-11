@@ -39,6 +39,44 @@ const en = {
             'You have successfully registered to Apitect!<br/>' +
             'We have sent you a confirmation email with a login link inside.'
         }
+      },
+      nodeSettings: {
+        object: {
+          title: 'Edit object settings'
+        },
+        boolean: {
+          title: 'Edit boolean settings'
+        },
+        string: {
+          title: 'Edit string settings'
+        },
+        number: {
+          title: 'Edit number settings'
+        },
+        enum: {
+          title: 'Edit enum settings'
+        },
+        date: {
+          title: 'Edit date settings'
+        },
+        binary: {
+          title: 'Edit binary settings'
+        },
+        array: {
+          title: 'Edit array settings'
+        },
+        color: {
+          title: 'Edit color settings'
+        },
+        location: {
+          title: 'Edit location settings'
+        },
+        richtext: {
+          title: 'Edit richtext settings'
+        },
+        reference: {
+          title: 'Edit Reference settings'
+        }
       }
     },
     navbar: {

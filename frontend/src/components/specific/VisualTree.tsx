@@ -44,7 +44,8 @@ export const VisualTree: FC = ({ children }) => {
     [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
     [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
     [propEq('key', 'Delete'), () => deleteNode(selectedNode)],
-    [propEq('key', 'n'), () => openModal('new-node')]
+    [propEq('key', 'n'), () => openModal('new-node')],
+    [propEq('key', 's'), () => openModal('node-settings')]
   ]) as Fn
 
   return (

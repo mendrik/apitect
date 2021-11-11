@@ -63,13 +63,16 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
               size={14}
             />
           ) : node.nodeType !== NodeType.Object ? (
-            <Icon icon={iconMap[node.nodeType]} size={14} />
+            <Icon icon={iconMap[node.nodeType]} size={14} disabled />
           ) : (
             <div />
           )}
           <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.name}>
             {node.name}
           </div>
+          {node.nodeType === NodeType.Array && (
+            <Icon icon={iconMap[node.nodeType]} size={14} disabled />
+          )}
         </NodeGrid>
       )}
       {(open || depth === 0) && (

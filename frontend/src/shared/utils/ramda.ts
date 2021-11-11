@@ -18,6 +18,7 @@ import {
   reduce,
   reverse,
   tail,
+  toLower,
   toPairs,
   toUpper,
   tryCatch
@@ -26,7 +27,7 @@ import { findOr } from 'ramda-adjunct'
 
 import { Fn, Maybe } from '../types/generic'
 
-export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]))
+export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]), toLower)
 
 export const assocBy =
   <K extends string, R>(field: K, func: Fn<R>) =>
