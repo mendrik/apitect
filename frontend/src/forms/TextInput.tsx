@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { FC, InputHTMLAttributes, useContext } from 'react'
+import React, { FC, InputHTMLAttributes, useContext, useEffect } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
@@ -24,12 +24,14 @@ export const TextInput: FC<OwnProps> = ({
   className,
   placeholder,
   containerClassNames,
+  autoFocus,
   ...props
 }) => {
   const { t } = useTranslation()
   const {
     watch,
     register,
+    setFocus,
     formState: { errors }
   } = useFormContext()
   const { isWorking } = useContext(progressContext)
@@ -37,6 +39,14 @@ export const TextInput: FC<OwnProps> = ({
 
   const value = watch(name)
   const inpId = useId()
+  const reg = register(name, options)
+
+  useEffect(() => {
+    if (autoFocus) {
+      setFocus(name)
+    }
+  }, [autoFocus, name])
+
   return (
     <div className={clsx('form-floating mb-3 has-validation', containerClassNames)}>
       <input
@@ -44,7 +54,7 @@ export const TextInput: FC<OwnProps> = ({
         className={clsx('form-control ', { 'is-invalid': errors?.[name] != null }, className)}
         id={inpId}
         autoComplete="off"
-        {...register(name, options)}
+        {...reg}
         value={value ?? ''}
         readOnly={props.readOnly || isWorking(promise)}
         required={!!options?.required}
