@@ -1,12 +1,10 @@
-import { ObjectId } from 'mongodb'
 import { isNil } from 'ramda'
+import { User } from '~shared/types/domain/user'
 import { failOn } from '~shared/utils/failOn'
 
-import { User } from '../types/user'
 import { collection } from './database'
 
-// prettier-ignore
-export const getUser = (userId: ObjectId): Promise<User> =>
+export const getUser = (email: string): Promise<User> =>
   collection('users')
-    .findOne({ _id: userId })
+    .findOne({ email }, { projection: { password: 0, token: 0, _id: 0 } })
     .then(failOn<User>(isNil, 'user not found'))

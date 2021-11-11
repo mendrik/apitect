@@ -2,19 +2,17 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
-import { ObjectId, WithId } from 'mongodb'
-import { always, applySpec, isNil, mapObjIndexed, mergeRight } from 'ramda'
+import { always, applySpec, mapObjIndexed, mergeRight, prop } from 'ramda'
 import { promisify } from 'util'
 import { decode, DecodingError } from '~shared/codecs/decode'
+import { User } from '~shared/types/domain/user'
 import { Fn } from '~shared/types/generic'
 import { HttpError, httpError } from '~shared/types/httpError'
-import { failOn } from '~shared/utils/failOn'
 import { logger } from '~shared/utils/logger'
 import { Promised, resolvePromised } from '~shared/utils/promise'
 
-import { User } from '../types/user'
 import { config } from './config'
-import { collection } from './database'
+import { getUser } from './user'
 
 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
 
@@ -32,17 +30,17 @@ export const body =
   (req: FastifyRequest): A =>
     decode<A, O, I>(decoder)(req.body as any)
 
-export const verifyP: Fn<Promise<{ id: string }>> = promisify<any, any>(verify)
+export const verifyP: Fn<Promise<{ email: string }>> = promisify<any, any>(verify)
 
 export const header =
   <A, O, I>(name: string, decoder: t.Type<A, O, I>) =>
   (req: FastifyRequest): A =>
     decode<A, O, I>(decoder)(req.headers[name] as any)
 
-export const user = (req: FastifyRequest): Promise<WithId<User>> =>
+export const user = (req: FastifyRequest): Promise<User> =>
   verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`)
-    .then(({ id }) => collection('users').findOne(new ObjectId(id)))
-    .then(failOn<WithId<User>>(isNil, httpError(403, 'User not found')))
+    .then(prop('email'))
+    .then(getUser)
     .catch(e => {
       throw httpError(403, `Unauthorized: ${e.message}`)
     })

@@ -2,6 +2,7 @@ import React, { FC, useContext, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 
 import { messageReceived, socketEstablished } from '../events/messages'
+import { logger } from '../shared/utils/logger'
 import { userContext } from './user'
 
 export const WithSocket: FC = ({ children }) => {
@@ -14,7 +15,11 @@ export const WithSocket: FC = ({ children }) => {
 
   useEffect(() => {
     if (lastMessage?.data) {
-      messageReceived(JSON.parse(lastMessage?.data))
+      try {
+        messageReceived(JSON.parse(lastMessage?.data))
+      } catch (e) {
+        logger.error('Failed to parse server message:', lastMessage?.data)
+      }
     }
   }, [lastMessage])
 

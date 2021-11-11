@@ -6,14 +6,14 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 
 import { closeNode, openNode, selectNode } from '../../events/tree'
-import { UiNode } from '../../shared/types/domain/tree'
+import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
+import { Node } from '../../shared/types/domain/tree'
 import $appStore from '../../stores/$appStore'
-import { preventDefault } from '../../utils/preventDefault'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
 type OwnProps = {
-  node: UiNode
+  node: Node
   depth?: number
 }
 
@@ -62,6 +62,8 @@ export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: fo
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
+          ) : node.nodeType !== NodeType.Object ? (
+            <Icon icon={iconMap[node.nodeType]} size={14} />
           ) : (
             <div />
           )}
