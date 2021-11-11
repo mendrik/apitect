@@ -51,7 +51,7 @@ $appStore.on(messageReceived, (state, message) => {
     case 'DOCUMENT':
       return {
         ...state,
-        document: omit(['tree'], message.payload.owner),
+        document: omit(['tree'], message.payload),
         tree: message.payload.tree,
         openNodes: { ...state.openNodes, [message.payload.tree.id]: true }
       }

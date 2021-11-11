@@ -14,4 +14,10 @@ export const TUser = t.exact(
   })
 )
 
+export const TUiUser = t.type({
+  name: nonEmptyString,
+  email: emailCodec,
+  lastDocument: idCodec
+})
+
 export type User = t.TypeOf<typeof TUser>
