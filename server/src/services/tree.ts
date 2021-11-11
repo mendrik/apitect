@@ -11,7 +11,7 @@ import { getLastDocument, toTreeNode } from './document'
 import { eventMap, serverState } from './serverState'
 import { Send } from './websocket'
 
-const withNode =
+const withTree =
   (send: Send, email: string) =>
   <T>(fn: (root: TreeNode<Node>) => ChildOperation<T>): Promise<ChildOperation<T>> =>
     getLastDocument(email).then(doc => {
@@ -33,7 +33,7 @@ const withNode =
 serverState.on(
   eventMap.NEW_NODE,
   (state, { send, email, message: newNode }) =>
-    void withNode(
+    void withTree(
       send,
       email
     )(root => {
@@ -52,7 +52,7 @@ serverState.on(
 serverState.on(
   eventMap.DEL_NODE,
   (state, { send, email, message }) =>
-    void withNode(
+    void withTree(
       send,
       email
     )(root => {
