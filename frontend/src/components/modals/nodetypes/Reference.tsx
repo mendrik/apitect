@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ModalFC } from '../../LazyModal'
+import { SettingsProps } from '../NodeSettings'
 
-const Reference: ModalFC = ({ close }) => {
+const Reference: SettingsProps = ({ close }) => {
   const { t } = useTranslation()
 
   return <div>Reference</div>

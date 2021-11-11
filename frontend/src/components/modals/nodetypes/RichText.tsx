@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ModalFC } from '../../LazyModal'
+import { SettingsProps } from '../NodeSettings'
 
-const RichText: ModalFC = ({ close }) => {
+const RichText: SettingsProps = ({ close }) => {
   const { t } = useTranslation()
 
   return <div>RichText</div>

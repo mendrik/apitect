@@ -1,7 +1,8 @@
 import { useStore } from 'effector-react'
-import React, { lazy } from 'react'
+import React, { FC, lazy } from 'react'
 
 import { NodeType } from '../../shared/types/domain/nodeType'
+import { Fn } from '../../shared/types/generic'
 import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../LazyModal'
 
@@ -49,15 +50,15 @@ const content = (nodeType: NodeType) => {
   }
 }
 
+export type SettingsProps = FC<{
+  selectedNode: Node
+  close: Fn
+}>
+
 const NodeSettings: ModalFC = ({ close }) => {
   const { selectedNode } = useStore($appStore)
   const Content = content(selectedNode!.nodeType)
-
-  return (
-    <div>
-      <Content close={close} />
-    </div>
-  )
+  return <Content close={close} selectedNode={selectedNode!} />
 }
 
 export default NodeSettings

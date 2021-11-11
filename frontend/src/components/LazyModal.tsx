@@ -17,9 +17,10 @@ type OwnProps = {
   from: () => Promise<{ default: ModalFC }>
   name: string
   title: TFuncKey
+  titleOptions?: Record<string, string>
 }
 
-export const LazyModal: FC<OwnProps> = ({ name, from, title }) => {
+export const LazyModal: FC<OwnProps> = ({ name, from, title, titleOptions }) => {
   const { modal } = useQueryParams()
   const modalMatch = modal === name
 
@@ -45,7 +46,7 @@ export const LazyModal: FC<OwnProps> = ({ name, from, title }) => {
   return modalMatch && modalState.data != null ? (
     <Modal backdrop="static" show={show} onHide={() => setShow(false)} onExited={close} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t(title)}</Modal.Title>
+        <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <modalState.data close={close} />

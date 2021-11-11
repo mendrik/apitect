@@ -1,6 +1,5 @@
 import { useStore } from 'effector-react'
 import React, { FC, useEffect } from 'react'
-import { TFuncKey } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { openModal } from '../events/modals'
@@ -33,7 +32,8 @@ export const Modals: FC = () => {
       />
       {selectedNode && (
         <LazyModal
-          title={`modals.nodeSettings.${selectedNode.nodeType.toLowerCase()}.title` as TFuncKey}
+          title={`modals.nodeSettings.title`}
+          titleOptions={{ property: selectedNode.name }}
           from={() => import('./modals/NodeSettings')}
           name="node-settings"
         />

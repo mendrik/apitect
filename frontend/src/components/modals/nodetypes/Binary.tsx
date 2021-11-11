@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ModalFC } from '../../LazyModal'
+import { SettingsProps } from '../NodeSettings'
 
-const Binary: ModalFC = ({ close }) => {
+const Binary: SettingsProps = ({ close }) => {
   const { t } = useTranslation()
 
   return <div>Binary</div>
