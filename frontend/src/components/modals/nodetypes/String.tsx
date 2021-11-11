@@ -1,7 +1,6 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { SocketForm } from '../../../forms/SocketForm'
 import { TextInput } from '../../../forms/TextInput'
@@ -11,8 +10,6 @@ import { TStringSettings } from '../../../shared/types/forms/nodetypes/stringSet
 import { ModalFC } from '../../LazyModal'
 
 const String: ModalFC = ({ close }) => {
-  const { t } = useTranslation()
-
   const form = useForm<NodeSettings>({
     resolver: ioTsResolver(TStringSettings),
     defaultValues: {
@@ -21,7 +18,7 @@ const String: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm submitMessage="NODE_SETTINGS" form={form} onSuccess={close}>
+    <SocketForm submitMessage="NODE_SETTINGS" form={form} onSuccess={close} close={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"

@@ -3,14 +3,11 @@ import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { map, pipe, toLower, values, when } from 'ramda'
 import React from 'react'
-import { Button } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { ButtonRow } from '../../forms/ButtonRow'
 import { SocketForm } from '../../forms/SocketForm'
-import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '../../shared/types/forms/newNode'
@@ -63,7 +60,7 @@ const NewNode: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm submitMessage="NEW_NODE" form={form} onSuccess={close}>
+    <SocketForm submitMessage="NEW_NODE" form={form} onSuccess={close} close={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"
@@ -95,12 +92,6 @@ const NewNode: ModalFC = ({ close }) => {
           </TypeGrid>
         )}
       />
-      <ButtonRow className="mt-4">
-        <Button variant="outline-secondary" onClick={close}>
-          {t('common.cancel')}
-        </Button>
-        <SubmitButton localeKey="modals.newNode.submit" />
-      </ButtonRow>
     </SocketForm>
   )
 }
