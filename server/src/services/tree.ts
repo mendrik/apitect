@@ -23,7 +23,7 @@ const withNode =
       const docTree = decode(TNode)(tree.extract())
       return collection('documents')
         .findOneAndUpdate(
-          doc._id,
+          { id: doc.id },
           { $set: { tree: docTree } },
           { returnDocument: 'after', projection: { _id: 0 } }
         )

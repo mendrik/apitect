@@ -50,6 +50,7 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
     await collection('users').insertOne({ ...data, ...token, lastDocument: docId }, { session })
     await collection('documents').insertOne(
       {
+        id: docId,
         name: 'Unknown document',
         owner: register.email,
         tree: {

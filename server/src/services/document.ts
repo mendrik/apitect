@@ -1,4 +1,3 @@
-import { WithId } from 'mongodb'
 import { isNil } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
@@ -18,10 +17,10 @@ export const toTreeNode = (node: Node) => TreeNode.from<Node, 'children'>('child
 export const getLastDocumentId = (email: string): Promise<Id> =>
   getUser(email).then(field('lastDocument')).then(decode(idCodec))
 
-export const getLastDocument = (email: string): Promise<WithId<Document>> =>
+export const getLastDocument = (email: string): Promise<Document> =>
   getLastDocumentId(email)
-    .then(collection('documents').findOne)
-    .then(failOn<WithId<Document>>(isNil, 'document not found'))
+    .then(id => collection('documents').findOne({ id }))
+    .then(failOn<Document>(isNil, 'document not found'))
 
 serverState.on(eventMap.DOCUMENT, (state, { send, email }) => {
   void getLastDocument(email).then(send('DOCUMENT'))

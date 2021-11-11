@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify'
 import { SocketStream } from 'fastify-websocket'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
-import { propOr } from 'ramda'
+import { pathEq } from 'ramda'
 import { decode } from '~shared/codecs/decode'
 import { ClientMessage, TClientMessage } from '~shared/types/clientMessages'
 import { ServerMessage, TServerMessage } from '~shared/types/serverMessages'
@@ -22,8 +22,8 @@ export type Send = <
 const openWebsocket = (connection: SocketStream) => {
   const send: Send = type => payload => {
     const types = TServerMessage.types
-    const message = types.find(t => propOr(null, 'type', t.props) === type)!
-    const validMessage = message.encode({ type, payload } as any)
+    const message = types.find(pathEq(['props', 'type', 'value'], type))!
+    const validMessage = decode(message as any)({ type, payload })
     connection.socket.send(JSON.stringify(validMessage))
   }
   try {
