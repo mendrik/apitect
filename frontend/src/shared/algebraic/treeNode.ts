@@ -3,14 +3,14 @@ import {
   concat,
   defaultTo,
   equals,
+  findIndex,
   map,
   omit,
   pipe,
   prop,
   propOr,
   reduce,
-  unless,
-  without
+  unless
 } from 'ramda'
 import { isArray, isFunction } from 'ramda-adjunct'
 
@@ -19,6 +19,13 @@ import { Maybe } from '../types/generic'
 export enum Strategy {
   Depth,
   Breadth
+}
+
+export type ChildOperation<T> = {
+  self: TreeNode<T>
+  parent?: T
+  node?: T
+  position?: number
 }
 
 export class Queue<T> extends Array<T> {
@@ -113,6 +120,42 @@ export class TreeNode<T> {
 
   pathToRoot = (): T[] =>
     this.parent ? [this.parent.value].concat(...this.parent.pathToRoot()) : []
+
+  insert = (underNodePred: (v: T) => boolean, v: T, position?: number): ChildOperation<T> => {
+    const parent = this.first(underNodePred) ?? this
+    const node = TreeNode.of(v)
+    if (position) {
+      parent.children.splice(position, 0, node)
+    } else {
+      parent.children.push(node)
+    }
+    return {
+      self: this,
+      parent: parent?.value,
+      node: v,
+      position
+    }
+  }
+
+  delete = (pred: (v: T) => boolean) => {
+    const node = this.first(pred)
+    if (node?.parent != null) {
+      const children = node.parent.children
+      const position = findIndex<TreeNode<T>>(n => pred(n.value))(children)
+      if (position !== -1) {
+        const del = children.splice(position, 1)
+        return {
+          self: this,
+          parent: node.parent.value,
+          node: del[0].value,
+          position
+        }
+      }
+    }
+    return {
+      self: this
+    }
+  }
 
   toString = () =>
     JSON.stringify(
