@@ -1,4 +1,4 @@
-import React, { FC, Children } from 'react'
+import React, { Children, FC } from 'react'
 
 export const HGrid: FC = ({ children }) => {
   return (

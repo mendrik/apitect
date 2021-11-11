@@ -4,7 +4,6 @@ import React, { FC } from 'react'
 
 import { openModal } from '../../events/modals'
 import { deleteNode } from '../../events/tree'
-import { NodeType } from '../../shared/types/domain/nodeType'
 import $appStore from '../../stores/$appStore'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'

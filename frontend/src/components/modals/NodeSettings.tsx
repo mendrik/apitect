@@ -1,8 +1,7 @@
 import { useStore } from 'effector-react'
-import React, { FC, lazy } from 'react'
+import React, { lazy } from 'react'
 
 import { NodeType } from '../../shared/types/domain/nodeType'
-import { Fn } from '../../shared/types/generic'
 import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../LazyModal'
 
