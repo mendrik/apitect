@@ -31,7 +31,6 @@ export const Form: FC<OwnProps<any>> = ({
   children
 }) => {
   useServerError(state.error, form.setError)
-
   return state.status === 'done' && SuccessView != null ? (
     SuccessView
   ) : (

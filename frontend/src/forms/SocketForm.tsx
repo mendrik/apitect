@@ -22,7 +22,6 @@ export const SocketForm = <T extends ClientMessage['type']>({
   onSuccess
 }: PropsWithChildren<OwnProps<T>>): ReactElement | null => {
   const { sendMessage } = useStore($appStore)
-
   return (
     <FormProvider {...form}>
       <form

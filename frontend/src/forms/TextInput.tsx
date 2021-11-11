@@ -13,9 +13,19 @@ type OwnProps = {
   label: TFuncKey
   name: string
   options?: RegisterOptions
+  containerClassNames?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', className, ...props }) => {
+export const TextInput: FC<OwnProps> = ({
+  name,
+  label,
+  options,
+  type = 'text',
+  className,
+  placeholder,
+  containerClassNames,
+  ...props
+}) => {
   const { t } = useTranslation()
   const {
     watch,
@@ -25,24 +35,24 @@ export const TextInput: FC<OwnProps> = ({ label, options, type = 'text', classNa
   const { isWorking } = useContext(progressContext)
   const { promise } = useContext(formWrappingContext)
 
-  const value = watch(props.name)
+  const value = watch(name)
   const inpId = useId()
   return (
-    <div className={clsx('form-floating mb-3 has-validation', className)} {...props}>
+    <div className={clsx('form-floating mb-3 has-validation', containerClassNames)}>
       <input
         type={type}
-        className={clsx('form-control ', { 'is-invalid': errors?.[props.name] != null })}
+        className={clsx('form-control ', { 'is-invalid': errors?.[name] != null }, className)}
         id={inpId}
         autoComplete="off"
-        {...props}
-        {...register(props.name, options)}
-        value={value}
+        {...register(name, options)}
+        value={value ?? ''}
         readOnly={props.readOnly || isWorking(promise)}
         required={!!options?.required}
-        placeholder=" "
+        placeholder={placeholder ?? ' '}
+        {...props}
       />
       <label htmlFor={inpId}>{t(label)}</label>
-      <ErrorInfo name={props.name} />
+      <ErrorInfo name={name} />
     </div>
   )
 }

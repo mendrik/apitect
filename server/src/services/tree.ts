@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { always, findIndex, pathEq, propEq } from 'ramda'
+import { always, findIndex, pathEq, prop, propEq } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
 import { TUiDocument } from '~shared/types/domain/document'
@@ -20,8 +20,13 @@ const withNode =
       const res = fn(node, tree)
       const docTree = decode(TNode)(tree.extract())
       return collection('documents')
-        .updateOne({ _id: doc._id }, { $set: { tree: docTree } })
-        .then(() => getLastDocument(userId).then(sendAsServerMessage(TUiDocument, send)))
+        .findOneAndUpdate(
+          { _id: doc._id },
+          { $set: { tree: docTree } },
+          { returnDocument: 'after' }
+        )
+        .then(prop('value'))
+        .then(sendAsServerMessage(TUiDocument, send))
         .then(always(res))
     })
 
