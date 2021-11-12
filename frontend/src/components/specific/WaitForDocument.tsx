@@ -6,6 +6,6 @@ import $appStore from '../../stores/$appStore'
 
 export const WaitForDocument = ({ children }: Jsx) => {
   const { document, api } = useStore($appStore)
-  useEffect(() => void api.document())
+  useEffect(() => void api.document(), [])
   return document ? <div>{children}</div> : null
 }

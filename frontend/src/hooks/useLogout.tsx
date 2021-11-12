@@ -3,7 +3,7 @@ import { Fn } from 'shared/types/generic'
 
 import { userContext } from '../contexts/user'
 import $appStore from '../stores/$appStore'
-import { logout } from '../utils/api'
+import { logout } from '../utils/restApi'
 import usePromise from './usePromise'
 
 export const useLogout = (): Fn<Promise<any>> => {

@@ -15,7 +15,7 @@ import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
-import { login } from '../../utils/api'
+import { login } from '../../utils/restApi'
 import ForgotPasswordForm from '../modals/ForgotPasswordForm'
 
 type OwnProps = {

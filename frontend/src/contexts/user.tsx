@@ -5,7 +5,7 @@ import { useLocalStorage } from 'usehooks-ts'
 
 import useInstantPromise from '../hooks/useInstantPromise'
 import { State } from '../hooks/usePromise'
-import { whoAmI } from '../utils/api'
+import { whoAmI } from '../utils/restApi'
 
 export type UserContext = {
   jwt: Maybe<string>

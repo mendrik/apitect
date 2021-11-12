@@ -12,7 +12,7 @@ import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
-import { forgotPassword } from '../../utils/api'
+import { forgotPassword } from '../../utils/restApi'
 import { ModalFC } from '../LazyModal'
 import { SuccessView } from '../SuccessView'
 

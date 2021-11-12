@@ -6,8 +6,9 @@ import { v4 as uuid } from 'uuid'
 import { apiResponse, socketEstablished } from '../events/messages'
 import { openNodeState, selectNode } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
-import { Api, ApiSchema } from '../shared/api'
-import { ApiRequest } from '../shared/types/apiCall'
+import { Api, ApiMethod, ApiSchema } from '../shared/api'
+import { decode } from '../shared/codecs/decode'
+import { TApiRequest } from '../shared/types/apiRequest'
 import { Node } from '../shared/types/domain/tree'
 import { Maybe } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
@@ -30,8 +31,8 @@ const $appStore = createStore<AppState>(initial)
 
 const uiTree = (root: Node) => TreeNode.from<Node, 'children'>('children')(root)
 
-apiResponse.watch(payload => {
-  logger.debug(`Message: ${payload.type}`, payload)
+apiResponse.watch(({ method, payload }) => {
+  logger.debug(`Message: ${method}`, payload)
 })
 
 const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
@@ -48,14 +49,14 @@ const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
       }
     : { ...state, selectedNode: undefined }
 
-$appStore.on(apiResponse, (state, message) => {
-  switch (message.type) {
-    case 'DOCUMENT':
-      const tree = message.payload.tree
+$appStore.on(apiResponse, (state, res) => {
+  switch (res.method) {
+    case 'document':
+      const tree = res.payload.tree
       const uiRoot = uiTree(tree)
       return {
         ...state,
-        document: omit(['tree'], message.payload),
+        document: omit(['tree'], res.payload),
         tree: tree,
         openNodes: {
           ...state.openNodes,
@@ -63,15 +64,15 @@ $appStore.on(apiResponse, (state, message) => {
         },
         selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
       }
-    case 'NODE_CREATED': {
+    case 'nodeCreate': {
       const uiRoot = uiTree(state.tree)
-      const node = uiRoot.first(propEq('id', message.payload.id))
+      const node = uiRoot.first(propEq('id', res.payload.id))
       return { ...state, ...selectedNodeState(state, node?.value) }
     }
-    case 'NODE_DELETED': {
+    case 'nodeDelete': {
       const uiRoot = uiTree(state.tree)
-      const parent = uiRoot.first(propEq('id', message.payload.parentNode))
-      const node = parent?.children[message.payload.position - 1] ?? parent
+      const parent = uiRoot.first(propEq('id', res.payload.parentNode))
+      const node = parent?.children[res.payload.position - 1] ?? parent
       return { ...state, ...selectedNodeState(state, node?.value) }
     }
     default:
@@ -82,14 +83,14 @@ $appStore.on(apiResponse, (state, message) => {
 $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
   ...state,
   api: new Proxy({} as any, {
-    get(target, method: keyof ApiSchema) {
-      return function (input: any) {
+    get(target, method: ApiMethod) {
+      return <T>(input: T) => {
         if (method in ApiSchema) {
-          const apiCall: ApiRequest = {
+          const apiCall = decode(TApiRequest)({
             id: uuid(),
-            input,
-            method
-          }
+            method,
+            input
+          })
           sendJsonMessage(apiCall)
         } else {
           logger.error(`No ${method} in ApiSchema`, {})

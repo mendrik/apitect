@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { closeModal, openModal } from '../events/modals'
-import { addParams, removeParams } from '../shared/utils/url'
+import { removeParams } from '../shared/utils/url'
 import $appStore from '../stores/$appStore'
 import { LazyModal } from './LazyModal'
 
@@ -13,7 +13,7 @@ export const Modals = () => {
 
   useEffect(() => {
     const openSub = $appStore.watch(openModal, (_, modal) => {
-      api.nodeSettings(selectedNode!.id).then(() => navigate(addParams({ modal })))
+      // api.nodeSettings(selectedNode!.id).then(() => navigate(addParams({ modal })))
     })
     const closeSub = $appStore.watch(closeModal, () => navigate(removeParams(['modal'])))
     return () => {

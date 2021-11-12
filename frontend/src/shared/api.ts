@@ -24,5 +24,5 @@ export type Output<T extends ApiMethod> = ApiSchema[T][1]
 export type Api = {
   [K in ApiMethod]: t.OutputOf<Input<K>> extends undefined
     ? () => Promise<t.OutputOf<Output<K>>>
-    : (input: t.OutputOf<Input<K>>) => PromiseLike<t.OutputOf<Output<K>>>
+    : (input: t.OutputOf<Input<K>>) => Promise<t.OutputOf<Output<K>>>
 }
