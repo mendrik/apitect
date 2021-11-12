@@ -45,7 +45,7 @@ export const VisualTree = ({ children }: Jsx) => {
     [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
     [propEq('key', 'Delete'), () => deleteNode(selectedNode)],
     [propEq('key', 'n'), () => openModal('new-node')],
-    [propEq('key', 's'), () => openModal('node-settings')]
+    [propEq('key', 'Enter'), () => openModal('node-settings')]
   ]) as Fn
 
   return (

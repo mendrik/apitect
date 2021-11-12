@@ -22,7 +22,7 @@ export const Navigation = () => {
       <Navbar.Brand href="#home" tabIndex={-1}>
         <Logo className="logo" style={{ height: 32, marginTop: -8 }} />
       </Navbar.Brand>
-      <Navbar.Text className="editable">{document?.name}</Navbar.Text>
+      <Navbar.Text>{document?.name}</Navbar.Text>
       <Navbar.Toggle />
       <Navbar.Collapse className="justify-content-end">
         <Nav className="ml-auto">

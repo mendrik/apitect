@@ -14,7 +14,7 @@ import { failOn, failUnless } from '~shared/utils/failOn'
 import { promiseFn } from '~shared/utils/promise'
 
 import { config } from './config'
-import { collection, withTransaction } from './database'
+import { collection, Collections, withTransaction } from './database'
 import { body, endpoint, noContent, user } from './endpoint'
 
 const pHashSync = promiseFn(hashSync)
@@ -26,13 +26,13 @@ const signedToken = ({ email, name }: Record<string, string>) =>
 
 const refreshToken = async (user: User): Promise<Token> => {
   const token = signedToken({ email: user.email, name: user.name })
-  await collection('users').updateOne({ email: user.email }, { $set: { token } })
+  await collection(Collections.users).updateOne({ email: user.email }, { $set: { token } })
   return { token }
 }
 
 const register = endpoint({ register: body(TRegister) }, ({ register }) =>
   withTransaction(async session => {
-    await collection('users')
+    await collection(Collections.users)
       .findOne({ email: register.email })
       .then(failUnless(isNil, httpError(409, 'validation.server.userExists', 'email')))
     if (register.passwordRepeat !== register.password) {
@@ -47,8 +47,11 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
     const token = {
       token: signedToken({ email: data.email, name: data.name })
     }
-    await collection('users').insertOne({ ...data, ...token, lastDocument: docId }, { session })
-    await collection('documents').insertOne(
+    await collection(Collections.users).insertOne(
+      { ...data, ...token, lastDocument: docId },
+      { session }
+    )
+    await collection(Collections.documents).insertOne(
       {
         id: docId,
         name: 'Unknown document',
@@ -68,7 +71,7 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
 
 const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } }) =>
   pHashSync(password, config.SALT).then(encryptedPassword =>
-    collection('users')
+    collection(Collections.users)
       .findOne({ email })
       .then(failOn(isNil, httpError(404, 'validation.server.userNotFound', 'email')))
       .then(
@@ -84,13 +87,13 @@ const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } })
 const forgotPassword = endpoint(
   { forgotPassword: body(TForgotPassword) },
   ({ forgotPassword: { email } }) =>
-    collection('users')
+    collection(Collections.users)
       .findOne({ email })
       .then(failOn(isNil, httpError(404, 'validation.server.userNotFound', 'email')))
 )
 
 const logout = endpoint({ user }, ({ user }) =>
-  collection('users')
+  collection(Collections.users)
     .updateOne({ email: user.email }, { $set: { token: null } })
     .then(noContent)
 )

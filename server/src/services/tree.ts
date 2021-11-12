@@ -5,7 +5,7 @@ import { Document } from '~shared/types/domain/document'
 import { Node, TNode } from '~shared/types/domain/tree'
 import { failOn } from '~shared/utils/failOn'
 
-import { collection } from './database'
+import { collection, Collections } from './database'
 import { getLastDocument } from './document'
 import { Send } from './websocket'
 
@@ -16,7 +16,7 @@ export const withTree =
       const tree = toTreeNode(doc.tree)
       const res = fn(tree)
       const docTree = decode(TNode)(res.self.extract())
-      return collection('documents')
+      return collection(Collections.documents)
         .findOneAndUpdate(
           { id: doc.id },
           { $set: { tree: docTree } },

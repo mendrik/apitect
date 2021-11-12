@@ -14,7 +14,7 @@ export const ProjectTreeHeader = () => {
   const { selectedNode } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
-      <div className="text-truncate editable">Project tree</div>
+      <div className="text-truncate">Project tree</div>
       <HGrid>
         <WithTooltip tooltipText="Delete selected node" shortcut="Del">
           <Icon
@@ -26,7 +26,7 @@ export const ProjectTreeHeader = () => {
         <WithTooltip tooltipText="Create a new node" shortcut="N">
           <Icon icon={IconFolderPlus} onClick={() => openModal('new-node')} />
         </WithTooltip>
-        <WithTooltip tooltipText="Settings" shortcut="S">
+        <WithTooltip tooltipText="Settings" shortcut="↵">
           <Icon
             icon={IconSettings}
             disabled={selectedNode == null}
