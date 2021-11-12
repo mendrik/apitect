@@ -3,7 +3,6 @@ import { useStore } from 'effector-react'
 import React from 'react'
 
 import { openModal } from '../../events/modals'
-import { deleteNode } from '../../events/tree'
 import { ModalNames } from '../../shared/types/modals'
 import $appStore from '../../stores/$appStore'
 import { HGrid } from '../generic/HGrid'
@@ -12,7 +11,7 @@ import { Scale, Tuple } from '../generic/Tuple'
 import { WithTooltip } from '../generic/WithTooltip'
 
 export const ProjectTreeHeader = () => {
-  const { selectedNode } = useStore($appStore)
+  const { selectedNode, api } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate">Project tree</div>
@@ -20,7 +19,7 @@ export const ProjectTreeHeader = () => {
         <WithTooltip tooltipText="Delete selected node" shortcut="Del">
           <Icon
             icon={IconTrash}
-            onClick={() => deleteNode(selectedNode!)}
+            onClick={() => api.nodeDelete(selectedNode!.id)}
             disabled={selectedNode == null}
           />
         </WithTooltip>

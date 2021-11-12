@@ -4,7 +4,7 @@ import { isTrue } from 'ramda-adjunct'
 import React from 'react'
 
 import { openModal } from '../../events/modals'
-import { closeNode, deleteNode, openNode, selectNode } from '../../events/tree'
+import { closeNode, openNode, selectNode } from '../../events/tree'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/tree'
@@ -28,7 +28,7 @@ const visibleNodes = (root: Node, openNodes: Record<string, boolean>) =>
     .slice(1)
 
 export const VisualTree = ({ children }: Jsx) => {
-  const { tree, openNodes, selectedNode } = useStore($appStore)
+  const { tree, openNodes, selectedNode, api } = useStore($appStore)
   const visualNodes = () => visibleNodes(tree, openNodes)
 
   useDefinedEffect(
@@ -44,7 +44,7 @@ export const VisualTree = ({ children }: Jsx) => {
     [propEq('key', 'ArrowUp'), pipe(prevNode, selectNode)],
     [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
     [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
-    [propEq('key', 'Delete'), () => deleteNode(selectedNode)],
+    [propEq('key', 'Delete'), () => api.nodeDelete(selectedNode!.id)],
     [propEq('key', 'n'), () => openModal(ModalNames.NEW_NODE)],
     [propEq('key', 'Enter'), () => openModal(ModalNames.NODE_SETTINGS)]
   ]) as Fn

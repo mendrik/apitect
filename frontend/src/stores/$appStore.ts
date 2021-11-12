@@ -86,6 +86,7 @@ $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
     get(target, method: ApiMethod) {
       return <T>(input: T) => {
         if (method in ApiSchema) {
+          logger.info(`Sent: ${method}`, input)
           const apiCall = decode(TApiRequest)({
             id: uuid(),
             method,
