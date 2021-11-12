@@ -26,7 +26,7 @@ export const ProjectTreeHeader = () => {
         <WithTooltip tooltipText="Create a new node" shortcut="N">
           <Icon icon={IconFolderPlus} onClick={() => openModal('new-node')} />
         </WithTooltip>
-        <WithTooltip tooltipText="Settings" shortcut="↵">
+        <WithTooltip tooltipText="Settings" shortcut="Enter">
           <Icon
             icon={IconSettings}
             disabled={selectedNode == null}
