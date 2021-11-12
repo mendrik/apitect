@@ -1,6 +1,6 @@
 import { Any, OutputOf } from 'io-ts'
 import { decode } from 'shared/codecs/decode'
-import { TUiUser, User } from 'shared/types/domain/user'
+import { TUser } from 'shared/types/domain/user'
 import { TEmpty } from 'shared/types/empty'
 import { ForgotPassword } from 'shared/types/forms/forgotPassword'
 import { Login } from 'shared/types/forms/login'
@@ -46,4 +46,4 @@ export const login = (data: Login) => post('login', TToken, data)
 export const forgotPassword = (data: ForgotPassword) => put('forgot-password', TEmpty, data)
 export const register = (data: Register) => post('register', TToken, data)
 
-export const whoAmI = (): Promise<User> => get('whoami', TUiUser as Any).catch(logAndRecover(null))
+export const whoAmI = () => get('whoami', TUser).catch(logAndRecover(null))
