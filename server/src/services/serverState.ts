@@ -23,7 +23,7 @@ type ServerState = {
 export const eventMap: EventMap = {
   NEW_NODE: createEvent(),
   NODE_SETTINGS: createEvent(),
-  DEL_NODE: createEvent(),
+  DELETE_NODE: createEvent(),
   DOCUMENT: createEvent()
 }
 

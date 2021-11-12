@@ -19,14 +19,12 @@ const NodeCreatedResponse = t.type({
   payload: TNode
 })
 
-const TNodeDelete = t.type({
-  position: t.number,
-  parentNode: idCodec
-})
-
 const NodeDeleteResponse = t.type({
   type: t.literal('NODE_DELETED'),
-  payload: TNodeDelete
+  payload: t.type({
+    position: t.number,
+    parentNode: idCodec
+  })
 })
 
 export const TServerMessage = t.union([

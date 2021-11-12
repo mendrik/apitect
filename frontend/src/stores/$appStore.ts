@@ -97,7 +97,7 @@ $appStore.on(openNodeState, (state, [node, open]) => ({
 }))
 $appStore.on(
   deleteNode,
-  send(node => ({ type: 'DEL_NODE', id: node.id }))
+  send(node => ({ type: 'DELETE_NODE', id: node.id }))
 )
 
 export default $appStore

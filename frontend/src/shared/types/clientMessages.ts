@@ -23,7 +23,7 @@ export const EditNodeSettings = t.intersection([
 ])
 
 export const DeleteNodeRequest = t.type({
-  type: t.literal('DEL_NODE'),
+  type: t.literal('DELETE_NODE'),
   id: idCodec
 })
 
