@@ -5,7 +5,8 @@ import { NodeType } from '../../domain/nodeType'
 
 export const TEnumSettings = t.type({
   nodeType: t.literal(NodeType.Enum),
-  name: nonEmptyString
+  name: nonEmptyString,
+  validation: t.partial({})
 })
 
 export type EnumSettings = t.TypeOf<typeof TEnumSettings>

@@ -3,6 +3,7 @@ import * as t from 'io-ts'
 import { emailCodec } from '../../codecs/emailCodec'
 import { idCodec } from '../../codecs/idCodec'
 import { nonEmptyString } from '../../codecs/nonEmptyString'
+import { undefinedCodec } from '../../codecs/undefined'
 
 export const TUser = t.intersection([
   t.type({
@@ -12,7 +13,7 @@ export const TUser = t.intersection([
   }),
   t.partial({
     password: nonEmptyString,
-    token: t.union([t.string, t.undefined])
+    token: undefinedCodec(t.string)
   })
 ])
 

@@ -5,7 +5,8 @@ import { NodeType } from '../../domain/nodeType'
 
 export const TColorSettings = t.type({
   nodeType: t.literal(NodeType.Color),
-  name: nonEmptyString
+  name: nonEmptyString,
+  validation: t.partial({})
 })
 
 export type ColorSettings = t.TypeOf<typeof TColorSettings>

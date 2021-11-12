@@ -5,7 +5,8 @@ import { NodeType } from '../../domain/nodeType'
 
 export const TNumberSettings = t.type({
   nodeType: t.literal(NodeType.Number),
-  name: nonEmptyString
+  name: nonEmptyString,
+  validation: t.partial({})
 })
 
 export type NumberSettings = t.TypeOf<typeof TNumberSettings>

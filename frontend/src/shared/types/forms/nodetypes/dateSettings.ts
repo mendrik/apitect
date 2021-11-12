@@ -5,7 +5,8 @@ import { NodeType } from '../../domain/nodeType'
 
 export const TDateSettings = t.type({
   nodeType: t.literal(NodeType.Date),
-  name: nonEmptyString
+  name: nonEmptyString,
+  validation: t.partial({})
 })
 
 export type DateSettings = t.TypeOf<typeof TDateSettings>

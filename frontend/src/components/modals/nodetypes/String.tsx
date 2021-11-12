@@ -26,6 +26,12 @@ const String: ModalFC = ({ close }) => {
         autoFocus
         options={{ required: true }}
       />
+      <TextInput
+        name="validation.regexp"
+        label="modals.nodeSettings.string.regexp"
+        type="text"
+        options={{ required: false }}
+      />
     </SocketForm>
   )
 }

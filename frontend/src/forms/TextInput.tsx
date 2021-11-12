@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { path } from 'ramda'
 import React, { InputHTMLAttributes, useContext, useEffect } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
@@ -52,7 +53,11 @@ export const TextInput = ({
     <div className={clsx('form-floating mb-3 has-validation', containerClassNames)}>
       <input
         type={type}
-        className={clsx('form-control ', { 'is-invalid': errors?.[name] != null }, className)}
+        className={clsx(
+          'form-control ',
+          { 'is-invalid': path(name.split('.'), errors) },
+          className
+        )}
         id={inpId}
         autoComplete="off"
         {...reg}

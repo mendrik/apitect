@@ -41,7 +41,10 @@ const en = {
         }
       },
       nodeSettings: {
-        title: 'Settings: {{ property }}'
+        title: 'Settings: {{ property }}',
+        string: {
+          regexp: 'Regular expression'
+        }
       }
     },
     navbar: {
@@ -57,9 +60,12 @@ const en = {
         password: 'Password',
         passwordRepeat: 'Repeat password',
         rememberMe: 'Remember me',
-        submit: 'Login'
+        submit: 'Login',
+        regexp: 'Regular Expression'
       },
       validation: {
+        regexp: '$t(form.fields.{{ field }}) has invalid format',
+        validRegExp: '$t(form.fields.{{ field }}) is not a valid regular expression',
         validEmail: '$t(form.fields.{{ field }}) is not valid',
         required: '$t(form.fields.{{ field }}) is required',
         password: '$t(form.fields.{{ field }}) must be at least 4 characters long'

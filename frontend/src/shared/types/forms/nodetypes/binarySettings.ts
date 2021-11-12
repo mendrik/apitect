@@ -5,7 +5,8 @@ import { NodeType } from '../../domain/nodeType'
 
 export const TBinarySettings = t.type({
   nodeType: t.literal(NodeType.Binary),
-  name: nonEmptyString
+  name: nonEmptyString,
+  validation: t.partial({})
 })
 
 export type BinarySettings = t.TypeOf<typeof TBinarySettings>
