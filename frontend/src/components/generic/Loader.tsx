@@ -1,12 +1,13 @@
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
-import React, { FC, HTMLAttributes } from 'react'
+import React, { HTMLAttributes } from 'react'
 
 import { ReactComponent as LoadingSvg } from '../../assets/loader.svg'
+import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = HTMLAttributes<HTMLDivElement>
 
-export const Loader: FC<OwnProps> = ({ className, ...props }) => {
+export const Loader = ({ className, ...props }: Jsx<OwnProps>) => {
   return (
     <div
       className={clsx('d-flex w-100 justify-content-center align-items-center', className)}

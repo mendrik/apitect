@@ -2,13 +2,14 @@ import { IconCircleCheck, IconCirclePlus, TablerIcon as IconProp } from '@tabler
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { pipe } from 'ramda'
-import React, { FC, HTMLAttributes, KeyboardEvent, useRef } from 'react'
+import React, { HTMLAttributes, KeyboardEvent, useRef } from 'react'
 import styled from 'styled-components'
 
 import { horizontalGrowth } from '../../animations/horizontalGrowth'
 import { ReactComponent as Loader } from '../../assets/inlineLoader.svg'
 import { useKeyTriggers } from '../../hooks/useKeyTriggers'
 import { useView } from '../../hooks/useView'
+import { Jsx } from '../../shared/types/generic'
 import { Icon } from './Icon'
 import { Scale, Tuple } from './Tuple'
 
@@ -40,7 +41,7 @@ enum View {
   Confirming
 }
 
-const NewItem: FC<OwnProps> = ({ createTask, className, icon, ...props }) => {
+const NewItem = ({ createTask, className, icon, ...props }: Jsx<OwnProps>) => {
   const { initialView, editView, confirmingView, view } = useView(View)
   const iconRef = useRef<HTMLButtonElement>(null)
   const focusIcon = () => iconRef.current?.focus()

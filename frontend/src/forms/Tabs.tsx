@@ -1,7 +1,8 @@
 import clsx from 'clsx'
-import React, { Children, createContext, FC, HTMLAttributes, ReactElement, useState } from 'react'
+import React, { Children, createContext, HTMLAttributes, ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { Jsx } from '../shared/types/generic'
 import { OwnProps as TabProps } from './Tab'
 
 type TabContext = {
@@ -15,7 +16,7 @@ type OwnProps = {
   children: ReadonlyArray<ReactElement<TabProps>>
 } & HTMLAttributes<HTMLDivElement>
 
-export const Tabs: FC<OwnProps> = ({ initialTab = 0, children, ...props }) => {
+export const Tabs = ({ initialTab = 0, children, ...props }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const [activeTab, setTab] = useState(initialTab)
   return (

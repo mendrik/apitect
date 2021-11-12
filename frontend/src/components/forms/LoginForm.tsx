@@ -1,10 +1,10 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Login, TLogin } from 'shared/types/forms/login'
-import { Fn } from 'shared/types/generic'
+import { Fn, Jsx } from 'shared/types/generic'
 import { match } from 'ts-pattern'
 
 import { userContext } from '../../contexts/user'
@@ -27,7 +27,7 @@ enum Views {
   FORGOT_PASSWORD
 }
 
-export const LoginForm: FC<OwnProps> = ({ close }) => {
+export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const [view, setView] = useState<Views>(Views.LOGIN)
   const form = useForm<Login>({

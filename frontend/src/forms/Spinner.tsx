@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { FC, useContext } from 'react'
-import { Milliseconds } from 'shared/types/generic'
+import React, { useContext } from 'react'
+import { Jsx, Milliseconds } from 'shared/types/generic'
 
 import { progressContext } from '../contexts/progress'
 
@@ -9,7 +9,7 @@ type OwnProps = {
   promise: string
 }
 
-export const Spinner: FC<OwnProps> = ({ promise, spinnerDelay = 0.4 }) => {
+export const Spinner = ({ promise, spinnerDelay = 0.4 }: Jsx<OwnProps>) => {
   const { isWorking } = useContext(progressContext)
 
   return (

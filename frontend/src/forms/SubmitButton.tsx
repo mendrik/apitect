@@ -1,7 +1,7 @@
-import React, { FC, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
-import { Milliseconds } from 'shared/types/generic'
+import { Jsx, Milliseconds } from 'shared/types/generic'
 
 import { progressContext } from '../contexts/progress'
 import { formWrappingContext } from './Form'
@@ -12,7 +12,7 @@ type OwnProps = {
   spinnerDelay?: Milliseconds
 }
 
-export const SubmitButton: FC<OwnProps> = ({ localeKey, spinnerDelay = 0.4 }) => {
+export const SubmitButton = ({ localeKey, spinnerDelay = 0.4 }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const { promise } = useContext(formWrappingContext)
   const { isWorking } = useContext(progressContext)

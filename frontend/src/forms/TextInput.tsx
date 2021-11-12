@@ -1,11 +1,12 @@
 import clsx from 'clsx'
-import React, { FC, InputHTMLAttributes, useContext, useEffect } from 'react'
+import React, { InputHTMLAttributes, useContext, useEffect } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { progressContext } from '../contexts/progress'
 import { useId } from '../hooks/useId'
+import { Jsx } from '../shared/types/generic'
 import { ErrorInfo } from './ErrorInfo'
 import { formWrappingContext } from './Form'
 
@@ -16,7 +17,7 @@ type OwnProps = {
   containerClassNames?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const TextInput: FC<OwnProps> = ({
+export const TextInput = ({
   name,
   label,
   options,
@@ -26,7 +27,7 @@ export const TextInput: FC<OwnProps> = ({
   containerClassNames,
   autoFocus,
   ...props
-}) => {
+}: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const {
     watch,

@@ -4,6 +4,7 @@ import { mapIndexed } from 'ramda-adjunct'
 import React, { FC, ReactNode, useRef } from 'react'
 import styled from 'styled-components'
 
+import { Jsx } from '../../shared/types/generic'
 import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
@@ -84,7 +85,7 @@ const ColResizer = styled.div`
 
 const bodyStyle = document.body.style
 
-export const ResizableTable: FC<OwnProps> = ({ columns, children }) => {
+export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
 
   console.assert(columns.length === children.length, 'Children count must match column count')

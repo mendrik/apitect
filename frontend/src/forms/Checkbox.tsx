@@ -1,15 +1,16 @@
-import React, { FC, InputHTMLAttributes } from 'react'
+import React, { InputHTMLAttributes } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { useId } from '../hooks/useId'
+import { Jsx } from '../shared/types/generic'
 
 type OwnProps = {
   label: TFuncKey
   name: string
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const Checkbox: FC<OwnProps> = ({ label, checked, name, value, ...props }) => {
+export const Checkbox = ({ label, checked, name, value, ...props }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const { register } = useFormContext()
   const inpId = useId()

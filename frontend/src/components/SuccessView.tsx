@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import robot from '../assets/success.png'
+import { Jsx } from '../shared/types/generic'
 import { Html } from './generic/Html'
 
 type OwnProps = {
@@ -10,7 +11,7 @@ type OwnProps = {
   body: TFuncKey
 }
 
-export const SuccessView: FC<OwnProps> = ({ title, body, children }) => {
+export const SuccessView = ({ title, body, children }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   return (
     <Container fluid className="p-0">

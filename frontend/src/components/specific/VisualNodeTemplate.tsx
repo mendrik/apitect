@@ -2,7 +2,7 @@ import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
-import React, { FC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { closeNode, openNode, selectNode } from '../../events/tree'
@@ -40,7 +40,7 @@ const NodeGrid = styled.div`
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: footer }) => {
+export const VisualNodeTemplate = ({ depth = 0, node, children: footer }: Jsx<OwnProps>) => {
   const { openNodes } = useStore($appStore)
   const hasChildren = isNotNilOrEmpty(node.children)
   const { selectedNode } = useStore($appStore)

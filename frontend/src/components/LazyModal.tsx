@@ -1,17 +1,15 @@
 import { always, prop } from 'ramda'
-import React, { FC, useState } from 'react'
+import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { Fn } from 'shared/types/generic'
+import { Fn, Jsx } from 'shared/types/generic'
 import { removeParams } from 'shared/utils/url'
 
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 
-export type ModalFC = FC<{
-  close: Fn
-}>
+export type ModalFC = ({ close }: { close: Fn }) => JSX.Element
 
 type OwnProps = {
   from: () => Promise<{ default: ModalFC }>
@@ -20,7 +18,7 @@ type OwnProps = {
   titleOptions?: Record<string, string>
 }
 
-export const LazyModal: FC<OwnProps> = ({ name, from, title, titleOptions }) => {
+export const LazyModal = ({ name, from, title, titleOptions }: Jsx<OwnProps>) => {
   const { modal } = useQueryParams()
   const modalMatch = modal === name
 
