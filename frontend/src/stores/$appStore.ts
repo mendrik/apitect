@@ -4,7 +4,7 @@ import { Document } from 'shared/types/domain/document'
 import { v4 as uuid } from 'uuid'
 
 import { apiResponse, socketEstablished } from '../events/messages'
-import { documentLoaded, openNodeState, selectNode } from '../events/tree'
+import { createNode, deleteNode, documentLoaded, openNodeState, selectNode } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Api, ApiMethod, ApiSchema } from '../shared/api'
 import { decode } from '../shared/codecs/decode'
@@ -49,6 +49,23 @@ const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
       }
     : { ...state, selectedNode: undefined }
 
+$appStore.on(deleteNode, (state, id) => {
+  state.api.nodeDelete(id).then(res => {
+    const uiRoot = uiTree(state.tree)
+    const parent = uiRoot.first(propEq('id', res.parentNode))
+    const node = parent?.children[res.position - 1] ?? parent
+    return { ...state, ...selectedNodeState(state, node?.value) }
+  })
+})
+
+$appStore.on(createNode, (state, newNode) => {
+  state.api.nodeCreate(newNode).then(res => {
+    const uiRoot = uiTree(state.tree)
+    const node = uiRoot.first(propEq('id', res.id))
+    return { ...state, ...selectedNodeState(state, node?.value) }
+  })
+})
+
 $appStore.on(documentLoaded, (state, doc) => {
   const tree = doc.tree
   const uiRoot = uiTree(tree)
@@ -63,25 +80,6 @@ $appStore.on(documentLoaded, (state, doc) => {
     selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
   }
 })
-
-/*
-  switch (res.method) {
-    case 'document':
-    case 'nodeCreate': {
-      const uiRoot = uiTree(state.tree)
-      const node = uiRoot.first(propEq('id', res.payload.id))
-      return { ...state, ...selectedNodeState(state, node?.value) }
-    }
-    case 'nodeDelete': {
-      const uiRoot = uiTree(state.tree)
-      const parent = uiRoot.first(propEq('id', res.payload.parentNode))
-      const node = parent?.children[res.payload.position - 1] ?? parent
-      return { ...state, ...selectedNodeState(state, node?.value) }
-    }
-    default:
-      return state
-  }
-*/
 
 $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
   ...state,
