@@ -1,12 +1,12 @@
 import * as t from 'io-ts'
 
-import { nonEmptyString } from '../../../codecs/nonEmptyString'
-import { NodeType } from '../../domain/nodeType'
+import { TNodeSettingsBase } from './nodeSettingsBase'
 
-export const TEnumSettings = t.type({
-  nodeType: t.literal(NodeType.Enum),
-  name: nonEmptyString,
-  validation: t.partial({})
-})
+export const TEnumSettings = t.intersection([
+  TNodeSettingsBase,
+  t.type({
+    validation: t.partial({})
+  })
+])
 
 export type EnumSettings = t.TypeOf<typeof TEnumSettings>

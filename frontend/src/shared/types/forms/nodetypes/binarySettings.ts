@@ -1,12 +1,12 @@
 import * as t from 'io-ts'
 
-import { nonEmptyString } from '../../../codecs/nonEmptyString'
-import { NodeType } from '../../domain/nodeType'
+import { TNodeSettingsBase } from './nodeSettingsBase'
 
-export const TBinarySettings = t.type({
-  nodeType: t.literal(NodeType.Binary),
-  name: nonEmptyString,
-  validation: t.partial({})
-})
+export const TBinarySettings = t.intersection([
+  TNodeSettingsBase,
+  t.type({
+    validation: t.partial({})
+  })
+])
 
 export type BinarySettings = t.TypeOf<typeof TBinarySettings>

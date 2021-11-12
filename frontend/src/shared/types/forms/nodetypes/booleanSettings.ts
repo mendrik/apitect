@@ -1,12 +1,12 @@
 import * as t from 'io-ts'
 
-import { nonEmptyString } from '../../../codecs/nonEmptyString'
-import { NodeType } from '../../domain/nodeType'
+import { TNodeSettingsBase } from './nodeSettingsBase'
 
-export const TBooleanSettings = t.type({
-  nodeType: t.literal(NodeType.Boolean),
-  name: nonEmptyString,
-  validation: t.partial({})
-})
+export const TBooleanSettings = t.intersection([
+  TNodeSettingsBase,
+  t.type({
+    validation: t.partial({})
+  })
+])
 
 export type BooleanSettings = t.TypeOf<typeof TBooleanSettings>

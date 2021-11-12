@@ -1,12 +1,12 @@
 import * as t from 'io-ts'
 
-import { nonEmptyString } from '../../../codecs/nonEmptyString'
-import { NodeType } from '../../domain/nodeType'
+import { TNodeSettingsBase } from './nodeSettingsBase'
 
-export const TArraySettings = t.type({
-  nodeType: t.literal(NodeType.Array),
-  name: nonEmptyString,
-  validation: t.partial({})
-})
+export const TArraySettings = t.intersection([
+  TNodeSettingsBase,
+  t.type({
+    validation: t.partial({})
+  })
+])
 
 export type ArraySettings = t.TypeOf<typeof TArraySettings>

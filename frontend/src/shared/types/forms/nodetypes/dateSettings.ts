@@ -1,12 +1,12 @@
 import * as t from 'io-ts'
 
-import { nonEmptyString } from '../../../codecs/nonEmptyString'
-import { NodeType } from '../../domain/nodeType'
+import { TNodeSettingsBase } from './nodeSettingsBase'
 
-export const TDateSettings = t.type({
-  nodeType: t.literal(NodeType.Date),
-  name: nonEmptyString,
-  validation: t.partial({})
-})
+export const TDateSettings = t.intersection([
+  TNodeSettingsBase,
+  t.type({
+    validation: t.partial({})
+  })
+])
 
 export type DateSettings = t.TypeOf<typeof TDateSettings>

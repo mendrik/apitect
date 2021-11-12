@@ -1,12 +1,12 @@
 import * as t from 'io-ts'
 
-import { nonEmptyString } from '../../../codecs/nonEmptyString'
-import { NodeType } from '../../domain/nodeType'
+import { TNodeSettingsBase } from './nodeSettingsBase'
 
-export const TColorSettings = t.type({
-  nodeType: t.literal(NodeType.Color),
-  name: nonEmptyString,
-  validation: t.partial({})
-})
+export const TColorSettings = t.intersection([
+  TNodeSettingsBase,
+  t.type({
+    validation: t.partial({})
+  })
+])
 
 export type ColorSettings = t.TypeOf<typeof TColorSettings>

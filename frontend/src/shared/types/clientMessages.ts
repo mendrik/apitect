@@ -2,7 +2,7 @@ import * as t from 'io-ts'
 
 import { idCodec } from '../codecs/idCodec'
 import { TNewNode } from './forms/newNode'
-import { TNodeSettings } from './forms/nodetypes'
+import { TNodeSettings } from './forms/nodetypes/nodeSettings'
 
 const DocumentRequest = t.type({
   type: t.literal('DOCUMENT')

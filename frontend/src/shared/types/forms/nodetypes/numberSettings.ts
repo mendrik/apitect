@@ -1,12 +1,12 @@
 import * as t from 'io-ts'
 
-import { nonEmptyString } from '../../../codecs/nonEmptyString'
-import { NodeType } from '../../domain/nodeType'
+import { TNodeSettingsBase } from './nodeSettingsBase'
 
-export const TNumberSettings = t.type({
-  nodeType: t.literal(NodeType.Number),
-  name: nonEmptyString,
-  validation: t.partial({})
-})
+export const TNumberSettings = t.intersection([
+  TNodeSettingsBase,
+  t.type({
+    validation: t.partial({})
+  })
+])
 
 export type NumberSettings = t.TypeOf<typeof TNumberSettings>
