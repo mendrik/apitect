@@ -1,10 +1,10 @@
 import { isNil, propEq, propSatisfies } from 'ramda'
 import { ChildOperation } from '~shared/algebraic/treeNode'
+import { ServerApiMethod } from '~shared/apiResponse'
 import { Node } from '~shared/types/domain/tree'
 import { failOn } from '~shared/utils/failOn'
 
 import { validateTree, withTree } from '../services'
-import { ServerApiMethod } from './serverApi'
 
 export const nodeDelete: ServerApiMethod<'nodeDelete'> = ({ respond, email, payload: id }) =>
   withTree(

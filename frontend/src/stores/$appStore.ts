@@ -7,7 +7,7 @@ import { apiResponse, socketEstablished } from '../events/messages'
 import { openNodeState, selectNode } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Api, ApiSchema } from '../shared/api'
-import { ApiCallRequest } from '../shared/types/apiCall'
+import { ApiRequest } from '../shared/types/apiCall'
 import { Node } from '../shared/types/domain/tree'
 import { Maybe } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
@@ -85,7 +85,7 @@ $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
     get(target, method: keyof ApiSchema) {
       return function (input: any) {
         if (method in ApiSchema) {
-          const apiCall: ApiCallRequest = {
+          const apiCall: ApiRequest = {
             id: uuid(),
             input,
             method

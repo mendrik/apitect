@@ -3,7 +3,6 @@ import Cors from 'fastify-cors'
 import Ws from 'fastify-websocket'
 import { logger } from '~shared/utils/logger'
 
-import './api'
 import { initDatabase } from './services'
 import { initAuthentication } from './services/authentication'
 import { config } from './services/config'

@@ -2,21 +2,26 @@ import { FastifyInstance } from 'fastify'
 import { SocketStream } from 'fastify-websocket'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
-import { Api, ApiSchema } from '~shared/api'
+import { ApiMethod } from '~shared/api'
+import { Respond, ServerApiMethod, TApiResponse } from '~shared/apiResponse'
 import { decode } from '~shared/codecs/decode'
-import { ApiCallRequest, TApiCallRequest } from '~shared/types/apiCall'
+import { TApiRequest } from '~shared/types/apiRequest'
 import { logger } from '~shared/utils/logger'
 
-import { apiMapping, ServerApiMethod, TApiResponse } from '../api/serverApi'
+import { apiMapping } from '../api/serverApi'
 import { config } from './config'
 
-export type Respond = <T extends keyof ApiSchema>(payload: ReturnType<Api[T]>) => void
-
 const openWebsocket = (connection: SocketStream) => {
-  const respond: Respond = response => {
-    const validMessage = decode(TApiResponse)(response)
-    connection.socket.send(JSON.stringify(validMessage))
-  }
+  const response: <K extends ApiMethod>(id: string, method: K) => Respond<K> =
+    (id, method) => payload => {
+      const validMessage = decode(TApiResponse)({
+        id,
+        method,
+        payload
+      })
+      connection.socket.send(JSON.stringify(validMessage))
+      return payload
+    }
   try {
     const { email, name } = decode(t.type({ email: t.string, name: t.string }))(
       verify(connection.socket.protocol, `${config.TOKEN_KEY}`)
@@ -24,10 +29,14 @@ const openWebsocket = (connection: SocketStream) => {
     connection.socket.on('message', (buffer: Buffer) => {
       try {
         const data = JSON.parse(buffer.toString('utf-8'))
-        const apiCallRequest: ApiCallRequest = decode(TApiCallRequest)(data)
-        const apiCall: ServerApiMethod<keyof ApiSchema> = apiMapping[apiCallRequest.method]
-        logger.info(`${name} [${email}]/${apiCallRequest.method}:`, apiCallRequest.input)
-        void apiCall({ email, respond, payload: apiCallRequest.input })
+        const apiRequest = decode(TApiRequest)(data)
+        const apiCall: ServerApiMethod<typeof apiRequest.method> = apiMapping[apiRequest.method]
+        logger.info(`${name} [${email}]/${apiRequest.method}:`, apiRequest.payload)
+        const respond: Respond<typeof apiRequest.method> = response(
+          apiRequest.id,
+          apiRequest.method
+        )
+        void apiCall({ email, respond, payload: apiRequest.payload })
       } catch (e) {
         logger.error('Error in socket', e)
       }

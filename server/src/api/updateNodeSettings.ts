@@ -1,7 +1,7 @@
 import { assoc, propEq } from 'ramda'
+import { ServerApiMethod } from '~shared/apiResponse'
 
 import { withTree } from '../services'
-import { ServerApiMethod } from './serverApi'
 
 export const updateNodeSettings: ServerApiMethod<'updateNodeSettings'> = ({
   respond,

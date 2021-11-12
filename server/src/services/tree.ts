@@ -1,5 +1,7 @@
 import { always, isNil, prop } from 'ramda'
 import { ChildOperation, TreeNode } from '~shared/algebraic/treeNode'
+import { ApiMethod } from '~shared/api'
+import { Respond } from '~shared/apiResponse'
 import { decode } from '~shared/codecs/decode'
 import { Document } from '~shared/types/domain/document'
 import { Node, TNode } from '~shared/types/domain/tree'
@@ -7,10 +9,9 @@ import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from './database'
 import { getLastDocument } from './document'
-import { Respond } from './websocket'
 
 export const withTree =
-  (send: Respond, email: string) =>
+  (respond: Respond<ApiMethod>, email: string) =>
   <T extends Node>(fn: (root: TreeNode<Node>) => ChildOperation<T>): Promise<ChildOperation<T>> =>
     getLastDocument(email).then(doc => {
       const tree = toTreeNode(doc.tree)
@@ -24,7 +25,7 @@ export const withTree =
         )
         .then(prop('value'))
         .then(failOn<Document>(isNil, 'document not found'))
-        .then(send('DOCUMENT'))
+        .then(respond)
         .then(always(res))
     })
 

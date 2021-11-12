@@ -1,9 +1,9 @@
 import { isNil } from 'ramda'
+import { ServerApiMethod } from '~shared/apiResponse'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from '../services/database'
-import { ServerApiMethod } from './serverApi'
 
 export const nodeSettings: ServerApiMethod<'nodeSettings'> = ({ respond, email, payload: id }) =>
   collection(Collections.nodeSettings)
