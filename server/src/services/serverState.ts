@@ -24,7 +24,8 @@ export const eventMap: EventMap = {
   NEW_NODE: createEvent(),
   NODE_SETTINGS: createEvent(),
   DELETE_NODE: createEvent(),
-  DOCUMENT: createEvent()
+  DOCUMENT: createEvent(),
+  REQUEST_MODAL_PAYLOAD: createEvent()
 }
 
 export const serverState = createStore<ServerState>({

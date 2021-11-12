@@ -9,6 +9,7 @@ import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/tree'
 import { Fn, Jsx, Maybe } from '../../shared/types/generic'
+import { ModalNames } from '../../shared/types/modals'
 import { next, prev } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
 import { preventDefault } from '../../utils/preventDefault'
@@ -44,8 +45,8 @@ export const VisualTree = ({ children }: Jsx) => {
     [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
     [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
     [propEq('key', 'Delete'), () => deleteNode(selectedNode)],
-    [propEq('key', 'n'), () => openModal('new-node')],
-    [propEq('key', 'Enter'), () => openModal('node-settings')]
+    [propEq('key', 'n'), () => openModal(ModalNames.NEW_NODE)],
+    [propEq('key', 'Enter'), () => openModal(ModalNames.NODE_SETTINGS)]
   ]) as Fn
 
   return (

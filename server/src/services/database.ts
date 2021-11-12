@@ -18,7 +18,7 @@ const dbName = `${config.MONGO_INITDB_DATABASE}`
 export enum Collections {
   users = 'users',
   documents = 'documents',
-  nodeSettings = 'node-settings'
+  nodeSettings = 'nodeSettings'
 }
 
 export type CollectionMap = {
