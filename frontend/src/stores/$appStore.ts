@@ -4,7 +4,7 @@ import { Document } from 'shared/types/domain/document'
 import { v4 as uuid } from 'uuid'
 
 import { apiResponse, socketEstablished } from '../events/messages'
-import { openNodeState, selectNode } from '../events/tree'
+import { documentLoaded, openNodeState, selectNode } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Api, ApiMethod, ApiSchema } from '../shared/api'
 import { decode } from '../shared/codecs/decode'
@@ -49,21 +49,24 @@ const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
       }
     : { ...state, selectedNode: undefined }
 
-$appStore.on(apiResponse, (state, res) => {
+$appStore.on(documentLoaded, (state, doc) => {
+  const tree = doc.tree
+  const uiRoot = uiTree(tree)
+  return {
+    ...state,
+    document: omit(['tree'], doc),
+    tree: tree,
+    openNodes: {
+      ...state.openNodes,
+      [tree.id]: true
+    },
+    selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
+  }
+})
+
+/*
   switch (res.method) {
     case 'document':
-      const tree = res.payload.tree
-      const uiRoot = uiTree(tree)
-      return {
-        ...state,
-        document: omit(['tree'], res.payload),
-        tree: tree,
-        openNodes: {
-          ...state.openNodes,
-          [tree.id]: true
-        },
-        selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
-      }
     case 'nodeCreate': {
       const uiRoot = uiTree(state.tree)
       const node = uiRoot.first(propEq('id', res.payload.id))
@@ -78,21 +81,30 @@ $appStore.on(apiResponse, (state, res) => {
     default:
       return state
   }
-})
+*/
 
 $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
   ...state,
   api: new Proxy({} as any, {
     get(target, method: ApiMethod) {
-      return <T>(input: T) => {
+      return <T>(payload: T) => {
         if (method in ApiSchema) {
-          logger.info(`Sent: ${method}`, input)
+          logger.info(`Sent: ${method}`, payload)
+          const id = uuid()
           const apiCall = decode(TApiRequest)({
-            id: uuid(),
+            id,
             method,
-            input
+            payload
           })
           sendJsonMessage(apiCall)
+          return new Promise(resolve => {
+            const unsubscribe = apiResponse.watch(res => {
+              if (res.id === id) {
+                unsubscribe()
+                resolve(res.payload)
+              }
+            })
+          })
         } else {
           logger.error(`No ${method} in ApiSchema`, {})
         }

@@ -14,12 +14,17 @@ import { config } from './config'
 const openWebsocket = (connection: SocketStream) => {
   const response: <K extends ApiMethod>(id: string, method: K) => Respond<K> =
     (id, method) => payload => {
-      const validMessage = decode(TApiResponse)({
+      const res = {
         id,
         method,
         payload
-      })
-      connection.socket.send(JSON.stringify(validMessage))
+      }
+      try {
+        const validMessage = decode(TApiResponse)(res)
+        connection.socket.send(JSON.stringify(validMessage))
+      } catch (e) {
+        logger.error('Failed to respond', res)
+      }
       return payload
     }
   try {
