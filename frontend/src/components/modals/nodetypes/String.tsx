@@ -12,7 +12,7 @@ import $appStore from '../../../stores/$appStore'
 import { ModalFC } from '../../LazyModal'
 
 const String: ModalFC = ({ close }) => {
-  const { selectedNode } = useStore($appStore)
+  const { selectedNode, api } = useStore($appStore)
   const form = useForm<NodeSettings>({
     resolver: ioTsResolver(TStringSettings),
     defaultValues: {
@@ -23,7 +23,7 @@ const String: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm submitMessage="NODE_SETTINGS" form={form} onSuccess={close} close={close}>
+    <SocketForm form={form} onValid={api.updateNodeSettings} close={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"

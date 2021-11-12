@@ -9,12 +9,18 @@ import { LazyModal } from './LazyModal'
 
 export const Modals = () => {
   const navigate = useNavigate()
-  const { selectedNode } = useStore($appStore)
+  const { api, selectedNode } = useStore($appStore)
 
   useEffect(() => {
-    $appStore.watch(openModal, (_, modal) => navigate(addParams({ modal })))
-    $appStore.watch(closeModal, () => navigate(removeParams(['modal'])))
-  })
+    const openSub = $appStore.watch(openModal, (_, modal) => {
+      api.nodeSettings(selectedNode!.id).then(() => navigate(addParams({ modal })))
+    })
+    const closeSub = $appStore.watch(closeModal, () => navigate(removeParams(['modal'])))
+    return () => {
+      openSub()
+      closeSub()
+    }
+  }, [selectedNode])
 
   return (
     <div className="modal">

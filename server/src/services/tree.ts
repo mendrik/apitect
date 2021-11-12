@@ -7,10 +7,10 @@ import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from './database'
 import { getLastDocument } from './document'
-import { Send } from './websocket'
+import { Respond } from './websocket'
 
 export const withTree =
-  (send: Send, email: string) =>
+  (send: Respond, email: string) =>
   <T extends Node>(fn: (root: TreeNode<Node>) => ChildOperation<T>): Promise<ChildOperation<T>> =>
     getLastDocument(email).then(doc => {
       const tree = toTreeNode(doc.tree)

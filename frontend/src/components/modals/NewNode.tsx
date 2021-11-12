@@ -4,7 +4,6 @@ import { useStore } from 'effector-react'
 import { map, pipe, toLower, values, when } from 'ramda'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { SocketForm } from '../../forms/SocketForm'
@@ -47,8 +46,7 @@ const TypeGrid = styled.ul`
 `
 
 const NewNode: ModalFC = ({ close }) => {
-  const { t } = useTranslation()
-  const { selectedNode } = useStore($appStore)
+  const { selectedNode, api } = useStore($appStore)
 
   const form = useForm<NewNodeType>({
     resolver: ioTsResolver(TNewNode),
@@ -60,7 +58,7 @@ const NewNode: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm submitMessage="NEW_NODE" form={form} onSuccess={close} close={close}>
+    <SocketForm form={form} onValid={api.nodeCreate} close={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"

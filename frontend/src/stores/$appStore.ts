@@ -1,11 +1,13 @@
 import { createStore } from 'effector'
 import { omit, propEq } from 'ramda'
 import { Document } from 'shared/types/domain/document'
+import { v4 as uuid } from 'uuid'
 
-import { messageReceived, socketEstablished } from '../events/messages'
-import { deleteNode, openNodeState, selectNode } from '../events/tree'
+import { apiResponse, socketEstablished } from '../events/messages'
+import { openNodeState, selectNode } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
-import { ClientMessage } from '../shared/types/clientMessages'
+import { Api, ApiSchema } from '../shared/api'
+import { ApiCallRequest } from '../shared/types/apiCall'
 import { Node } from '../shared/types/domain/tree'
 import { Maybe } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
@@ -14,8 +16,8 @@ type AppState = {
   document: Omit<Document, 'tree'>
   tree: Node
   selectedNode: Maybe<Node>
-  sendMessage: <T extends ClientMessage>(message: T) => void
   openNodes: Record<string, boolean>
+  api: Api
 }
 
 const initial: AppState = {
@@ -28,7 +30,7 @@ const $appStore = createStore<AppState>(initial)
 
 const uiTree = (root: Node) => TreeNode.from<Node, 'children'>('children')(root)
 
-messageReceived.watch(payload => {
+apiResponse.watch(payload => {
   logger.debug(`Message: ${payload.type}`, payload)
 })
 
@@ -46,7 +48,7 @@ const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
       }
     : { ...state, selectedNode: undefined }
 
-$appStore.on(messageReceived, (state, message) => {
+$appStore.on(apiResponse, (state, message) => {
   switch (message.type) {
     case 'DOCUMENT':
       const tree = message.payload.tree
@@ -61,8 +63,6 @@ $appStore.on(messageReceived, (state, message) => {
         },
         selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
       }
-    case 'RESET':
-      return initial
     case 'NODE_CREATED': {
       const uiRoot = uiTree(state.tree)
       const node = uiRoot.first(propEq('id', message.payload.id))
@@ -81,29 +81,32 @@ $appStore.on(messageReceived, (state, message) => {
 
 $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
   ...state,
-  sendMessage: sendJsonMessage
-}))
-
-const send =
-  <T>(fn: (payload: NonNullable<T>) => ClientMessage) =>
-  (state: AppState, payload: T) => {
-    if (payload != null) {
-      state.sendMessage(fn(payload!))
+  api: new Proxy({} as any, {
+    get(target, method: keyof ApiSchema) {
+      return function (input: any) {
+        if (method in ApiSchema) {
+          const apiCall: ApiCallRequest = {
+            id: uuid(),
+            input,
+            method
+          }
+          sendJsonMessage(apiCall)
+        } else {
+          logger.error(`No ${method} in ApiSchema`, {})
+        }
+      }
     }
-    return state
-  }
+  })
+}))
 
 $appStore.on(selectNode, (state, selectedNode) => ({
   ...state,
   ...selectedNodeState(state, selectedNode!)
 }))
+
 $appStore.on(openNodeState, (state, [node, open]) => ({
   ...state,
   openNodes: { ...state.openNodes, [node.id]: open }
 }))
-$appStore.on(
-  deleteNode,
-  send(node => ({ type: 'DELETE_NODE', id: node.id }))
-)
 
 export default $appStore
