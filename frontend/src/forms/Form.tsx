@@ -1,7 +1,7 @@
 import { identity } from 'ramda'
-import React, { createContext, FC } from 'react'
-import { FormProvider, UseFormReturn } from 'react-hook-form'
-import { Fn, Maybe } from 'shared/types/generic'
+import React, { createContext } from 'react'
+import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form'
+import { Fn, Jsx, Maybe } from 'shared/types/generic'
 
 import { ExtendedError, State } from '../hooks/usePromise'
 import { useServerError } from '../hooks/useServerError'
@@ -23,13 +23,13 @@ export const formWrappingContext = createContext<FormWrappingContext>({
   error: undefined
 })
 
-export const Form: FC<OwnProps<any>> = ({
+export const Form = <T extends FieldValues>({
   form,
   successView: SuccessView,
   onSuccess = identity,
   state,
   children
-}) => {
+}: Jsx<OwnProps<T>>) => {
   useServerError(state.error, form.setError)
   return state.status === 'done' && SuccessView != null ? (
     SuccessView

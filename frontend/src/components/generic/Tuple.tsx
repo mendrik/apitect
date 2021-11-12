@@ -1,6 +1,8 @@
 import clsx from 'clsx'
-import React, { FC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+
+import { Jsx } from '../../shared/types/generic'
 
 export enum Scale {
   CONTENT = 'content',
@@ -41,13 +43,13 @@ const StyledTuple = styled.div`
   }
 `
 
-export const Tuple: FC<OwnProps> = ({
+export const Tuple = ({
   orientation = Orientation.Horizontal,
   first = Scale.AUTO,
   second = Scale.AUTO,
   gap = 0,
   children
-}) => (
+}: Jsx<OwnProps>) => (
   <StyledTuple
     className={clsx(
       `d-flex justify-content-between gap-${gap} align-items-center`,

@@ -6,7 +6,7 @@ import { Maybe } from '../../shared/types/generic'
 interface OwnProps<T> {
   list: Maybe<T[]>
   children: (list: NonEmptyArray<T>) => ReactElement | ReactElement[]
-  as?: React.FC
+  as?: (...args: any[]) => JSX.Element
 }
 
 const isNotEmptyArray = <T,>(list: any): list is NonEmptyArray<T> =>

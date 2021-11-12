@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { State } from '../hooks/usePromise'
+import { Jsx } from '../shared/types/generic'
 import { Spinner } from './Spinner'
 
 type OwnProps = {
@@ -11,11 +12,11 @@ type OwnProps = {
   state: State<any>
 }
 
-export const ConfirmButton: FC<OwnProps> = ({
+export const ConfirmButton = ({
   localeKey,
   confirmationKey = 'common.yesImSure',
   state
-}) => {
+}: Jsx<OwnProps>) => {
   const { t } = useTranslation()
 
   const title = (

@@ -1,8 +1,10 @@
 import clsx from 'clsx'
-import React, { FC } from 'react'
+import React from 'react'
 import { Button, ButtonProps } from 'react-bootstrap'
 
-export const ClickLink: FC<ButtonProps> = ({ className, children, ...props }) => (
+import { Jsx } from '../../shared/types/generic'
+
+export const ClickLink = ({ className, children, ...props }: Jsx<ButtonProps>) => (
   <Button variant="link" className={clsx('text-decoration-none', className)} {...props}>
     {children}
   </Button>

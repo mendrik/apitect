@@ -1,7 +1,7 @@
 import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
 import { max, multiply, pathOr, pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { FC, ReactNode, useRef } from 'react'
+import React, { ReactNode, useRef } from 'react'
 import styled from 'styled-components'
 
 import { Jsx } from '../../shared/types/generic'
@@ -35,7 +35,7 @@ type HeaderProps = {
   last: boolean
 }
 
-const Header: FC<HeaderProps> = ({ index, last, children }) => {
+const Header = ({ index, last, children }: Jsx<HeaderProps>) => {
   const id = `header-${index}`
   const { attributes, listeners, setNodeRef, node } = useDraggable({
     id
