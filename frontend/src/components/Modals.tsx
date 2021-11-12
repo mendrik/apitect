@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react'
-import React, { FC, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { openModal } from '../events/modals'
@@ -7,7 +7,7 @@ import { addParams } from '../shared/utils/url'
 import $appStore from '../stores/$appStore'
 import { LazyModal } from './LazyModal'
 
-export const Modals: FC = () => {
+export const Modals = () => {
   const navigate = useNavigate()
   const { selectedNode } = useStore($appStore)
 

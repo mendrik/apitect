@@ -1,4 +1,6 @@
-import React, { createContext, FC, useState } from 'react'
+import React, { createContext, useState } from 'react'
+
+import { Jsx } from '../shared/types/generic'
 
 type ProgressContext = {
   isWorking: (progress: string) => boolean
@@ -10,7 +12,7 @@ export const progressContext = createContext<ProgressContext>({
   setWorking: () => void 0
 })
 
-export const WithProgress: FC = ({ children }) => {
+export const WithProgress = ({ children }: Jsx) => {
   const [workMap, setWorkMap] = useState<Record<string, boolean>>({})
   return (
     <progressContext.Provider

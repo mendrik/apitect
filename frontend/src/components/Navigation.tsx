@@ -1,6 +1,6 @@
 import { IconLogin } from '@tabler/icons'
 import { useStore } from 'effector-react'
-import React, { FC, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -11,7 +11,7 @@ import { userContext } from '../contexts/user'
 import { useLogout } from '../hooks/useLogout'
 import $appStore from '../stores/$appStore'
 
-export const Navigation: FC = () => {
+export const Navigation = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const logout = useLogout()

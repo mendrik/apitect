@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { closeNode, openNode, selectNode } from '../../events/tree'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { Node } from '../../shared/types/domain/tree'
+import { Jsx } from '../../shared/types/generic'
 import $appStore from '../../stores/$appStore'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
@@ -36,8 +37,8 @@ const NodeGrid = styled.div`
   }
 `
 
-const RootWrap: FC = ({ children }) => <Ol>{children}</Ol>
-const ListWrap: FC = ({ children }) => <Ol className="ps-3">{children}</Ol>
+const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
+const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNodeTemplate: FC<OwnProps> = ({ depth = 0, node, children: footer }) => {
   const { openNodes } = useStore($appStore)

@@ -1,5 +1,7 @@
-import React, { FC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+
+import { Jsx } from '../shared/types/generic'
 
 const Panel = styled.div`
   min-height: 100vh;
@@ -14,6 +16,6 @@ const Panel = styled.div`
   }
 `
 
-export const AppFrame: FC = ({ children }) => {
+export const AppFrame = ({ children }: Jsx) => {
   return <Panel className="bg-light">{children}</Panel>
 }

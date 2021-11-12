@@ -1,5 +1,7 @@
-import React, { FC } from 'react'
+import React from 'react'
 
-export const Test: FC = ({ children }) => {
+import { Jsx } from '../shared/types/generic'
+
+export const Test = ({ children }: Jsx) => {
   return <div>{children}</div>
 }

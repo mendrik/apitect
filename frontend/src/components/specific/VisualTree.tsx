@@ -1,14 +1,14 @@
 import { useStore } from 'effector-react'
 import { cond, pipe, prop, propEq } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
-import React, { FC } from 'react'
+import React from 'react'
 
 import { openModal } from '../../events/modals'
 import { closeNode, deleteNode, openNode, selectNode } from '../../events/tree'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/tree'
-import { Fn, Maybe } from '../../shared/types/generic'
+import { Fn, Jsx, Maybe } from '../../shared/types/generic'
 import { next, prev } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
 import { preventDefault } from '../../utils/preventDefault'
@@ -26,7 +26,7 @@ const visibleNodes = (root: Node, openNodes: Record<string, boolean>) =>
     .map(prop('value'))
     .slice(1)
 
-export const VisualTree: FC = ({ children }) => {
+export const VisualTree = ({ children }: Jsx) => {
   const { tree, openNodes, selectedNode } = useStore($appStore)
   const visualNodes = () => visibleNodes(tree, openNodes)
 

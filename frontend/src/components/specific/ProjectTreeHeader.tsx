@@ -1,6 +1,6 @@
 import { IconFolderPlus, IconSettings, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
-import React, { FC } from 'react'
+import React from 'react'
 
 import { openModal } from '../../events/modals'
 import { deleteNode } from '../../events/tree'
@@ -10,7 +10,7 @@ import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'
 import { WithTooltip } from '../generic/WithTooltip'
 
-export const ProjectTreeHeader: FC = () => {
+export const ProjectTreeHeader = () => {
   const { selectedNode } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>

@@ -1,5 +1,5 @@
 import { DndContext } from '@dnd-kit/core'
-import React, { FC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { AppFrame } from './AppFrame'
@@ -27,7 +27,7 @@ const Scroller = styled.div`
   display: flex;
 `
 
-const Dashboard: FC = () => {
+const Dashboard = () => {
   return (
     <AppFrame>
       <Navigation />

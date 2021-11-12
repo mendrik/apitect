@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import { ReactComponent as ErrorSvg } from '../../assets/error.svg'
 import { Navigation } from '../Navigation'
 
-export const ErrorView: FC = () => {
+export const ErrorView = () => {
   return (
     <div className="min-vh-100 d-flex flex-column">
       <Navigation />

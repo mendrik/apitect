@@ -1,6 +1,6 @@
-import React, { createContext, FC } from 'react'
+import React, { createContext } from 'react'
 import { User } from 'shared/types/domain/user'
-import { Maybe } from 'shared/types/generic'
+import { Jsx, Maybe } from 'shared/types/generic'
 import { useLocalStorage } from 'usehooks-ts'
 
 import useInstantPromise from '../hooks/useInstantPromise'
@@ -21,7 +21,7 @@ export const userContext = createContext<UserContext>({
   setJwt: () => void 0
 })
 
-export const WithUser: FC = ({ children }) => {
+export const WithUser = ({ children }: Jsx) => {
   const [jwt, setJwt] = useLocalStorage<Maybe<string>>('jwt', undefined)
   const state = useInstantPromise('whoAmI', whoAmI, () => jwt != null)
   if (state.error) {

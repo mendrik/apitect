@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 
-export const NotLoggedIn: FC = () => {
+export const NotLoggedIn = () => {
   return (
     <AppFrame>
       <Navigation />

@@ -1,6 +1,8 @@
-import React, { Children, FC } from 'react'
+import React, { Children } from 'react'
 
-export const HGrid: FC = ({ children }) => {
+import { Jsx } from '../../shared/types/generic'
+
+export const HGrid = ({ children }: Jsx) => {
   return (
     <div
       className="d-grid"

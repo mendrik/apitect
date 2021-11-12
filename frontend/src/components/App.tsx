@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import { WithSocket } from '../contexts/socket'
@@ -8,7 +8,7 @@ import { NotLoggedIn } from './NotLoggedIn'
 import { ErrorView } from './generic/ErrorView'
 import { WaitForDocument } from './specific/WaitForDocument'
 
-const App: FC = () => {
+const App = () => {
   const userState = useContext(userContext)
   if (userState.status === 'running' || document == null) {
     return null

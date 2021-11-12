@@ -1,11 +1,12 @@
-import React, { FC, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 
 import { messageReceived, socketEstablished } from '../events/messages'
+import { Jsx } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
 import { userContext } from './user'
 
-export const WithSocket: FC = ({ children }) => {
+export const WithSocket = ({ children }: Jsx) => {
   const { jwt } = useContext(userContext)
   const { sendJsonMessage, readyState, lastMessage } = useWebSocket('ws://127.0.0.1:3001', {
     protocols: jwt!

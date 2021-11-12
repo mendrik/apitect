@@ -1,10 +1,10 @@
-import React, { FC, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Alert } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 
 import { formWrappingContext } from './Form'
 
-export const GenericError: FC = () => {
+export const GenericError = () => {
   const { error } = useContext(formWrappingContext)
   const { t } = useTranslation()
   return error && !('field' in error) ? (

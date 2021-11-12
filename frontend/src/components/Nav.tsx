@@ -1,6 +1,4 @@
-import { FC } from 'react'
-
-const Nav: FC = () => {
+const Nav = () => {
   return (
     <nav className="autohide navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
