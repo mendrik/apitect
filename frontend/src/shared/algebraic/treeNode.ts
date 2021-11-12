@@ -157,6 +157,27 @@ export class TreeNode<T> {
     }
   }
 
+  update = (pred: (v: T) => boolean, fn: (v: T) => T) => {
+    const node = this.first(pred)
+    if (node?.parent != null) {
+      const children = node.parent.children
+      const position = findIndex<TreeNode<T>>(n => pred(n.value))(children)
+      if (position !== -1) {
+        const newNode = TreeNode.of<T>(fn(children[position].value))
+        children.splice(position, 1, newNode)
+        return {
+          self: this,
+          parent: node.parent.value,
+          node: newNode.value,
+          position
+        }
+      }
+    }
+    return {
+      self: this
+    }
+  }
+
   toString = () =>
     JSON.stringify(
       this,

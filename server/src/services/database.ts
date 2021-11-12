@@ -7,6 +7,7 @@ import {
 import { keys, pluck } from 'ramda'
 import { Document } from '~shared/types/domain/document'
 import { User } from '~shared/types/domain/user'
+import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { ensure } from '~shared/utils/ramda'
 
 import { config } from './config'
@@ -23,6 +24,7 @@ export enum Collections {
 export type CollectionMap = {
   users: User
   documents: Document
+  nodeSettings: NodeSettings
 }
 
 export const connect = async (): Promise<MongoClient> => {
@@ -36,8 +38,10 @@ export const connect = async (): Promise<MongoClient> => {
   keys(Collections)
     .filter(name => !existing.includes(name))
     .forEach(name => db.createCollection(name, {}))
-  await db.collection('users').createIndex({ email: 1 }, { unique: true })
-  await db.collection('documents').createIndex({ id: 1 }, { unique: true })
+  await db.collection(Collections.users).createIndex({ email: 1 }, { unique: true })
+  await db.collection(Collections.documents).createIndex({ id: 1 }, { unique: true })
+  await db.collection(Collections.documents).createIndex({ owner: 1 })
+  await db.collection(Collections.nodeSettings).createIndex({ nodeId: 1 }, { unique: true })
   return client
 }
 

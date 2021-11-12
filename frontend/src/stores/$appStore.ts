@@ -49,11 +49,17 @@ const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
 $appStore.on(messageReceived, (state, message) => {
   switch (message.type) {
     case 'DOCUMENT':
+      const tree = message.payload.tree
+      const uiRoot = uiTree(tree)
       return {
         ...state,
         document: omit(['tree'], message.payload),
-        tree: message.payload.tree,
-        openNodes: { ...state.openNodes, [message.payload.tree.id]: true }
+        tree: tree,
+        openNodes: {
+          ...state.openNodes,
+          [tree.id]: true
+        },
+        selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
       }
     case 'RESET':
       return initial
