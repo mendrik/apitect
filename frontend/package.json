@@ -93,6 +93,7 @@
     "@typescript-eslint/eslint-plugin": "5.3.1",
     "@typescript-eslint/parser": "5.3.1",
     "@welldone-software/why-did-you-render": "6.2.1",
+    "@babel/runtime": "7.16.3",
     "eslint": "8.2.0",
     "eslint-config-airbnb-typescript-prettier": "4.2.0",
     "eslint-config-prettier": "8.3.0",

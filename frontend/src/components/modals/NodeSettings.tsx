@@ -1,22 +1,21 @@
 import { useStore } from 'effector-react'
-import React, { lazy } from 'react'
+import React from 'react'
 
 import { NodeType } from '../../shared/types/domain/nodeType'
 import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../LazyModal'
-
-const ObjectSettings = lazy(() => import('./nodetypes/Object'))
-const BooleanSettings = lazy(() => import('./nodetypes/Boolean'))
-const StringSettings = lazy(() => import('./nodetypes/String'))
-const NumberSettings = lazy(() => import('./nodetypes/Number'))
-const EnumSettings = lazy(() => import('./nodetypes/Enum'))
-const DateSettings = lazy(() => import('./nodetypes/Date'))
-const BinarySettings = lazy(() => import('./nodetypes/Binary'))
-const ArraySettings = lazy(() => import('./nodetypes/Array'))
-const ColorSettings = lazy(() => import('./nodetypes/Color'))
-const LocationSettings = lazy(() => import('./nodetypes/Location'))
-const RichTextSettings = lazy(() => import('./nodetypes/RichText'))
-const ReferenceSettings = lazy(() => import('./nodetypes/Reference'))
+import ArraySettings from './nodetypes/Array'
+import BinarySettings from './nodetypes/Binary'
+import BooleanSettings from './nodetypes/Boolean'
+import ColorSettings from './nodetypes/Color'
+import DateSettings from './nodetypes/Date'
+import EnumSettings from './nodetypes/Enum'
+import LocationSettings from './nodetypes/Location'
+import NumberSettings from './nodetypes/Number'
+import ObjectSettings from './nodetypes/Object'
+import ReferenceSettings from './nodetypes/Reference'
+import RichTextSettings from './nodetypes/RichText'
+import StringSettings from './nodetypes/String'
 
 const content = (nodeType: NodeType) => {
   switch (nodeType) {
