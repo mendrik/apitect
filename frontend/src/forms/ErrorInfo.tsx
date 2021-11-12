@@ -15,7 +15,6 @@ export const ErrorInfo = ({ name }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const path = name.split('.')
   const error: FieldError = pathOr<any>(undefined, path, errors)
-  console.log(error)
   return error ? (
     <div className="invalid-feedback">{t(error.message as TFuncKey, { field: last(path) })}</div>
   ) : null

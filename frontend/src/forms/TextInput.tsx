@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import { path } from 'ramda'
+import { isEmptyString } from 'ramda-adjunct'
 import React, { InputHTMLAttributes, useContext, useEffect } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
@@ -31,7 +32,6 @@ export const TextInput = ({
 }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const {
-    watch,
     register,
     setFocus,
     formState: { errors }
@@ -39,9 +39,7 @@ export const TextInput = ({
   const { isWorking } = useContext(progressContext)
   const { promise } = useContext(formWrappingContext)
 
-  const value = watch(name)
   const inpId = useId()
-  const reg = register(name, options)
 
   useEffect(() => {
     if (autoFocus) {
@@ -60,8 +58,10 @@ export const TextInput = ({
         )}
         id={inpId}
         autoComplete="off"
-        {...reg}
-        value={value ?? ''}
+        {...register(name, {
+          setValueAs: (u: any) => (isEmptyString(u) ? undefined : u),
+          ...options
+        })}
         readOnly={props.readOnly || isWorking(promise)}
         required={!!options?.required}
         placeholder={placeholder ?? ' '}

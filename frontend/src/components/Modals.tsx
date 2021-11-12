@@ -2,8 +2,8 @@ import { useStore } from 'effector-react'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { openModal } from '../events/modals'
-import { addParams } from '../shared/utils/url'
+import { closeModal, openModal } from '../events/modals'
+import { addParams, removeParams } from '../shared/utils/url'
 import $appStore from '../stores/$appStore'
 import { LazyModal } from './LazyModal'
 
@@ -11,7 +11,10 @@ export const Modals = () => {
   const navigate = useNavigate()
   const { selectedNode } = useStore($appStore)
 
-  useEffect(() => $appStore.watch(openModal, (_state, modal) => navigate(addParams({ modal }))))
+  useEffect(() => {
+    $appStore.watch(openModal, (_, modal) => navigate(addParams({ modal })))
+    $appStore.watch(closeModal, () => navigate(removeParams(['modal'])))
+  })
 
   return (
     <div className="modal">
