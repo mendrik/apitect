@@ -7,7 +7,7 @@ import { Login, TLogin } from 'shared/types/forms/login'
 import { Fn, Jsx } from 'shared/types/generic'
 import { match } from 'ts-pattern'
 
-import { userContext } from '../../contexts/user'
+import { userContext } from '../../contexts/withUser'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { Form } from '../../forms/Form'
 import { GenericError } from '../../forms/GenericError'

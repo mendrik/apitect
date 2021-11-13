@@ -19,11 +19,14 @@ export const ApiSchema = {
 export type ApiSchema = typeof ApiSchema
 export type ApiMethod = keyof ApiSchema
 
-export type Input<T extends ApiMethod> = ApiSchema[T][0]
-export type Output<T extends ApiMethod> = ApiSchema[T][1]
+type Input<T extends ApiMethod> = ApiSchema[T][0]
+type Output<T extends ApiMethod> = ApiSchema[T][1]
 
 export type Api = {
   [K in ApiMethod]: t.OutputOf<Input<K>> extends undefined
     ? () => Promise<t.OutputOf<Output<K>>>
     : (input: t.OutputOf<Input<K>>) => Promise<t.OutputOf<Output<K>>>
 }
+
+export type ApiParam<T extends ApiMethod> = Parameters<Api[T]>[0]
+export type ApiResult<T extends ApiMethod> = ReturnType<Api[T]>

@@ -4,7 +4,7 @@ import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { apiResponse, socketEstablished } from '../events/messages'
 import { Jsx } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
-import { userContext } from './user'
+import { userContext } from './withUser'
 
 export const WithSocket = ({ children }: Jsx) => {
   const { jwt } = useContext(userContext)

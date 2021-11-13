@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 import { keys } from 'ramda'
 
-import { ApiSchema, Input } from '../api'
+import { ApiSchema } from '../api'
 import { idCodec } from '../codecs/idCodec'
 import { UnionToTuple } from './unionToTuple'
 
@@ -9,7 +9,7 @@ type Codec<T extends keyof ApiSchema> = {
   [K in T]: t.TypeC<{
     id: t.StringC
     method: t.LiteralC<K>
-    payload: Input<K>
+    payload: ApiSchema[K][0]
   }>
 }[T]
 

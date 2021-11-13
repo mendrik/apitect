@@ -1,24 +1,26 @@
+import { Effect } from 'effector'
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { Button } from 'react-bootstrap'
-import { FieldValues, FormProvider, UnpackNestedValue, UseFormReturn } from 'react-hook-form'
+import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
+import { ApiMethod, ApiParam, ApiResult } from '../shared/api'
 import { Fn } from '../shared/types/generic'
 import { ButtonRow } from './ButtonRow'
 import { SubmitButton } from './SubmitButton'
 
-type OwnProps<T extends FieldValues> = {
+type OwnProps<T extends FieldValues, M extends ApiMethod> = {
   form: UseFormReturn<T>
-  onValid: (data: UnpackNestedValue<T>) => Promise<any>
+  onValid: Effect<ApiParam<M>, ApiResult<M>>
   close: Fn
 }
 
-export const SocketForm = <T extends FieldValues>({
+export const SocketForm = <T extends FieldValues, M extends ApiMethod>({
   form,
   children,
   onValid,
   close
-}: PropsWithChildren<OwnProps<T>>): ReactElement | null => {
+}: PropsWithChildren<OwnProps<T, M>>): ReactElement | null => {
   const { t } = useTranslation()
   return (
     <FormProvider {...form}>

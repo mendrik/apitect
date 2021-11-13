@@ -6,6 +6,7 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { createNodeFx } from '../../events/tree'
 import { SocketForm } from '../../forms/SocketForm'
 import { TextInput } from '../../forms/TextInput'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
@@ -46,7 +47,7 @@ const TypeGrid = styled.ul`
 `
 
 const NewNode: ModalFC = ({ close }) => {
-  const { selectedNode, api } = useStore($appStore)
+  const { selectedNode } = useStore($appStore)
 
   const form = useForm<NewNodeType>({
     resolver: ioTsResolver(TNewNode),
@@ -58,7 +59,7 @@ const NewNode: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm form={form} onValid={api.nodeCreate} close={close}>
+    <SocketForm form={form} onValid={createNodeFx} close={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"

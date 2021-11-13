@@ -1,25 +1,25 @@
 import * as t from 'io-ts'
 import { keys } from 'ramda'
 
-import { Api, ApiMethod, ApiSchema, Output } from './api'
+import { ApiMethod, ApiParam, ApiResult, ApiSchema } from './api'
 import { idCodec } from './codecs/idCodec'
 import { UnionToTuple } from './types/unionToTuple'
 
-export type Respond<T extends ApiMethod> = <R extends t.OutputOf<Output<T>>>(payload: R) => R
+export type Respond<T extends ApiMethod> = (payload: ApiResult<T>) => ApiResult<T>
 
 export type ServerApiMethod<T extends ApiMethod> = ({
   email,
   payload
 }: {
   email: string
-  payload: Parameters<Api[T]>[0]
-}) => ReturnType<Api[T]>
+  payload: ApiParam<T>
+}) => ApiResult<T>
 
 type Codec<T extends ApiMethod> = {
   [K in T]: t.TypeC<{
     id: t.StringC
     method: t.LiteralC<K>
-    payload: Output<K>
+    payload: ApiSchema[K][1]
   }>
 }[T]
 

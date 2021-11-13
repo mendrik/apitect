@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { Fn } from 'shared/types/generic'
 
-import { userContext } from '../contexts/user'
+import { userContext } from '../contexts/withUser'
 import $appStore from '../stores/$appStore'
 import { logout } from '../utils/restApi'
 import usePromise from './usePromise'

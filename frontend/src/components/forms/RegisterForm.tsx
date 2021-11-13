@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Register, TRegister } from 'shared/types/forms/register'
 
-import { userContext } from '../../contexts/user'
+import { userContext } from '../../contexts/withUser'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { Form } from '../../forms/Form'
 import { GenericError } from '../../forms/GenericError'

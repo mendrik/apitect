@@ -6,7 +6,7 @@ import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
-import { progressContext } from '../contexts/progress'
+import { progressContext } from '../contexts/withProgress'
 import { useId } from '../hooks/useId'
 import { Jsx } from '../shared/types/generic'
 import { ErrorInfo } from './ErrorInfo'

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { WithSocket } from '../contexts/socket'
-import { userContext } from '../contexts/user'
+import { WithSocket } from '../contexts/withSocket'
+import { userContext } from '../contexts/withUser'
 import Dashboard from './Dashboard'
 import { NotLoggedIn } from './NotLoggedIn'
 import { ErrorView } from './generic/ErrorView'
