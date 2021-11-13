@@ -28,5 +28,5 @@ export type Api = {
     : (input: t.OutputOf<Input<K>>) => Promise<t.OutputOf<Output<K>>>
 }
 
-export type ApiParam<T extends ApiMethod> = Parameters<Api[T]>[0]
-export type ApiResult<T extends ApiMethod> = ReturnType<Api[T]>
+export type ApiParam<T extends ApiMethod> = t.OutputOf<Input<T>>
+export type ApiResult<T extends ApiMethod> = t.OutputOf<Output<T>>

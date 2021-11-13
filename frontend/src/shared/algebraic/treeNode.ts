@@ -137,7 +137,7 @@ export class TreeNode<T> {
     }
   }
 
-  delete = (pred: (v: T) => boolean) => {
+  delete = (pred: (v: T) => boolean): ChildOperation<T> => {
     const node = this.first(pred)
     if (node?.parent != null) {
       const children = node.parent.children
@@ -155,7 +155,7 @@ export class TreeNode<T> {
     throw Error('Update needs a valid node')
   }
 
-  update = (pred: (v: T) => boolean, fn: (v: T) => T) => {
+  update = (pred: (v: T) => boolean, fn: (v: T) => T): ChildOperation<T> => {
     const node = this.first(pred)
     if (node?.parent != null) {
       const children = node.parent.children

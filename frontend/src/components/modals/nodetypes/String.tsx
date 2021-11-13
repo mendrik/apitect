@@ -3,6 +3,7 @@ import { useStore } from 'effector-react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
+import { updateNodeSettingsFx } from '../../../events/tree'
 import { SocketForm } from '../../../forms/SocketForm'
 import { TextInput } from '../../../forms/TextInput'
 import { NodeType } from '../../../shared/types/domain/nodeType'
@@ -12,7 +13,7 @@ import $appStore from '../../../stores/$appStore'
 import { ModalFC } from '../../LazyModal'
 
 const String: ModalFC = ({ close }) => {
-  const { selectedNode, api } = useStore($appStore)
+  const { selectedNode } = useStore($appStore)
   const form = useForm<NodeSettings>({
     resolver: ioTsResolver(TStringSettings),
     defaultValues: {
@@ -23,7 +24,7 @@ const String: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm form={form} onValid={api.updateNodeSettings} close={close}>
+    <SocketForm form={form} onValid={updateNodeSettingsFx} close={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"

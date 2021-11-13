@@ -4,7 +4,14 @@ import { Document } from 'shared/types/domain/document'
 import { v4 as uuid } from 'uuid'
 
 import { apiResponse, socketEstablished } from '../events/messages'
-import { createNodeFx, deleteNodeFx, documentFx, openNodeState, selectNode } from '../events/tree'
+import {
+  createNodeFx,
+  deleteNodeFx,
+  documentFx,
+  openNodeState,
+  selectNode,
+  updateNodeSettingsFx
+} from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Api, ApiMethod, ApiSchema } from '../shared/api'
 import { decode } from '../shared/codecs/decode'
@@ -77,6 +84,10 @@ $appStore.on(createNodeFx.done, (state, { result }) => {
   const uiRoot = uiTree(result.tree)
   const node = uiRoot.first(propEq('id', result.nodeId))
   return { ...state, tree: result.tree, ...selectedNodeState(state, node?.value) }
+})
+
+$appStore.on(updateNodeSettingsFx.done, (state, { result }) => {
+  return { ...state, tree: result }
 })
 
 $appStore.on(socketEstablished, (state, sendJsonMessage) => ({

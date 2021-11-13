@@ -3,7 +3,7 @@ import { SocketStream } from 'fastify-websocket'
 import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
 import { ApiMethod } from '~shared/api'
-import { Respond, ServerApiMethod, TApiResponse } from '~shared/apiResponse'
+import { TApiResponse } from '~shared/apiResponse'
 import { decode } from '~shared/codecs/decode'
 import { TApiRequest } from '~shared/types/apiRequest'
 import { logger } from '~shared/utils/logger'
@@ -12,8 +12,9 @@ import { apiMapping } from '../api/serverApi'
 import { config } from './config'
 
 const openWebsocket = (connection: SocketStream) => {
-  const response: <K extends ApiMethod>(id: string, method: K) => Respond<K> =
-    (id, method) => payload => {
+  const send =
+    (id: string, method: ApiMethod) =>
+    <T>(payload: T) => {
       const res = {
         id,
         method,
@@ -33,13 +34,11 @@ const openWebsocket = (connection: SocketStream) => {
     )
     connection.socket.on('message', (buffer: Buffer) => {
       try {
-        const data = JSON.parse(buffer.toString('utf-8'))
-        const apiRequest = decode(TApiRequest)(data)
-        const apiCall: ServerApiMethod<typeof apiRequest.method> = apiMapping[apiRequest.method]
+        const apiRequest = decode(TApiRequest)(JSON.parse(buffer.toString('utf-8')))
         logger.info(`${name} [${email}]/${apiRequest.method}`, apiRequest.payload)
-        void apiCall({ email, payload: apiRequest.payload }).then(
-          response(apiRequest.id, apiRequest.method)
-        )
+        const apiCall = apiMapping[apiRequest.method]
+        const param = { email, payload: apiRequest.payload } as any
+        void apiCall(param).then(send(apiRequest.id, apiRequest.method))
       } catch (e) {
         logger.error('Error in socket', e)
       }

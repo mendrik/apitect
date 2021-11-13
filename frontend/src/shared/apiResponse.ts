@@ -5,15 +5,12 @@ import { ApiMethod, ApiParam, ApiResult, ApiSchema } from './api'
 import { idCodec } from './codecs/idCodec'
 import { UnionToTuple } from './types/unionToTuple'
 
-export type Respond<T extends ApiMethod> = (payload: ApiResult<T>) => ApiResult<T>
-
-export type ServerApiMethod<T extends ApiMethod> = ({
-  email,
-  payload
-}: {
+type ServerParam<T extends ApiMethod> = {
   email: string
   payload: ApiParam<T>
-}) => ApiResult<T>
+}
+
+export type ServerApiMethod<T extends ApiMethod> = (obj: ServerParam<T>) => Promise<ApiResult<T>>
 
 type Codec<T extends ApiMethod> = {
   [K in T]: t.TypeC<{

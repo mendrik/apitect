@@ -12,6 +12,9 @@ export const selectNode = createEvent<Maybe<Node>>('select node')
 
 const state = () => sample($appStore).getState()
 
-export const createNodeFx = createEffect<Api['nodeCreate']>(state().api.nodeCreate)
-export const deleteNodeFx = createEffect<Api['nodeDelete']>(state().api.nodeDelete)
-export const documentFx = createEffect<Api['document']>(state().api.document)
+export const createNodeFx = createEffect<Api['nodeCreate']>(node => state().api.nodeCreate(node))
+export const deleteNodeFx = createEffect<Api['nodeDelete']>(id => state().api.nodeDelete(id))
+export const documentFx = createEffect<Api['document']>(() => state().api.document())
+export const updateNodeSettingsFx = createEffect<Api['updateNodeSettings']>(settings =>
+  state().api.updateNodeSettings(settings)
+)
