@@ -37,7 +37,7 @@ const openWebsocket = (connection: SocketStream) => {
         const apiRequest = decode(TApiRequest)(JSON.parse(buffer.toString('utf-8')))
         logger.info(`${name} [${email}]/${apiRequest.method}`, apiRequest.payload)
         const apiCall = apiMapping[apiRequest.method]
-        const param = { email, payload: apiRequest.payload } as any // todo fix me
+        const param = { email, payload: apiRequest.payload } as any // bummer to use any
         void apiCall(param).then(send(apiRequest.id, apiRequest.method))
       } catch (e) {
         logger.error('Error in socket', e)
