@@ -10,8 +10,6 @@ export const openNode = (node: Maybe<Node>) => (node ? openNodeState([node, true
 export const closeNode = (node: Maybe<Node>) => (node ? openNodeState([node, false]) : void 0)
 export const selectNode = createEvent<Maybe<Node>>('select node')
 
-export const deleteNode = createEvent<string>('delete node')
-
 const state = () => sample($appStore).getState()
 
 export const createNodeFx = createEffect<Api['nodeCreate']>(state().api.nodeCreate)

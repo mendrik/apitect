@@ -3,7 +3,7 @@ import { useStore } from 'effector-react'
 import React from 'react'
 
 import { openModal } from '../../events/modals'
-import { deleteNode } from '../../events/tree'
+import { deleteNodeFx } from '../../events/tree'
 import { ModalNames } from '../../shared/types/modals'
 import $appStore from '../../stores/$appStore'
 import { HGrid } from '../generic/HGrid'
@@ -20,7 +20,7 @@ export const ProjectTreeHeader = () => {
         <WithTooltip tooltipText="Delete selected node" shortcut="Del">
           <Icon
             icon={IconTrash}
-            onClick={() => deleteNode(selectedNode!.id)}
+            onClick={() => deleteNodeFx(selectedNode!.id)}
             disabled={selectedNode == null}
           />
         </WithTooltip>
