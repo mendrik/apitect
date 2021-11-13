@@ -23,7 +23,7 @@ import { logger } from '../shared/utils/logger'
 export type AppState = {
   document: Omit<Document, 'tree'>
   tree: Node
-  selectedNode: Maybe<Node>
+  selectedNode: Maybe<TreeNode<Node>>
   openNodes: Record<string, boolean>
   api: Api
 }
@@ -44,30 +44,29 @@ apiResponse.watch(({ method, payload }) => {
 
 const uiTree = (root: Node) => TreeNode.from<Node, 'children'>('children')(root)
 
-const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
+const selectedNodeState = (
+  state: AppState,
+  selectedNode: Maybe<TreeNode<Node>>
+): Partial<AppState> =>
   selectedNode
     ? {
         selectedNode,
         openNodes: {
           ...state.openNodes,
-          ...uiTree(state.tree)
-            .first(propEq<any>('id', selectedNode.id))
-            ?.pathToRoot()
-            .reduce((p, c) => ({ ...p, [c.id]: true }), {})
+          ...selectedNode?.pathToRoot().reduce((p, c) => ({ ...p, [c.id]: true }), {})
         }
       }
     : { ...state, selectedNode: undefined }
 
 $appStore.on(deleteNodeFx.done, (state, { result }) => {
-  const uiRoot = uiTree(state.tree)
+  const uiRoot = uiTree(result.tree)
   const parent = uiRoot.first(propEq('id', result.parentNode))
   const node = parent?.children[result.position - 1] ?? parent
-  return { ...state, tree: result.tree, ...selectedNodeState(state, node?.value) }
+  return { ...state, tree: result.tree, ...selectedNodeState(state, node) }
 })
 
 $appStore.on(documentFx.done, (state, { result }) => {
   const tree = result.tree
-  const uiRoot = uiTree(tree)
   return {
     ...state,
     document: omit(['tree'], result),
@@ -75,15 +74,14 @@ $appStore.on(documentFx.done, (state, { result }) => {
     openNodes: {
       ...state.openNodes,
       [tree.id]: true
-    },
-    selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
+    }
   }
 })
 
 $appStore.on(createNodeFx.done, (state, { result }) => {
   const uiRoot = uiTree(result.tree)
   const node = uiRoot.first(propEq('id', result.nodeId))
-  return { ...state, tree: result.tree, ...selectedNodeState(state, node?.value) }
+  return { ...state, tree: result.tree, ...selectedNodeState(state, node) }
 })
 
 $appStore.on(updateNodeSettingsFx.done, (state, { result }) => {
@@ -122,12 +120,12 @@ $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
 
 $appStore.on(selectNode, (state, selectedNode) => ({
   ...state,
-  ...selectedNodeState(state, selectedNode!)
+  ...selectedNodeState(state, selectedNode)
 }))
 
 $appStore.on(openNodeState, (state, [node, open]) => ({
   ...state,
-  openNodes: { ...state.openNodes, [node.id]: open }
+  openNodes: { ...state.openNodes, [node.value.id]: open }
 }))
 
 export default $appStore

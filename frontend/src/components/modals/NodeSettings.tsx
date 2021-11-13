@@ -50,7 +50,8 @@ const content = (nodeType: NodeType) => {
 
 const NodeSettings: ModalFC = ({ close }) => {
   const { selectedNode } = useStore($appStore)
-  const Content = content(selectedNode!.nodeType)
+  const { nodeType } = selectedNode!.value
+  const Content = content(nodeType)
   return <Content close={close} />
 }
 

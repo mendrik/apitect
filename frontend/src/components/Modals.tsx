@@ -42,7 +42,7 @@ export const Modals = () => {
       {selectedNode && (
         <LazyModal
           title={`modals.nodeSettings.title`}
-          titleOptions={{ property: selectedNode.name }}
+          titleOptions={{ property: selectedNode.value.name }}
           from={() => import('./modals/NodeSettings')}
           name="node-settings"
         />

@@ -14,12 +14,13 @@ import { ModalFC } from '../../LazyModal'
 
 const String: ModalFC = ({ close }) => {
   const { selectedNode } = useStore($appStore)
+  const { id: nodeId, name } = selectedNode!.value
   const form = useForm<NodeSettings>({
     resolver: ioTsResolver(TStringSettings),
     defaultValues: {
       nodeType: NodeType.String,
-      nodeId: selectedNode!.id,
-      name: selectedNode!.name
+      nodeId,
+      name
     }
   })
 

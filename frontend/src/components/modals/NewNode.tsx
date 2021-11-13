@@ -52,7 +52,7 @@ const NewNode: ModalFC = ({ close }) => {
   const form = useForm<NewNodeType>({
     resolver: ioTsResolver(TNewNode),
     defaultValues: {
-      parentNode: selectedNode?.id,
+      parentNode: selectedNode?.value.id,
       nodeType: NodeType.Object,
       name: ''
     }

@@ -20,7 +20,7 @@ export const ProjectTreeHeader = () => {
         <WithTooltip tooltipText="Delete selected node" shortcut="Del">
           <Icon
             icon={IconTrash}
-            onClick={() => deleteNodeFx(selectedNode!.id)}
+            onClick={() => deleteNodeFx(selectedNode!.value.id)}
             disabled={selectedNode == null}
           />
         </WithTooltip>

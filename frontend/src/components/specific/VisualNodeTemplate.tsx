@@ -6,6 +6,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { closeNode, openNode, selectNode } from '../../events/tree'
+import { TreeNode } from '../../shared/algebraic/treeNode'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { Node } from '../../shared/types/domain/tree'
 import { Jsx } from '../../shared/types/generic'
@@ -14,7 +15,7 @@ import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
 type OwnProps = {
-  node: Node
+  node: TreeNode<Node>
   depth?: number
 }
 
@@ -44,36 +45,36 @@ export const VisualNodeTemplate = ({ depth = 0, node, children: footer }: Jsx<Ow
   const { openNodes } = useStore($appStore)
   const hasChildren = isNotNilOrEmpty(node.children)
   const { selectedNode } = useStore($appStore)
-  const open = openNodes[node.id]
+  const id = node.value.id
+  const open = openNodes[id]
 
+  const nodeType = node.value.nodeType
   return (
     <>
       {depth > 0 && (
         <NodeGrid
           tabIndex={0}
-          id={node.id}
-          key={node.id}
-          className={clsx('gap-1', { selectedNode: selectedNode?.id === node.id })}
-          onClick={() => selectNode(selectedNode?.id === node.id ? undefined : node)}
+          id={id}
+          key={id}
+          className={clsx('gap-1', { selectedNode: selectedNode?.value.id === id })}
+          onClick={() => selectNode(selectedNode?.value.id === id ? undefined : node)}
         >
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() => (openNodes[node.id] ? closeNode(node) : openNode(node))}
+              onClick={() => (openNodes[id] ? closeNode(node) : openNode(node))}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
-          ) : node.nodeType !== NodeType.Object ? (
-            <Icon icon={iconMap[node.nodeType]} size={14} disabled />
+          ) : nodeType !== NodeType.Object ? (
+            <Icon icon={iconMap[nodeType]} size={14} disabled />
           ) : (
             <div />
           )}
-          <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.name}>
-            {node.name}
+          <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.value.name}>
+            {node.value.name}
           </div>
-          {node.nodeType === NodeType.Array && (
-            <Icon icon={iconMap[node.nodeType]} size={14} disabled />
-          )}
+          {nodeType === NodeType.Array && <Icon icon={iconMap[nodeType]} size={14} disabled />}
         </NodeGrid>
       )}
       {(open || depth === 0) && (
