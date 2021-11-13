@@ -18,7 +18,7 @@ type OwnProps = {
   titleOptions?: Record<string, string>
 }
 
-export const LazyModal = ({ name, from, title, titleOptions }: Jsx<OwnProps>) => {
+export const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>) => {
   const { modal } = useQueryParams()
   const modalMatch = modal === name
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 import { NodeType } from '../../shared/types/domain/nodeType'
 import $appStore from '../../stores/$appStore'
-import { ModalFC } from '../LazyModal'
+import { ModalFC } from '../ModalStub'
 import ArraySettings from './nodetypes/Array'
 import BinarySettings from './nodetypes/Binary'
 import BooleanSettings from './nodetypes/Boolean'

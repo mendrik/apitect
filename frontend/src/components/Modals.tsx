@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { closeModal, openModal } from '../events/modals'
 import { addParams, removeParams } from '../shared/utils/url'
 import $appStore from '../stores/$appStore'
-import { LazyModal } from './LazyModal'
+import { ModalStub } from './ModalStub'
 
 export const Modals = () => {
   const navigate = useNavigate()
@@ -24,23 +24,23 @@ export const Modals = () => {
 
   return (
     <div className="modal">
-      <LazyModal
+      <ModalStub
         title="modals.authenticate.title"
         from={() => import('./modals/Authenticate')}
         name="login"
       />
-      <LazyModal
+      <ModalStub
         title="modals.forgotPassword.title"
         from={() => import('./modals/ForgotPasswordForm')}
         name="forgot-password"
       />
-      <LazyModal
+      <ModalStub
         title="modals.newNode.title"
         from={() => import('./modals/NewNode')}
         name="new-node"
       />
       {selectedNode && (
-        <LazyModal
+        <ModalStub
           title={`modals.nodeSettings.title`}
           titleOptions={{ property: selectedNode.value.name }}
           from={() => import('./modals/NodeSettings')}

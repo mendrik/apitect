@@ -10,7 +10,7 @@ import { NodeType } from '../../../shared/types/domain/nodeType'
 import { NodeSettings } from '../../../shared/types/forms/nodetypes/nodeSettings'
 import { TStringSettings } from '../../../shared/types/forms/nodetypes/stringSettings'
 import $appStore from '../../../stores/$appStore'
-import { ModalFC } from '../../LazyModal'
+import { ModalFC } from '../../ModalStub'
 
 const String: ModalFC = ({ close }) => {
   const { selectedNode } = useStore($appStore)

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Tab } from '../../forms/Tab'
 import { Tabs } from '../../forms/Tabs'
-import { ModalFC } from '../LazyModal'
+import { ModalFC } from '../ModalStub'
 import { LoginForm } from '../forms/LoginForm'
 import { RegisterForm } from '../forms/RegisterForm'
 

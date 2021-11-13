@@ -13,7 +13,7 @@ import { SubmitButton } from '../../forms/SubmitButton'
 import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { register } from '../../utils/restApi'
-import { ModalFC } from '../LazyModal'
+import { ModalFC } from '../ModalStub'
 import { SuccessView } from '../SuccessView'
 
 export const RegisterForm: ModalFC = ({ close }) => {

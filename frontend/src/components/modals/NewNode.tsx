@@ -13,7 +13,7 @@ import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '../../shared/types/forms/newNode'
 import { capitalize, spaceOrEnter } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
-import { ModalFC } from '../LazyModal'
+import { ModalFC } from '../ModalStub'
 
 const TypeGrid = styled.ul`
   display: grid;

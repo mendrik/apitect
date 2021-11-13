@@ -13,7 +13,7 @@ import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
 import { forgotPassword } from '../../utils/restApi'
-import { ModalFC } from '../LazyModal'
+import { ModalFC } from '../ModalStub'
 import { SuccessView } from '../SuccessView'
 
 const ForgotPasswordForm: ModalFC = ({ close }) => {

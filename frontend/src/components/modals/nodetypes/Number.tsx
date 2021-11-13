@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ModalFC } from '../../LazyModal'
+import { ModalFC } from '../../ModalStub'
 
 const Number: ModalFC = ({ close }) => {
   const { t } = useTranslation()
