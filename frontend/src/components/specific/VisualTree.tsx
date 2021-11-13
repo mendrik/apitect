@@ -4,7 +4,7 @@ import { isTrue } from 'ramda-adjunct'
 import React, { useMemo } from 'react'
 
 import { openModal } from '../../events/modals'
-import { closeNode, deleteNodeFx, openNode, selectNode } from '../../events/tree'
+import { closeNode, deleteNodeFx, nodeSettingsFx, openNode, selectNode } from '../../events/tree'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/tree'
@@ -44,8 +44,8 @@ export const VisualTree = ({ children }: Jsx) => {
     [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
     [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
     [propEq('key', 'Delete'), () => deleteNodeFx(selectedNode!.value.id)],
-    [propEq('key', 'n'), () => openModal(ModalNames.NEW_NODE)],
-    [propEq('key', 'Enter'), () => openModal(ModalNames.NODE_SETTINGS)]
+    [propEq('key', 'n'), () => openModal({ name: ModalNames.NEW_NODE })],
+    [propEq('key', 'Enter'), () => nodeSettingsFx(selectedNode!.value.id)]
   ]) as Fn
 
   return (

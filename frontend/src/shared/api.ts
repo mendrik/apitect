@@ -2,6 +2,7 @@ import * as t from 'io-ts'
 import { Primitives } from 'ts-pattern/lib/types/helpers'
 
 import { idCodec } from './codecs/idCodec'
+import { nullable } from './codecs/nullable'
 import { TDocument } from './types/domain/document'
 import { TNode } from './types/domain/tree'
 import { TNewNode } from './types/forms/newNode'
@@ -11,7 +12,7 @@ import { TNodeDeleted } from './types/response/nodeDeleted'
 
 export const ApiSchema = {
   document: [t.undefined, TDocument],
-  nodeSettings: [idCodec, TNodeSettings],
+  nodeSettings: [idCodec, nullable(TNodeSettings)],
   updateNodeSettings: [TNodeSettings, TNode],
   nodeDelete: [idCodec, TNodeDeleted],
   nodeCreate: [TNewNode, TNodeCreated]

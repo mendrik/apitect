@@ -12,8 +12,8 @@ export const Modals = () => {
   const { selectedNode } = useStore($appStore)
 
   useEffect(() => {
-    const openSub = $appStore.watch(openModal, (_, modal) => {
-      navigate(addParams({ modal }))
+    const openSub = $appStore.watch(openModal, (_, config) => {
+      navigate(addParams({ modal: config.name }), { state: config.params })
     })
     const closeSub = $appStore.watch(closeModal, () => navigate(removeParams(['modal'])))
     return () => {
