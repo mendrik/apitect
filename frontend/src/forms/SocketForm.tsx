@@ -1,25 +1,26 @@
-import { Effect } from 'effector'
+import { EffectByHandler } from 'effector'
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { Button } from 'react-bootstrap'
-import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form'
+import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
+import { Api, FormApiMethod } from '../shared/api'
 import { Fn } from '../shared/types/generic'
 import { ButtonRow } from './ButtonRow'
 import { SubmitButton } from './SubmitButton'
 
-type OwnProps<T extends FieldValues> = {
-  form: UseFormReturn<T>
-  onValid: Effect<any, any> // todo fix me
+type OwnProps<M extends FormApiMethod> = {
+  form: UseFormReturn<any>
+  onValid: EffectByHandler<Api[M], Error>
   close: Fn
 }
 
-export const SocketForm = <T extends FieldValues>({
+export const SocketForm = <M extends FormApiMethod>({
   form,
   children,
   onValid,
   close
-}: PropsWithChildren<OwnProps<T>>): ReactElement | null => {
+}: PropsWithChildren<OwnProps<M>>): ReactElement | null => {
   const { t } = useTranslation()
   return (
     <FormProvider {...form}>

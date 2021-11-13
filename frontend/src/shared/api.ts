@@ -1,4 +1,5 @@
 import * as t from 'io-ts'
+import { Primitives } from 'ts-pattern/lib/types/helpers'
 
 import { idCodec } from './codecs/idCodec'
 import { TDocument } from './types/domain/document'
@@ -18,6 +19,11 @@ export const ApiSchema = {
 
 export type ApiSchema = typeof ApiSchema
 export type ApiMethod = keyof ApiSchema
+export type FormApiMethod = keyof {
+  [K in keyof ApiSchema as t.OutputOf<ApiSchema[K][0]> extends undefined | Primitives
+    ? never
+    : K]: 0
+}
 
 type Input<T extends ApiMethod> = ApiSchema[T][0]
 type Output<T extends ApiMethod> = ApiSchema[T][1]
