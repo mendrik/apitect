@@ -23,8 +23,8 @@ export enum Strategy {
 
 export type ChildOperation<T> = {
   self: TreeNode<T>
-  parent?: T
-  node?: T
+  parent: T
+  node: T
   position?: number
 }
 
@@ -131,7 +131,7 @@ export class TreeNode<T> {
     }
     return {
       self: this,
-      parent: parent?.value,
+      parent: parent.value,
       node: v,
       position
     }
@@ -152,9 +152,7 @@ export class TreeNode<T> {
         }
       }
     }
-    return {
-      self: this
-    }
+    throw Error('Update needs a valid node')
   }
 
   update = (pred: (v: T) => boolean, fn: (v: T) => T) => {
@@ -173,9 +171,7 @@ export class TreeNode<T> {
         }
       }
     }
-    return {
-      self: this
-    }
+    throw Error('Update needs a valid node')
   }
 
   toString = () =>

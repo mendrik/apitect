@@ -1,16 +1,11 @@
-import { isNil, propEq } from 'ramda'
+import { propEq } from 'ramda'
 import { ServerApiMethod } from '~shared/apiResponse'
 import { newId } from '~shared/codecs/idCodec'
-import { Node } from '~shared/types/domain/tree'
-import { failOn } from '~shared/utils/failOn'
 
 import { validateTree, withTree } from '../services/'
 
-export const nodeCreate: ServerApiMethod<'nodeCreate'> = ({ respond, email, payload: newNode }) =>
-  withTree(
-    respond,
-    email
-  )(root =>
+export const nodeCreate: ServerApiMethod<'nodeCreate'> = ({ email, payload: newNode }) =>
+  withTree(email)(root =>
     root.insert(propEq('id', newNode.parentNode), {
       id: newId(),
       name: newNode.name,
@@ -19,5 +14,7 @@ export const nodeCreate: ServerApiMethod<'nodeCreate'> = ({ respond, email, payl
     })
   )
     .then(validateTree)
-    .then(o => o.node)
-    .then(failOn<Node>(isNil, 'Node not found'))
+    .then(op => ({
+      nodeId: op.node!.id,
+      tree: op.self.extract()
+    }))

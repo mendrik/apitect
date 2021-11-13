@@ -2,13 +2,20 @@ import { assoc, propEq } from 'ramda'
 import { ServerApiMethod } from '~shared/apiResponse'
 
 import { withTree } from '../services'
+import { collection, Collections } from '../services/database'
 
 export const updateNodeSettings: ServerApiMethod<'updateNodeSettings'> = ({
-  respond,
   email,
-  payload: node
+  payload: nodeSettings
 }) =>
-  withTree(
-    respond,
-    email
-  )(root => root.update(propEq('id', node.nodeId), assoc('name', node.name))).then(() => void 0)
+  withTree(email)(root =>
+    root.update(propEq('id', nodeSettings.nodeId), assoc('name', nodeSettings.name))
+  ).then(op =>
+    collection(Collections.nodeSettings)
+      .findOneAndUpdate(
+        { nodeId: nodeSettings.nodeId },
+        { $set: nodeSettings },
+        { projection: { _id: 0 } }
+      )
+      .then(() => op.self.extract())
+  )

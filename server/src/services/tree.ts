@@ -1,7 +1,5 @@
 import { always, isNil, prop } from 'ramda'
 import { ChildOperation, TreeNode } from '~shared/algebraic/treeNode'
-import { ApiMethod } from '~shared/api'
-import { Respond } from '~shared/apiResponse'
 import { decode } from '~shared/codecs/decode'
 import { Document } from '~shared/types/domain/document'
 import { Node, TNode } from '~shared/types/domain/tree'
@@ -11,11 +9,11 @@ import { collection, Collections } from './database'
 import { getLastDocument } from './document'
 
 export const withTree =
-  (respond: Respond<ApiMethod>, email: string) =>
+  (email: string) =>
   <T extends Node>(fn: (root: TreeNode<Node>) => ChildOperation<T>): Promise<ChildOperation<T>> =>
-    getLastDocument(email).then(doc => {
+    getLastDocument(email).then(async doc => {
       const tree = toTreeNode(doc.tree)
-      const res = fn(tree)
+      const res = await fn(tree)
       const docTree = decode(TNode)(res.self.extract())
       return collection(Collections.documents)
         .findOneAndUpdate(
@@ -25,7 +23,6 @@ export const withTree =
         )
         .then(prop('value'))
         .then(failOn<Document>(isNil, 'document not found'))
-        .then(respond)
         .then(always(res))
     })
 

@@ -9,11 +9,9 @@ export type Respond<T extends ApiMethod> = <R extends t.OutputOf<Output<T>>>(pay
 
 export type ServerApiMethod<T extends ApiMethod> = ({
   email,
-  respond,
   payload
 }: {
   email: string
-  respond: Respond<T>
   payload: Parameters<Api[T]>[0]
 }) => ReturnType<Api[T]>
 

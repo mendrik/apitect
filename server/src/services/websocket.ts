@@ -36,12 +36,10 @@ const openWebsocket = (connection: SocketStream) => {
         const data = JSON.parse(buffer.toString('utf-8'))
         const apiRequest = decode(TApiRequest)(data)
         const apiCall: ServerApiMethod<typeof apiRequest.method> = apiMapping[apiRequest.method]
-        logger.info(`${name} [${email}]/${apiRequest.method}:`, apiRequest.payload)
-        const respond: Respond<typeof apiRequest.method> = response(
-          apiRequest.id,
-          apiRequest.method
+        logger.info(`${name} [${email}]/${apiRequest.method}`, apiRequest.payload)
+        void apiCall({ email, payload: apiRequest.payload }).then(
+          response(apiRequest.id, apiRequest.method)
         )
-        void apiCall({ email, respond, payload: apiRequest.payload })
       } catch (e) {
         logger.error('Error in socket', e)
       }

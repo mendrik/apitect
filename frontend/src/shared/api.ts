@@ -5,14 +5,15 @@ import { TDocument } from './types/domain/document'
 import { TNode } from './types/domain/tree'
 import { TNewNode } from './types/forms/newNode'
 import { TNodeSettings } from './types/forms/nodetypes/nodeSettings'
-import { TNodeDeletedResponse } from './types/serverMessages'
+import { TNodeCreated } from './types/response/nodeCreated'
+import { TNodeDeleted } from './types/response/nodeDeleted'
 
 export const ApiSchema = {
   document: [t.undefined, TDocument],
   nodeSettings: [idCodec, TNodeSettings],
-  updateNodeSettings: [TNodeSettings, t.void],
-  nodeDelete: [idCodec, TNodeDeletedResponse],
-  nodeCreate: [TNewNode, TNode]
+  updateNodeSettings: [TNodeSettings, TNode],
+  nodeDelete: [idCodec, TNodeDeleted],
+  nodeCreate: [TNewNode, TNodeCreated]
 } as const
 
 export type ApiSchema = typeof ApiSchema
