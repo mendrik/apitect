@@ -4,7 +4,7 @@ import { isTrue } from 'ramda-adjunct'
 import React from 'react'
 
 import { openModal } from '../../events/modals'
-import { closeNode, deleteNode, openNode, selectNode } from '../../events/tree'
+import { closeNode, deleteNodeFx, openNode, selectNode } from '../../events/tree'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/tree'
@@ -31,10 +31,9 @@ export const VisualTree = ({ children }: Jsx) => {
   const { tree, openNodes, selectedNode } = useStore($appStore)
   const visualNodes = () => visibleNodes(tree, openNodes)
 
-  useDefinedEffect(
-    node => document.getElementById(node.id)?.focus({ preventScroll: true }),
-    selectedNode
-  )
+  useDefinedEffect(node => {
+    document.getElementById(node.id)?.focus({ preventScroll: true })
+  }, selectedNode)
 
   const nextNode = (): Maybe<Node> => next(propEq('id', selectedNode?.id))(visualNodes())
   const prevNode = (): Maybe<Node> => prev(propEq('id', selectedNode?.id))(visualNodes())
@@ -44,7 +43,7 @@ export const VisualTree = ({ children }: Jsx) => {
     [propEq('key', 'ArrowUp'), pipe(prevNode, selectNode)],
     [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
     [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
-    [propEq('key', 'Delete'), () => deleteNode(selectedNode)],
+    [propEq('key', 'Delete'), () => deleteNodeFx(selectedNode!.id)],
     [propEq('key', 'n'), () => openModal(ModalNames.NEW_NODE)],
     [propEq('key', 'Enter'), () => openModal(ModalNames.NODE_SETTINGS)]
   ]) as Fn

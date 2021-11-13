@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 import { Fn } from 'shared/types/generic'
 
-import { userContext } from '../contexts/user'
-import { messageReceived } from '../events/messages'
-import { logout } from '../utils/api'
+import { userContext } from '../contexts/withUser'
+import $appStore from '../stores/$appStore'
+import { logout } from '../utils/restApi'
 import usePromise from './usePromise'
 
 export const useLogout = (): Fn<Promise<any>> => {
@@ -14,5 +14,5 @@ export const useLogout = (): Fn<Promise<any>> => {
     doLogout
       .trigger()
       .then(() => setJwt(undefined))
-      .then(() => messageReceived({ type: 'RESET', payload: undefined }))
+      .then(() => $appStore.reset())
 }

@@ -1,21 +1,31 @@
-import { createStore } from 'effector'
+import { createEvent, createStore } from 'effector'
 import { omit, propEq } from 'ramda'
 import { Document } from 'shared/types/domain/document'
+import { v4 as uuid } from 'uuid'
 
-import { messageReceived, socketEstablished } from '../events/messages'
-import { deleteNode, openNodeState, selectNode } from '../events/tree'
+import { apiResponse, socketEstablished } from '../events/messages'
+import {
+  createNodeFx,
+  deleteNodeFx,
+  documentFx,
+  openNodeState,
+  selectNode,
+  updateNodeSettingsFx
+} from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
-import { ClientMessage } from '../shared/types/clientMessages'
+import { Api, ApiMethod, ApiSchema } from '../shared/api'
+import { decode } from '../shared/codecs/decode'
+import { TApiRequest } from '../shared/types/apiRequest'
 import { Node } from '../shared/types/domain/tree'
 import { Maybe } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
 
-type AppState = {
+export type AppState = {
   document: Omit<Document, 'tree'>
   tree: Node
   selectedNode: Maybe<Node>
-  sendMessage: <T extends ClientMessage>(message: T) => void
   openNodes: Record<string, boolean>
+  api: Api
 }
 
 const initial: AppState = {
@@ -25,12 +35,14 @@ const initial: AppState = {
 } as any
 
 const $appStore = createStore<AppState>(initial)
+export const updateState = createEvent<Partial<AppState>>()
+$appStore.on(updateState, (state, cur) => ({ ...state, ...cur }))
+
+apiResponse.watch(({ method, payload }) => {
+  logger.debug(`Message: ${method}`, payload)
+})
 
 const uiTree = (root: Node) => TreeNode.from<Node, 'children'>('children')(root)
-
-messageReceived.watch(payload => {
-  logger.debug(`Message: ${payload.type}`, payload)
-})
 
 const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
   selectedNode
@@ -46,64 +58,76 @@ const selectedNodeState = (state: AppState, selectedNode: Maybe<Node>) =>
       }
     : { ...state, selectedNode: undefined }
 
-$appStore.on(messageReceived, (state, message) => {
-  switch (message.type) {
-    case 'DOCUMENT':
-      const tree = message.payload.tree
-      const uiRoot = uiTree(tree)
-      return {
-        ...state,
-        document: omit(['tree'], message.payload),
-        tree: tree,
-        openNodes: {
-          ...state.openNodes,
-          [tree.id]: true
-        },
-        selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
-      }
-    case 'RESET':
-      return initial
-    case 'NODE_CREATED': {
-      const uiRoot = uiTree(state.tree)
-      const node = uiRoot.first(propEq('id', message.payload.id))
-      return { ...state, ...selectedNodeState(state, node?.value) }
-    }
-    case 'NODE_DELETED': {
-      const uiRoot = uiTree(state.tree)
-      const parent = uiRoot.first(propEq('id', message.payload.parentNode))
-      const node = parent?.children[message.payload.position - 1] ?? parent
-      return { ...state, ...selectedNodeState(state, node?.value) }
-    }
-    default:
-      return state
+$appStore.on(deleteNodeFx.done, (state, { result }) => {
+  const uiRoot = uiTree(state.tree)
+  const parent = uiRoot.first(propEq('id', result.parentNode))
+  const node = parent?.children[result.position - 1] ?? parent
+  return { ...state, tree: result.tree, ...selectedNodeState(state, node?.value) }
+})
+
+$appStore.on(documentFx.done, (state, { result }) => {
+  const tree = result.tree
+  const uiRoot = uiTree(tree)
+  return {
+    ...state,
+    document: omit(['tree'], result),
+    tree: tree,
+    openNodes: {
+      ...state.openNodes,
+      [tree.id]: true
+    },
+    selectedNode: uiRoot.first(propEq('id', state.selectedNode?.id))?.value
   }
+})
+
+$appStore.on(createNodeFx.done, (state, { result }) => {
+  const uiRoot = uiTree(result.tree)
+  const node = uiRoot.first(propEq('id', result.nodeId))
+  return { ...state, tree: result.tree, ...selectedNodeState(state, node?.value) }
+})
+
+$appStore.on(updateNodeSettingsFx.done, (state, { result }) => {
+  return { ...state, tree: result }
 })
 
 $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
   ...state,
-  sendMessage: sendJsonMessage
-}))
-
-const send =
-  <T>(fn: (payload: NonNullable<T>) => ClientMessage) =>
-  (state: AppState, payload: T) => {
-    if (payload != null) {
-      state.sendMessage(fn(payload!))
+  api: new Proxy({} as any, {
+    get(target, method: ApiMethod) {
+      return <T>(payload: T) => {
+        if (method in ApiSchema) {
+          logger.info(`Sent: ${method}`, payload)
+          const id = uuid()
+          const apiCall = decode(TApiRequest)({
+            id,
+            method,
+            payload
+          })
+          sendJsonMessage(apiCall)
+          return new Promise(resolve => {
+            const unsubscribe = apiResponse.watch(res => {
+              if (res.id === id) {
+                unsubscribe()
+                resolve(res.payload)
+              }
+            })
+          })
+        } else {
+          logger.error(`No ${method} in ApiSchema`, {})
+        }
+      }
     }
-    return state
-  }
+  })
+}))
 
 $appStore.on(selectNode, (state, selectedNode) => ({
   ...state,
   ...selectedNodeState(state, selectedNode!)
 }))
+
 $appStore.on(openNodeState, (state, [node, open]) => ({
   ...state,
   openNodes: { ...state.openNodes, [node.id]: open }
 }))
-$appStore.on(
-  deleteNode,
-  send(node => ({ type: 'DELETE_NODE', id: node.id }))
-)
 
 export default $appStore

@@ -4,9 +4,9 @@ import { useStore } from 'effector-react'
 import { map, pipe, toLower, values, when } from 'ramda'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
+import { createNodeFx } from '../../events/tree'
 import { SocketForm } from '../../forms/SocketForm'
 import { TextInput } from '../../forms/TextInput'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
@@ -47,7 +47,6 @@ const TypeGrid = styled.ul`
 `
 
 const NewNode: ModalFC = ({ close }) => {
-  const { t } = useTranslation()
   const { selectedNode } = useStore($appStore)
 
   const form = useForm<NewNodeType>({
@@ -60,7 +59,7 @@ const NewNode: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm submitMessage="NEW_NODE" form={form} onSuccess={close} close={close}>
+    <SocketForm form={form} onValid={createNodeFx} close={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"

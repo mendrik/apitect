@@ -1,7 +1,7 @@
 import { useCallback, useContext, useReducer, useRef } from 'react'
 import { Primitives } from 'ts-pattern/lib/types/helpers'
 
-import { progressContext } from '../contexts/progress'
+import { progressContext } from '../contexts/withProgress'
 
 export type ExtendedError = Error & Record<string, Primitives>
 

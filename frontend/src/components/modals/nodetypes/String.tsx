@@ -3,6 +3,7 @@ import { useStore } from 'effector-react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
+import { updateNodeSettingsFx } from '../../../events/tree'
 import { SocketForm } from '../../../forms/SocketForm'
 import { TextInput } from '../../../forms/TextInput'
 import { NodeType } from '../../../shared/types/domain/nodeType'
@@ -23,7 +24,7 @@ const String: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm submitMessage="NODE_SETTINGS" form={form} onSuccess={close} close={close}>
+    <SocketForm form={form} onValid={updateNodeSettingsFx} close={close}>
       <TextInput
         name="name"
         label="form.fields.nodeName"

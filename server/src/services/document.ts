@@ -14,5 +14,5 @@ export const getLastDocumentId = (email: string): Promise<Id> =>
 
 export const getLastDocument = (email: string): Promise<Document> =>
   getLastDocumentId(email)
-    .then(id => collection(Collections.documents).findOne({ id }))
+    .then(id => collection(Collections.documents).findOne({ id }, { projection: { _id: 0 } }))
     .then(failOn<Document>(isNil, 'document not found'))

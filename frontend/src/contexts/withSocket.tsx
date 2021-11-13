@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 
-import { messageReceived, socketEstablished } from '../events/messages'
+import { apiResponse, socketEstablished } from '../events/messages'
 import { Jsx } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
-import { userContext } from './user'
+import { userContext } from './withUser'
 
 export const WithSocket = ({ children }: Jsx) => {
   const { jwt } = useContext(userContext)
@@ -17,7 +17,7 @@ export const WithSocket = ({ children }: Jsx) => {
   useEffect(() => {
     if (lastMessage?.data) {
       try {
-        messageReceived(JSON.parse(lastMessage?.data))
+        apiResponse(JSON.parse(lastMessage?.data))
       } catch (e) {
         logger.error('Failed to parse server message:', lastMessage?.data)
       }

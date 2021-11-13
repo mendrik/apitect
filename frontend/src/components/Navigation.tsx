@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { addParams } from 'shared/utils/url'
 
 import { ReactComponent as Logo } from '../assets/logo.svg'
-import { userContext } from '../contexts/user'
+import { userContext } from '../contexts/withUser'
 import { useLogout } from '../hooks/useLogout'
 import $appStore from '../stores/$appStore'
 
