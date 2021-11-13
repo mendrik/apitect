@@ -10,7 +10,7 @@ import { SubmitButton } from './SubmitButton'
 
 type OwnProps<T extends FieldValues> = {
   form: UseFormReturn<T>
-  onValid: Effect<any, any>
+  onValid: Effect<any, any> // todo fix me
   close: Fn
 }
 
@@ -23,7 +23,13 @@ export const SocketForm = <T extends FieldValues>({
   const { t } = useTranslation()
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(data => onValid(data).then(close))} noValidate>
+      <form
+        onSubmit={form.handleSubmit(data => {
+          close()
+          return onValid(data)
+        })}
+        noValidate
+      >
         {children}
         <ButtonRow className="mt-4">
           <Button variant="outline-secondary" onClick={close}>

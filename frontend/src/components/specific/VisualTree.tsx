@@ -31,10 +31,9 @@ export const VisualTree = ({ children }: Jsx) => {
   const { tree, openNodes, selectedNode } = useStore($appStore)
   const visualNodes = () => visibleNodes(tree, openNodes)
 
-  useDefinedEffect(
-    node => document.getElementById(node.id)?.focus({ preventScroll: true }),
-    selectedNode
-  )
+  useDefinedEffect(node => {
+    document.getElementById(node.id)?.focus({ preventScroll: true })
+  }, selectedNode)
 
   const nextNode = (): Maybe<Node> => next(propEq('id', selectedNode?.id))(visualNodes())
   const prevNode = (): Maybe<Node> => prev(propEq('id', selectedNode?.id))(visualNodes())
