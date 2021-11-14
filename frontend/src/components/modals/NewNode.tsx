@@ -1,7 +1,7 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import { map, pipe, toLower, values, when } from 'ramda'
+import { cond, map, pipe, propEq, toLower, values, when } from 'ramda'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -11,8 +11,10 @@ import { SocketForm } from '../../forms/SocketForm'
 import { TextInput } from '../../forms/TextInput'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '../../shared/types/forms/newNode'
+import { Fn } from '../../shared/types/generic'
 import { capitalize, spaceOrEnter } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
+import { preventDefault as pd } from '../../utils/preventDefault'
 import { ModalFC } from '../ModalStub'
 
 const TypeGrid = styled.ul`
@@ -20,8 +22,8 @@ const TypeGrid = styled.ul`
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 1rem;
-  padding: 0;
-  margin: 0;
+  padding: 0.5rem;
+  margin: -0.5rem;
   list-style: none;
 
   > li {
@@ -58,6 +60,13 @@ const NewNode: ModalFC = ({ close }) => {
     }
   })
 
+  const keyMap = cond([
+    [propEq('key', 'ArrowDown'), pd(() => void 0)],
+    [propEq('key', 'ArrowUp'), pd(() => void 0)],
+    [propEq('key', 'ArrowRight'), pd(() => void 0)],
+    [propEq('key', 'ArrowLeft'), pd(() => void 0)]
+  ]) as Fn
+
   return (
     <SocketForm form={form} onValid={createNodeFx} close={close}>
       <TextInput
@@ -71,7 +80,13 @@ const NewNode: ModalFC = ({ close }) => {
         name="nodeType"
         defaultValue={NodeType.Object}
         render={({ field }) => (
-          <TypeGrid role="grid" data-wrap-cols="true" data-wrap-rows="true">
+          <TypeGrid
+            role="grid"
+            data-wrap-cols="true"
+            data-wrap-rows="true"
+            tabIndex={0}
+            onKeyDown={keyMap}
+          >
             {map(nodeType => {
               const Icon = iconMap[nodeType]
               return (

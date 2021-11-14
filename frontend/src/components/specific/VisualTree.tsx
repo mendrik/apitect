@@ -12,7 +12,7 @@ import { Fn, Jsx, Maybe } from '../../shared/types/generic'
 import { ModalNames } from '../../shared/types/modals'
 import { next, prev } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
-import { preventDefault } from '../../utils/preventDefault'
+import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNodeTemplate } from './VisualNodeTemplate'
 
 const visibleNodes = (root: Node, openNodes: Record<string, boolean>) =>
@@ -39,17 +39,17 @@ export const VisualTree = ({ children }: Jsx) => {
     prev(pathEq(['value', 'id'], selectedNode?.value.id))(visualNodes.slice(1))
 
   const keyMap = cond([
-    [propEq('key', 'ArrowDown'), pipe(nextNode, selectNode)],
-    [propEq('key', 'ArrowUp'), pipe(prevNode, selectNode)],
-    [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
-    [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
+    [propEq('key', 'ArrowDown'), pd(pipe(nextNode, selectNode))],
+    [propEq('key', 'ArrowUp'), pd(pipe(prevNode, selectNode))],
+    [propEq('key', 'ArrowRight'), pd(() => openNode(selectedNode))],
+    [propEq('key', 'ArrowLeft'), pd(() => closeNode(selectedNode))],
     [propEq('key', 'Delete'), () => deleteNodeFx(selectedNode!.value.id)],
     [propEq('key', 'n'), () => openModal({ name: ModalNames.NEW_NODE })],
     [propEq('key', 'Enter'), () => nodeSettingsFx(selectedNode!.value.id)]
   ]) as Fn
 
   return (
-    <div onKeyDown={preventDefault(keyMap)}>
+    <div onKeyDown={keyMap}>
       <VisualNodeTemplate node={visualNodes[0]}>{children}</VisualNodeTemplate>
     </div>
   )
