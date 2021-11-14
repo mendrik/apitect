@@ -44,17 +44,17 @@ export const VisualTree = ({ children }: Jsx) => {
     prev(pathEq(['value', 'id'], selectedNode?.value.id))(visualNodes.slice(1))
 
   const keyMap = cond([
-    [propEq('key', 'ArrowDown'), pipe(nextNode, selectNode)],
-    [propEq('key', 'ArrowUp'), pipe(prevNode, selectNode)],
-    [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
-    [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
-    [propEq('key', 'Delete'), () => deleteNodeFx(selectedNode!.value.id)],
-    [propEq('key', 'n'), () => newNodeFx()],
-    [propEq('key', 'Enter'), () => nodeSettingsFx(selectedNode!.value.id)]
+    [propEq('key', 'ArrowDown'), pd(pipe(nextNode, selectNode))],
+    [propEq('key', 'ArrowUp'), pd(pipe(prevNode, selectNode))],
+    [propEq('key', 'ArrowRight'), pd(() => openNode(selectedNode))],
+    [propEq('key', 'ArrowLeft'), pd(() => closeNode(selectedNode))],
+    [propEq('key', 'Delete'), pd(() => deleteNodeFx(selectedNode!.value.id))],
+    [propEq('key', 'n'), pd(() => newNodeFx())],
+    [propEq('key', 'Enter'), pd(() => nodeSettingsFx(selectedNode!.value.id))]
   ]) as Fn
 
   return (
-    <div onKeyDown={pd(keyMap)}>
+    <div onKeyDown={keyMap}>
       <VisualNodeTemplate node={visualNodes[0]}>{children}</VisualNodeTemplate>
     </div>
   )
