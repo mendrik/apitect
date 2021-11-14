@@ -1,7 +1,7 @@
 import { ioTsResolver } from '@hookform/resolvers/io-ts'
 import clsx from 'clsx'
-import { useStore } from 'effector-react'
-import { cond, map, pipe, propEq, toLower, values, when } from 'ramda'
+import { cond, keys, pipe, propEq, toLower, values, when } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -9,18 +9,20 @@ import styled from 'styled-components'
 import { createNodeFx } from '../../events/tree'
 import { SocketForm } from '../../forms/SocketForm'
 import { TextInput } from '../../forms/TextInput'
+import { useLocation } from '../../hooks/useLocation'
+import { Node } from '../../shared/types/domain/node'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '../../shared/types/forms/newNode'
-import { Fn } from '../../shared/types/generic'
+import { Fn, Maybe } from '../../shared/types/generic'
 import { capitalize, spaceOrEnter } from '../../shared/utils/ramda'
-import $appStore from '../../stores/$appStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { ModalFC } from '../ModalStub'
 
+const COLS = 4
+
 const TypeGrid = styled.ul`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(${COLS}, 1fr);
   gap: 1rem;
   padding: 0.5rem;
   margin: -0.5rem;
@@ -48,27 +50,41 @@ const TypeGrid = styled.ul`
   }
 `
 
-const NewNode: ModalFC = ({ close }) => {
-  const { selectedNode } = useStore($appStore)
+export type SelectedNode = {
+  selectedNode: Maybe<Node>
+}
 
+const NewNode: ModalFC = ({ close }) => {
+  const {
+    state: { selectedNode }
+  } = useLocation<SelectedNode>()
   const form = useForm<NewNodeType>({
     resolver: ioTsResolver(TNewNode),
     defaultValues: {
-      parentNode: selectedNode?.value.id,
+      parentNode: selectedNode?.id,
       nodeType: NodeType.Object,
       name: ''
     }
   })
 
+  const focus =
+    (delta: number, len = keys(NodeType).length) =>
+    () => {
+      const current = parseInt((document.activeElement as HTMLElement)?.dataset['grid'] ?? '0', 10)
+      console.log(delta, current, len)
+      return document.getElementById(`grid-${(current + delta) % len}`)?.focus()
+    }
+
   const keyMap = cond([
-    [propEq('key', 'ArrowDown'), pd(() => void 0)],
-    [propEq('key', 'ArrowUp'), pd(() => void 0)],
-    [propEq('key', 'ArrowRight'), pd(() => void 0)],
-    [propEq('key', 'ArrowLeft'), pd(() => void 0)]
+    [propEq('key', 'ArrowDown'), pd(focus(COLS))],
+    [propEq('key', 'ArrowUp'), pd(focus(-COLS))],
+    [propEq('key', 'ArrowRight'), pd(focus(1))],
+    [propEq('key', 'ArrowLeft'), pd(focus(-1))]
   ]) as Fn
 
   return (
     <SocketForm form={form} onValid={createNodeFx} close={close}>
+      {selectedNode?.name}
       <TextInput
         name="name"
         label="form.fields.nodeName"
@@ -87,12 +103,14 @@ const NewNode: ModalFC = ({ close }) => {
             tabIndex={0}
             onKeyDown={keyMap}
           >
-            {map(nodeType => {
+            {mapIndexed((nodeType, idx) => {
               const Icon = iconMap[nodeType]
               return (
                 <li
                   key={nodeType}
                   role="gridcell"
+                  id={`grid-${idx}`}
+                  data-grid={idx}
                   tabIndex={0}
                   onClick={() => field.onChange(nodeType)}
                   onKeyDown={when(spaceOrEnter, () => field.onChange(nodeType))}

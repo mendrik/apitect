@@ -1,9 +1,9 @@
 import { createEffect, createEvent, sample } from 'effector'
-import { tap } from 'ramda'
+import { propOr, tap } from 'ramda'
 
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Api } from '../shared/api'
-import { Node } from '../shared/types/domain/tree'
+import { Node } from '../shared/types/domain/node'
 import { Maybe } from '../shared/types/generic'
 import { ModalNames } from '../shared/types/modals'
 import $appStore from '../stores/$appStore'
@@ -29,4 +29,10 @@ export const nodeSettingsFx = createEffect<Api['nodeSettings']>(id =>
   state()
     .api.nodeSettings(id)
     .then(tap(params => openModal({ name: ModalNames.NODE_SETTINGS, params })))
+)
+
+export const newNodeFx = createEffect(() =>
+  Promise.resolve(state().selectedNode)
+    .then(propOr(undefined, 'value'))
+    .then(selectedNode => openModal({ name: ModalNames.NEW_NODE, params: { selectedNode } }))
 )

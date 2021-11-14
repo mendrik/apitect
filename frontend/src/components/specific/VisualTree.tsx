@@ -3,13 +3,18 @@ import { cond, pathEq, pipe, propEq } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
 import React, { useMemo } from 'react'
 
-import { openModal } from '../../events/modals'
-import { closeNode, deleteNodeFx, nodeSettingsFx, openNode, selectNode } from '../../events/tree'
+import {
+  closeNode,
+  deleteNodeFx,
+  newNodeFx,
+  nodeSettingsFx,
+  openNode,
+  selectNode
+} from '../../events/tree'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
-import { Node } from '../../shared/types/domain/tree'
+import { Node } from '../../shared/types/domain/node'
 import { Fn, Jsx, Maybe } from '../../shared/types/generic'
-import { ModalNames } from '../../shared/types/modals'
 import { next, prev } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
@@ -39,17 +44,17 @@ export const VisualTree = ({ children }: Jsx) => {
     prev(pathEq(['value', 'id'], selectedNode?.value.id))(visualNodes.slice(1))
 
   const keyMap = cond([
-    [propEq('key', 'ArrowDown'), pd(pipe(nextNode, selectNode))],
-    [propEq('key', 'ArrowUp'), pd(pipe(prevNode, selectNode))],
-    [propEq('key', 'ArrowRight'), pd(() => openNode(selectedNode))],
-    [propEq('key', 'ArrowLeft'), pd(() => closeNode(selectedNode))],
+    [propEq('key', 'ArrowDown'), pipe(nextNode, selectNode)],
+    [propEq('key', 'ArrowUp'), pipe(prevNode, selectNode)],
+    [propEq('key', 'ArrowRight'), () => openNode(selectedNode)],
+    [propEq('key', 'ArrowLeft'), () => closeNode(selectedNode)],
     [propEq('key', 'Delete'), () => deleteNodeFx(selectedNode!.value.id)],
-    [propEq('key', 'n'), () => openModal({ name: ModalNames.NEW_NODE })],
+    [propEq('key', 'n'), () => newNodeFx()],
     [propEq('key', 'Enter'), () => nodeSettingsFx(selectedNode!.value.id)]
   ]) as Fn
 
   return (
-    <div onKeyDown={keyMap}>
+    <div onKeyDown={pd(keyMap)}>
       <VisualNodeTemplate node={visualNodes[0]}>{children}</VisualNodeTemplate>
     </div>
   )

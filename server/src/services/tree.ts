@@ -2,7 +2,7 @@ import { always, isNil, prop } from 'ramda'
 import { ChildOperation, TreeNode } from '~shared/algebraic/treeNode'
 import { decode } from '~shared/codecs/decode'
 import { Document } from '~shared/types/domain/document'
-import { Node, TNode } from '~shared/types/domain/tree'
+import { Node, TNode } from '~shared/types/domain/node'
 import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from './database'

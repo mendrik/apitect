@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 
 import { idCodec } from '../../codecs/idCodec'
-import { TNode } from './tree'
+import { TNode } from './node'
 
 export const TDocument = t.type({
   id: idCodec,

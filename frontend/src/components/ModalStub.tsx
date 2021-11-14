@@ -9,7 +9,7 @@ import { removeParams } from 'shared/utils/url'
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 
-export type ModalFC = ({ close }: { close: Fn }) => JSX.Element
+export type ModalFC = ({ close }: { close: Fn }) => JSX.Element | null
 
 type OwnProps = {
   from: () => Promise<{ default: ModalFC }>

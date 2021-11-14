@@ -2,9 +2,7 @@ import { IconFolderPlus, IconSettings, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React from 'react'
 
-import { openModal } from '../../events/modals'
-import { deleteNodeFx, nodeSettingsFx } from '../../events/tree'
-import { ModalNames } from '../../shared/types/modals'
+import { deleteNodeFx, newNodeFx, nodeSettingsFx } from '../../events/tree'
 import $appStore from '../../stores/$appStore'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
@@ -25,7 +23,7 @@ export const ProjectTreeHeader = () => {
           />
         </WithTooltip>
         <WithTooltip tooltipText="Create a new node" shortcut="N">
-          <Icon icon={IconFolderPlus} onClick={() => openModal({ name: ModalNames.NEW_NODE })} />
+          <Icon icon={IconFolderPlus} onClick={() => newNodeFx()} />
         </WithTooltip>
         <WithTooltip tooltipText="Settings" shortcut="Enter">
           <Icon

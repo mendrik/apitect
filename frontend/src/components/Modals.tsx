@@ -13,7 +13,8 @@ export const Modals = () => {
 
   useEffect(() => {
     const openSub = $appStore.watch(openModal, (_, config) => {
-      navigate(addParams({ modal: config.name }), { state: config.params })
+      const to = addParams({ modal: config.name })
+      navigate(to, { state: config.params })
     })
     const closeSub = $appStore.watch(closeModal, () => navigate(removeParams(['modal'])))
     return () => {

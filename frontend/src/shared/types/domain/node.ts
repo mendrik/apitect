@@ -14,10 +14,12 @@ export type Node = {
 }
 
 export const TNode: t.Type<Node> = t.recursion('node', () =>
-  t.type({
-    id: idCodec as t.Any,
-    name: t.string,
-    nodeType: withDefault(enumCodec('nodeType', NodeType), NodeType.Object),
-    children: withDefault(t.array(TNode), [])
-  })
+  t.exact(
+    t.type({
+      id: idCodec as t.Any,
+      name: t.string,
+      nodeType: withDefault(enumCodec('nodeType', NodeType), NodeType.Object),
+      children: withDefault(t.array(TNode), [])
+    })
+  )
 )
