@@ -40,14 +40,12 @@ export const Modals = () => {
         from={() => import('./modals/NewNode')}
         name="new-node"
       />
-      {selectedNode && (
-        <ModalStub
-          title={`modals.nodeSettings.title`}
-          titleOptions={{ property: selectedNode.value.name }}
-          from={() => import('./modals/NodeSettings')}
-          name="node-settings"
-        />
-      )}
+      <ModalStub
+        title={`modals.nodeSettings.title`}
+        titleOptions={{ property: selectedNode?.value.name ?? '' }}
+        from={() => import('./modals/NodeSettings')}
+        name="node-settings"
+      />
     </div>
   )
 }

@@ -1,7 +1,10 @@
 import { useStore } from 'effector-react'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
+import { useUndefinedEffect } from '../../hooks/useUndefinedEffect'
 import { NodeType } from '../../shared/types/domain/nodeType'
+import { removeParams } from '../../shared/utils/url'
 import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../ModalStub'
 import ArraySettings from './nodetypes/Array'
@@ -50,6 +53,15 @@ const content = (nodeType: NodeType) => {
 
 const NodeSettings: ModalFC = ({ close }) => {
   const { selectedNode } = useStore($appStore)
+  const navigate = useNavigate()
+
+  useUndefinedEffect(() => {
+    navigate(removeParams(['modal']))
+  }, selectedNode)
+
+  if (!selectedNode) {
+    return null
+  }
   const { nodeType } = selectedNode!.value
   const Content = content(nodeType)
   return <Content close={close} />

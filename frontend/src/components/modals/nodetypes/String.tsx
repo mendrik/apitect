@@ -16,7 +16,8 @@ import { ModalFC } from '../../ModalStub'
 const String: ModalFC = ({ close }) => {
   const { state } = useLocation<NodeSettings>()
   const { selectedNode } = useStore($appStore)
-  const { id: nodeId, name } = selectedNode!.value
+  const { id: nodeId, name } = selectedNode?.value ?? {}
+
   const form = useForm<NodeSettings>({
     resolver: ioTsResolver(TStringSettings),
     defaultValues: {
