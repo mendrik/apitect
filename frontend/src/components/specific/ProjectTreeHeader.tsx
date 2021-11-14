@@ -23,7 +23,7 @@ export const ProjectTreeHeader = () => {
           />
         </WithTooltip>
         <WithTooltip tooltipText="Create a new node" shortcut="N">
-          <Icon icon={IconFolderPlus} onClick={() => newNodeFx()} />
+          <Icon icon={IconFolderPlus} onClick={() => newNodeFx(selectedNode?.value)} />
         </WithTooltip>
         <WithTooltip tooltipText="Settings" shortcut="Enter">
           <Icon

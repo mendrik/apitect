@@ -31,8 +31,6 @@ export const nodeSettingsFx = createEffect<Api['nodeSettings']>(id =>
     .then(tap(params => openModal({ name: ModalNames.NODE_SETTINGS, params })))
 )
 
-export const newNodeFx = createEffect(() =>
-  Promise.resolve(state().selectedNode)
-    .then(propOr(undefined, 'value'))
-    .then(selectedNode => openModal({ name: ModalNames.NEW_NODE, params: { selectedNode } }))
+export const newNodeFx = createEffect((selectedNode?: Node) =>
+  openModal({ name: ModalNames.NEW_NODE, params: { selectedNode } })
 )

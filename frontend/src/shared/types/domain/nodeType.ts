@@ -9,7 +9,7 @@ import {
   IconListCheck,
   IconMap2,
   IconPalette,
-  IconRelationOneToOne,
+  IconShare,
   IconToggleLeft,
   TablerIcon
 } from '@tabler/icons'
@@ -41,5 +41,5 @@ export const iconMap: Record<NodeType, TablerIcon> = {
   [NodeType.Color]: IconPalette,
   [NodeType.Location]: IconMap2,
   [NodeType.RichText]: IconBlockquote,
-  [NodeType.Reference]: IconRelationOneToOne
+  [NodeType.Reference]: IconShare
 }

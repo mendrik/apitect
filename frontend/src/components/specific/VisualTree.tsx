@@ -49,7 +49,7 @@ export const VisualTree = ({ children }: Jsx) => {
     [propEq('key', 'ArrowRight'), pd(() => openNode(selectedNode))],
     [propEq('key', 'ArrowLeft'), pd(() => closeNode(selectedNode))],
     [propEq('key', 'Delete'), pd(() => deleteNodeFx(selectedNode!.value.id))],
-    [propEq('key', 'n'), pd(() => newNodeFx())],
+    [propEq('key', 'n'), pd(() => newNodeFx(selectedNode?.value))],
     [propEq('key', 'Enter'), pd(() => nodeSettingsFx(selectedNode!.value.id))]
   ]) as Fn
 
