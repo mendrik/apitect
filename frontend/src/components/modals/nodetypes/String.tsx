@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { updateNodeSettingsFx } from '../../../events/tree'
 import { SocketForm } from '../../../forms/SocketForm'
 import { TextInput } from '../../../forms/TextInput'
+import { useLocation } from '../../../hooks/useLocation'
 import { NodeType } from '../../../shared/types/domain/nodeType'
 import { NodeSettings } from '../../../shared/types/forms/nodetypes/nodeSettings'
 import { TStringSettings } from '../../../shared/types/forms/nodetypes/stringSettings'
@@ -13,14 +14,16 @@ import $appStore from '../../../stores/$appStore'
 import { ModalFC } from '../../ModalStub'
 
 const String: ModalFC = ({ close }) => {
+  const { state } = useLocation<NodeSettings>()
   const { selectedNode } = useStore($appStore)
   const { id: nodeId, name } = selectedNode!.value
   const form = useForm<NodeSettings>({
     resolver: ioTsResolver(TStringSettings),
     defaultValues: {
+      ...state,
       nodeType: NodeType.String,
-      nodeId,
-      name
+      nodeId: state?.nodeId ?? nodeId,
+      name: state?.name ?? name
     }
   })
 
