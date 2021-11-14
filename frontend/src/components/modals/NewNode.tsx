@@ -24,8 +24,8 @@ const TypeGrid = styled.ul`
   display: grid;
   grid-template-columns: repeat(${COLS}, 1fr);
   gap: 1rem;
-  padding: 0.5rem;
-  margin: -0.5rem;
+  padding: 0;
+  margin: 0;
   list-style: none;
 
   > li {
@@ -84,7 +84,6 @@ const NewNode: ModalFC = ({ close }) => {
 
   return (
     <SocketForm form={form} onValid={createNodeFx} close={close}>
-      {selectedNode?.name}
       <TextInput
         name="name"
         label="form.fields.nodeName"
@@ -96,13 +95,7 @@ const NewNode: ModalFC = ({ close }) => {
         name="nodeType"
         defaultValue={NodeType.Object}
         render={({ field }) => (
-          <TypeGrid
-            role="grid"
-            data-wrap-cols="true"
-            data-wrap-rows="true"
-            tabIndex={0}
-            onKeyDown={keyMap}
-          >
+          <TypeGrid role="grid" data-wrap-cols="true" data-wrap-rows="true" onKeyDown={keyMap}>
             {mapIndexed((nodeType, idx) => {
               const Icon = iconMap[nodeType]
               return (
