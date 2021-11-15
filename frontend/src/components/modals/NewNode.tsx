@@ -71,7 +71,6 @@ const NewNode: ModalFC = ({ close }) => {
     (delta: number, len = keys(NodeType).length) =>
     () => {
       const current = parseInt((document.activeElement as HTMLElement)?.dataset['grid'] ?? '0', 10)
-      console.log(delta, current, len)
       return document.getElementById(`grid-${(current + delta) % len}`)?.focus()
     }
 
