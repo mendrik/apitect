@@ -62,7 +62,7 @@ const NodeSettings: ModalFC = ({ close }) => {
   if (!selectedNode) {
     return null
   }
-  const { nodeType } = selectedNode!.value
+  const { nodeType } = selectedNode.value
   const Content = content(nodeType)
   return <Content close={close} />
 }
