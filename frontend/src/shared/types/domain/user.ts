@@ -1,20 +1,16 @@
-import * as t from 'io-ts'
+import { object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
 import { emailCodec } from '../../codecs/emailCodec'
 import { idCodec } from '../../codecs/idCodec'
 import { nonEmptyString } from '../../codecs/nonEmptyString'
-import { undefinedCodec } from '../../codecs/undefined'
 
-export const TUser = t.intersection([
-  t.type({
-    name: nonEmptyString,
-    email: emailCodec,
-    lastDocument: idCodec
-  }),
-  t.partial({
-    password: nonEmptyString,
-    token: undefinedCodec(t.string)
-  })
-])
+export const ZUser = object({
+  name: nonEmptyString,
+  email: emailCodec,
+  lastDocument: idCodec,
+  password: nonEmptyString.optional(),
+  token: nonEmptyString.optional()
+})
 
-export type User = t.TypeOf<typeof TUser>
+export type User = TypeOf<typeof ZUser>

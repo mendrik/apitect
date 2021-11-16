@@ -1,12 +1,13 @@
-import * as t from 'io-ts'
+import { intersection, object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { TNodeSettingsBase } from './nodeSettingsBase'
+import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const TArraySettings = t.intersection([
-  TNodeSettingsBase,
-  t.type({
-    validation: t.partial({})
+export const ZArraySettings = intersection(
+  ZNodeSettingsBase,
+  object({
+    validation: object({}).optional()
   })
-])
+)
 
-export type ArraySettings = t.TypeOf<typeof TArraySettings>
+export type ArraySettings = TypeOf<typeof ZArraySettings>

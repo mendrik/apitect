@@ -1,9 +1,9 @@
-import * as t from 'io-ts'
+import { object } from 'zod'
 
 import { idCodec } from '../../codecs/idCodec'
-import { TNode } from '../domain/node'
+import { ZNode } from '../domain/node'
 
-export const TNodeCreated = t.type({
+export const TNodeCreated = object({
   nodeId: idCodec,
-  tree: TNode
+  tree: ZNode
 })

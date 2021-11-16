@@ -1,10 +1,3 @@
-import * as t from 'io-ts'
-import { complement, isEmpty } from 'ramda'
+import { string } from 'zod'
 
-import { validationCodec } from './validationCodec'
-
-export const nonEmptyString = validationCodec(
-  t.string,
-  complement(isEmpty),
-  'form.validation.required'
-)
+export const nonEmptyString = string().nonempty('form.validation.required')

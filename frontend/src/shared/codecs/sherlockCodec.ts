@@ -1,14 +1,11 @@
-import * as t from 'io-ts'
 import S from 'sherlockjs'
+import { string } from 'zod'
 
-export interface Sherlock extends t.Type<Date, string, unknown> {}
-
-export const sherlockDate: Sherlock = new t.Type<Date, string, unknown>(
-  'Sherlock',
-  (u): u is Date => u instanceof Date,
-  (u, c) => {
-    const res = S.parse(`${u}`)
-    return res.validated && res.startDate != null ? t.success(res.startDate) : t.failure(u, c)
-  },
-  a => a.toISOString()
-)
+export const sherlockDate = string().transform(u => {
+  const res = S.parse(u)
+  if (res.validated && res.startDate != null) {
+    res.startDate
+  } else {
+    throw Error('form.validation.sherlock')
+  }
+})

@@ -1,4 +1,4 @@
-import { ioTsResolver } from '@hookform/resolvers/io-ts'
+import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
@@ -19,7 +19,7 @@ import { SuccessView } from '../SuccessView'
 const ForgotPasswordForm: ModalFC = ({ close }) => {
   const { t } = useTranslation()
   const form = useForm<ForgotPassword>({
-    resolver: ioTsResolver(TForgotPassword),
+    resolver: zodResolver(TForgotPassword),
     defaultValues: {
       email: 'andreas@mindmine.fi'
     }

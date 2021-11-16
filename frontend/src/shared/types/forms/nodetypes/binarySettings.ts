@@ -1,12 +1,13 @@
-import * as t from 'io-ts'
+import { intersection, object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { TNodeSettingsBase } from './nodeSettingsBase'
+import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const TBinarySettings = t.intersection([
-  TNodeSettingsBase,
-  t.type({
-    validation: t.partial({})
+export const ZBinarySettings = intersection(
+  ZNodeSettingsBase,
+  object({
+    validation: object({}).optional()
   })
-])
+)
 
-export type BinarySettings = t.TypeOf<typeof TBinarySettings>
+export type BinarySettings = TypeOf<typeof ZBinarySettings>

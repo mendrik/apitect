@@ -1,9 +1,9 @@
-import { ioTsResolver } from '@hookform/resolvers/io-ts'
+import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Login, TLogin } from 'shared/types/forms/login'
+import { Login, ZLogin } from 'shared/types/forms/login'
 import { Fn, Jsx } from 'shared/types/generic'
 import { match } from 'ts-pattern'
 
@@ -31,7 +31,7 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const [view, setView] = useState<Views>(Views.LOGIN)
   const form = useForm<Login>({
-    resolver: ioTsResolver(TLogin),
+    resolver: zodResolver(ZLogin),
     defaultValues: {
       email: 'andreas@mindmine.fi',
       password: 'qctxExmNQ9FEcZ'

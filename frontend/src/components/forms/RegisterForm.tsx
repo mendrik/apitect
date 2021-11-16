@@ -1,9 +1,9 @@
-import { ioTsResolver } from '@hookform/resolvers/io-ts'
+import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useContext } from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Register, TRegister } from 'shared/types/forms/register'
+import { Register, ZRegister } from 'shared/types/forms/register'
 
 import { userContext } from '../../contexts/withUser'
 import { ButtonRow } from '../../forms/ButtonRow'
@@ -18,7 +18,7 @@ import { SuccessView } from '../SuccessView'
 
 export const RegisterForm: ModalFC = ({ close }) => {
   const form = useForm<Register>({
-    resolver: ioTsResolver(TRegister),
+    resolver: zodResolver(ZRegister),
     defaultValues: {
       email: 'andreas@mindmine.fi',
       name: 'Andreas Herd',

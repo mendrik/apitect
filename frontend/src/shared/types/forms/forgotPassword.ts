@@ -1,9 +1,10 @@
-import * as t from 'io-ts'
+import { object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
 import { emailCodec } from '../../codecs/emailCodec'
 
-export const TForgotPassword = t.type({
+export const TForgotPassword = object({
   email: emailCodec
 })
 
-export type ForgotPassword = t.TypeOf<typeof TForgotPassword>
+export type ForgotPassword = TypeOf<typeof TForgotPassword>

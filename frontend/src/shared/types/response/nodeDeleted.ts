@@ -1,10 +1,10 @@
-import * as t from 'io-ts'
+import { number, object } from 'zod'
 
 import { idCodec } from '../../codecs/idCodec'
-import { TNode } from '../domain/node'
+import { ZNode } from '../domain/node'
 
-export const TNodeDeleted = t.type({
-  tree: TNode,
-  position: t.number,
+export const TNodeDeleted = object({
+  tree: ZNode,
+  position: number(),
   parentNode: idCodec
 })

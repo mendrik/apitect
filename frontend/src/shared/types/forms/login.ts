@@ -1,11 +1,12 @@
-import * as t from 'io-ts'
+import { object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
 import { emailCodec } from '../../codecs/emailCodec'
 import { nonEmptyString } from '../../codecs/nonEmptyString'
 
-export const TLogin = t.type({
+export const ZLogin = object({
   email: emailCodec,
   password: nonEmptyString
 })
 
-export type Login = t.TypeOf<typeof TLogin>
+export type Login = TypeOf<typeof ZLogin>

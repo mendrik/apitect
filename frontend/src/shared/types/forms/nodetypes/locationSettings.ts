@@ -1,14 +1,13 @@
-import * as t from 'io-ts'
+import { intersection, object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { nonEmptyString } from '../../../codecs/nonEmptyString'
-import { NodeType } from '../../domain/nodeType'
-import { TNodeSettingsBase } from './nodeSettingsBase'
+import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const TLocationSettings = t.intersection([
-  TNodeSettingsBase,
-  t.type({
-    validation: t.partial({})
+export const ZLocationSettings = intersection(
+  ZNodeSettingsBase,
+  object({
+    validation: object({}).optional()
   })
-])
+)
 
-export type LocationSettings = t.TypeOf<typeof TLocationSettings>
+export type LocationSettings = TypeOf<typeof ZLocationSettings>

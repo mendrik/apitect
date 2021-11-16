@@ -1,7 +1,3 @@
-import * as t from 'io-ts'
-import { test } from 'ramda'
+import { string } from 'zod'
 
-import { validationCodec } from './validationCodec'
-
-export const regexpCodec = (r: RegExp) =>
-  validationCodec(t.string, test(r), 'form.validation.regexp')
+export const regexpCodec = (r: RegExp) => string().regex(r, 'form.validation.regexp')

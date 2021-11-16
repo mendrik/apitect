@@ -1,35 +1,37 @@
-import * as t from 'io-ts'
-import { keys } from 'ramda'
+import { literal, object, union, ZodLiteral, ZodObject, ZodString } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { ApiMethod, ApiParam, ApiResult, ApiSchema } from './api'
+import { ApiMethod, ApiMethods, ApiOutput, ApiParam, ApiResult, ApiSchema } from './api'
 import { idCodec } from './codecs/idCodec'
-import { UnionToTuple } from './types/unionToTuple'
 
-type ServerParam<T extends ApiMethod> = {
+export type ServerParam<T extends ApiMethod> = {
   email: string
   payload: ApiParam<T>
 }
 
 export type ServerApiMethod<T extends ApiMethod> = (obj: ServerParam<T>) => Promise<ApiResult<T>>
 
-type Codec<T extends ApiMethod> = {
-  [K in T]: t.TypeC<{
-    id: t.StringC
-    method: t.LiteralC<K>
-    payload: ApiSchema[K][1]
-  }>
-}[T]
+const apiMethods = Object.keys(ApiSchema) as ApiMethods
+type Codec<T extends ApiMethod> = ZodObject<{
+  id: ZodString
+  method: ZodLiteral<T>
+  payload: ApiOutput<T>
+}>
 
-type Codecs = Codec<ApiMethod>
+type Codecs<T extends ApiMethod[]> = T extends [infer H, ...infer Tail]
+  ? H extends ApiMethod
+    ? [Codec<H>, ...(Tail extends [ApiMethod, ...ApiMethod[]] ? Codecs<Tail> : [])]
+    : never
+  : never
 
-const codecs = keys(ApiSchema).map(k =>
-  t.type({
+const codecs = apiMethods.map(k =>
+  object({
     id: idCodec,
-    method: t.literal(k),
+    method: literal(k),
     payload: ApiSchema[k][1]
   })
-) as UnionToTuple<Codecs>
+) as Codecs<ApiMethods>
 
-export const TApiResponse = t.union(codecs)
+export const TApiResponse = union(codecs)
 
-export type ApiResponse = t.TypeOf<typeof TApiResponse>
+export type ApiResponse = TypeOf<typeof TApiResponse>
