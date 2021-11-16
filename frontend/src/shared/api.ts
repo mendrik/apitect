@@ -30,11 +30,11 @@ export type FormApiMethod = keyof {
 export type ApiInput<T extends ApiMethod> = ApiSchema[T][0]
 export type ApiOutput<T extends ApiMethod> = ApiSchema[T][1]
 
-export type Api = {
-  [K in ApiMethod]: ApiInput<K> extends undefined
-    ? () => Promise<ApiOutput<K>>
-    : (input: ApiInput<K>) => Promise<ApiOutput<K>>
-}
-
 export type ApiParam<T extends ApiMethod> = TypeOf<ApiInput<T>>
 export type ApiResult<T extends ApiMethod> = TypeOf<ApiOutput<T>>
+
+export type Api = {
+  [K in ApiMethod]: ApiParam<K> extends undefined
+    ? () => Promise<ApiResult<K>>
+    : (input: ApiParam<K>) => Promise<ApiResult<K>>
+}

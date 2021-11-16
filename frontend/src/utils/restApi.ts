@@ -1,11 +1,10 @@
 import { ZUser } from 'shared/types/domain/user'
-import { TEmpty } from 'shared/types/empty'
 import { ForgotPassword } from 'shared/types/forms/forgotPassword'
 import { Login } from 'shared/types/forms/login'
 import { Register } from 'shared/types/forms/register'
 import { ZToken } from 'shared/types/response/token'
 import { failOn } from 'shared/utils/failOn'
-import { safeParse, satiated } from 'shared/utils/ramda'
+import { safeParseJson, satiated } from 'shared/utils/ramda'
 import { ZodSchema } from 'zod'
 
 import { logAndRecover } from '../shared/utils/logAndRecover'
@@ -21,7 +20,7 @@ const request =
       method,
       headers: satiated({
         'content-type': 'application/json; charset=utf-8',
-        'x-access-token': safeParse(localStorage.getItem('jwt'))
+        'x-access-token': safeParseJson(localStorage.getItem('jwt'))
       }),
       body: body ? JSON.stringify(body) : null
     })
@@ -42,7 +41,7 @@ export const put = request('put')
 
 export const logout = () => del('logout').then(() => promiseCache.flush())
 export const login = (data: Login) => post('login', ZToken, data)
-export const forgotPassword = (data: ForgotPassword) => put('forgot-password', TEmpty, data)
+export const forgotPassword = (data: ForgotPassword) => put('forgot-password', undefined, data)
 export const register = (data: Register) => post('register', ZToken, data)
 
 export const whoAmI = () => get('whoami', ZUser).catch(logAndRecover(null))

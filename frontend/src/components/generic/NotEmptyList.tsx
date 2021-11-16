@@ -1,7 +1,6 @@
-import { NonEmptyArray } from 'fp-ts/NonEmptyArray'
 import React, { ReactElement } from 'react'
 
-import { Maybe } from '../../shared/types/generic'
+import { Maybe, NonEmptyArray } from '../../shared/types/generic'
 
 interface OwnProps<T> {
   list: Maybe<T[]>

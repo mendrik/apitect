@@ -1,5 +1,5 @@
 import { createEffect, createEvent, sample } from 'effector'
-import { propOr, tap } from 'ramda'
+import { tap } from 'ramda'
 
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Api } from '../shared/api'

@@ -24,3 +24,5 @@ export type UnionToTuple<T> = UnionToIntersection<T extends never ? never : (t: 
 ) => infer W
   ? [...UnionToTuple<Exclude<T, W>>, W]
   : []
+
+export type NonEmptyArray<T> = [T, ...T[]]
