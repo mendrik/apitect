@@ -1,13 +1,10 @@
-import { intersection, object } from 'zod'
+import { object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const ZColorSettings = intersection(
-  ZNodeSettingsBase,
-  object({
-    validation: object({}).optional()
-  })
-)
+export const ZColorSettings = ZNodeSettingsBase.augment({
+  validation: object({})
+})
 
 export type ColorSettings = TypeOf<typeof ZColorSettings>

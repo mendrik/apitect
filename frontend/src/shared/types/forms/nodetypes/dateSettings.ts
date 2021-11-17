@@ -1,13 +1,10 @@
-import { intersection, object } from 'zod'
+import { object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const ZDateSettings = intersection(
-  ZNodeSettingsBase,
-  object({
-    validation: object({}).optional()
-  })
-)
+export const ZDateSettings = ZNodeSettingsBase.augment({
+  validation: object({})
+})
 
 export type DateSettings = TypeOf<typeof ZDateSettings>

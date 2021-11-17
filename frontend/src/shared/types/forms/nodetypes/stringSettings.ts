@@ -1,16 +1,12 @@
-import { intersection, object } from 'zod'
+import { object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { regexpCodecAlt } from '../../../codecs/regexpCodecAlt'
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const ZStringSettings = intersection(
-  ZNodeSettingsBase,
-  object({
-    validation: object({
-      regexp: regexpCodecAlt
-    })
+export const ZStringSettings = ZNodeSettingsBase.augment({
+  validation: object({
+    regexp: regexpCodecAlt.optional()
   })
-)
-
+})
 export type StringSettings = TypeOf<typeof ZStringSettings>

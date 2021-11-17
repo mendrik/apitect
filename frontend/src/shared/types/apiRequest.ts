@@ -25,6 +25,6 @@ const codecs = apiMethods.map(k =>
   })
 ) as Codecs<ApiMethods>
 
-export const TApiRequest = union(codecs)
+export const ZApiRequest = union(codecs)
 
-export type ApiRequest = TypeOf<typeof TApiRequest>
+export type ApiRequest = TypeOf<typeof ZApiRequest>

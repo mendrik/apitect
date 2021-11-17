@@ -32,6 +32,6 @@ const codecs = apiMethods.map(k =>
   })
 ) as Codecs<ApiMethods>
 
-export const TApiResponse = union(codecs)
+export const ZApiResponse = union(codecs)
 
-export type ApiResponse = TypeOf<typeof TApiResponse>
+export type ApiResponse = TypeOf<typeof ZApiResponse>

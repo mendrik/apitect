@@ -2,8 +2,8 @@ import { FastifyInstance } from 'fastify'
 import { SocketStream } from 'fastify-websocket'
 import { verify } from 'jsonwebtoken'
 import { ApiMethod } from '~shared/api'
-import { TApiResponse } from '~shared/apiResponse'
-import { TApiRequest } from '~shared/types/apiRequest'
+import { ZApiResponse } from '~shared/apiResponse'
+import { ZApiRequest } from '~shared/types/apiRequest'
 import { JwtPayload } from '~shared/types/response/token'
 import { logger } from '~shared/utils/logger'
 
@@ -20,7 +20,7 @@ const openWebsocket = (connection: SocketStream) => {
         payload
       }
       try {
-        const validMessage = TApiResponse.parse(res)
+        const validMessage = ZApiResponse.parse(res)
         connection.socket.send(JSON.stringify(validMessage))
       } catch (e) {
         logger.error('Failed to respond', res)
@@ -34,8 +34,8 @@ const openWebsocket = (connection: SocketStream) => {
     connection.socket.on('message', (buffer: Buffer) => {
       try {
         const data = JSON.parse(buffer.toString('utf-8'))
-        const apiRequest = TApiRequest.parse(data)
-        logger.info(`${name} [${email}]/${apiRequest.method}`, apiRequest.payload)
+        const apiRequest = ZApiRequest.parse(data)
+        logger.info(`${name} [${email}]/${apiRequest.method}`, data)
         const apiCall = apiMapping[apiRequest.method]
         const param = { email, payload: apiRequest.payload } as any
         return apiCall(param).then(send(apiRequest.id, apiRequest.method))
