@@ -10,6 +10,7 @@ const en = {
       cancel: 'Cancel',
       back: 'Back',
       confirm: 'Confirm',
+      save: 'Save',
       delete: 'Delete',
       yesImSure: 'I am sure!',
       unexpectedError: 'Oops! An unexpected error'
@@ -44,6 +45,9 @@ const en = {
         title: 'Settings: {{ property }}',
         string: {
           regexp: 'Regular expression'
+        },
+        object: {
+          apiEndpoint: 'Accessible via REST api'
         }
       }
     },

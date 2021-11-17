@@ -94,13 +94,17 @@ $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
       return <T>(payload: T) => {
         if (method in ApiSchema) {
           const id = uuid()
-          const apiCall = ZApiRequest.parse({
-            id,
-            method,
-            payload
-          })
-          logger.info(`Sent: ${method}`, apiCall.payload)
-          sendJsonMessage(apiCall)
+          try {
+            const apiCall = ZApiRequest.parse({
+              id,
+              method,
+              payload
+            })
+            logger.info(`Sent: ${method}`, apiCall.payload)
+            sendJsonMessage(apiCall)
+          } catch (e) {
+            logger.error('Failed to parse ApiRequest', e)
+          }
           return new Promise(resolve => {
             const unsubscribe = apiResponse.watch(res => {
               if (res.id === id) {

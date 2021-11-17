@@ -82,7 +82,12 @@ const NewNode: ModalFC = ({ close }) => {
   ]) as Fn
 
   return (
-    <SocketForm form={form} onValid={createNodeFx} close={close}>
+    <SocketForm
+      form={form}
+      onValid={createNodeFx}
+      close={close}
+      submitButton="modals.newNode.submit"
+    >
       <TextInput
         name="name"
         label="form.fields.nodeName"

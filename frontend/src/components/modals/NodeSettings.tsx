@@ -6,10 +6,22 @@ import { useNavigate } from 'react-router-dom'
 
 import { updateNodeSettingsFx } from '../../events/tree'
 import { SocketForm } from '../../forms/SocketForm'
+import { TextInput } from '../../forms/TextInput'
 import { useLocation } from '../../hooks/useLocation'
 import { useUndefinedEffect } from '../../hooks/useUndefinedEffect'
 import { NodeType } from '../../shared/types/domain/nodeType'
+import { ZArraySettings } from '../../shared/types/forms/nodetypes/arraySettings'
+import { ZBinarySettings } from '../../shared/types/forms/nodetypes/binarySettings'
+import { ZBooleanSettings } from '../../shared/types/forms/nodetypes/booleanSettings'
+import { ZColorSettings } from '../../shared/types/forms/nodetypes/colorSettings'
+import { ZDateSettings } from '../../shared/types/forms/nodetypes/dateSettings'
+import { ZEnumSettings } from '../../shared/types/forms/nodetypes/enumSettings'
+import { ZLocationSettings } from '../../shared/types/forms/nodetypes/locationSettings'
 import { NodeSettings as NodeSettingsType } from '../../shared/types/forms/nodetypes/nodeSettings'
+import { ZNumberSettings } from '../../shared/types/forms/nodetypes/numberSettings'
+import { ZObjectSettings } from '../../shared/types/forms/nodetypes/objectSettings'
+import { ZReferenceSettings } from '../../shared/types/forms/nodetypes/referenceSettings'
+import { ZRichTextSettings } from '../../shared/types/forms/nodetypes/richTextSettings'
 import { ZStringSettings } from '../../shared/types/forms/nodetypes/stringSettings'
 import { removeParams } from '../../shared/utils/url'
 import $appStore from '../../stores/$appStore'
@@ -58,36 +70,71 @@ const content = (nodeType: NodeType): (() => JSX.Element) => {
   }
 }
 
+const resolver = (nodeType: NodeType) => {
+  switch (nodeType) {
+    case NodeType.Object:
+      return ZObjectSettings
+    case NodeType.Boolean:
+      return ZBooleanSettings
+    case NodeType.String:
+      return ZStringSettings
+    case NodeType.Number:
+      return ZNumberSettings
+    case NodeType.Enum:
+      return ZEnumSettings
+    case NodeType.Date:
+      return ZDateSettings
+    case NodeType.Binary:
+      return ZBinarySettings
+    case NodeType.Array:
+      return ZArraySettings
+    case NodeType.Color:
+      return ZColorSettings
+    case NodeType.Location:
+      return ZLocationSettings
+    case NodeType.RichText:
+      return ZRichTextSettings
+    case NodeType.Reference:
+      return ZReferenceSettings
+    default:
+      throw Error('Unsupported node type')
+  }
+}
+
 const NodeSettings: ModalFC = ({ close }) => {
   const { selectedNode } = useStore($appStore)
   const navigate = useNavigate()
+  const { state } = useLocation<NodeSettingsType>()
 
   useUndefinedEffect(() => {
     navigate(removeParams(['modal']))
   }, selectedNode)
 
-  if (!selectedNode) {
+  if (!selectedNode || !state) {
     return null
   }
 
-  const { nodeType } = selectedNode.value
-  const Content = content(nodeType)
-
-  const { state } = useLocation<NodeSettingsType>()
-  const { id: nodeId, name } = selectedNode!.value ?? {}
+  const { id: nodeId, name } = selectedNode.value
+  const Content = content(state.nodeType)
 
   const form = useForm<NodeSettingsType>({
-    resolver: zodResolver(ZStringSettings),
+    resolver: zodResolver(resolver(state.nodeType)),
     defaultValues: {
       ...state,
-      nodeType: NodeType.String,
       nodeId: state?.nodeId ?? nodeId,
       name: state?.name ?? name
     }
   })
 
   return (
-    <SocketForm form={form} onValid={updateNodeSettingsFx} close={close}>
+    <SocketForm form={form} onValid={updateNodeSettingsFx} close={close} submitButton="common.save">
+      <TextInput
+        name="name"
+        label="form.fields.nodeName"
+        type="text"
+        autoFocus
+        options={{ required: true }}
+      />
       <Content />
     </SocketForm>
   )

@@ -11,6 +11,7 @@ import { ZLocationSettings } from './locationSettings'
 import { ZNumberSettings } from './numberSettings'
 import { ZObjectSettings } from './objectSettings'
 import { ZReferenceSettings } from './referenceSettings'
+import { ZRichTextSettings } from './richTextSettings'
 import { ZStringSettings } from './stringSettings'
 
 export const ZNodeSettings = union([
@@ -24,7 +25,8 @@ export const ZNodeSettings = union([
   ZColorSettings,
   ZDateSettings,
   ZEnumSettings,
-  ZLocationSettings
+  ZLocationSettings,
+  ZRichTextSettings
 ])
 
 export type NodeSettings = TypeOf<typeof ZNodeSettings>

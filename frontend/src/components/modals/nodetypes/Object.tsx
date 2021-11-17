@@ -1,10 +1,9 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+
+import { Checkbox } from '../../../forms/Checkbox'
 
 const Object = () => {
-  const { t } = useTranslation()
-
-  return <div>Object</div>
+  return <Checkbox name="apiEndpoint" label={'modals.nodeSettings.object.apiEndpoint'} />
 }
 
 export default Object

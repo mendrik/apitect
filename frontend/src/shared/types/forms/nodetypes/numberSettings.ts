@@ -1,10 +1,12 @@
-import { boolean, number, object, string } from 'zod'
+import { boolean, literal, number, object, string } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
+import { NodeType } from '../../domain/nodeType'
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 
 export const ZNumberSettings = ZNodeSettingsBase.merge(
   object({
+    nodeType: literal(NodeType.Number),
     float: boolean(),
     validation: object({
       min: number().optional(),

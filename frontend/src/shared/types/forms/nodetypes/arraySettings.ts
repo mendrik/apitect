@@ -8,6 +8,7 @@ import { ZNodeSettingsBase } from './nodeSettingsBase'
 
 export const ZArraySettings = ZNodeSettingsBase.merge(
   object({
+    nodeType: literal(NodeType.Array),
     validation: object({ maxItems: number().optional() })
   })
 )

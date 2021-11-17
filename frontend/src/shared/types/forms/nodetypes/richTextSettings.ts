@@ -4,11 +4,11 @@ import { TypeOf } from 'zod/lib/types'
 import { NodeType } from '../../domain/nodeType'
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const ZEnumSettings = ZNodeSettingsBase.merge(
+export const ZRichTextSettings = ZNodeSettingsBase.merge(
   object({
-    nodeType: literal(NodeType.Enum),
+    nodeType: literal(NodeType.RichText),
     validation: object({})
   })
 )
 
-export type EnumSettings = TypeOf<typeof ZEnumSettings>
+export type RichTextSettings = TypeOf<typeof ZRichTextSettings>
