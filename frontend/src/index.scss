@@ -121,5 +121,24 @@ input[required] + label:after {
   border-radius: 4px;
 }
 
+.fieldset {
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
+  border: .5pt solid $bezelDark;
+  border-radius: 4px;
+  position: relative;
+  &:before {
+    position: absolute;
+    font-family: $font-family-base;
+    background-color: white;
+    content: attr(title);
+    top: -9px;
+    left: 6px;
+    z-index: 1;
+    font-size: 0.7rem;
+    padding: 0 3px;
+    color: #999;
+  }
+}
+
 @import "~bootstrap/scss/bootstrap";
 @import "./css/tooltip";

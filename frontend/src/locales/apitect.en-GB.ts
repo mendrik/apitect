@@ -44,10 +44,14 @@ const en = {
       nodeSettings: {
         title: 'Settings: {{ property }}',
         string: {
-          regexp: 'Regular expression'
+          regexp: 'Regular expression',
+          email: 'Must be a valid email'
         },
         object: {
           apiEndpoint: 'Accessible via REST api'
+        },
+        number: {
+          integer: 'Integer'
         }
       }
     },

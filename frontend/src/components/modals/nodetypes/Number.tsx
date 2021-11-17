@@ -1,10 +1,13 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+
+import { Checkbox } from '../../../forms/Checkbox'
 
 const Number = () => {
-  const { t } = useTranslation()
-
-  return <div>Number</div>
+  return (
+    <>
+      <Checkbox name="integer" label={'modals.nodeSettings.number.integer'} />
+    </>
+  )
 }
 
 export default Number

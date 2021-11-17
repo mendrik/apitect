@@ -110,17 +110,22 @@ const NodeSettings: ModalFC = ({ close }) => {
     navigate(removeParams(['modal']))
   }, selectedNode)
 
-  if (!selectedNode || !state) {
+  if (!selectedNode) {
     return null
   }
 
+  const nodeType = state?.nodeType ?? selectedNode.value.nodeType
   const { id: nodeId, name } = selectedNode.value
-  const Content = content(state.nodeType)
+  const Content = content(nodeType)
 
+  const settingsSchema = resolver(nodeType)
+  const defaultValuesFromSchema = ZNumberSettings.deepPartial().parse({})
+  console.log(defaultValuesFromSchema)
   const form = useForm<NodeSettingsType>({
-    resolver: zodResolver(resolver(state.nodeType)),
+    resolver: zodResolver(settingsSchema),
     defaultValues: {
       ...state,
+      nodeType: nodeType as any,
       nodeId: state?.nodeId ?? nodeId,
       name: state?.name ?? name
     }

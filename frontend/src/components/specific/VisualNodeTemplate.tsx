@@ -66,7 +66,7 @@ export const VisualNodeTemplate = ({ depth = 0, node, children: footer }: Jsx<Ow
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
-          ) : nodeType !== NodeType.Object ? (
+          ) : nodeType !== NodeType.Object && nodeType !== NodeType.Array ? (
             <Icon icon={iconMap[nodeType]} size={14} disabled />
           ) : (
             <div />

@@ -7,6 +7,7 @@ import { TFuncKey, useTranslation } from 'react-i18next'
 import { Api, FormApiMethod } from '../shared/api'
 import { Fn } from '../shared/types/generic'
 import { ButtonRow } from './ButtonRow'
+import { GenericError } from './GenericError'
 import { SubmitButton } from './SubmitButton'
 
 type OwnProps<M extends FormApiMethod> = {

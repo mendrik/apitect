@@ -17,5 +17,5 @@ const Panel = styled.div`
 `
 
 export const AppFrame = ({ children }: Jsx) => {
-  return <Panel className="bg-light">{children}</Panel>
+  return <Panel className="border-1 border-solid border-dark">{children}</Panel>
 }

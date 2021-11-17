@@ -1,4 +1,4 @@
-import { literal, object } from 'zod'
+import { boolean, literal, object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { regexpCodecAlt } from '../../../codecs/regexpCodecAlt'
@@ -9,7 +9,8 @@ export const ZStringSettings = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.String),
     validation: object({
-      regexp: regexpCodecAlt.optional()
+      regexp: regexpCodecAlt.optional(),
+      email: boolean().default(false)
     })
   })
 )
