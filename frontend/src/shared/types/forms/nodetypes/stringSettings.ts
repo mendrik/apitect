@@ -1,16 +1,14 @@
-import * as t from 'io-ts'
+import { object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
 import { regexpCodecAlt } from '../../../codecs/regexpCodecAlt'
-import { undefinedCodec } from '../../../codecs/undefined'
-import { TNodeSettingsBase } from './nodeSettingsBase'
+import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const TStringSettings = t.intersection([
-  TNodeSettingsBase,
-  t.type({
-    validation: t.type({
-      regexp: undefinedCodec(regexpCodecAlt)
+export const ZStringSettings = ZNodeSettingsBase.merge(
+  object({
+    validation: object({
+      regexp: regexpCodecAlt.optional()
     })
   })
-])
-
-export type StringSettings = t.TypeOf<typeof TStringSettings>
+)
+export type StringSettings = TypeOf<typeof ZStringSettings>

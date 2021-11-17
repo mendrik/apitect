@@ -1,15 +1,14 @@
-import * as t from 'io-ts'
+import { nativeEnum, object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { enumCodec } from '../../codecs/enumCodec'
 import { idCodec } from '../../codecs/idCodec'
 import { nonEmptyString } from '../../codecs/nonEmptyString'
-import { undefinedCodec } from '../../codecs/undefined'
 import { NodeType } from '../domain/nodeType'
 
-export const TNewNode = t.type({
+export const TNewNode = object({
   name: nonEmptyString,
-  nodeType: enumCodec('nodeType', NodeType),
-  parentNode: undefinedCodec(idCodec)
+  nodeType: nativeEnum(NodeType),
+  parentNode: idCodec.optional()
 })
 
-export type NewNode = t.TypeOf<typeof TNewNode>
+export type NewNode = TypeOf<typeof TNewNode>

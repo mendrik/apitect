@@ -6,8 +6,8 @@ import { newId } from '~shared/codecs/idCodec'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { User } from '~shared/types/domain/user'
 import { TForgotPassword } from '~shared/types/forms/forgotPassword'
-import { TLogin } from '~shared/types/forms/login'
-import { TRegister } from '~shared/types/forms/register'
+import { ZLogin } from '~shared/types/forms/login'
+import { ZRegister } from '~shared/types/forms/register'
 import { httpError } from '~shared/types/httpError'
 import { Token } from '~shared/types/response/token'
 import { failOn, failUnless } from '~shared/utils/failOn'
@@ -30,7 +30,7 @@ const refreshToken = async (user: User): Promise<Token> => {
   return { token }
 }
 
-const register = endpoint({ register: body(TRegister) }, ({ register }) =>
+const register = endpoint({ register: body(ZRegister) }, ({ register }) =>
   withTransaction(async session => {
     await collection(Collections.users)
       .findOne({ email: register.email })
@@ -69,7 +69,7 @@ const register = endpoint({ register: body(TRegister) }, ({ register }) =>
   })
 )
 
-const login = endpoint({ login: body(TLogin) }, ({ login: { email, password } }) =>
+const login = endpoint({ login: body(ZLogin) }, ({ login: { email, password } }) =>
   pHashSync(password, config.SALT).then(encryptedPassword =>
     collection(Collections.users)
       .findOne({ email })

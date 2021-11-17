@@ -1,8 +1,7 @@
 import { always, isNil, prop } from 'ramda'
 import { ChildOperation, TreeNode } from '~shared/algebraic/treeNode'
-import { decode } from '~shared/codecs/decode'
 import { Document } from '~shared/types/domain/document'
-import { Node, TNode } from '~shared/types/domain/node'
+import { Node, ZNode } from '~shared/types/domain/node'
 import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from './database'
@@ -14,7 +13,7 @@ export const withTree =
     getLastDocument(email).then(async doc => {
       const tree = toTreeNode(doc.tree)
       const res = await fn(tree)
-      const docTree = decode(TNode)(res.self.extract())
+      const docTree = ZNode.parse(res.self.extract())
       return collection(Collections.documents)
         .findOneAndUpdate(
           { id: doc.id },

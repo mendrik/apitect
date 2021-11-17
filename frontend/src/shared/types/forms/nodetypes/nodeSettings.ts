@@ -1,29 +1,30 @@
-import * as t from 'io-ts'
+import { union } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { TArraySettings } from './arraySettings'
-import { TBinarySettings } from './binarySettings'
-import { TBooleanSettings } from './booleanSettings'
-import { TColorSettings } from './colorSettings'
-import { TDateSettings } from './dateSettings'
-import { TEnumSettings } from './enumSettings'
-import { TLocationSettings } from './locationSettings'
-import { TNumberSettings } from './numberSettings'
-import { TObjectSettings } from './objectSettings'
-import { TReferenceSettings } from './referenceSettings'
-import { TStringSettings } from './stringSettings'
+import { ZArraySettings } from './arraySettings'
+import { ZBinarySettings } from './binarySettings'
+import { ZBooleanSettings } from './booleanSettings'
+import { ZColorSettings } from './colorSettings'
+import { ZDateSettings } from './dateSettings'
+import { ZEnumSettings } from './enumSettings'
+import { ZLocationSettings } from './locationSettings'
+import { ZNumberSettings } from './numberSettings'
+import { ZObjectSettings } from './objectSettings'
+import { ZReferenceSettings } from './referenceSettings'
+import { ZStringSettings } from './stringSettings'
 
-export const TNodeSettings = t.union([
-  TArraySettings,
-  TBinarySettings,
-  TBooleanSettings,
-  TColorSettings,
-  TDateSettings,
-  TEnumSettings,
-  TLocationSettings,
-  TNumberSettings,
-  TObjectSettings,
-  TReferenceSettings,
-  TStringSettings
+export const ZNodeSettings = union([
+  ZNumberSettings,
+  ZStringSettings,
+  ZArraySettings,
+  ZObjectSettings,
+  ZReferenceSettings,
+  ZBinarySettings,
+  ZBooleanSettings,
+  ZColorSettings,
+  ZDateSettings,
+  ZEnumSettings,
+  ZLocationSettings
 ])
 
-export type NodeSettings = t.TypeOf<typeof TNodeSettings>
+export type NodeSettings = TypeOf<typeof ZNodeSettings>

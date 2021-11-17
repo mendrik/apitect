@@ -1,4 +1,4 @@
-import { ioTsResolver } from '@hookform/resolvers/io-ts'
+import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
 import { cond, keys, pipe, propEq, toLower, values, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
@@ -59,7 +59,7 @@ const NewNode: ModalFC = ({ close }) => {
     state: { selectedNode }
   } = useLocation<SelectedNode>()
   const form = useForm<NewNodeType>({
-    resolver: ioTsResolver(TNewNode),
+    resolver: zodResolver(TNewNode),
     defaultValues: {
       parentNode: selectedNode?.id,
       nodeType: NodeType.Object,

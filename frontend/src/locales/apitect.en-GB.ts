@@ -64,6 +64,7 @@ const en = {
         regexp: 'Regular Expression'
       },
       validation: {
+        sherlock: 'Unable not understand this expression',
         regexp: '$t(form.fields.{{ field }}) has invalid format',
         validRegExp: '$t(form.fields.{{ field }}) is not a valid regular expression',
         validEmail: '$t(form.fields.{{ field }}) is not valid',

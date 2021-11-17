@@ -1,21 +1,20 @@
-import * as t from 'io-ts'
+import { boolean, number, object, string } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { withDefault } from '../../../codecs/withDefault'
-import { TNodeSettingsBase } from './nodeSettingsBase'
+import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const TNumberSettings = t.intersection([
-  TNodeSettingsBase,
-  t.type({
-    float: withDefault(t.boolean, false),
-    validation: t.partial({
-      min: t.number,
-      max: t.number
+export const ZNumberSettings = ZNodeSettingsBase.merge(
+  object({
+    float: boolean(),
+    validation: object({
+      min: number().optional(),
+      max: number().optional()
     }),
-    display: t.partial({
-      prefix: t.string,
-      suffix: t.string
+    display: object({
+      prefix: string().optional(),
+      suffix: string().optional()
     })
   })
-])
+)
 
-export type NumberSettings = t.TypeOf<typeof TNumberSettings>
+export type NumberSettings = TypeOf<typeof ZNumberSettings>

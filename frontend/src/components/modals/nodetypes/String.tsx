@@ -1,4 +1,4 @@
-import { ioTsResolver } from '@hookform/resolvers/io-ts'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -9,7 +9,7 @@ import { TextInput } from '../../../forms/TextInput'
 import { useLocation } from '../../../hooks/useLocation'
 import { NodeType } from '../../../shared/types/domain/nodeType'
 import { NodeSettings } from '../../../shared/types/forms/nodetypes/nodeSettings'
-import { TStringSettings } from '../../../shared/types/forms/nodetypes/stringSettings'
+import { ZStringSettings } from '../../../shared/types/forms/nodetypes/stringSettings'
 import $appStore from '../../../stores/$appStore'
 import { ModalFC } from '../../ModalStub'
 
@@ -19,7 +19,7 @@ const String: ModalFC = ({ close }) => {
   const { id: nodeId, name } = selectedNode!.value ?? {}
 
   const form = useForm<NodeSettings>({
-    resolver: ioTsResolver(TStringSettings),
+    resolver: zodResolver(ZStringSettings),
     defaultValues: {
       ...state,
       nodeType: NodeType.String,

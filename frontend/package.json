@@ -24,15 +24,10 @@
     "effector-logger": "^0.13.1",
     "effector-react": "22.0.4",
     "fantasy-land": "5.0.0",
-    "fp-ts": "2.11.5",
     "framer-motion": "5.2.1",
     "history": "5.1.0",
     "i18next": "21.4.1",
-    "io-ts": "2.2.16",
-    "io-ts-types": "0.5.16",
     "jsonwebtoken": "8.5.1",
-    "monocle-ts": "2.3.11",
-    "newtype-ts": "0.3.4",
     "ramda": "0.27.1",
     "ramda-adjunct": "2.35.0",
     "react": "17.0.2",
@@ -52,7 +47,8 @@
     "usehooks-ts": "1.1.1",
     "uuid": "8.3.2",
     "validator": "13.7.0",
-    "web-vitals": "2.1.2"
+    "web-vitals": "2.1.2",
+    "zod": "^3.11.6"
   },
   "eslintConfig": {
     "extends": [
@@ -73,6 +69,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/runtime": "7.16.3",
     "@testing-library/jest-dom": "5.15.0",
     "@testing-library/react": "12.1.2",
     "@testing-library/user-event": "13.5.0",
@@ -93,7 +90,6 @@
     "@typescript-eslint/eslint-plugin": "5.3.1",
     "@typescript-eslint/parser": "5.3.1",
     "@welldone-software/why-did-you-render": "6.2.1",
-    "@babel/runtime": "7.16.3",
     "eslint": "8.2.0",
     "eslint-config-airbnb-typescript-prettier": "4.2.0",
     "eslint-config-prettier": "8.3.0",

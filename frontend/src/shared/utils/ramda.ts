@@ -34,7 +34,7 @@ export const assocBy =
   <U>(obj: U): U & Record<K, R> =>
     converge(assoc(field), [func, identity])(obj)
 
-export const safeParse = <T>(data: any): T | undefined =>
+export const safeParseJson = <T>(data: any): T | undefined =>
   tryCatch(d => JSON.parse(`${d}`), always(undefined))(data)
 
 export const satiated = <T>(data: Record<string, T>): Record<string, NonNullable<T>> =>

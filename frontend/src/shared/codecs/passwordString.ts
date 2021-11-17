@@ -1,7 +1,5 @@
-import * as t from 'io-ts'
 import v from 'validator'
-
-import { validationCodec } from './validationCodec'
+import { string } from 'zod'
 
 const isPassword = (text: string): boolean =>
   v.isStrongPassword(text, {
@@ -12,4 +10,4 @@ const isPassword = (text: string): boolean =>
     minUppercase: 0
   })
 
-export const passwordString = validationCodec(t.string, isPassword, 'form.validation.password')
+export const passwordString = string().refine(isPassword, 'form.validation.password')

@@ -1,12 +1,15 @@
-import * as t from 'io-ts'
+import { literal, number, object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { TNodeSettingsBase } from './nodeSettingsBase'
+import { idCodec } from '../../../codecs/idCodec'
+import { nonEmptyString } from '../../../codecs/nonEmptyString'
+import { NodeType } from '../../domain/nodeType'
+import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const TArraySettings = t.intersection([
-  TNodeSettingsBase,
-  t.type({
-    validation: t.partial({})
+export const ZArraySettings = ZNodeSettingsBase.merge(
+  object({
+    validation: object({ maxItems: number().optional() })
   })
-])
+)
 
-export type ArraySettings = t.TypeOf<typeof TArraySettings>
+export type ArraySettings = TypeOf<typeof ZArraySettings>

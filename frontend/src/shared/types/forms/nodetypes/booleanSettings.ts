@@ -1,12 +1,10 @@
-import * as t from 'io-ts'
+import { object } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
-import { TNodeSettingsBase } from './nodeSettingsBase'
+import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const TBooleanSettings = t.intersection([
-  TNodeSettingsBase,
-  t.type({
-    validation: t.partial({})
-  })
-])
+export const ZBooleanSettings = ZNodeSettingsBase.augment({
+  validation: object({})
+})
 
-export type BooleanSettings = t.TypeOf<typeof TBooleanSettings>
+export type BooleanSettings = TypeOf<typeof ZBooleanSettings>

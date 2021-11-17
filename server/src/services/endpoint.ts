@@ -1,10 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
-import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
 import { always, applySpec, mapObjIndexed, mergeRight, prop } from 'ramda'
 import { promisify } from 'util'
-import { decode, DecodingError } from '~shared/codecs/decode'
+import { ZodError, ZodSchema } from 'zod'
 import { User } from '~shared/types/domain/user'
 import { Fn } from '~shared/types/generic'
 import { HttpError, httpError } from '~shared/types/httpError'
@@ -23,19 +22,19 @@ const OK =
 
 export const noContent = always({})
 
-type Collector = Record<string, t.Any | ((req: FastifyRequest) => Promise<any> | any)>
+type Collector = Record<string, ZodSchema<any> | ((req: FastifyRequest) => Promise<any> | any)>
 
 export const body =
-  <A, O, I>(decoder: t.Type<A, O, I>) =>
-  (req: FastifyRequest): A =>
-    decode<A, O, I>(decoder)(req.body as any)
+  <S>(decoder: ZodSchema<S>) =>
+  (req: FastifyRequest): S =>
+    decoder.parse(req.body)
 
 export const verifyP: Fn<Promise<{ email: string }>> = promisify<any, any>(verify)
 
 export const header =
-  <A, O, I>(name: string, decoder: t.Type<A, O, I>) =>
-  (req: FastifyRequest): A =>
-    decode<A, O, I>(decoder)(req.headers[name] as any)
+  <S>(name: string, decoder: ZodSchema<S>) =>
+  (req: FastifyRequest): S =>
+    decoder.parse(req.headers[name])
 
 export const user = (req: FastifyRequest): Promise<User> =>
   verifyP(req.raw.headers['x-access-token'] as string, `${config.TOKEN_KEY}`)
@@ -49,7 +48,7 @@ const handleError = (reply: FastifyReply) => (e: Error) => {
   logger.error(e.message, e.stack)
   const send = (status: number, data: any) =>
     reply.code(status).send(JSON.stringify({ ...data, status }))
-  if (e instanceof DecodingError) {
+  if (e instanceof ZodError) {
     return send(400, { message: e.message })
   }
   if (e instanceof HttpError) {
@@ -66,8 +65,8 @@ export const endpoint =
         ? PROMISED
         : DEPS[KEY] extends (...args: any[]) => any
         ? ReturnType<DEPS[KEY]>
-        : DEPS[KEY] extends t.Any
-        ? t.OutputOf<DEPS[KEY]>
+        : DEPS[KEY] extends ZodSchema<infer S>
+        ? S
         : DEPS[KEY]
     }
   >(
@@ -76,19 +75,16 @@ export const endpoint =
   ): RouteHandlerMethod =>
   (req, reply) => {
     try {
-      const paramObj = mapObjIndexed((dependencyName, dependencyResolver) => {
-        if ('decode' in dependencyName) {
-          const value: string = mergeRight(req.params as any, req.query as any)?.[
-            dependencyResolver
-          ]
-          return always(decode(dependencyName)(value))
+      const paramObj = mapObjIndexed((dependencyResolver, dependencyName) => {
+        if ('parse' in dependencyResolver) {
+          const value: string = mergeRight(req.params as any, req.query as any)?.[dependencyName]
+          return always(dependencyResolver.parse(value))
         }
-        return dependencyName
+        return dependencyResolver
       }, dependencies)
       const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
-      return resolvePromised(resObj).then(body).then(OK(reply)).catch(handleError(reply))
+      return resolvePromised(resObj).then(body).then(OK(reply))
     } catch (e) {
       handleError(reply)(e as Error)
-      return void 0
     }
   }

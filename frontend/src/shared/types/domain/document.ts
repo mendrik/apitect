@@ -1,13 +1,14 @@
-import * as t from 'io-ts'
+import { object, string } from 'zod'
+import { TypeOf } from 'zod/lib/types'
 
 import { idCodec } from '../../codecs/idCodec'
-import { TNode } from './node'
+import { ZNode } from './node'
 
-export const TDocument = t.type({
+export const ZDocument = object({
   id: idCodec,
-  name: t.string,
-  owner: t.string,
-  tree: TNode
+  name: string(),
+  owner: string(),
+  tree: ZNode
 })
 
-export type Document = t.TypeOf<typeof TDocument>
+export type Document = TypeOf<typeof ZDocument>

@@ -1,11 +1,10 @@
 import { FastifyInstance } from 'fastify'
 import { SocketStream } from 'fastify-websocket'
-import * as t from 'io-ts'
 import { verify } from 'jsonwebtoken'
 import { ApiMethod } from '~shared/api'
-import { TApiResponse } from '~shared/apiResponse'
-import { decode } from '~shared/codecs/decode'
-import { TApiRequest } from '~shared/types/apiRequest'
+import { ZApiResponse } from '~shared/apiResponse'
+import { ZApiRequest } from '~shared/types/apiRequest'
+import { JwtPayload } from '~shared/types/response/token'
 import { logger } from '~shared/utils/logger'
 
 import { apiMapping } from '../api/serverApi'
@@ -21,7 +20,7 @@ const openWebsocket = (connection: SocketStream) => {
         payload
       }
       try {
-        const validMessage = decode(TApiResponse)(res)
+        const validMessage = ZApiResponse.parse(res)
         connection.socket.send(JSON.stringify(validMessage))
       } catch (e) {
         logger.error('Failed to respond', res)
@@ -29,16 +28,17 @@ const openWebsocket = (connection: SocketStream) => {
       return payload
     }
   try {
-    const { email, name } = decode(t.type({ email: t.string, name: t.string }))(
+    const { email, name } = JwtPayload.parse(
       verify(connection.socket.protocol, `${config.TOKEN_KEY}`)
     )
     connection.socket.on('message', (buffer: Buffer) => {
       try {
-        const apiRequest = decode(TApiRequest)(JSON.parse(buffer.toString('utf-8')))
-        logger.info(`${name} [${email}]/${apiRequest.method}`, apiRequest.payload)
+        const data = JSON.parse(buffer.toString('utf-8'))
+        const apiRequest = ZApiRequest.parse(data)
+        logger.info(`${name} [${email}]/${apiRequest.method}`, data)
         const apiCall = apiMapping[apiRequest.method]
-        const param = { email, payload: apiRequest.payload } as any // bummer to use any
-        void apiCall(param).then(send(apiRequest.id, apiRequest.method))
+        const param = { email, payload: apiRequest.payload } as any
+        return apiCall(param).then(send(apiRequest.id, apiRequest.method))
       } catch (e) {
         logger.error('Error in socket', e)
       }

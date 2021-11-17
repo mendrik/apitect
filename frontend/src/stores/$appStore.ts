@@ -14,8 +14,7 @@ import {
 } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Api, ApiMethod, ApiSchema } from '../shared/api'
-import { decode } from '../shared/codecs/decode'
-import { TApiRequest } from '../shared/types/apiRequest'
+import { ZApiRequest } from '../shared/types/apiRequest'
 import { Node } from '../shared/types/domain/node'
 import { Maybe } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
@@ -94,13 +93,13 @@ $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
     get(target, method: ApiMethod) {
       return <T>(payload: T) => {
         if (method in ApiSchema) {
-          logger.info(`Sent: ${method}`, payload)
           const id = uuid()
-          const apiCall = decode(TApiRequest)({
+          const apiCall = ZApiRequest.parse({
             id,
             method,
             payload
           })
+          logger.info(`Sent: ${method}`, apiCall.payload)
           sendJsonMessage(apiCall)
           return new Promise(resolve => {
             const unsubscribe = apiResponse.watch(res => {
