@@ -75,19 +75,16 @@ export const endpoint =
   ): RouteHandlerMethod =>
   (req, reply) => {
     try {
-      const paramObj = mapObjIndexed((dependencyName, dependencyResolver) => {
-        if ('parse' in dependencyName) {
-          const value: string = mergeRight(req.params as any, req.query as any)?.[
-            dependencyResolver
-          ]
-          return always(dependencyName.parse(value))
+      const paramObj = mapObjIndexed((dependencyResolver, dependencyName) => {
+        if ('parse' in dependencyResolver) {
+          const value: string = mergeRight(req.params as any, req.query as any)?.[dependencyName]
+          return always(dependencyResolver.parse(value))
         }
-        return dependencyName
+        return dependencyResolver
       }, dependencies)
       const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
-      return resolvePromised(resObj).then(body).then(OK(reply)).catch(handleError(reply))
+      return resolvePromised(resObj).then(body).then(OK(reply))
     } catch (e) {
       handleError(reply)(e as Error)
-      return void 0
     }
   }

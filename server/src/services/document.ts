@@ -9,7 +9,9 @@ import { collection, Collections } from './database'
 import { getUser } from './user'
 
 export const getLastDocumentId = (email: string): Promise<Id> =>
-  getUser(email).then(field('lastDocument')).then(idCodec.parse)
+  getUser(email)
+    .then(field('lastDocument'))
+    .then(id => idCodec.parse(id))
 
 export const getLastDocument = (email: string): Promise<Document> =>
   getLastDocumentId(email)

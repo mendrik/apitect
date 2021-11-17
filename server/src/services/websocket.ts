@@ -33,11 +33,12 @@ const openWebsocket = (connection: SocketStream) => {
     )
     connection.socket.on('message', (buffer: Buffer) => {
       try {
-        const apiRequest = TApiRequest.parse(JSON.parse(buffer.toString('utf-8')))
+        const data = JSON.parse(buffer.toString('utf-8'))
+        const apiRequest = TApiRequest.parse(data)
         logger.info(`${name} [${email}]/${apiRequest.method}`, apiRequest.payload)
         const apiCall = apiMapping[apiRequest.method]
         const param = { email, payload: apiRequest.payload } as any
-        void apiCall(param).then(send(apiRequest.id, apiRequest.method))
+        return apiCall(param).then(send(apiRequest.id, apiRequest.method))
       } catch (e) {
         logger.error('Error in socket', e)
       }
