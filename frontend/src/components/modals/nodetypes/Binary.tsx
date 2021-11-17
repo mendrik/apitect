@@ -1,9 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ModalFC } from '../../ModalStub'
-
-const Binary: ModalFC = ({ close }) => {
+const Binary = () => {
   const { t } = useTranslation()
 
   return <div>Binary</div>

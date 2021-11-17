@@ -1,9 +1,16 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
 import React from 'react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
+import { updateNodeSettingsFx } from '../../events/tree'
+import { SocketForm } from '../../forms/SocketForm'
+import { useLocation } from '../../hooks/useLocation'
 import { useUndefinedEffect } from '../../hooks/useUndefinedEffect'
 import { NodeType } from '../../shared/types/domain/nodeType'
+import { NodeSettings as NodeSettingsType } from '../../shared/types/forms/nodetypes/nodeSettings'
+import { ZStringSettings } from '../../shared/types/forms/nodetypes/stringSettings'
 import { removeParams } from '../../shared/utils/url'
 import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../ModalStub'
@@ -20,7 +27,7 @@ import ReferenceSettings from './nodetypes/Reference'
 import RichTextSettings from './nodetypes/RichText'
 import StringSettings from './nodetypes/String'
 
-const content = (nodeType: NodeType) => {
+const content = (nodeType: NodeType): (() => JSX.Element) => {
   switch (nodeType) {
     case NodeType.Object:
       return ObjectSettings
@@ -62,9 +69,28 @@ const NodeSettings: ModalFC = ({ close }) => {
   if (!selectedNode) {
     return null
   }
+
   const { nodeType } = selectedNode.value
   const Content = content(nodeType)
-  return <Content close={close} />
+
+  const { state } = useLocation<NodeSettingsType>()
+  const { id: nodeId, name } = selectedNode!.value ?? {}
+
+  const form = useForm<NodeSettingsType>({
+    resolver: zodResolver(ZStringSettings),
+    defaultValues: {
+      ...state,
+      nodeType: NodeType.String,
+      nodeId: state?.nodeId ?? nodeId,
+      name: state?.name ?? name
+    }
+  })
+
+  return (
+    <SocketForm form={form} onValid={updateNodeSettingsFx} close={close}>
+      <Content />
+    </SocketForm>
+  )
 }
 
 export default NodeSettings

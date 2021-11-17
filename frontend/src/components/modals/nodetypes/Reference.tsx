@@ -1,9 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ModalFC } from '../../ModalStub'
-
-const Reference: ModalFC = ({ close }) => {
+const Reference = () => {
   const { t } = useTranslation()
 
   return <div>Reference</div>

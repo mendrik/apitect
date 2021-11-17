@@ -1,9 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ModalFC } from '../../ModalStub'
-
-const RichText: ModalFC = ({ close }) => {
+const RichText = () => {
   const { t } = useTranslation()
 
   return <div>RichText</div>

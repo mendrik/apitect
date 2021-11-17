@@ -1,35 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useStore } from 'effector-react'
 import React from 'react'
-import { useForm } from 'react-hook-form'
 
-import { updateNodeSettingsFx } from '../../../events/tree'
-import { SocketForm } from '../../../forms/SocketForm'
 import { TextInput } from '../../../forms/TextInput'
-import { useLocation } from '../../../hooks/useLocation'
-import { NodeType } from '../../../shared/types/domain/nodeType'
-import { NodeSettings } from '../../../shared/types/forms/nodetypes/nodeSettings'
-import { ZStringSettings } from '../../../shared/types/forms/nodetypes/stringSettings'
-import $appStore from '../../../stores/$appStore'
-import { ModalFC } from '../../ModalStub'
 
-const String: ModalFC = ({ close }) => {
-  const { state } = useLocation<NodeSettings>()
-  const { selectedNode } = useStore($appStore)
-  const { id: nodeId, name } = selectedNode!.value ?? {}
-
-  const form = useForm<NodeSettings>({
-    resolver: zodResolver(ZStringSettings),
-    defaultValues: {
-      ...state,
-      nodeType: NodeType.String,
-      nodeId: state?.nodeId ?? nodeId,
-      name: state?.name ?? name
-    }
-  })
-
+const String = () => {
   return (
-    <SocketForm form={form} onValid={updateNodeSettingsFx} close={close}>
+    <>
       <TextInput
         name="name"
         label="form.fields.nodeName"
@@ -43,7 +18,7 @@ const String: ModalFC = ({ close }) => {
         type="text"
         options={{ required: false }}
       />
-    </SocketForm>
+    </>
   )
 }
 
