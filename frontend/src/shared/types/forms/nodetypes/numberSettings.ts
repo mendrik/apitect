@@ -3,16 +3,18 @@ import { TypeOf } from 'zod/lib/types'
 
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export const ZNumberSettings = ZNodeSettingsBase.augment({
-  float: boolean(),
-  validation: object({
-    min: number().optional(),
-    max: number().optional()
-  }),
-  display: object({
-    prefix: string().optional(),
-    suffix: string().optional()
+export const ZNumberSettings = ZNodeSettingsBase.merge(
+  object({
+    float: boolean(),
+    validation: object({
+      min: number().optional(),
+      max: number().optional()
+    }),
+    display: object({
+      prefix: string().optional(),
+      suffix: string().optional()
+    })
   })
-})
+)
 
 export type NumberSettings = TypeOf<typeof ZNumberSettings>
