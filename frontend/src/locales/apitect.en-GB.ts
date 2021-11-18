@@ -48,7 +48,8 @@ const en = {
           email: 'Must be a valid email'
         },
         object: {
-          apiEndpoint: 'Accessible via REST api'
+          apiEndpoint: 'Accessible via REST api',
+          individual: 'Each user has their own version'
         },
         number: {
           integer: 'Integer'
