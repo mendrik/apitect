@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { InputHTMLAttributes } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
@@ -10,12 +11,12 @@ type OwnProps = {
   name: string
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const Checkbox = ({ label, checked, name, value, ...props }: Jsx<OwnProps>) => {
+export const Checkbox = ({ label, className, checked, name, value, ...props }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const { register } = useFormContext()
   const inpId = useId()
   return (
-    <div className="form-check" {...props}>
+    <div className={clsx('form-check', className)} {...props}>
       <input
         className="form-check-input"
         value={value}

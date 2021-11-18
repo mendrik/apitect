@@ -9,9 +9,16 @@ const Object = () => {
   const apiEndpoint = watch('apiEndpoint')
   return (
     <>
-      <Checkbox name="apiEndpoint" label={'modals.nodeSettings.object.apiEndpoint'} />
+      <Checkbox
+        name="apiEndpoint"
+        label={'modals.nodeSettings.object.apiEndpoint'}
+        className={'mb-3'}
+      />
       {apiEndpoint && (
-        <Checkbox name="individual" label={'modals.nodeSettings.object.individual'} />
+        <div className="fieldset" title={'Permutations'}>
+          <Checkbox name="individual" label={'modals.nodeSettings.object.individual'} />
+          <Checkbox name="taggable" label={'modals.nodeSettings.object.taggable'} />
+        </div>
       )}
     </>
   )

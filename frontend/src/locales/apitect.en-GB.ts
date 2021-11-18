@@ -49,10 +49,14 @@ const en = {
         },
         object: {
           apiEndpoint: 'Accessible via REST api',
-          individual: 'Each user has their own version'
+          individual: 'Each user has their own version',
+          taggable: 'Taggable content underneath'
         },
         number: {
-          integer: 'Integer'
+          integer: 'Integer',
+          min: 'Minimum',
+          max: 'Maximum',
+          step: 'Step'
         }
       }
     },
