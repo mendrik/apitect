@@ -25,6 +25,7 @@ import { ZRichTextSettings } from '../../shared/types/forms/nodetypes/richTextSe
 import { ZStringSettings } from '../../shared/types/forms/nodetypes/stringSettings'
 import { removeParams } from '../../shared/utils/url'
 import $appStore from '../../stores/$appStore'
+import { generateDefaults } from '../../utils/zod'
 import { ModalFC } from '../ModalStub'
 import ArraySettings from './nodetypes/Array'
 import BinarySettings from './nodetypes/Binary'
@@ -119,11 +120,11 @@ const NodeSettings: ModalFC = ({ close }) => {
   const Content = content(nodeType)
 
   const settingsSchema = resolver(nodeType)
-  const defaultValuesFromSchema = ZNumberSettings.deepPartial().parse({})
-  console.log(defaultValuesFromSchema)
+  const defaultValuesFromSchema = generateDefaults(ZNumberSettings)
   const form = useForm<NodeSettingsType>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
+      ...defaultValuesFromSchema,
       ...state,
       nodeType: nodeType as any,
       nodeId: state?.nodeId ?? nodeId,
