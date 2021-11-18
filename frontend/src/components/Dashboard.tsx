@@ -1,7 +1,10 @@
 import { DndContext } from '@dnd-kit/core'
+import { identity } from 'ramda'
 import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { MaskedInput } from '../forms/MaskedInput'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { ResizableTable } from './generic/ResizableTable'
@@ -28,6 +31,7 @@ const Scroller = styled.div`
 `
 
 const Dashboard = () => {
+  const form = useForm()
   return (
     <AppFrame>
       <Navigation />
@@ -37,7 +41,18 @@ const Dashboard = () => {
             <Column>
               <VisualTree />
             </Column>
-            <Column>A</Column>
+            <Column>
+              <FormProvider {...form}>
+                <MaskedInput
+                  name="mask"
+                  mask="€ #"
+                  format={{
+                    '#': [/[-\d,]/, (d: string) => d],
+                    '*': [/w+/, identity]
+                  }}
+                />
+              </FormProvider>
+            </Column>
             <Column>B</Column>
             <Column>C</Column>
           </ResizableTable>
