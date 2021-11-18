@@ -15,7 +15,7 @@ $color: #505f6e;
 
   }
 
-  &:after {
+  &.shortcut:after {
     content: attr(data-shortcut);
     position: absolute;
     left: calc(100% + 5px);

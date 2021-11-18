@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { ReactNode } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
@@ -12,7 +13,11 @@ export const WithTooltip = ({ tooltipText, shortcut, children }: Jsx<OwnProps>) 
   return (
     <OverlayTrigger
       placement="top"
-      overlay={<Tooltip data-shortcut={shortcut}>{tooltipText}</Tooltip>}
+      overlay={
+        <Tooltip data-shortcut={shortcut} className={clsx({ shortcut })}>
+          {tooltipText}
+        </Tooltip>
+      }
     >
       <div>{children}</div>
     </OverlayTrigger>
