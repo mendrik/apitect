@@ -7,14 +7,15 @@ import { ZNodeSettingsBase } from './nodeSettingsBase'
 export const ZNumberSettings = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.Number),
-    integer: boolean().default(true),
+    integer: boolean(),
     validation: object({
       min: number().optional(),
-      max: number().optional()
+      max: number().optional(),
+      step: number().default(1)
     }),
     display: object({
-      prefix: string().optional(),
-      suffix: string().optional()
+      unit: string().optional(),
+      precision: number().optional()
     })
   })
 )

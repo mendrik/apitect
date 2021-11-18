@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -40,7 +40,9 @@ import ReferenceSettings from './nodetypes/Reference'
 import RichTextSettings from './nodetypes/RichText'
 import StringSettings from './nodetypes/String'
 
-const content = (nodeType: NodeType): (() => JSX.Element) => {
+type ContentComponent = (props: PropsWithChildren<{}>) => JSX.Element
+
+const content = (nodeType: NodeType): ContentComponent => {
   switch (nodeType) {
     case NodeType.Object:
       return ObjectSettings
