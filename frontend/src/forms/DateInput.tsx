@@ -1,4 +1,4 @@
-import { IconCalendar, IconChevronDown } from '@tabler/icons'
+import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
 import { path } from 'ramda'
 import React, { InputHTMLAttributes, useContext } from 'react'
@@ -8,6 +8,7 @@ import styled from 'styled-components'
 
 import { progressContext } from '../contexts/withProgress'
 import { useAutoFocus } from '../hooks/useAutoFocus'
+import { useDatepicker } from '../hooks/useDatepicker'
 import { useId } from '../hooks/useId'
 import { Jsx } from '../shared/types/generic'
 import { ErrorInfo } from './ErrorInfo'
@@ -60,13 +61,15 @@ export const DateInput = ({
   const {
     register,
     formState: { errors }
-  } = useFormContext<{ [K in typeof name]: number | undefined }>()
+  } = useFormContext<{ [K in typeof name]: Date | undefined }>()
   const { isWorking } = useContext(progressContext)
   const { promise } = useContext(formWrappingContext)
 
   const inpId = useId()
 
   useAutoFocus(name, autoFocus)
+
+  const showCalendar = useDatepicker(name)
 
   return (
     <div className={clsx('form-floating has-validation position-relative', containerClassNames)}>
@@ -83,7 +86,12 @@ export const DateInput = ({
         type={type}
         {...props}
       />
-      <Button type="button" className="btn p-0 appearance-none" tabIndex={-1}>
+      <Button
+        type="button"
+        className="btn p-0 appearance-none"
+        tabIndex={-1}
+        onClick={showCalendar}
+      >
         <IconCalendar className="w-4 h-4" stroke={1} />
       </Button>
       <label htmlFor={inpId}>{t(label)}</label>
