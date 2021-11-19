@@ -43,6 +43,7 @@ const en = {
       },
       nodeSettings: {
         title: 'Settings: {{ property }}',
+        validation: 'Validation',
         string: {
           regexp: 'Regular expression',
           email: 'Must be a valid email'

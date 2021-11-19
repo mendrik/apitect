@@ -44,7 +44,7 @@ export const TextInput = ({
   useAutoFocus(name, autoFocus)
 
   return (
-    <div className={clsx('form-floating mb-3 has-validation', containerClassNames)}>
+    <div className={clsx('form-floating has-validation', containerClassNames)}>
       <input
         type={type}
         className={clsx(

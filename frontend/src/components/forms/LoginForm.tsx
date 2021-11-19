@@ -50,12 +50,14 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
           name="email"
           label="form.fields.email"
           type="email"
+          containerClassNames="mb-3"
           options={{ required: true }}
         />
         <TextInput
           name="password"
           label="form.fields.password"
           type="password"
+          containerClassNames="mb-3"
           options={{ required: true }}
         />
         <GenericError />

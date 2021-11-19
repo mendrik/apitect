@@ -122,9 +122,8 @@ input[required] + label:after {
 }
 
 .fieldset {
-  padding: 1rem 0.5rem 0.5rem 0.5rem;
-  border: .5pt solid $bezelDark;
-  border-radius: 4px;
+  padding: 1rem 0 0.5rem 0;
+  border-top: 1px dotted $bezelDark;
   position: relative;
   &:before {
     position: absolute;
