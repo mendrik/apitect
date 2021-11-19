@@ -23,7 +23,12 @@ export const FormOptions: FC<OwnProps> = ({ name, values, children }) => {
           return (
             <ListGroupItem variant={values[idx] === val ? 'info' : 'light'}>
               <Tuple first={Scale.CONTENT} second={Scale.MAX} gap={3}>
-                <Form.Check type="radio" {...register(name)} value={values[idx]} />
+                <Form.Check
+                  type="radio"
+                  {...register(name)}
+                  value={values[idx]}
+                  id={`${name}-${values[idx]}`}
+                />
                 {child}
               </Tuple>
             </ListGroupItem>
