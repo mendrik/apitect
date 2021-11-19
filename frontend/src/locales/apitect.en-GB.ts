@@ -46,6 +46,7 @@ const en = {
         validation: 'Validation',
         appearance: 'Appearance',
         string: {
+          none: 'No validation',
           regexp: 'Regular expression',
           email: 'Must be a valid email'
         },

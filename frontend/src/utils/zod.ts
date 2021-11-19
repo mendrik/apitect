@@ -1,21 +1,22 @@
-import { AnyZodObject, ZodDefault, ZodTypeAny } from 'zod'
-import { TypeOf } from 'zod/lib/types'
+import { mergeAll } from 'ramda'
+import * as z from 'zod'
 
-const objectHandler = (zodRef: AnyZodObject): Record<string, ZodTypeAny> =>
+const objectHandler = (zodRef: z.AnyZodObject): Record<string, z.ZodTypeAny> =>
   Object.keys(zodRef.shape).reduce((carry, key) => {
-    const res = generateDefaults<ZodTypeAny>(zodRef.shape[key])
+    const res = generateDefaults<z.ZodTypeAny>(zodRef.shape[key])
     return {
       ...carry,
       ...(res ? { [key]: res } : {})
     }
-  }, {} as Record<string, ZodTypeAny>)
+  }, {} as Record<string, z.ZodTypeAny>)
 
-export const generateDefaults = <T extends ZodTypeAny>(zodRef: T): TypeOf<typeof zodRef> => {
-  const typeName = zodRef._def.typeName
-  if (/ZodObject|ZodRecord/.test(typeName)) {
-    return objectHandler(zodRef as any)
-  } else if (/ZodDefault/.test(typeName)) {
-    return (zodRef as any as ZodDefault<T>)._def.defaultValue()
+export const generateDefaults = <T extends z.ZodTypeAny>(zodRef: T): z.infer<typeof zodRef> => {
+  if (zodRef instanceof z.ZodObject) {
+    return objectHandler(zodRef)
+  } else if (zodRef instanceof z.ZodDefault) {
+    return zodRef._def.defaultValue()
+  } else if (zodRef instanceof z.ZodUnion) {
+    return mergeAll(zodRef._def.options.map(generateDefaults))
   }
   return undefined
 }

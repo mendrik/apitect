@@ -1,37 +1,36 @@
-import React, { FC } from 'react'
+import React, { Children, FC, useEffect } from 'react'
 import { Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
-import styled from 'styled-components'
 
 import { Scale, Tuple } from '../components/generic/Tuple'
+import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {
   name: string
+  values: string[]
 }
 
-export const FormOptions: FC<OwnProps> = ({ name, children }) => {
-  const { register, watch } = useFormContext<{ [K in typeof name]: number }>()
+export const FormOptions: FC<OwnProps> = ({ name, values, children }) => {
+  const { register, watch, clearErrors } = useFormContext<{ [K in typeof name]: string }>()
   const val = watch(name)
+
+  useEffect(clearErrors, [val])
+
   return (
-    <ListGroup>
-      {React.Children.map(children, (child, idx) => (
-        <ListGroupItem
-          style={{
-            backgroundColor: idx === val ? '#eaf3ff' : '#fafafa'
-          }}
-        >
-          <Tuple first={Scale.CONTENT} second={Scale.MAX} gap={3}>
-            <Form.Check
-              type="radio"
-              {...register(name, {
-                setValueAs: v => parseInt(v, 10)
-              })}
-              value={idx}
-            />
-            {child}
-          </Tuple>
-        </ListGroupItem>
-      ))}
-    </ListGroup>
+    <>
+      <ListGroup>
+        {Children.map(children, (child, idx) => {
+          return (
+            <ListGroupItem variant={values[idx] === val ? 'info' : 'light'}>
+              <Tuple first={Scale.CONTENT} second={Scale.MAX} gap={3}>
+                <Form.Check type="radio" {...register(name)} value={values[idx]} />
+                {child}
+              </Tuple>
+            </ListGroupItem>
+          )
+        })}
+      </ListGroup>
+      <ErrorInfo name={name} />
+    </>
   )
 }
