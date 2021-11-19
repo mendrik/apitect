@@ -74,7 +74,8 @@ const en = {
         passwordRepeat: 'Repeat password',
         rememberMe: 'Remember me',
         submit: 'Login',
-        regexp: 'Regular Expression'
+        regexp: 'Regular Expression',
+        number: 'Number'
       },
       validation: {
         sherlock: 'Unable not understand this expression',

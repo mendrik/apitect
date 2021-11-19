@@ -1,10 +1,9 @@
 import { DndContext } from '@dnd-kit/core'
-import { identity } from 'ramda'
 import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { MaskedInput } from '../forms/MaskedInput'
+import { NumberInput } from '../forms/NumberInput'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { ResizableTable } from './generic/ResizableTable'
@@ -43,14 +42,7 @@ const Dashboard = () => {
             </Column>
             <Column>
               <FormProvider {...form}>
-                <MaskedInput
-                  name="mask"
-                  mask="€ #"
-                  format={{
-                    '#': [/[-\d,]/, (d: string) => d],
-                    '*': [/w+/, identity]
-                  }}
-                />
+                <NumberInput name="mask" autoFocus label="form.fields.number" />
               </FormProvider>
             </Column>
             <Column>B</Column>

@@ -1,12 +1,13 @@
 import clsx from 'clsx'
 import { path } from 'ramda'
 import { isEmptyString } from 'ramda-adjunct'
-import React, { InputHTMLAttributes, useContext, useEffect } from 'react'
+import React, { InputHTMLAttributes, useContext } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { progressContext } from '../contexts/withProgress'
+import { useAutoFocus } from '../hooks/useAutoFocus'
 import { useId } from '../hooks/useId'
 import { Jsx } from '../shared/types/generic'
 import { ErrorInfo } from './ErrorInfo'
@@ -33,7 +34,6 @@ export const TextInput = ({
   const { t } = useTranslation()
   const {
     register,
-    setFocus,
     formState: { errors }
   } = useFormContext()
   const { isWorking } = useContext(progressContext)
@@ -41,11 +41,7 @@ export const TextInput = ({
 
   const inpId = useId()
 
-  useEffect(() => {
-    if (autoFocus) {
-      setFocus(name)
-    }
-  }, [autoFocus, name])
+  useAutoFocus(name, autoFocus)
 
   return (
     <div className={clsx('form-floating mb-3 has-validation', containerClassNames)}>
