@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { Checkbox } from '../../../forms/Checkbox'
 import { FieldSet } from '../../../forms/FieldSet'
 import { NumberInput } from '../../../forms/NumberInput'
 import { TextInput } from '../../../forms/TextInput'
