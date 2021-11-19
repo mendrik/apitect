@@ -68,7 +68,6 @@ export const NumberInput = ({
   const { promise } = useContext(formWrappingContext)
 
   const n = watch(name)
-  console.log('watch ', n)
   const inpId = useId()
 
   useAutoFocus(name, autoFocus)
@@ -104,10 +103,10 @@ export const NumberInput = ({
         {...props}
       />
       <Buttons>
-        <button type="button" className="btn p-0">
+        <button type="button" className="btn p-0" tabIndex={-1}>
           <IconChevronUp className="w-4 h-4" stroke={1} />
         </button>
-        <button type="button" className="btn p-0">
+        <button type="button" className="btn p-0" tabIndex={-1}>
           <IconChevronDown className="w-4 h-4" stroke={1} />
         </button>
       </Buttons>
