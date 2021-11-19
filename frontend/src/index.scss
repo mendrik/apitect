@@ -142,5 +142,12 @@ input[required] + label:after {
   }
 }
 
+.appearance-none {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+}
+
 @import "~bootstrap/scss/bootstrap";
 @import "./css/tooltip";

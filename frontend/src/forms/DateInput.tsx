@@ -1,4 +1,4 @@
-import { IconChevronDown, IconChevronUp } from '@tabler/icons'
+import { IconCalendar, IconChevronDown } from '@tabler/icons'
 import clsx from 'clsx'
 import { path } from 'ramda'
 import React, { InputHTMLAttributes, useContext } from 'react'
@@ -18,18 +18,13 @@ type OwnProps = {
   name: string
   options?: RegisterOptions
   containerClassNames?: string
-  min?: number
-  max?: number
-  step?: number
-  unit?: string
-  precision?: number
 } & InputHTMLAttributes<HTMLInputElement>
 
 const Input = styled.input`
-  ::-webkit-outer-spin-button,
-  ::-webkit-inner-spin-button {
+  ::-webkit-inner-spin-button,
+  ::-webkit-calendar-picker-indicator {
+    display: none;
     -webkit-appearance: none;
-    margin: 0;
   }
 
   [type='number'] {
@@ -37,35 +32,26 @@ const Input = styled.input`
   }
 `
 
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: column;
+const Button = styled.button`
   position: absolute;
-  width: 40px;
+  width: 58px;
   height: 100%;
   top: 0;
   right: 0;
   padding: 1px;
-
-  > button.btn {
-    color: #999;
-    &:active {
-      background-color: #efefef;
-    }
-    &:focus {
-      content: initial;
-      box-shadow: none;
-    }
+  box-shadow: none !important;
+  color: #999;
+  &:active {
+    background-color: #efefef;
   }
 `
 
-export const NumberInput = ({
+export const DateInput = ({
   name,
   label,
   options,
-  type = 'number',
+  type = 'date',
   className,
-  placeholder,
   containerClassNames,
   autoFocus,
   ...props
@@ -83,32 +69,23 @@ export const NumberInput = ({
   useAutoFocus(name, autoFocus)
 
   return (
-    <div className={clsx('form-floating has-validation appearance-none', containerClassNames)}>
+    <div className={clsx('form-floating has-validation position-relative', containerClassNames)}>
       <Input
         {...register(name, {
-          valueAsNumber: true,
+          valueAsDate: true,
           ...options
         })}
-        style={{
-          paddingRight: '2.5rem'
-        }}
         className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}
         id={inpId}
         autoComplete="off"
         readOnly={props.readOnly || isWorking(promise)}
         required={!!options?.required}
         type={type}
-        placeholder={placeholder ?? ' '}
         {...props}
       />
-      <Buttons>
-        <button type="button" className="btn p-0" tabIndex={-1}>
-          <IconChevronUp className="w-4 h-4" stroke={1} />
-        </button>
-        <button type="button" className="btn p-0" tabIndex={-1}>
-          <IconChevronDown className="w-4 h-4" stroke={1} />
-        </button>
-      </Buttons>
+      <Button type="button" className="btn p-0 appearance-none" tabIndex={-1}>
+        <IconCalendar className="w-4 h-4" stroke={1} />
+      </Button>
       <label htmlFor={inpId}>{t(label)}</label>
       <ErrorInfo name={name} />
     </div>

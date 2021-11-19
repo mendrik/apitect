@@ -3,7 +3,7 @@ import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { NumberInput } from '../forms/NumberInput'
+import { DateInput } from '../forms/DateInput'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { ResizableTable } from './generic/ResizableTable'
@@ -42,7 +42,7 @@ const Dashboard = () => {
             </Column>
             <Column>
               <FormProvider {...form}>
-                <NumberInput name="mask" autoFocus label="form.fields.number" />
+                <DateInput name="mask" autoFocus label="form.fields.number" />
               </FormProvider>
             </Column>
             <Column>B</Column>
