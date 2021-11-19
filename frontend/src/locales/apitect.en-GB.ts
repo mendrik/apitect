@@ -44,6 +44,7 @@ const en = {
       nodeSettings: {
         title: 'Settings: {{ property }}',
         validation: 'Validation',
+        appearance: 'Appearance',
         string: {
           regexp: 'Regular expression',
           email: 'Must be a valid email'
@@ -54,10 +55,11 @@ const en = {
           taggable: 'Taggable content underneath'
         },
         number: {
-          integer: 'Integer',
           min: 'Minimum',
           max: 'Maximum',
-          step: 'Step'
+          step: 'Step',
+          unit: 'Unit',
+          precision: 'Precision'
         }
       }
     },

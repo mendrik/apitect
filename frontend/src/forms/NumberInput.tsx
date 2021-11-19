@@ -80,7 +80,7 @@ export const NumberInput = ({
   }
 
   return (
-    <div className={clsx('form-floating mb-3 has-validation', containerClassNames)}>
+    <div className={clsx('form-floating has-validation', containerClassNames)}>
       <input
         {...register(name, {
           setValueAs: pipe(parseFloat, when(isNaN, always(undefined))),
