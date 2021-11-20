@@ -1,8 +1,17 @@
 import clsx from 'clsx'
-import { addDays, format, getDay, isAfter, isToday, lastDayOfMonth, setDay } from 'date-fns'
+import {
+  addDays,
+  format,
+  getDay,
+  isAfter,
+  isThisMonth,
+  isToday,
+  lastDayOfMonth,
+  setDay
+} from 'date-fns'
 import { range, reduce, take } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { useMemo } from 'react'
+import React, { useLayoutEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 
 import { Jsx } from '../../shared/types/generic'
@@ -11,7 +20,7 @@ type OwnProps = {
   month: Date
 }
 
-const Wrap = styled.div`
+const Wrap = styled.li`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   color: black;
@@ -48,11 +57,14 @@ const Day = styled.div`
     color: #b3b3b3;
   }
   &.today {
+    color: #aa0000;
     font-weight: 600;
   }
 `
 
 export const Month = ({ month, children }: Jsx<OwnProps>) => {
+  const ref = useRef<HTMLLIElement>(null)
+
   const days = useMemo(() => {
     const firstDate = setDay(month, 1)
     const $lastDate = lastDayOfMonth(month)
@@ -67,8 +79,20 @@ export const Month = ({ month, children }: Jsx<OwnProps>) => {
     )
   }, [month])
 
+  useLayoutEffect(() => {
+    if (ref.current != null && isThisMonth(month)) {
+      const today = ref.current.querySelector<HTMLDivElement>('.today')
+      if (today) {
+        setTimeout(
+          () => today.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' }),
+          0
+        )
+      }
+    }
+  }, [month])
+
   return (
-    <Wrap>
+    <Wrap ref={ref}>
       <MonthHead>{format(month, 'LLLL')}</MonthHead>
       {mapIndexed(
         d => (
