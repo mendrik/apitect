@@ -14,6 +14,9 @@ const Wrap = styled.div`
   grid-template-columns: repeat(7, 1fr);
   color: black;
   padding: 0 1rem 2rem 1rem;
+  &:last-child {
+    padding-bottom: 0;
+  }
 `
 
 const MonthHead = styled.div`
@@ -24,6 +27,7 @@ const MonthHead = styled.div`
   font-weight: 600;
   height: 30px;
 `
+
 const Week = styled.div`
   display: flex;
   align-items: center;

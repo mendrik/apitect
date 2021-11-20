@@ -22,10 +22,10 @@ type OwnProps = {
 const Layout = styled.div`
   display: grid;
   grid-gap: 0.5rem;
-  height: 100vh;
+  max-height: 100vh;
   width: 100vw;
-  grid-template-columns: min-content auto;
-  grid-template-rows: max-content auto max-content;
+  grid-template-columns: min-content 1fr;
+  grid-template-rows: max-content 1fr max-content;
 `
 
 const CalendarHead = styled.div`
@@ -52,7 +52,6 @@ const Years = styled.ol`
 `
 
 const Year = styled.ol`
-  padding: 0;
   margin: 0;
   grid-column: 2;
   grid-row: 2;
@@ -118,16 +117,18 @@ export const Datepicker: FC<OwnProps> = ({ startDate, children, ...props }) => {
                     <li>2024</li>
                   </Years>
                 </Scrollable>
-                <Scrollable>
-                  <Year>
-                    {mapIndexed(
-                      m => (
-                        <Month month={m} key={format(m, 'dd.MM.yyyy')} />
-                      ),
-                      months
-                    )}
-                  </Year>
-                </Scrollable>
+                <div className="vertical-fade">
+                  <Scrollable>
+                    <Year>
+                      {mapIndexed(
+                        m => (
+                          <Month month={m} key={format(m, 'dd.MM.yyyy')} />
+                        ),
+                        months
+                      )}
+                    </Year>
+                  </Scrollable>
+                </div>
                 <GridButtonRow className="p-2">
                   <Button variant="outline-secondary" onClick={() => setOpen(false)}>
                     {t('common.cancel')}
