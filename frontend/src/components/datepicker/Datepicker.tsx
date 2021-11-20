@@ -79,6 +79,9 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
   const [currentDate, setCurrentCurrentDate] = useState<Date>(startDate)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
+
+  console.log(open)
+
   const months = useMemo(
     () => range(0, 12).map(m => setDate(setMonth(currentDate, m), 1)),
     [currentDate]
@@ -112,7 +115,7 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
   const onEscape = when(propEq('code', 'Escape'), () => setOpen(false))
 
   return (
-    <CalendarButton onClick={openPicker} onKeyDown={console.log.bind(console)} ref={ref}>
+    <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>
       <IconCalendar className="w-4 h-4" stroke={1} />
       <FocusLock>
         <AnimatePresence>

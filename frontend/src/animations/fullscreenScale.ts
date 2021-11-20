@@ -22,6 +22,9 @@ export const fullscreenScale: MotionProps = {
     scale: 1
   },
   exit: {
+    transition: {
+      type: 'tween'
+    },
     scale: 0
   }
 }

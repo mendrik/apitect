@@ -83,10 +83,10 @@ export const Month = ({ month, children }: Jsx<OwnProps>) => {
     if (ref.current != null && isThisMonth(month)) {
       const today = ref.current.querySelector<HTMLDivElement>('.today')
       if (today) {
-        setTimeout(
-          () => today.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' }),
-          0
-        )
+        setTimeout(() => {
+          today.focus()
+          today.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
+        }, 0)
       }
     }
   }, [month])
