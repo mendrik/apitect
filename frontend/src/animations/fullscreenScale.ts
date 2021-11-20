@@ -15,14 +15,13 @@ export const fullscreenScale: MotionProps = {
   },
   transition: {
     type: 'spring',
-    stiffness: 200,
-    bounce: 50
+    stiffness: 100,
+    duration: 200
   },
   animate: {
-    scale: 1,
-    border: 'none'
+    scale: 1
   },
   exit: {
-    opacity: 0
+    scale: 0
   }
 }
