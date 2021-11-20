@@ -41,6 +41,7 @@ const Years = styled.ol`
 
 const Year = styled.li`
   font-weight: 300;
+  padding: 0.25rem 0;
 
   &.currentYear {
     color: black;
@@ -76,21 +77,19 @@ const CalendarButton = styled.div`
 `
 
 export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => {
-  const [currentDate, setCurrentCurrentDate] = useState<Date>(startDate)
+  const [currentDate, setCurrentDate] = useState<Date>(startDate)
+  const [selectedDate, setSelectedDate] = useState<Date>(startDate)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
-
-  console.log(open)
-
   const months = useMemo(
     () => range(0, 12).map(m => setDate(setMonth(currentDate, m), 1)),
     [currentDate]
   )
-  const years = useMemo(() => range(-150, 20).map(y => addYears(currentDate, y)), [currentDate])
+  const years = useMemo(() => range(-60, 20).map(y => addYears(currentDate, y)), [currentDate])
   const ref = useRef<HTMLDivElement>(null)
 
   const openPicker = () => {
-    if (ref.current != null) {
+    if (ref.current != null && !open) {
       const view = ref.current?.getBoundingClientRect()
       const x = (view.x + view.width / 2) / window.innerWidth
       const y = (view.y + view.height / 2) / window.innerHeight
@@ -130,7 +129,7 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
                           <Year
                             key={format(y, 'yyyy')}
                             className={clsx({ currentYear: isThisYear(y) })}
-                            onClick={() => setCurrentCurrentDate(y)}
+                            onClick={() => setCurrentDate(y)}
                           >
                             {format(y, 'yyyy')}
                           </Year>
