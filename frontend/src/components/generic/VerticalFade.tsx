@@ -18,6 +18,7 @@ const VerticalFadeStyled = styled.div`
     background: linear-gradient(0deg, transparent, white);
     display: block;
     pointer-events: none;
+    opacity: var(--scrollOpacityTop);
   }
 
   &:after {
@@ -30,13 +31,22 @@ const VerticalFadeStyled = styled.div`
     background: linear-gradient(0deg, white, transparent);
     display: block;
     pointer-events: none;
+    opacity: var(--scrollOpacityBottom);
   }
 `
 
 export const VerticalFade = ({ children }: Jsx) => {
   const handler = useCallback((ev: Event) => {
-    console.log(ev)
+    const target = ev.target as HTMLElement
+    const opacityTop = 1 - Math.max(50 - target.scrollTop, 0) / 50
+    const opacityBottom =
+      Math.min(target.scrollHeight - target.scrollTop - target.offsetHeight, 50) / 50
+    ref.current?.style.setProperty('--scrollOpacityTop', `${opacityTop}`)
+    ref.current?.style.setProperty('--scrollOpacityBottom', `${opacityBottom}`)
   }, [])
-  const ref = useEvent<HTMLDivElement>('scroll', handler, undefined, { passive: true })
+  const ref = useEvent<HTMLDivElement>('scroll', handler, undefined, {
+    passive: true,
+    capture: true
+  })
   return <VerticalFadeStyled ref={ref}>{children}</VerticalFadeStyled>
 }

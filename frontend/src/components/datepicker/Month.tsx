@@ -56,7 +56,6 @@ export const Month = ({ month, children }: Jsx<OwnProps>) => {
   const days = useMemo(() => {
     const firstDate = setDay(month, 1)
     const $lastDate = lastDayOfMonth(month)
-    console.log($lastDate, getDay($lastDate))
     const lastDate = getDay($lastDate) === 0 ? setDay($lastDate, 1) : setDay($lastDate, 8)
     return reduce(
       (acc, i) => {
