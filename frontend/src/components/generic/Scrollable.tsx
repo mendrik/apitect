@@ -13,7 +13,7 @@ const Scroller = styled.div`
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: #f8b26a;
+    background-color: #b6b6b6;
     -webkit-box-shadow: 0 0 1px rgb(255 255 255 / 50%);
   }
 `

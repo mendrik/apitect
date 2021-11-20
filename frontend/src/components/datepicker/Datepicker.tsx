@@ -3,6 +3,7 @@ import { setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import i18n from 'i18next'
 import { map, propEq, range, when } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
 import React, { FC, useMemo, useRef, useState } from 'react'
 import FocusLock from 'react-focus-lock'
 import { useTranslation } from 'react-i18next'
@@ -27,10 +28,27 @@ const bodyClasses = document.body.classList
 
 const CalendarHead = styled.div`
   background-color: white;
+  grid-column: 1 / span 2;
 `
-const Year = styled.ol``
-const Months = styled.ol``
-const Layout = styled.div``
+
+const Year = styled.ol`
+  padding: 0;
+  margin: 0;
+`
+
+const Months = styled.ol`
+  padding: 0;
+  margin: 0;
+`
+
+const Layout = styled.div`
+  display: grid;
+  grid-gap: 0.5rem;
+  height: 100vh;
+  width: 100vw;
+  grid-template-columns: 30px 1fr;
+  grid-template-rows: 30px 1fr;
+`
 
 const Button = styled.button`
   position: absolute;
@@ -50,7 +68,7 @@ export const Datepicker: FC<OwnProps> = ({ startDate, children, ...props }) => {
   const [date, setDate] = useState<Date>(startDate)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
-  const months = useMemo(() => range(0, 11).map(m => setMonth(date, m)), [date])
+  const months = useMemo(() => range(0, 12).map(m => setMonth(date, m)), [date])
   const ref = useRef<HTMLButtonElement>(null)
   const locale = i18n.language
 
@@ -79,12 +97,19 @@ export const Datepicker: FC<OwnProps> = ({ startDate, children, ...props }) => {
       <FocusLock>
         <AnimatePresence>
           {open && (
-            <motion.div {...fullscreenScale} role="dialog" layout="position">
+            <motion.div {...fullscreenScale} role="dialog">
               <Layout>
                 <CalendarHead>2021</CalendarHead>
                 <Months>{map(m => m.getMonth(), months)}</Months>
                 <Scrollable>
-                  <Year>{map(m => m.getMonth(), months)}</Year>
+                  <Year>
+                    {mapIndexed(
+                      (m, idx) => (
+                        <div key={idx}>{m.getMonth()}</div>
+                      ),
+                      months
+                    )}
+                  </Year>
                 </Scrollable>
               </Layout>
             </motion.div>
