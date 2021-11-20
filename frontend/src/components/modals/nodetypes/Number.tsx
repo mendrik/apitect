@@ -1,18 +1,32 @@
 import React from 'react'
-import { useFormContext } from 'react-hook-form'
 
-import { Checkbox } from '../../../forms/Checkbox'
+import { FieldSet } from '../../../forms/FieldSet'
+import { NumberInput } from '../../../forms/NumberInput'
 import { TextInput } from '../../../forms/TextInput'
-import { ObjectSettings } from '../../../shared/types/forms/nodetypes/objectSettings'
+import { HGrid } from '../../generic/HGrid'
 
 const Number = () => {
-  const { watch } = useFormContext<ObjectSettings>()
-  const apiEndpoint = watch('apiEndpoint')
-
   return (
     <>
-      <Checkbox name="integer" label={'modals.nodeSettings.number.integer'} className="mb-3" />
-      <TextInput label="modals.nodeSettings.number.min" name="number" type="number" />
+      <FieldSet title="modals.nodeSettings.validation">
+        <HGrid className="gap-2">
+          <NumberInput label="modals.nodeSettings.number.min" name="min" />
+          <NumberInput label="modals.nodeSettings.number.max" name="max" />
+        </HGrid>
+      </FieldSet>
+      <FieldSet title="modals.nodeSettings.appearance">
+        <HGrid className="gap-2">
+          <NumberInput
+            label="modals.nodeSettings.number.precision"
+            name="precision"
+            min={0}
+            max={4}
+            step={1}
+          />
+          <TextInput label="modals.nodeSettings.number.unit" name="unit" />
+          <NumberInput label="modals.nodeSettings.number.step" name="step" />
+        </HGrid>
+      </FieldSet>
     </>
   )
 }

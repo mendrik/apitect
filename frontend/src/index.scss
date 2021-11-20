@@ -26,6 +26,9 @@ $link-color: $color5;
 
 $bezelLight: #fff;
 $bezelDark: #ddd;
+$info: #ababab;
+$light: #efefef;
+
 
 .bevel-bottom {
   border-bottom: 1px solid $bezelDark;
@@ -122,9 +125,8 @@ input[required] + label:after {
 }
 
 .fieldset {
-  padding: 1rem 0.5rem 0.5rem 0.5rem;
-  border: .5pt solid $bezelDark;
-  border-radius: 4px;
+  padding: 1rem 0 1rem 0;
+  border-top: 1px dotted $bezelDark;
   position: relative;
   &:before {
     position: absolute;
@@ -138,6 +140,13 @@ input[required] + label:after {
     padding: 0 3px;
     color: #999;
   }
+}
+
+.appearance-none {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
 }
 
 @import "~bootstrap/scss/bootstrap";

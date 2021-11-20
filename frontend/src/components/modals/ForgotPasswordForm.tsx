@@ -31,7 +31,13 @@ const ForgotPasswordForm: ModalFC = ({ close }) => {
 
   return (
     <Form form={form} state={submit} successView={Success}>
-      <TextInput name="email" label="form.fields.email" type="email" options={{ required: true }} />
+      <TextInput
+        name="email"
+        label="form.fields.email"
+        type="email"
+        options={{ required: true }}
+        containerClassNames="mb-3"
+      />
       <Alert variant="info">{t('modals.forgotPassword.info')}</Alert>
       <GenericError />
       <ButtonRow>

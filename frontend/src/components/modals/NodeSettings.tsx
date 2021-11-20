@@ -122,7 +122,8 @@ const NodeSettings: ModalFC = ({ close }) => {
   const Content = content(nodeType)
 
   const settingsSchema = resolver(nodeType)
-  const defaultValuesFromSchema = generateDefaults(ZNumberSettings)
+  const defaultValuesFromSchema = generateDefaults(settingsSchema)
+
   const form = useForm<NodeSettingsType>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
@@ -141,6 +142,7 @@ const NodeSettings: ModalFC = ({ close }) => {
         label="form.fields.nodeName"
         type="text"
         autoFocus
+        containerClassNames="mb-3"
         options={{ required: true }}
       />
       <Content />

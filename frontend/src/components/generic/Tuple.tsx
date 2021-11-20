@@ -23,22 +23,22 @@ type OwnProps = {
 }
 
 const StyledTuple = styled.div`
-  &.first-auto > *:first-child {
+  &.first-auto > :first-child {
     flex-basis: auto;
   }
-  &.first-content > *:first-child {
+  &.first-content > :first-child {
     flex-basis: fit-content;
   }
-  &.first-max > *:nth-child(1) {
+  &.first-max > :first-child {
     flex-basis: 100%;
   }
-  &.second-auto > *:first-child {
+  &.second-auto > :nth-child(2) {
     flex-basis: auto;
   }
-  &.second-content > *:first-child {
+  &.second-max > :nth-child(2) {
     flex-basis: 100%;
   }
-  &.second-content > *:nth-child(1) {
+  &.second-content > :nth-child(2) {
     flex-basis: fit-content;
   }
 `

@@ -48,12 +48,14 @@ export const RegisterForm: ModalFC = ({ close }) => {
         name="password"
         label="form.fields.password"
         type="password"
+        containerClassNames="mb-3"
         options={{ required: true }}
       />
       <TextInput
         name="passwordRepeat"
         label="form.fields.passwordRepeat"
         type="password"
+        containerClassNames="mb-3"
         options={{ required: true }}
       />
       <GenericError />

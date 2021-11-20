@@ -1,13 +1,14 @@
+import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
 import { path } from 'ramda'
-import { isEmptyString } from 'ramda-adjunct'
 import React, { InputHTMLAttributes, useContext } from 'react'
-import type { RegisterOptions } from 'react-hook-form'
-import { useFormContext } from 'react-hook-form'
+import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 
 import { progressContext } from '../contexts/withProgress'
 import { useAutoFocus } from '../hooks/useAutoFocus'
+import { useDatepicker } from '../hooks/useDatepicker'
 import { useId } from '../hooks/useId'
 import { Jsx } from '../shared/types/generic'
 import { ErrorInfo } from './ErrorInfo'
@@ -20,13 +21,24 @@ type OwnProps = {
   containerClassNames?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const TextInput = ({
+const Input = styled.input`
+  ::-webkit-inner-spin-button,
+  ::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+
+  [type='number'] {
+    -moz-appearance: textfield;
+  }
+`
+
+export const DateInput = ({
   name,
   label,
   options,
-  type = 'text',
+  type = 'date',
   className,
-  placeholder,
   containerClassNames,
   autoFocus,
   ...props
@@ -35,7 +47,7 @@ export const TextInput = ({
   const {
     register,
     formState: { errors }
-  } = useFormContext()
+  } = useFormContext<{ [K in typeof name]: Date | undefined }>()
   const { isWorking } = useContext(progressContext)
   const { promise } = useContext(formWrappingContext)
 
@@ -43,26 +55,24 @@ export const TextInput = ({
 
   useAutoFocus(name, autoFocus)
 
+  const CalendarIcon = useDatepicker(name)
+
   return (
-    <div className={clsx('form-floating has-validation', containerClassNames)}>
-      <input
-        type={type}
-        className={clsx(
-          'form-control ',
-          { 'is-invalid': path(name.split('.'), errors) },
-          className
-        )}
-        id={inpId}
-        autoComplete="off"
+    <div className={clsx('form-floating has-validation position-relative', containerClassNames)}>
+      <Input
         {...register(name, {
-          setValueAs: (u: any) => (isEmptyString(u) ? undefined : u),
+          valueAsDate: true,
           ...options
         })}
+        className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}
+        id={inpId}
+        autoComplete="off"
         readOnly={props.readOnly || isWorking(promise)}
         required={!!options?.required}
-        placeholder={placeholder ?? ' '}
+        type={type}
         {...props}
       />
+      {CalendarIcon}
       <label htmlFor={inpId}>{t(label)}</label>
       <ErrorInfo name={name} />
     </div>

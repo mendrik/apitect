@@ -1,7 +1,9 @@
 import { DndContext } from '@dnd-kit/core'
 import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { DateInput } from '../forms/DateInput'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { ResizableTable } from './generic/ResizableTable'
@@ -28,6 +30,7 @@ const Scroller = styled.div`
 `
 
 const Dashboard = () => {
+  const form = useForm()
   return (
     <AppFrame>
       <Navigation />
@@ -37,7 +40,11 @@ const Dashboard = () => {
             <Column>
               <VisualTree />
             </Column>
-            <Column>A</Column>
+            <Column>
+              <FormProvider {...form}>
+                <DateInput name="mask" autoFocus label="form.fields.number" />
+              </FormProvider>
+            </Column>
             <Column>B</Column>
             <Column>C</Column>
           </ResizableTable>
