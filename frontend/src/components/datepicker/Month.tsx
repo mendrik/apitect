@@ -2,8 +2,10 @@ import clsx from 'clsx'
 import { addDays, format, getDay, isAfter, isToday, lastDayOfMonth, setDay } from 'date-fns'
 import { range, reduce, take } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { FC, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
+
+import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = {
   month: Date
@@ -50,7 +52,7 @@ const Day = styled.div`
   }
 `
 
-export const Month: FC<OwnProps> = ({ month, children }) => {
+export const Month = ({ month, children }: Jsx<OwnProps>) => {
   const days = useMemo(() => {
     const firstDate = setDay(month, 1)
     const $lastDate = lastDayOfMonth(month)

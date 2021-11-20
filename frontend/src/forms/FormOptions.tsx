@@ -1,8 +1,9 @@
-import React, { Children, FC, useEffect } from 'react'
+import React, { Children, useEffect } from 'react'
 import { Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 
 import { Scale, Tuple } from '../components/generic/Tuple'
+import { Jsx } from '../shared/types/generic'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {
@@ -10,7 +11,7 @@ type OwnProps = {
   values: string[]
 }
 
-export const FormOptions: FC<OwnProps> = ({ name, values, children }) => {
+export const FormOptions = ({ name, values, children }: Jsx<OwnProps>) => {
   const { register, watch, clearErrors } = useFormContext<{ [K in typeof name]: string }>()
   const val = watch(name)
 

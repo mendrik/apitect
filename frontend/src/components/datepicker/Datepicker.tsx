@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import i18n from 'i18next'
 import { propEq, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { FC, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import FocusLock from 'react-focus-lock'
 import { useTranslation } from 'react-i18next'
@@ -12,7 +12,9 @@ import styled from 'styled-components'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { ButtonRow } from '../../forms/ButtonRow'
+import { Jsx } from '../../shared/types/generic'
 import { Scrollable } from '../generic/Scrollable'
+import { VerticalFade } from '../generic/VerticalFade'
 import { Month } from './Month'
 
 type OwnProps = {
@@ -77,7 +79,7 @@ const CalendarButton = styled.div`
   cursor: pointer;
 `
 
-export const Datepicker: FC<OwnProps> = ({ startDate, children, ...props }) => {
+export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => {
   const [date, setCurrentDate] = useState<Date>(startDate)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -117,7 +119,7 @@ export const Datepicker: FC<OwnProps> = ({ startDate, children, ...props }) => {
                     <li>2024</li>
                   </Years>
                 </Scrollable>
-                <div className="vertical-fade">
+                <VerticalFade>
                   <Scrollable>
                     <Year>
                       {mapIndexed(
@@ -128,7 +130,7 @@ export const Datepicker: FC<OwnProps> = ({ startDate, children, ...props }) => {
                       )}
                     </Year>
                   </Scrollable>
-                </div>
+                </VerticalFade>
                 <GridButtonRow className="p-2">
                   <Button variant="outline-secondary" onClick={() => setOpen(false)}>
                     {t('common.cancel')}

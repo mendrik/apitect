@@ -1,11 +1,13 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { TFuncKey, useTranslation } from 'react-i18next'
+
+import { Jsx } from '../shared/types/generic'
 
 type OwnProps = {
   title: TFuncKey
 }
 
-export const FieldSet: FC<OwnProps> = ({ title, children }) => {
+export const FieldSet = ({ title, children }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
 
   return (

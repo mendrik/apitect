@@ -1,5 +1,7 @@
-import React, { FC, HTMLAttributes } from 'react'
+import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
+
+import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = HTMLAttributes<HTMLDivElement>
 
@@ -23,6 +25,6 @@ const Scroller = styled.div`
   }
 `
 
-export const Scrollable: FC<OwnProps> = ({ children, ...props }) => {
+export const Scrollable = ({ children, ...props }: Jsx<OwnProps>) => {
   return <Scroller {...props}>{children}</Scroller>
 }

@@ -150,22 +150,5 @@ input[required] + label:after {
   border: 0;
 }
 
-.vertical-fade {
-  position: relative;
-  overflow: hidden;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 7px;
-    height: 50px;
-    background: linear-gradient(0deg, transparent, white);
-    display: block;
-    pointer-events: none;
-  }
-}
-
 @import "~bootstrap/scss/bootstrap";
 @import "./css/tooltip";
