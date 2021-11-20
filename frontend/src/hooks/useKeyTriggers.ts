@@ -9,13 +9,12 @@ type OwnProps = {
   onConfirm: Fn
 }
 
-const blur = tap((ev: Event) => (ev.target as HTMLInputElement).blur())
+const blur = tap((ev: Event) => (ev.target as HTMLElement).blur())
 
-export const useKeyTriggers = ({ onConfirm, onCancel }: OwnProps): RefObject<HTMLInputElement> => {
-  const ref = useRef<HTMLInputElement>(null)
+export const useKeyTriggers = ({ onConfirm, onCancel }: OwnProps): RefObject<HTMLElement> => {
+  const ref = useRef<HTMLElement>(null)
   useEvent('keyup', when(propEq<any>('key', 'Escape'), onCancel), ref)
   useEvent('keypress', when<any, void>(propEq<any>('key', 'Enter'), pipe(blur, onConfirm)), ref)
   useEvent('blur', onCancel, ref)
-
   return ref
 }

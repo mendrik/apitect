@@ -15,7 +15,7 @@ const Wrap = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   color: black;
-  padding: 0 1rem 2rem 1rem;
+  padding: 0 1rem 1.5rem 1rem;
   &:last-child {
     padding-bottom: 0;
   }

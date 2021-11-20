@@ -1,11 +1,8 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 
+import { useEvent } from '../../hooks/useEvent'
 import { Jsx } from '../../shared/types/generic'
-
-type OwnProps = {
-  prop: string
-}
 
 const VerticalFadeStyled = styled.div`
   position: relative;
@@ -37,5 +34,9 @@ const VerticalFadeStyled = styled.div`
 `
 
 export const VerticalFade = ({ children }: Jsx) => {
-  return <VerticalFadeStyled>{children}</VerticalFadeStyled>
+  const handler = useCallback((ev: Event) => {
+    console.log(ev)
+  }, [])
+  const ref = useEvent<HTMLDivElement>('scroll', handler, undefined, { passive: true })
+  return <VerticalFadeStyled ref={ref}>{children}</VerticalFadeStyled>
 }

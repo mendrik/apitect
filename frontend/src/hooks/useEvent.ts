@@ -1,14 +1,16 @@
-import { MutableRefObject, useEffect } from 'react'
+import { MutableRefObject, RefObject, useEffect, useRef } from 'react'
 
-export const useEvent = (
+export const useEvent = <T extends HTMLElement>(
   event: string,
   handler: EventListener,
-  ref: MutableRefObject<EventTarget | null>,
+  ref?: RefObject<T>,
   options?: boolean | AddEventListenerOptions
-): void => {
+): MutableRefObject<T | null> => {
+  const r = ref ?? useRef<T>(null)
   useEffect(() => {
-    const element = ref.current
+    const element = r.current
     element?.addEventListener(event, handler, options)
     return () => element?.removeEventListener(event, handler, options)
-  }, [ref, event, handler, options])
+  }, [r, event, handler, options])
+  return r
 }
