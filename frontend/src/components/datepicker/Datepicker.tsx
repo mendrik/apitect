@@ -1,5 +1,5 @@
 import { IconCalendar } from '@tabler/icons'
-import { setMonth } from 'date-fns'
+import { format, setDate, setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import i18n from 'i18next'
 import { propEq, range, when } from 'ramda'
@@ -13,27 +13,18 @@ import styled from 'styled-components'
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { Scrollable } from '../generic/Scrollable'
+import { Month } from './Month'
 
 type OwnProps = {
   startDate: Date
 }
-
-const Wrap = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-`
-
-const bodyClasses = document.body.classList
 
 const Layout = styled.div`
   display: grid;
   grid-gap: 0.5rem;
   height: 100vh;
   width: 100vw;
-  grid-template-columns: max-content auto;
+  grid-template-columns: min-content auto;
   grid-template-rows: max-content auto max-content;
 `
 
@@ -41,25 +32,35 @@ const CalendarHead = styled.div`
   background-color: white;
   grid-column: 1 / span 2;
   grid-row: 1;
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  color: black;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px dotted #666;
 `
 
 const Years = styled.ol`
   padding: 0;
   margin: 0;
+  list-style: none;
   grid-column: 1;
-  grid-rows: 2;
+  grid-row: 2;
+  padding: 0 0 0 0.5rem;
 `
 
 const Year = styled.ol`
   padding: 0;
   margin: 0;
   grid-column: 2;
-  grid-rows: 2;
+  grid-row: 2;
 `
 
 const GridButtonRow = styled(ButtonRow)`
   grid-column: 1 / span 2;
-  grid-rows: 3;
+  grid-row: 3;
 `
 
 const CalendarButton = styled.div`
@@ -78,10 +79,10 @@ const CalendarButton = styled.div`
 `
 
 export const Datepicker: FC<OwnProps> = ({ startDate, children, ...props }) => {
-  const [date, setDate] = useState<Date>(startDate)
+  const [date, setCurrentDate] = useState<Date>(startDate)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
-  const months = useMemo(() => range(0, 12).map(m => setMonth(date, m)), [date])
+  const months = useMemo(() => range(0, 12).map(m => setDate(setMonth(date, m), 1)), [date])
   const ref = useRef<HTMLDivElement>(null)
   const locale = i18n.language
 
@@ -120,8 +121,8 @@ export const Datepicker: FC<OwnProps> = ({ startDate, children, ...props }) => {
                 <Scrollable>
                   <Year>
                     {mapIndexed(
-                      (m, idx) => (
-                        <div key={idx}>{m.getMonth()}</div>
+                      m => (
+                        <Month month={m} key={format(m, 'dd.MM.yyyy')} />
                       ),
                       months
                     )}

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 type OwnProps = HTMLAttributes<HTMLDivElement>
 
 const Scroller = styled.div`
-  display: contents;
   overflow-y: scroll;
   overscroll-behavior: contain;
 
