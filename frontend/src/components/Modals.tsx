@@ -24,7 +24,7 @@ export const Modals = () => {
   }, [selectedNode])
 
   return (
-    <div className="modal">
+    <>
       <ModalStub
         title="modals.authenticate.title"
         from={() => import('./modals/Authenticate')}
@@ -46,6 +46,6 @@ export const Modals = () => {
         from={() => import('./modals/NodeSettings')}
         name="node-settings"
       />
-    </div>
+    </>
   )
 }

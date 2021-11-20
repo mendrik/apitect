@@ -33,20 +33,6 @@ const Input = styled.input`
   }
 `
 
-const Button = styled.button`
-  position: absolute;
-  width: 58px;
-  height: 100%;
-  top: 0;
-  right: 0;
-  padding: 1px;
-  box-shadow: none !important;
-  color: #999;
-  &:active {
-    background-color: #efefef;
-  }
-`
-
 export const DateInput = ({
   name,
   label,
@@ -69,7 +55,7 @@ export const DateInput = ({
 
   useAutoFocus(name, autoFocus)
 
-  const showCalendar = useDatepicker(name)
+  const CalendarIcon = useDatepicker(name)
 
   return (
     <div className={clsx('form-floating has-validation position-relative', containerClassNames)}>
@@ -86,14 +72,7 @@ export const DateInput = ({
         type={type}
         {...props}
       />
-      <Button
-        type="button"
-        className="btn p-0 appearance-none"
-        tabIndex={-1}
-        onClick={showCalendar}
-      >
-        <IconCalendar className="w-4 h-4" stroke={1} />
-      </Button>
+      {CalendarIcon}
       <label htmlFor={inpId}>{t(label)}</label>
       <ErrorInfo name={name} />
     </div>

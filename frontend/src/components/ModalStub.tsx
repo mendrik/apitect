@@ -42,7 +42,7 @@ export const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>) =>
   }
 
   return modalMatch && modalState.data != null ? (
-    <Modal show={show} onHide={() => setShow(false)} onExited={close} centered>
+    <Modal show={show} onHide={() => setShow(false)} onExited={close} centered enforceFocus>
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>
