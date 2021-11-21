@@ -14,6 +14,7 @@ import { mapIndexed } from 'ramda-adjunct'
 import React, { Dispatch, SetStateAction, useMemo } from 'react'
 import styled from 'styled-components'
 
+import { useOnActivate } from '../../hooks/useOnActivate'
 import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = {
@@ -55,8 +56,10 @@ const Day = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: 300;
+  max-width: 40px;
+
   &.off {
-    color: #b3b3b3;
+    color: transparent;
     pointer-events: none;
     cursor: default;
   }
@@ -89,6 +92,8 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) => {
     )
   }, [month])
 
+  const onActivate = (d: Date) => useOnActivate<HTMLDivElement>(() => setSelected(d))
+
   return (
     <Wrap>
       <MonthHead>{format(month, 'LLLL')}</MonthHead>
@@ -108,7 +113,7 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) => {
               selected: isSameDay(sel, d),
               off: d.getMonth() !== month.getMonth()
             })}
-            onClick={() => setSelected(d)}
+            ref={onActivate(d)}
           >
             {format(d, 'd')}
           </Day>

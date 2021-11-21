@@ -55,6 +55,30 @@ const FullYear = styled.ol`
   padding: 0;
   grid-column: 2;
   grid-row: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(12, 1fr);
+  margin: 0 auto;
+
+  @media only screen and (min-width: 560px) {
+    align-items: flex-start;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(6, 1fr);
+  }
+
+  @media only screen and (min-width: 920px) {
+    max-width: 1024px;
+    align-items: flex-start;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
+
+  @media only screen and (min-width: 1200px) {
+    max-width: 1400px;
+    align-items: flex-start;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+  }
 `
 
 const GridButtonRow = styled(ButtonRow)`

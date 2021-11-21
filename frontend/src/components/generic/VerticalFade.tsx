@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { HTMLAttributes, useCallback } from 'react'
 import styled from 'styled-components'
 
 import { useEvent } from '../../hooks/useEvent'
@@ -35,7 +35,7 @@ const VerticalFadeStyled = styled.div`
   }
 `
 
-export const VerticalFade = ({ children }: Jsx) => {
+export const VerticalFade = ({ children, ...props }: Jsx<HTMLAttributes<HTMLDivElement>>) => {
   const handler = useCallback((ev: Event) => {
     const target = ev.target as HTMLElement
     const opacityTop = 1 - Math.max(50 - target.scrollTop, 0) / 50
@@ -48,5 +48,9 @@ export const VerticalFade = ({ children }: Jsx) => {
     passive: true,
     capture: true
   })
-  return <VerticalFadeStyled ref={ref}>{children}</VerticalFadeStyled>
+  return (
+    <VerticalFadeStyled ref={ref} {...props}>
+      {children}
+    </VerticalFadeStyled>
+  )
 }
