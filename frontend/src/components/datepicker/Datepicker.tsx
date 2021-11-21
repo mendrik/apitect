@@ -66,14 +66,14 @@ const FullYear = styled.ol`
     grid-template-rows: repeat(6, 1fr);
   }
 
-  @media only screen and (min-width: 920px) {
+  @media only screen and (min-width: 769px) {
     max-width: 1024px;
     align-items: flex-start;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: repeat(4, 1fr);
   }
 
-  @media only screen and (min-width: 1200px) {
+  @media only screen and (min-width: 1380px) {
     max-width: 1400px;
     align-items: flex-start;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -133,12 +133,15 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
     }
   }
 
+  const scrollYear = () =>
+    ref.current
+      ?.querySelector<HTMLDivElement>('.currentYear')
+      ?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
+
   useLayoutEffect(() => {
     if (open) {
       setTimeout(() => {
-        ref.current
-          ?.querySelector<HTMLDivElement>('.currentYear')
-          ?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
+        scrollYear()
         const m = ref.current?.querySelector<HTMLDivElement>('.selected')
         m?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
         m?.focus()
@@ -164,7 +167,10 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
                           <Year
                             key={format(y, 'yyyy')}
                             className={clsx({ currentYear: isSameYear(y, selected) })}
-                            onClick={() => setSelected(y)}
+                            onClick={() => {
+                              setSelected(y)
+                              scrollYear()
+                            }}
                           >
                             {format(y, 'yyyy')}
                           </Year>

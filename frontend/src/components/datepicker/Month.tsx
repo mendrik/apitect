@@ -49,6 +49,10 @@ const Week = styled.div`
   height: 30px;
   font-weight: 300;
   color: #b3b3b3;
+  border-bottom: 0.5pt solid #cecece;
+  margin-bottom: 1px;
+}
+
 `
 const Day = styled.div`
   aspect-ratio: 1;
@@ -107,7 +111,7 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) => {
         d => (
           <Day
             key={format(d, 'd.M')}
-            tabIndex={0}
+            tabIndex={d.getMonth() === month.getMonth() ? 0 : -1}
             className={clsx({
               today: isToday(d),
               selected: isSameDay(sel, d),
