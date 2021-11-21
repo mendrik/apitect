@@ -1,10 +1,11 @@
-import React, { HTMLAttributes, useCallback } from 'react'
+import React, { HTMLAttributes, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { useEvent } from '../../hooks/useEvent'
 import { Jsx } from '../../shared/types/generic'
 
 const VerticalFadeStyled = styled.div`
+  --scrollOpacityTop: 0;
   position: relative;
   overflow: hidden;
 
@@ -48,6 +49,7 @@ export const VerticalFade = ({ children, ...props }: Jsx<HTMLAttributes<HTMLDivE
     passive: true,
     capture: true
   })
+
   return (
     <VerticalFadeStyled ref={ref} {...props}>
       {children}
