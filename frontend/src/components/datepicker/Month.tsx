@@ -26,6 +26,7 @@ const Wrap = styled.li`
   grid-template-columns: repeat(7, 1fr);
   color: black;
   padding: 0 1rem 1.5rem 1rem;
+  user-select: none;
   &:last-child {
     padding-bottom: 0;
   }

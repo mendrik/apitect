@@ -46,6 +46,7 @@ export const DateInput = ({
   const {
     register,
     setValue,
+    watch,
     formState: { errors }
   } = useFormContext<{ [K in typeof name]: Date | undefined }>()
   const { isWorking } = useContext(progressContext)

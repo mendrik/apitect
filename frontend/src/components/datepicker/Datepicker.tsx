@@ -91,8 +91,11 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
     }
   }, [open])
 
-  const months = useMemo(() => range(0, 12).map(m => setDate(setMonth(currentDate, m), 1)), [open])
-  const years = useMemo(() => range(-60, 20).map(y => addYears(currentDate, y)), [open])
+  const months = useMemo(
+    () => range(0, 12).map(m => setDate(setMonth(selected, m), 1)),
+    [open, selected]
+  )
+  const years = useMemo(() => range(-60, 20).map(y => addYears(selected, y)), [open, selected])
   const ref = useRef<HTMLDivElement>(null)
 
   const openPicker = () => {
@@ -136,7 +139,7 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
                         y => (
                           <Year
                             key={format(y, 'yyyy')}
-                            className={clsx({ currentYear: isSameYear(y, currentDate) })}
+                            className={clsx({ currentYear: isSameYear(y, selected) })}
                             onClick={() => setSelected(y)}
                           >
                             {format(y, 'yyyy')}
