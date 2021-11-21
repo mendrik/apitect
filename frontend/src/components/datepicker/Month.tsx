@@ -5,14 +5,13 @@ import {
   getDay,
   isAfter,
   isSameDay,
-  isThisMonth,
   isToday,
   lastDayOfMonth,
   setDay
 } from 'date-fns'
 import { range, reduce, take } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { Dispatch, SetStateAction, useLayoutEffect, useMemo, useRef } from 'react'
+import React, { Dispatch, SetStateAction, useMemo } from 'react'
 import styled from 'styled-components'
 
 import { Jsx } from '../../shared/types/generic'
@@ -73,7 +72,6 @@ const Day = styled.div`
 `
 
 export const Month = ({ month, selected }: Jsx<OwnProps>) => {
-  const ref = useRef<HTMLLIElement>(null)
   const [sel, setSelected] = selected
 
   const days = useMemo(() => {
@@ -90,20 +88,8 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) => {
     )
   }, [month])
 
-  useLayoutEffect(() => {
-    if (ref.current != null && isThisMonth(month)) {
-      const today = ref.current.querySelector<HTMLDivElement>('.today')
-      if (today) {
-        setTimeout(() => {
-          today.focus()
-          today.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
-        }, 0)
-      }
-    }
-  }, [month])
-
   return (
-    <Wrap ref={ref}>
+    <Wrap>
       <MonthHead>{format(month, 'LLLL')}</MonthHead>
       {mapIndexed(
         d => (

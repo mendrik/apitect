@@ -1,4 +1,3 @@
-import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
 import { path } from 'ramda'
 import React, { InputHTMLAttributes, useContext } from 'react'
@@ -46,6 +45,7 @@ export const DateInput = ({
   const { t } = useTranslation()
   const {
     register,
+    setValue,
     formState: { errors }
   } = useFormContext<{ [K in typeof name]: Date | undefined }>()
   const { isWorking } = useContext(progressContext)
@@ -70,6 +70,9 @@ export const DateInput = ({
         readOnly={props.readOnly || isWorking(promise)}
         required={!!options?.required}
         type={type}
+        onBlur={ev => {
+          setValue(name, (ev.target as HTMLInputElement).value as any)
+        }}
         {...props}
       />
       {CalendarIcon}

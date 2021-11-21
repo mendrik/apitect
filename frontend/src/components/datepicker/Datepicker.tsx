@@ -1,12 +1,13 @@
 import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
-import { addYears, format, isSameYear, setDate, setMonth } from 'date-fns'
+import { addYears, format, isSameYear, isValid, setDate, setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { propEq, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import FocusLock from 'react-focus-lock'
+import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -18,7 +19,7 @@ import { VerticalFade } from '../generic/VerticalFade'
 import { Month } from './Month'
 
 type OwnProps = {
-  startDate: Date
+  name: string
 }
 
 const Layout = styled.div`
@@ -76,16 +77,22 @@ const CalendarButton = styled.div`
   cursor: pointer;
 `
 
-export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => {
-  const [currentDate, setCurrentDate] = useState<Date>(startDate)
-  const selected = useState<Date>(startDate)
+export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
+  const { watch, setValue } = useFormContext<{ [K in typeof name]: Date }>()
+  const $current = watch(name)
+  const currentDate: Date = isValid($current) ? $current : new Date()
+  const [selected, setSelected] = useState<Date>(currentDate)
   const [open, setOpen] = useState(false)
-  const months = useMemo(
-    () => range(0, 12).map(m => setDate(setMonth(currentDate, m), 1)),
-    [currentDate]
-  )
-  const years = useMemo(() => range(-60, 20).map(y => addYears(currentDate, y)), [currentDate])
+
+  useEffect(() => {
+    if (open) {
+      setSelected(currentDate)
+    }
+  }, [open])
+
+  const months = useMemo(() => range(0, 12).map(m => setDate(setMonth(currentDate, m), 1)), [open])
+  const years = useMemo(() => range(-60, 20).map(y => addYears(currentDate, y)), [open])
   const ref = useRef<HTMLDivElement>(null)
 
   const openPicker = () => {
@@ -100,16 +107,17 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
   }
 
   useLayoutEffect(() => {
-    if (ref.current != null && open) {
-      const year = ref.current.querySelector<HTMLDivElement>('.currentYear')
-      if (year) {
-        setTimeout(
-          () => year.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' }),
-          0
-        )
-      }
+    if (open) {
+      setTimeout(() => {
+        ref.current
+          ?.querySelector<HTMLDivElement>('.currentYear')
+          ?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
+        const m = ref.current?.querySelector<HTMLDivElement>('.selected')
+        m?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
+        m?.focus()
+      }, 0)
     }
-  }, [currentDate, open])
+  }, [open])
 
   const onEscape = when(propEq('code', 'Escape'), () => setOpen(false))
 
@@ -129,7 +137,7 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
                           <Year
                             key={format(y, 'yyyy')}
                             className={clsx({ currentYear: isSameYear(y, currentDate) })}
-                            onClick={() => setCurrentDate(y)}
+                            onClick={() => setSelected(y)}
                           >
                             {format(y, 'yyyy')}
                           </Year>
@@ -144,7 +152,11 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
                     <FullYear>
                       {mapIndexed(
                         m => (
-                          <Month month={m} key={format(m, 'dd.MM.yyyy')} selected={selected} />
+                          <Month
+                            month={m}
+                            key={format(m, 'dd.MM.yyyy')}
+                            selected={[selected, setSelected]}
+                          />
                         ),
                         months
                       )}
@@ -155,7 +167,15 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
                   <Button variant="outline-secondary" onClick={() => setOpen(false)}>
                     {t('common.cancel')}
                   </Button>
-                  <Button variant="primary">Select</Button>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      setValue(name, format(selected, 'yyyy-MM-dd') as any)
+                      setOpen(false)
+                    }}
+                  >
+                    Select
+                  </Button>
                 </GridButtonRow>
               </Layout>
             </motion.div>
