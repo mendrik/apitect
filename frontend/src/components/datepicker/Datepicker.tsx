@@ -15,7 +15,6 @@ import { fullscreenScale } from '../../animations/fullscreenScale'
 import { ButtonRow } from '../../forms/ButtonRow'
 import { Jsx } from '../../shared/types/generic'
 import { Scrollable } from '../generic/Scrollable'
-import { VerticalFade } from '../generic/VerticalFade'
 import { Month } from './Month'
 
 type OwnProps = {
@@ -159,43 +158,39 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
           {open && (
             <motion.div {...fullscreenScale} role="dialog">
               <Layout>
-                <VerticalFade>
-                  <Scrollable>
-                    <Years>
-                      {mapIndexed(
-                        y => (
-                          <Year
-                            key={format(y, 'yyyy')}
-                            className={clsx({ currentYear: isSameYear(y, selected) })}
-                            onClick={() => {
-                              setSelected(y)
-                              scrollYear()
-                            }}
-                          >
-                            {format(y, 'yyyy')}
-                          </Year>
-                        ),
-                        years
-                      )}
-                    </Years>
-                  </Scrollable>
-                </VerticalFade>
-                <VerticalFade>
-                  <Scrollable>
-                    <FullYear>
-                      {mapIndexed(
-                        m => (
-                          <Month
-                            month={m}
-                            key={format(m, 'dd.MM.yyyy')}
-                            selected={[selected, setSelected]}
-                          />
-                        ),
-                        months
-                      )}
-                    </FullYear>
-                  </Scrollable>
-                </VerticalFade>
+                <Scrollable>
+                  <Years>
+                    {mapIndexed(
+                      y => (
+                        <Year
+                          key={format(y, 'yyyy')}
+                          className={clsx({ currentYear: isSameYear(y, selected) })}
+                          onClick={() => {
+                            setSelected(y)
+                            scrollYear()
+                          }}
+                        >
+                          {format(y, 'yyyy')}
+                        </Year>
+                      ),
+                      years
+                    )}
+                  </Years>
+                </Scrollable>
+                <Scrollable>
+                  <FullYear>
+                    {mapIndexed(
+                      m => (
+                        <Month
+                          month={m}
+                          key={format(m, 'dd.MM.yyyy')}
+                          selected={[selected, setSelected]}
+                        />
+                      ),
+                      months
+                    )}
+                  </FullYear>
+                </Scrollable>
                 <GridButtonRow className="p-2">
                   <Button variant="outline-secondary" onClick={() => setOpen(false)}>
                     {t('common.cancel')}

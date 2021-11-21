@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useCallback, useEffect } from 'react'
+import React, { HTMLAttributes, useCallback } from 'react'
 import styled from 'styled-components'
 
 import { useEvent } from '../../hooks/useEvent'
