@@ -4,6 +4,7 @@ import {
   format,
   getDay,
   isAfter,
+  isSameDay,
   isThisMonth,
   isToday,
   lastDayOfMonth,
@@ -11,12 +12,13 @@ import {
 } from 'date-fns'
 import { range, reduce, take } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { useLayoutEffect, useMemo, useRef } from 'react'
+import React, { Dispatch, SetStateAction, useLayoutEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 
 import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = {
+  selected: [Date, Dispatch<SetStateAction<Date>>]
   month: Date
 }
 
@@ -55,15 +57,24 @@ const Day = styled.div`
   font-weight: 300;
   &.off {
     color: #b3b3b3;
+    pointer-events: none;
+    cursor: default;
   }
   &.today {
     color: #aa0000;
     font-weight: 600;
   }
+  &.selected:not(.off) {
+    background-color: #0d6efd;
+    color: white;
+    font-weight: 600;
+    border-radius: 4px;
+  }
 `
 
-export const Month = ({ month, children }: Jsx<OwnProps>) => {
+export const Month = ({ month, selected }: Jsx<OwnProps>) => {
   const ref = useRef<HTMLLIElement>(null)
+  const [sel, setSelected] = selected
 
   const days = useMemo(() => {
     const firstDate = setDay(month, 1)
@@ -107,8 +118,10 @@ export const Month = ({ month, children }: Jsx<OwnProps>) => {
             tabIndex={0}
             className={clsx({
               today: isToday(d),
+              selected: isSameDay(sel, d),
               off: d.getMonth() !== month.getMonth()
             })}
+            onClick={() => setSelected(d)}
           >
             {format(d, 'd')}
           </Day>

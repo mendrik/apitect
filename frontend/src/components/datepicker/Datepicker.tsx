@@ -1,6 +1,6 @@
 import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
-import { addYears, format, isThisYear, setDate, setMonth } from 'date-fns'
+import { addYears, format, isSameYear, setDate, setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { propEq, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
@@ -78,7 +78,7 @@ const CalendarButton = styled.div`
 
 export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => {
   const [currentDate, setCurrentDate] = useState<Date>(startDate)
-  const [selectedDate, setSelectedDate] = useState<Date>(startDate)
+  const selected = useState<Date>(startDate)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const months = useMemo(
@@ -128,7 +128,7 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
                         y => (
                           <Year
                             key={format(y, 'yyyy')}
-                            className={clsx({ currentYear: isThisYear(y) })}
+                            className={clsx({ currentYear: isSameYear(y, currentDate) })}
                             onClick={() => setCurrentDate(y)}
                           >
                             {format(y, 'yyyy')}
@@ -144,7 +144,7 @@ export const Datepicker = ({ startDate, children, ...props }: Jsx<OwnProps>) => 
                     <FullYear>
                       {mapIndexed(
                         m => (
-                          <Month month={m} key={format(m, 'dd.MM.yyyy')} />
+                          <Month month={m} key={format(m, 'dd.MM.yyyy')} selected={selected} />
                         ),
                         months
                       )}
