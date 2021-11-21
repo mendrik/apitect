@@ -14,7 +14,7 @@ const VerticalFadeStyled = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    right: 7px;
+    right: 16px;
     height: 50px;
     background: linear-gradient(0deg, transparent, white);
     display: block;
@@ -27,7 +27,7 @@ const VerticalFadeStyled = styled.div`
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 7px;
+    right: 16px;
     height: 50px;
     background: linear-gradient(0deg, white, transparent);
     display: block;

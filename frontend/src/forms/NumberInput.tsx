@@ -32,9 +32,7 @@ const Input = styled.input`
     margin: 0;
   }
 
-  [type='number'] {
-    -moz-appearance: textfield;
-  }
+  -moz-appearance: textfield;
 `
 
 const Buttons = styled.div`
