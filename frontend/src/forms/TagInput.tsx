@@ -1,3 +1,4 @@
+import { IconCircleX } from '@tabler/icons'
 import clsx from 'clsx'
 import { cond, pathEq, pathOr, pipe, propEq, unless, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
@@ -81,6 +82,7 @@ export const TagInput = <T extends Tag>({
       <InputWrap>
         <input
           ref={inpRef}
+          autoComplete="off"
           value={currentName}
           type="text"
           onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
@@ -106,13 +108,37 @@ const Tag = styled.div`
   border-radius: 4px;
   gap: 5px;
   cursor: pointer;
+  position: relative;
 
   &:focus {
-    background-color: #aeaeae;
+    background-color: #d6d6d6;
+
+    .delete {
+      display: flex;
+    }
   }
 
   &:last-child {
     margin-right: 0.25rem;
+  }
+`
+
+const Delete = styled.div`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #fefefe;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+
+  &:hover {
+    background-color: #efefef;
   }
 `
 
@@ -127,6 +153,9 @@ TagInput.Tag = <T extends Record<'name', string>>({ tag, onRemove }: Jsx<TagProp
       onKeyDown={when(propEq('key', 'Delete'), onRemove)}
     >
       <span className="label">{tag.name}</span>
+      <Delete onClick={onRemove} className="delete">
+        <IconCircleX stroke={1} width={16} height={16} />
+      </Delete>
     </Tag>
   )
 }
