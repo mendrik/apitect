@@ -20,12 +20,12 @@ type OwnProps<T extends Tag> = {
 } & HTMLAttributes<HTMLInputElement>
 
 const StyledTagInput = styled.div`
-  padding: 1.5rem 0.5rem 0.5rem 0.5rem;
+  padding: 1.25rem 0.5rem 0.25rem 0.5rem;
   line-height: 1.25;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  min-height: 3rem;
+  min-height: 2.75rem;
   position: relative;
 
   &:focus-within > label,
@@ -36,16 +36,12 @@ const StyledTagInput = styled.div`
   }
 `
 
-const InputWrap = styled.div`
+const Input = styled.input`
   display: inline-block;
   flex: 1 1 auto;
-
-  > input {
-    border: none;
-    height: 100%;
-    min-width: 100%;
-    width: 30px;
-  }
+  border: none;
+  padding: 0.25rem 0;
+  width: 30px;
 `
 
 export const TagInput = <T extends Tag>({
@@ -89,18 +85,16 @@ export const TagInput = <T extends Tag>({
         tags
       )}
 
-      <InputWrap>
-        <input
-          ref={inpRef}
-          required
-          autoComplete="off"
-          value={currentName}
-          type="text"
-          onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
-          onKeyDown={keyMap}
-          {...props}
-        />
-      </InputWrap>
+      <Input
+        ref={inpRef}
+        required
+        autoComplete="off"
+        value={currentName}
+        type="text"
+        onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
+        onKeyDown={keyMap}
+        {...props}
+      />
       <label>{t(label)}</label>
     </StyledTagInput>
   )
@@ -116,7 +110,8 @@ const Tag = styled.div`
   background-color: #e6e6e6;
   align-items: center;
   font-weight: 400;
-  padding: 0.25rem 0.75rem;
+  padding: 0.15rem 0.75rem;
+  margin: 0.1rem 0;
   border-radius: 4px;
   gap: 5px;
   cursor: pointer;
