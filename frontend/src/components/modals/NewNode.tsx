@@ -62,7 +62,7 @@ const NewNode: ModalFC = ({ close }) => {
     resolver: zodResolver(TNewNode),
     defaultValues: {
       parentNode: selectedNode?.id,
-      nodeType: NodeType.Object,
+      nodeType: selectedNode?.nodeType ?? NodeType.Object,
       name: ''
     }
   })

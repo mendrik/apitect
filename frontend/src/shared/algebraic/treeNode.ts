@@ -161,7 +161,7 @@ export class TreeNode<T> {
       const children = node.parent.children
       const position = findIndex<TreeNode<T>>(n => pred(n.value))(children)
       if (position !== -1) {
-        const newNode = TreeNode.of<T>(fn(children[position].value))
+        const newNode = TreeNode.of<T>(fn(children[position].value), children[position].children)
         children.splice(position, 1, newNode)
         return {
           self: this,
