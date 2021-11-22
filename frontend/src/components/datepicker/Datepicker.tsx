@@ -110,7 +110,10 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
 
   useEffect(() => {
     if (open) {
+      document.body.classList.add('datepicker-open')
       setSelected(currentDate)
+    } else {
+      document.body.classList.remove('datepicker-open')
     }
   }, [open])
 

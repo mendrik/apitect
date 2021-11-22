@@ -26,38 +26,6 @@ const Scroller = styled.div`
   }
 `
 
-const VerticalFadeStyled = styled.div`
-  --scrollOpacityTop: 0;
-  position: relative;
-  overflow: hidden;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 7px;
-    height: 50px;
-    background: linear-gradient(0deg, transparent, white);
-    display: block;
-    pointer-events: none;
-    opacity: var(--scrollOpacityTop);
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 7px;
-    height: 50px;
-    background: linear-gradient(0deg, white, transparent);
-    display: block;
-    pointer-events: none;
-    opacity: var(--scrollOpacityBottom);
-  }
-`
-
 export const Scrollable = ({ children, ...props }: Jsx<OwnProps>) => {
   return (
     <VerticalFade {...props}>
