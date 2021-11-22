@@ -6,7 +6,9 @@ import {
 } from 'mongodb'
 import { keys, pluck } from 'ramda'
 import { Document } from '~shared/types/domain/document'
+import { Enum } from '~shared/types/domain/enum'
 import { User } from '~shared/types/domain/user'
+import { Value } from '~shared/types/domain/value'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { ensure } from '~shared/utils/ramda'
 
@@ -18,13 +20,17 @@ const dbName = `${config.MONGO_INITDB_DATABASE}`
 export enum Collections {
   users = 'users',
   documents = 'documents',
-  nodeSettings = 'nodeSettings'
+  nodeSettings = 'nodeSettings',
+  values = 'values',
+  enums = 'enums'
 }
 
 export type CollectionMap = {
   users: User
   documents: Document
   nodeSettings: NodeSettings
+  values: Value
+  enums: Enum
 }
 
 export const connect = async (): Promise<MongoClient> => {
@@ -42,6 +48,10 @@ export const connect = async (): Promise<MongoClient> => {
   await db.collection(Collections.documents).createIndex({ id: 1 }, { unique: true })
   await db.collection(Collections.documents).createIndex({ owner: 1 })
   await db.collection(Collections.nodeSettings).createIndex({ nodeId: 1 }, { unique: true })
+  await db.collection(Collections.values).createIndex({ id: 1 }, { unique: true })
+  await db.collection(Collections.values).createIndex({ nodeId: 1 })
+  await db.collection(Collections.values).createIndex({ tagId: 1 })
+  await db.collection(Collections.enums).createIndex({ docId: 1, name: 1 }, { unique: true })
   return client
 }
 
