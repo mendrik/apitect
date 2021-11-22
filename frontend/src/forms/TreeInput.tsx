@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { useOnClickOutside } from 'usehooks-ts'
 
 import { Scrollable } from '../components/generic/Scrollable'
-import { useEvent } from '../hooks/useEvent'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Fn, Jsx } from '../shared/types/generic'
 import { preventDefault as pd } from '../utils/preventDefault'
