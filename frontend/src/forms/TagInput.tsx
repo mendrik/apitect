@@ -1,13 +1,10 @@
-import { IconCircleX } from '@tabler/icons'
 import clsx from 'clsx'
-import { cond, pathOr, pipe, propEq } from 'ramda'
+import { cond, pathEq, pathOr, pipe, propEq, unless, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { useState } from 'react'
+import React, { HTMLAttributes, useRef, useState } from 'react'
 import { TFuncKey } from 'react-i18next'
 import styled from 'styled-components'
 
-import { Icon } from '../components/generic/Icon'
-import { useFocusMonitor } from '../hooks/useFocusMonitor'
 import { Fn, Jsx } from '../shared/types/generic'
 import { preventDefault } from '../utils/preventDefault'
 
@@ -19,62 +16,78 @@ type OwnProps<T extends Tag> = {
   label: TFuncKey
   onAdd: (name: string) => void
   onRemove: (tag: T) => void
-}
+} & HTMLAttributes<HTMLInputElement>
 
 const StyledTagInput = styled.div`
-  padding: 1rem 0.75rem;
+  padding: 0.5rem;
   line-height: 1.25;
-`
-
-const TagList = styled.ul`
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  margin: 0;
-  padding: 0;
+  min-height: 3rem;
 `
 
-const Input = styled.input``
+const InputWrap = styled.div`
+  display: inline-block;
+  flex: 1 1 auto;
 
-export const TagInput = <T extends Tag>({ tags, onAdd, onRemove }: Jsx<OwnProps<T>>) => {
+  > input {
+    border: none;
+    height: 100%;
+    min-width: 100%;
+    width: 30px;
+  }
+`
+
+export const TagInput = <T extends Tag>({
+  tags,
+  onAdd,
+  onRemove,
+  children,
+  ...props
+}: Jsx<OwnProps<T>>) => {
   const [currentName, setCurrentName] = useState<string>('')
-  const [inpRef, focus] = useFocusMonitor<HTMLInputElement>()
+  const inpRef = useRef<HTMLInputElement>(null)
 
   const keyMap = cond([
-    [propEq('key', 'Backspace'), () => void 0],
-    [propEq('key', 'Delete'), () => void 0],
+    [
+      propEq('key', 'Backspace'),
+      when(pathEq(['target', 'value'], ''), () => onRemove(tags[tags.length - 1]))
+    ],
     [
       propEq('key', 'Enter'),
-      preventDefault(() => {
-        onAdd(currentName)
-        setCurrentName('')
-      })
+      unless(
+        pathEq(['target', 'value'], ''),
+        preventDefault(() => {
+          onAdd(currentName)
+          setCurrentName('')
+        })
+      )
     ]
   ]) as Fn
 
   return (
     <StyledTagInput
-      className={clsx('tags-container form-control', { focus })}
+      className={clsx('tags-container form-control focus-within', { focus })}
       onClick={() => inpRef.current?.focus()}
     >
-      <TagList>
-        {mapIndexed(
-          (tag, idx) => (
-            <TagInput.Tag key={idx} tag={tag} onRemove={() => onRemove(tag)} />
-          ),
-          tags
-        )}
-      </TagList>
+      {mapIndexed(
+        (tag, idx) => (
+          <TagInput.Tag key={idx} tag={tag} onRemove={() => onRemove(tag)} />
+        ),
+        tags
+      )}
 
-      <input
-        ref={inpRef}
-        className="input"
-        placeholder="new tag..."
-        value={currentName}
-        type="text"
-        onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
-        onKeyDown={keyMap}
-      />
+      <InputWrap>
+        <input
+          ref={inpRef}
+          value={currentName}
+          type="text"
+          onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
+          onKeyDown={keyMap}
+          {...props}
+        />
+      </InputWrap>
     </StyledTagInput>
   )
 }
@@ -84,12 +97,20 @@ type TagProps<T extends Tag> = {
   onRemove: () => void
 }
 
-const Tag = styled.li`
+const Tag = styled.div`
   display: inline-flex;
   background-color: #e6e6e6;
   align-items: center;
-  padding: 0.25rem 0.25rem 0.25rem 0.75rem;
+  font-weight: 400;
+  padding: 0.25rem 0.75rem;
   border-radius: 4px;
+  gap: 5px;
+  cursor: pointer;
+
+  &:focus {
+    background-color: #aeaeae;
+  }
+
   &:last-child {
     margin-right: 0.25rem;
   }
@@ -97,9 +118,15 @@ const Tag = styled.li`
 
 TagInput.Tag = <T extends Record<'name', string>>({ tag, onRemove }: Jsx<TagProps<T>>) => {
   return (
-    <Tag>
+    <Tag
+      onClick={preventDefault(ev => {
+        ev.stopPropagation()
+        ev.target.focus()
+      })}
+      tabIndex={0}
+      onKeyDown={when(propEq('key', 'Delete'), onRemove)}
+    >
       <span className="label">{tag.name}</span>
-      <Icon icon={IconCircleX} onClick={onRemove} />
     </Tag>
   )
 }
