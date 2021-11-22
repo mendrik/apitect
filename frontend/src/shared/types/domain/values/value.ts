@@ -1,10 +1,10 @@
 import { nativeEnum, object, union } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
-import { idCodec } from '../../codecs/idCodec'
-import { NodeType } from './nodeType'
-import { ZNumberValue } from './values/numberValue'
-import { ZStringValue } from './values/stringValue'
+import { idCodec } from '../../../codecs/idCodec'
+import { NodeType } from '../nodeType'
+import { ZNumberValue } from './numberValue'
+import { ZStringValue } from './stringValue'
 
 export const ZValueBase = object({
   id: idCodec,

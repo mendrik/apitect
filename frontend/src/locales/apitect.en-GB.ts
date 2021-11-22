@@ -48,7 +48,8 @@ const en = {
         string: {
           none: 'No validation',
           regexp: 'Regular expression',
-          email: 'Must be a valid email'
+          email: 'Email',
+          password: 'Password (values will be encrypted)'
         },
         object: {
           apiEndpoint: 'Accessible via REST api',

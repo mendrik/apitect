@@ -27,6 +27,9 @@ const String = () => {
         <label htmlFor={`validationType-${StringValidationType.Email}`}>
           {t('modals.nodeSettings.string.email')}
         </label>
+        <label htmlFor={`validationType-${StringValidationType.Password}`}>
+          {t('modals.nodeSettings.string.password')}
+        </label>
       </FormOptions>
     </FieldSet>
   )

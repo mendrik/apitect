@@ -1,7 +1,7 @@
-import { number, object, string } from 'zod'
+import { number, object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
-import { ZValueBase } from '../value'
+import { ZValueBase } from './value'
 
 export const ZNumberValue = ZValueBase.merge(
   object({

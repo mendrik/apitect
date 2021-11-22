@@ -8,7 +8,8 @@ import { ZNodeSettingsBase } from './nodeSettingsBase'
 export enum StringValidationType {
   None = 'None',
   Regexp = 'Regexp',
-  Email = 'Email'
+  Email = 'Email',
+  Password = 'Password'
 }
 
 const ZNone = ZNodeSettingsBase.merge(
@@ -33,5 +34,12 @@ const ZEmail = ZNodeSettingsBase.merge(
   })
 )
 
-export const ZStringSettings = union([ZRegexp, ZEmail, ZNone])
+const ZPassword = ZNodeSettingsBase.merge(
+  object({
+    validationType: literal(StringValidationType.Password),
+    nodeType: literal(NodeType.String)
+  })
+)
+
+export const ZStringSettings = union([ZRegexp, ZEmail, ZPassword, ZNone])
 export type StringSettings = TypeOf<typeof ZStringSettings>
