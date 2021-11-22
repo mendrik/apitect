@@ -161,26 +161,26 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
           {open && (
             <motion.div {...fullscreenScale} role="dialog">
               <Layout>
-                <Scrollable>
+                <Scrollable fade>
                   <Years>
                     {mapIndexed(
-                      y => (
+                      year => (
                         <Year
-                          key={format(y, 'yyyy')}
-                          className={clsx({ currentYear: isSameYear(y, selected) })}
+                          key={format(year, 'yyyy')}
+                          className={clsx({ currentYear: isSameYear(year, selected) })}
                           onClick={() => {
-                            setSelected(y)
+                            setSelected(year)
                             scrollYear()
                           }}
                         >
-                          {format(y, 'yyyy')}
+                          {format(year, 'yyyy')}
                         </Year>
                       ),
                       years
                     )}
                   </Years>
                 </Scrollable>
-                <Scrollable>
+                <Scrollable fade>
                   <FullYear>
                     {mapIndexed(
                       m => (

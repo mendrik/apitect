@@ -80,7 +80,8 @@ const en = {
         rememberMe: 'Remember me',
         submit: 'Login',
         regexp: 'Regular Expression',
-        number: 'Number'
+        number: 'Number',
+        search: 'Search'
       },
       validation: {
         sherlock: 'Unable not understand this expression',

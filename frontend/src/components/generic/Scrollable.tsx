@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import { Jsx } from '../../shared/types/generic'
 import { VerticalFade } from './VerticalFade'
 
-type OwnProps = HTMLAttributes<HTMLDivElement>
+type OwnProps = {
+  fade?: boolean
+} & HTMLAttributes<HTMLDivElement>
 
 const Scroller = styled.div`
   overflow-y: scroll;
@@ -26,10 +28,13 @@ const Scroller = styled.div`
   }
 `
 
-export const Scrollable = ({ children, ...props }: Jsx<OwnProps>) => {
+const Div = styled.div``
+
+export const Scrollable = ({ fade = false, children, ...props }: Jsx<OwnProps>) => {
+  const Wrapper = fade ? VerticalFade : Div
   return (
-    <VerticalFade {...props}>
+    <Wrapper {...props}>
       <Scroller>{children}</Scroller>
-    </VerticalFade>
+    </Wrapper>
   )
 }
