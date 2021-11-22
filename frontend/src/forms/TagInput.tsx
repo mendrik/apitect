@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { cond, pathEq, pathOr, pipe, propEq, unless, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { HTMLAttributes, useRef, useState } from 'react'
-import { TFuncKey } from 'react-i18next'
+import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { Fn, Jsx } from '../shared/types/generic'
@@ -20,12 +20,20 @@ type OwnProps<T extends Tag> = {
 } & HTMLAttributes<HTMLInputElement>
 
 const StyledTagInput = styled.div`
-  padding: 0.5rem;
+  padding: 1.5rem 0.5rem 0.5rem 0.5rem;
   line-height: 1.25;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.25rem;
   min-height: 3rem;
+  position: relative;
+
+  &:focus-within > label,
+  input:valid + label,
+  .tag ~ label {
+    opacity: 0.65;
+    transform: scale(0.85) translateY(-0.75rem) translateX(-0.15rem);
+  }
 `
 
 const InputWrap = styled.div`
@@ -42,6 +50,7 @@ const InputWrap = styled.div`
 
 export const TagInput = <T extends Tag>({
   tags,
+  label,
   onAdd,
   onRemove,
   children,
@@ -49,6 +58,7 @@ export const TagInput = <T extends Tag>({
 }: Jsx<OwnProps<T>>) => {
   const [currentName, setCurrentName] = useState<string>('')
   const inpRef = useRef<HTMLInputElement>(null)
+  const { t } = useTranslation()
 
   const keyMap = cond([
     [
@@ -69,7 +79,7 @@ export const TagInput = <T extends Tag>({
 
   return (
     <StyledTagInput
-      className={clsx('tags-container form-control focus-within', { focus })}
+      className={clsx('form-floating form-control focus-within')}
       onClick={() => inpRef.current?.focus()}
     >
       {mapIndexed(
@@ -82,6 +92,7 @@ export const TagInput = <T extends Tag>({
       <InputWrap>
         <input
           ref={inpRef}
+          required
           autoComplete="off"
           value={currentName}
           type="text"
@@ -90,6 +101,7 @@ export const TagInput = <T extends Tag>({
           {...props}
         />
       </InputWrap>
+      <label>{t(label)}</label>
     </StyledTagInput>
   )
 }
@@ -149,6 +161,7 @@ TagInput.Tag = <T extends Record<'name', string>>({ tag, onRemove }: Jsx<TagProp
         ev.stopPropagation()
         ev.target.focus()
       })}
+      className="tag"
       tabIndex={0}
       onKeyDown={when(propEq('key', 'Delete'), onRemove)}
     >
