@@ -7,7 +7,7 @@ import { useOnClickOutside } from 'usehooks-ts'
 
 import { Scrollable } from '../components/generic/Scrollable'
 import { TreeNode } from '../shared/algebraic/treeNode'
-import { Fn, Jsx } from '../shared/types/generic'
+import { Fn, Jsx, Maybe } from '../shared/types/generic'
 import { preventDefault as pd } from '../utils/preventDefault'
 import { TextInput } from './TextInput'
 
@@ -51,7 +51,14 @@ export const TreeInput = <T extends any>({
     [propEq('key', 'ArrowUp'), pd(() => 0)],
     [propEq('code', 'Enter'), pd(() => setShow(not))],
     [propEq('code', 'Space'), pd(() => setShow(not))],
-    [propEq('code', 'Escape'), pd(() => setShow(false))]
+    [
+      propEq('code', 'Escape'),
+      pd(() => {
+        setShow(false)
+        const el = target.current?.firstElementChild as Maybe<HTMLElement>
+        el?.focus()
+      })
+    ]
   ]) as Fn
 
   useOnClickOutside(target, () => setShow(false))
