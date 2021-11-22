@@ -1,21 +1,18 @@
 import { DndContext } from '@dnd-kit/core'
-import React from 'react'
+import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { v4 as uuid } from 'uuid'
 
-import { DateInput } from '../forms/DateInput'
+import { TagInput } from '../forms/TagInput'
+import { Tag } from '../shared/types/domain/tag'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { ResizableTable } from './generic/ResizableTable'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
 import { VisualTree } from './specific/VisualTree'
 
-const columns: JSX.Element[] = [
-  <ProjectTreeHeader />,
-  <div>English</div>,
-  <div>German</div>,
-  <div>Finnish</div>
-]
+const columns: JSX.Element[] = [<ProjectTreeHeader />, <div>English</div>]
 
 const Column = styled.div`
   padding: 0.5rem;
@@ -30,6 +27,7 @@ const Scroller = styled.div`
 `
 
 const Dashboard = () => {
+  const [tags, setTags] = useState<Tag[]>([])
   const form = useForm()
   return (
     <AppFrame>
@@ -42,11 +40,24 @@ const Dashboard = () => {
             </Column>
             <Column>
               <FormProvider {...form}>
-                <DateInput name="mask" autoFocus label="form.fields.number" />
+                <TagInput
+                  name="mask"
+                  label="form.fields.number"
+                  tags={tags}
+                  onAdd={name =>
+                    setTags(tags => [
+                      ...tags,
+                      {
+                        id: uuid(),
+                        name,
+                        owners: []
+                      }
+                    ])
+                  }
+                  onRemove={tag => setTags(tags => tags.filter(t => t !== tag))}
+                />
               </FormProvider>
             </Column>
-            <Column>B</Column>
-            <Column>C</Column>
           </ResizableTable>
         </DndContext>
       </Scroller>

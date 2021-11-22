@@ -99,8 +99,9 @@ input[required] + label:after {
 }
 
 .focus {
-  border: 1px solid #0c88c4;
-  outline: none;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 *:focus {
