@@ -3,13 +3,14 @@ import { cond, not, propEq } from 'ramda'
 import React, { HTMLAttributes, ReactNode, useRef, useState } from 'react'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { useOnClickOutside } from 'usehooks-ts'
 
 import { DeleteIcon } from '../components/generic/DeleteIcon'
 import { Scrollable } from '../components/generic/Scrollable'
+import { useFocusOutside } from '../hooks/useFocusOutside'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Fn, Jsx, Maybe } from '../shared/types/generic'
 import { preventDefault as pd } from '../utils/preventDefault'
+import { ErrorInfo } from './ErrorInfo'
 import { TextInput } from './TextInput'
 
 type OwnProps<T> = {
@@ -89,7 +90,7 @@ export const TreeInput = <T extends any>({
     ]
   ]) as Fn
 
-  useOnClickOutside(target, () => setShow(false))
+  useFocusOutside(target, () => setShow(false))
 
   return (
     <StyledTreeInput
@@ -120,6 +121,7 @@ export const TreeInput = <T extends any>({
         </Scrollable>
       </NodeSelector>
       <label>{t(label)}</label>
+      <ErrorInfo name={name} />
     </StyledTreeInput>
   )
 }

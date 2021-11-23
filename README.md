@@ -19,6 +19,7 @@
 - Tags are sent as http headers
 - CRUD endpoints
 - Array needs ID field for CRUD operations
+- Value column head has extends/copy dropdown
 
 # Todo
 

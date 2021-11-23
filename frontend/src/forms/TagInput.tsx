@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { DeleteIcon } from '../components/generic/DeleteIcon'
 import { Fn, Jsx } from '../shared/types/generic'
 import { preventDefault } from '../utils/preventDefault'
+import { ErrorInfo } from './ErrorInfo'
 
 type Tag = Record<'name', string>
 
@@ -46,6 +47,7 @@ const Input = styled.input`
 `
 
 export const TagInput = <T extends Tag>({
+  name,
   tags,
   label,
   onAdd,
@@ -98,6 +100,7 @@ export const TagInput = <T extends Tag>({
         {...props}
       />
       <label>{t(label)}</label>
+      <ErrorInfo name={name} />
     </StyledTagInput>
   )
 }
