@@ -2,8 +2,18 @@ import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
 import { cond, not, propEq, propOr, repeat } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
-import React, { HTMLAttributes, ReactNode, useRef, useState } from 'react'
+import React, {
+  createContext,
+  Dispatch,
+  HTMLAttributes,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useRef,
+  useState
+} from 'react'
 import { Overlay } from 'react-bootstrap'
+import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -19,15 +29,19 @@ import { sameWidth } from '../utils/sameWidthMod'
 import { ErrorInfo } from './ErrorInfo'
 import { TextInput } from './TextInput'
 
-type OwnProps<T> = {
+type TreeSelectConfig<T> = {
   name: string
-  tree: TreeNode<T>
-  label: TFuncKey
-  containerClasses: string
   onSelect: (node: T) => void
   itemRender: (node: T) => ReactNode
   selectionFilter: (node: TreeNode<T>) => boolean
-} & HTMLAttributes<HTMLDivElement>
+}
+
+type OwnProps<T> = {
+  tree: TreeNode<T>
+  label: TFuncKey
+  containerClasses: string
+} & TreeSelectConfig<T> &
+  HTMLAttributes<HTMLDivElement>
 
 const StyledTreeInput = styled.div`
   position: relative;
@@ -64,6 +78,13 @@ const OverlayStub = styled.div`
 `
 
 const Selected = styled.div`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  width: 20px;
+  min-width: 100%;
+
   &:focus:before {
     content: none;
   }
@@ -109,6 +130,10 @@ const NodeNode = styled.li<{ 'data-depth': number }>`
   }
 `
 
+const TreeInputContext = createContext<
+  TreeSelectConfig<any> & { setShow: Dispatch<SetStateAction<boolean>> }
+>({} as any)
+
 export const TreeInput = <T extends any>({
   tree,
   label,
@@ -122,9 +147,12 @@ export const TreeInput = <T extends any>({
 }: Jsx<OwnProps<T>>) => {
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
-  const [selected, setSelected] = useState<Maybe<TreeNode<T>>>()
+  const { watch, setValue } = useFormContext<any>()
+
   const target = useRef<HTMLDivElement>(null)
   const container = useRef<HTMLDivElement>(null)
+
+  const value = watch(name)
 
   const keyMap = cond([
     [propEq('key', 'ArrowDown'), pd(() => 0)],
@@ -151,11 +179,11 @@ export const TreeInput = <T extends any>({
       {...props}
     >
       <Selected className="form-select" tabIndex={0} onClick={() => setShow(not)}>
-        {selected?.value && itemRender(selected.value)}
+        {value && itemRender(value)}
       </Selected>
       <DeleteIcon
         onPointerDown={() => {
-          setSelected(undefined)
+          setValue(name, undefined)
           setShow(false)
         }}
       />
@@ -172,20 +200,26 @@ export const TreeInput = <T extends any>({
           <div className="p-2">
             <TextInput label="form.fields.search" name="search" />
           </div>
-          <Scrollable fade style={{ height: 300 }}>
-            <NodeTree>
-              {mapIndexed(
-                child => (
-                  <TreeInput.Node<T>
-                    node={child}
-                    itemRender={itemRender}
-                    key={propOr('', 'id', child.value)}
-                  />
-                ),
-                tree.children
-              )}
-            </NodeTree>
-          </Scrollable>
+          <TreeInputContext.Provider
+            value={{
+              setShow,
+              itemRender,
+              name,
+              onSelect,
+              selectionFilter
+            }}
+          >
+            <Scrollable fade style={{ height: 300 }}>
+              <NodeTree>
+                {mapIndexed(
+                  child => (
+                    <TreeInput.Node<T> node={child} key={propOr('', 'id', child.value)} />
+                  ),
+                  tree.children
+                )}
+              </NodeTree>
+            </Scrollable>
+          </TreeInputContext.Provider>
         </NodeSelector>
       </Overlay>
       <label>{t(label)}</label>
@@ -196,13 +230,22 @@ export const TreeInput = <T extends any>({
 
 type TreeNodeProps<T> = {
   node: TreeNode<T>
-  itemRender: (node: T) => ReactNode
 }
 
-TreeInput.Node = <T extends any>({ node, itemRender }: Jsx<TreeNodeProps<T>>) => {
+TreeInput.Node = <T extends any>({ node }: Jsx<TreeNodeProps<T>>) => {
+  const { itemRender, onSelect, selectionFilter, name, setShow } = useContext(TreeInputContext)
+  const { setValue } = useFormContext()
+
   const [open, setOpen] = useState(false)
   const hasChildren = isNotNilOrEmpty(node.children)
+
   const ref = useOnActivate<HTMLDivElement>(() => setOpen(not))
+  const nameRef = useOnActivate<HTMLSpanElement>(() => {
+    onSelect(node)
+    setValue(name, node.value)
+    setShow(false)
+  })
+
   return (
     <NodeNode data-depth={node.depth} data-children={hasChildren} className={clsx({ thick: open })}>
       <Tuple first={Scale.CONTENT} second={Scale.MAX}>
@@ -216,7 +259,11 @@ TreeInput.Node = <T extends any>({ node, itemRender }: Jsx<TreeNodeProps<T>>) =>
             />
           )}
         </div>
-        <span tabIndex={0} className="name">
+        <span
+          tabIndex={0}
+          className="name"
+          ref={!selectionFilter || selectionFilter(node) ? nameRef : undefined}
+        >
           {itemRender(node.value)}
         </span>
       </Tuple>
@@ -224,11 +271,7 @@ TreeInput.Node = <T extends any>({ node, itemRender }: Jsx<TreeNodeProps<T>>) =>
         <ul hidden={!open}>
           {mapIndexed(
             child => (
-              <TreeInput.Node<T>
-                node={child}
-                itemRender={itemRender}
-                key={propOr('', 'id', child.value)}
-              />
+              <TreeInput.Node<T> node={child} key={propOr('', 'id', child.value)} />
             ),
             node.children
           )}
