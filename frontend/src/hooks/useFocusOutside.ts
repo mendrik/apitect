@@ -1,7 +1,6 @@
 import { RefObject, useEffect } from 'react'
 
 import { Fn } from '../shared/types/generic'
-import { preventDefault } from '../utils/preventDefault'
 
 export const useFocusOutside = <T extends HTMLElement>(ref: RefObject<T>, handler: Fn): void => {
   useEffect(() => {

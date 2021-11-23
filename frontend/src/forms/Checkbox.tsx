@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { assocPath, ifElse, pathEq, pipe } from 'ramda'
+import { assocPath, ifElse, pathEq } from 'ramda'
 import React, { HTMLAttributes } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'

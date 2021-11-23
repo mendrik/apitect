@@ -1,9 +1,7 @@
-import { array, lazy, object, Schema, string } from 'zod'
+import { object, string } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { idCodec } from '../../codecs/idCodec'
-import { Id } from './id'
-import { ZNode } from './node'
 
 export const ZReference = object({
   nodeId: idCodec,

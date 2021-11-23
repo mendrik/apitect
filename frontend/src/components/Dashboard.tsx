@@ -1,6 +1,6 @@
 import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import { append, without, T, prop } from 'ramda'
+import { append, prop, T, without } from 'ramda'
 import React, { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
