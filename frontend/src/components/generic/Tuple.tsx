@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 
 import { Jsx } from '../../shared/types/generic'
@@ -20,7 +20,7 @@ type OwnProps = {
   second?: Scale
   orientation?: Orientation
   gap?: number
-}
+} & HTMLAttributes<HTMLDivElement>
 
 const StyledTuple = styled.div`
   &.first-auto > :first-child {
@@ -48,7 +48,8 @@ export const Tuple = ({
   first = Scale.AUTO,
   second = Scale.AUTO,
   gap = 0,
-  children
+  children,
+  ...props
 }: Jsx<OwnProps>) => (
   <StyledTuple
     className={clsx(
@@ -61,6 +62,7 @@ export const Tuple = ({
       },
       `first-${first} second-${second}`
     )}
+    {...props}
   >
     {children}
   </StyledTuple>

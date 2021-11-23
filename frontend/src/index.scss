@@ -98,6 +98,19 @@ input[required] + label:after {
   font-weight: 600;
 }
 
+.icn {
+  padding: 4px;
+  min-width: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > * {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 .focus-within:focus-within {
   border-color: #86b7fe;
   outline: 0;

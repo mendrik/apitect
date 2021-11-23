@@ -1,5 +1,6 @@
+import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { cond, not, propEq, propOr } from 'ramda'
+import { cond, not, propEq, propOr, repeat } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { HTMLAttributes, ReactNode, useRef, useState } from 'react'
 import { Overlay } from 'react-bootstrap'
@@ -8,7 +9,9 @@ import styled from 'styled-components'
 
 import { DeleteIcon } from '../components/generic/DeleteIcon'
 import { Scrollable } from '../components/generic/Scrollable'
+import { Scale, Tuple } from '../components/generic/Tuple'
 import { useFocusOutside } from '../hooks/useFocusOutside'
+import { useOnActivate } from '../hooks/useOnActivate'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Fn, Jsx, Maybe } from '../shared/types/generic'
 import { preventDefault as pd } from '../utils/preventDefault'
@@ -73,17 +76,36 @@ const Selected = styled.div`
 `
 
 const NodeTree = styled.ul`
-  margin: 0.75rem;
-
+  padding-left: 0.5rem !important;
   &,
   ul {
-    margin: ;
+    margin: 0;
     padding: 0;
     list-style: none;
   }
+`
 
-  li {
-    padding: 0.25rem 0;
+const NodeNode = styled.li<{ 'data-depth': number }>`
+  font-weight: 400;
+  padding: 0;
+  background-color: 999;
+  font-weight: 300;
+
+  .name {
+    padding: 0.25rem 0.5rem;
+  }
+
+  &[data-depth='${props => props['data-depth']}'] {
+    & .icn {
+      margin-left: ${props => props['data-depth'] - 1}rem;
+    }
+    background-color: rgb(
+      ${props => repeat(Math.max(260 - props['data-depth'] * 5, 200), 3).join(',')}
+    );
+  }
+
+  &.thick {
+    font-weight: 400;
   }
 `
 
@@ -178,12 +200,28 @@ type TreeNodeProps<T> = {
 }
 
 TreeInput.Node = <T extends any>({ node, itemRender }: Jsx<TreeNodeProps<T>>) => {
+  const [open, setOpen] = useState(false)
   const hasChildren = isNotNilOrEmpty(node.children)
+  const ref = useOnActivate<HTMLDivElement>(() => setOpen(not))
   return (
-    <li>
-      <div>{itemRender(node.value)}</div>
+    <NodeNode data-depth={node.depth} data-children={hasChildren} className={clsx({ thick: open })}>
+      <Tuple first={Scale.CONTENT} second={Scale.MAX}>
+        <div tabIndex={0} className="icn" ref={ref}>
+          {hasChildren && (
+            <IconChevronRight
+              stroke={1}
+              width={16}
+              height={16}
+              className={clsx('rotate', { deg90: open })}
+            />
+          )}
+        </div>
+        <span tabIndex={0} className="name">
+          {itemRender(node.value)}
+        </span>
+      </Tuple>
       {hasChildren && (
-        <ul>
+        <ul hidden={!open}>
           {mapIndexed(
             child => (
               <TreeInput.Node<T>
@@ -196,6 +234,6 @@ TreeInput.Node = <T extends any>({ node, itemRender }: Jsx<TreeNodeProps<T>>) =>
           )}
         </ul>
       )}
-    </li>
+    </NodeNode>
   )
 }

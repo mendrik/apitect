@@ -174,6 +174,10 @@ export class TreeNode<T> {
     throw Error('Update needs a valid node')
   }
 
+  get depth(): number {
+    return this.parent != null ? this.parent.depth + 1 : 0
+  }
+
   toString = () =>
     JSON.stringify(
       this,
