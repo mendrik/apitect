@@ -28,7 +28,9 @@ const Scroller = styled.div`
   }
 `
 
-const Div = styled.div``
+const Div = styled.div`
+  max-height: 100%;
+`
 
 export const Scrollable = ({ fade = false, children, ...props }: Jsx<OwnProps>) => {
   const Wrapper = fade ? VerticalFade : Div

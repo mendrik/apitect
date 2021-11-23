@@ -1,6 +1,8 @@
 import clsx from 'clsx'
-import { cond, not, propEq } from 'ramda'
+import { cond, not, propEq, propOr } from 'ramda'
+import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, { HTMLAttributes, ReactNode, useRef, useState } from 'react'
+import { Overlay } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -10,6 +12,7 @@ import { useFocusOutside } from '../hooks/useFocusOutside'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Fn, Jsx, Maybe } from '../shared/types/generic'
 import { preventDefault as pd } from '../utils/preventDefault'
+import { sameWidth } from '../utils/sameWidthMod'
 import { ErrorInfo } from './ErrorInfo'
 import { TextInput } from './TextInput'
 
@@ -42,13 +45,17 @@ const StyledTreeInput = styled.div`
 
 const NodeSelector = styled.div`
   position: absolute;
-  top: calc(100% + 5px);
   width: 100%;
-  z-index: 1;
   border: 1px solid #ececec;
   border-radius: 4px;
   box-shadow: 0px 0px 6px rgba(120, 120, 120, 0.2);
   background-color: white;
+`
+
+const OverlayStub = styled.div`
+  position: relative;
+  width: 100%;
+  z-index: 1;
 `
 
 const Selected = styled.div`
@@ -56,6 +63,21 @@ const Selected = styled.div`
     display: flex;
     top: 20px;
     right: 14px;
+  }
+`
+
+const NodeTree = styled.ul`
+  margin: 0.75rem;
+
+  &,
+  ul {
+    margin: ;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    padding: 0.25rem 0;
   }
 `
 
@@ -74,6 +96,7 @@ export const TreeInput = <T extends any>({
   const [show, setShow] = useState(false)
   const [selected, setSelected] = useState<Maybe<TreeNode<T>>>()
   const target = useRef<HTMLDivElement>(null)
+  const container = useRef<HTMLDivElement>(null)
 
   const keyMap = cond([
     [propEq('key', 'ArrowDown'), pd(() => 0)],
@@ -108,20 +131,65 @@ export const TreeInput = <T extends any>({
           setShow(false)
         }}
       />
-      <NodeSelector hidden={!show}>
-        <Scrollable>
-          <div className="p-2">
-            <TextInput label="form.fields.search" name="search" />
-          </div>
-          <ul>
-            <li onClick={() => setSelected({ value: { name: 'hallo' } } as any)}>A</li>
-            <li>B</li>
-            <li>C</li>
-          </ul>
-        </Scrollable>
-      </NodeSelector>
+      <OverlayStub ref={container} />
+      <Overlay
+        target={target}
+        container={container}
+        popperConfig={{ modifiers: [sameWidth] }}
+        flip
+        show={show}
+        placement="bottom-start"
+      >
+        <NodeSelector hidden={!show}>
+          <Scrollable fade style={{ height: 300 }}>
+            <div className="p-2">
+              <TextInput label="form.fields.search" name="search" />
+            </div>
+            <NodeTree>
+              {mapIndexed(
+                child => (
+                  <TreeInput.Node<T>
+                    node={child}
+                    itemRender={itemRender}
+                    key={propOr('', 'id', child.value)}
+                  />
+                ),
+                tree.children
+              )}
+            </NodeTree>
+          </Scrollable>
+        </NodeSelector>
+      </Overlay>
       <label>{t(label)}</label>
       <ErrorInfo name={name} />
     </StyledTreeInput>
+  )
+}
+
+type TreeNodeProps<T> = {
+  node: TreeNode<T>
+  itemRender: (node: T) => ReactNode
+}
+
+TreeInput.Node = <T extends any>({ node, itemRender }: Jsx<TreeNodeProps<T>>) => {
+  const hasChildren = isNotNilOrEmpty(node.children)
+  return (
+    <li>
+      <div>{itemRender(node.value)}</div>
+      {hasChildren && (
+        <ul>
+          {mapIndexed(
+            child => (
+              <TreeInput.Node<T>
+                node={child}
+                itemRender={itemRender}
+                key={propOr('', 'id', child.value)}
+              />
+            ),
+            node.children
+          )}
+        </ul>
+      )}
+    </li>
   )
 }
