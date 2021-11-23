@@ -156,63 +156,61 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
   return (
     <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>
       <IconCalendar className="w-4 h-4" stroke={1} />
-      <FocusLock>
-        <AnimatePresence>
-          {open && (
-            <motion.div {...fullscreenScale} role="dialog">
-              <Layout>
-                <Scrollable fade>
-                  <Years>
-                    {mapIndexed(
-                      year => (
-                        <Year
-                          key={format(year, 'yyyy')}
-                          className={clsx({ currentYear: isSameYear(year, selected) })}
-                          onClick={() => {
-                            setSelected(year)
-                            scrollYear()
-                          }}
-                        >
-                          {format(year, 'yyyy')}
-                        </Year>
-                      ),
-                      years
-                    )}
-                  </Years>
-                </Scrollable>
-                <Scrollable fade>
-                  <FullYear>
-                    {mapIndexed(
-                      m => (
-                        <Month
-                          month={m}
-                          key={format(m, 'dd.MM.yyyy')}
-                          selected={[selected, setSelected]}
-                        />
-                      ),
-                      months
-                    )}
-                  </FullYear>
-                </Scrollable>
-                <GridButtonRow className="p-2">
-                  <Button variant="outline-secondary" onClick={() => setOpen(false)}>
-                    {t('common.cancel')}
-                  </Button>
-                  <Button
-                    variant="primary"
-                    onClick={() => {
-                      setValue(name, format(selected, 'yyyy-MM-dd') as any)
-                      setOpen(false)
-                    }}
-                  >
-                    Select
-                  </Button>
-                </GridButtonRow>
-              </Layout>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </FocusLock>
+      <AnimatePresence>
+        {open && (
+          <motion.div {...fullscreenScale} role="dialog">
+            <Layout>
+              <Scrollable fade>
+                <Years>
+                  {mapIndexed(
+                    year => (
+                      <Year
+                        key={format(year, 'yyyy')}
+                        className={clsx({ currentYear: isSameYear(year, selected) })}
+                        onClick={() => {
+                          setSelected(year)
+                          scrollYear()
+                        }}
+                      >
+                        {format(year, 'yyyy')}
+                      </Year>
+                    ),
+                    years
+                  )}
+                </Years>
+              </Scrollable>
+              <Scrollable fade>
+                <FullYear>
+                  {mapIndexed(
+                    m => (
+                      <Month
+                        month={m}
+                        key={format(m, 'dd.MM.yyyy')}
+                        selected={[selected, setSelected]}
+                      />
+                    ),
+                    months
+                  )}
+                </FullYear>
+              </Scrollable>
+              <GridButtonRow className="p-2">
+                <Button variant="outline-secondary" onClick={() => setOpen(false)}>
+                  {t('common.cancel')}
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    setValue(name, format(selected, 'yyyy-MM-dd') as any)
+                    setOpen(false)
+                  }}
+                >
+                  Select
+                </Button>
+              </GridButtonRow>
+            </Layout>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </CalendarButton>
   )
 }
