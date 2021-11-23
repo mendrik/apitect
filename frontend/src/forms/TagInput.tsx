@@ -1,4 +1,3 @@
-import { IconCircleX } from '@tabler/icons'
 import clsx from 'clsx'
 import { cond, pathEq, pathOr, pipe, propEq, unless, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
@@ -6,6 +5,7 @@ import React, { HTMLAttributes, useRef, useState } from 'react'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
+import { DeleteIcon } from '../components/generic/DeleteIcon'
 import { Fn, Jsx } from '../shared/types/generic'
 import { preventDefault } from '../utils/preventDefault'
 
@@ -17,6 +17,7 @@ type OwnProps<T extends Tag> = {
   label: TFuncKey
   onAdd: (name: string) => void
   onRemove: (tag: T) => void
+  containerClasses: string
 } & HTMLAttributes<HTMLInputElement>
 
 const StyledTagInput = styled.div`
@@ -50,6 +51,7 @@ export const TagInput = <T extends Tag>({
   onAdd,
   onRemove,
   children,
+  containerClasses,
   ...props
 }: Jsx<OwnProps<T>>) => {
   const [currentName, setCurrentName] = useState<string>('')
@@ -75,7 +77,7 @@ export const TagInput = <T extends Tag>({
 
   return (
     <StyledTagInput
-      className={clsx('form-floating form-control focus-within')}
+      className={clsx('form-floating form-control focus-within', containerClasses)}
       onClick={() => inpRef.current?.focus()}
     >
       {mapIndexed(
@@ -130,25 +132,6 @@ const Tag = styled.div`
   }
 `
 
-const Delete = styled.div`
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background-color: #fefefe;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: none;
-
-  &:hover {
-    background-color: #efefef;
-  }
-`
-
 TagInput.Tag = <T extends Record<'name', string>>({ tag, onRemove }: Jsx<TagProps<T>>) => {
   return (
     <Tag
@@ -161,9 +144,7 @@ TagInput.Tag = <T extends Record<'name', string>>({ tag, onRemove }: Jsx<TagProp
       onKeyDown={when(propEq('key', 'Delete'), onRemove)}
     >
       <span className="label">{tag.name}</span>
-      <Delete onClick={onRemove} className="delete">
-        <IconCircleX stroke={1} width={16} height={16} />
-      </Delete>
+      <DeleteIcon onClick={onRemove} />
     </Tag>
   )
 }

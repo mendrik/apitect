@@ -1,12 +1,16 @@
 import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import React, { useMemo } from 'react'
+import { append, without, T, prop } from 'ramda'
+import React, { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { DateInput } from '../forms/DateInput'
+import { TagInput } from '../forms/TagInput'
 import { TreeInput } from '../forms/TreeInput'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Node } from '../shared/types/domain/node'
+import { Tag } from '../shared/types/domain/tag'
 import $appStore from '../stores/$appStore'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
@@ -31,6 +35,7 @@ const Scroller = styled.div`
 const Dashboard = () => {
   const { tree } = useStore($appStore)
   const root = useMemo(() => TreeNode.from<Node, 'children'>('children')(tree), [tree])
+  const [tags, setTags] = useState<Tag[]>([])
 
   const form = useForm()
   return (
@@ -49,6 +54,18 @@ const Dashboard = () => {
                   label="form.fields.number"
                   tree={root}
                   onSelect={node => console.log(node)}
+                  containerClasses="mb-3"
+                  selectionFilter={T}
+                  itemRender={prop('name')}
+                />
+                <DateInput name="date" label="form.fields.number" className="mb-3" />
+                <TagInput
+                  name="tags"
+                  label="form.fields.number"
+                  containerClasses="mb-3"
+                  tags={tags}
+                  onAdd={name => setTags(append({ name, id: 0 }))}
+                  onRemove={tag => setTags(without([tag]))}
                 />
               </FormProvider>
             </Column>

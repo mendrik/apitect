@@ -8,7 +8,7 @@ import { keys, pluck } from 'ramda'
 import { Document } from '~shared/types/domain/document'
 import { Enum } from '~shared/types/domain/enum'
 import { User } from '~shared/types/domain/user'
-import { Value } from '~shared/types/domain/value'
+import { Value } from '~shared/types/domain/values/value'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { ensure } from '~shared/utils/ramda'
 
