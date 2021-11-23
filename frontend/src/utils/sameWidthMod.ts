@@ -12,3 +12,10 @@ export const sameWidth: Modifier<any, any> = {
     state.elements.popper.style.width = `${state.elements.reference.offsetWidth}px`
   }
 }
+
+export const offset = {
+  name: 'offset',
+  options: {
+    offset: [0, -5]
+  }
+}

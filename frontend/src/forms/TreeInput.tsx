@@ -25,7 +25,7 @@ import { useOnActivate } from '../hooks/useOnActivate'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Fn, Jsx, Maybe } from '../shared/types/generic'
 import { preventDefault as pd } from '../utils/preventDefault'
-import { sameWidth } from '../utils/sameWidthMod'
+import { offset, sameWidth } from '../utils/sameWidthMod'
 import { ErrorInfo } from './ErrorInfo'
 import { TextInput } from './TextInput'
 
@@ -67,7 +67,6 @@ const NodeSelector = styled.div`
   border-radius: 0 0 4px 4px;
   box-shadow: 0px 4px 5px 0px rgba(120, 120, 120, 0.2);
   border-top: 0;
-  margin-top: -5px;
   background-color: white;
 `
 
@@ -191,7 +190,7 @@ export const TreeInput = <T extends any>({
       <Overlay
         target={target}
         container={container}
-        popperConfig={{ modifiers: [sameWidth] }}
+        popperConfig={{ modifiers: [offset, sameWidth] }}
         flip
         show={show}
         placement="bottom-start"
