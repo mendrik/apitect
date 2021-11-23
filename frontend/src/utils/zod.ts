@@ -6,7 +6,7 @@ const objectHandler = (zodRef: z.AnyZodObject): Record<string, z.ZodTypeAny> =>
     const res = generateDefaults<z.ZodTypeAny>(zodRef.shape[key])
     return {
       ...carry,
-      ...(res ? { [key]: res } : {})
+      ...(res !== undefined ? { [key]: res } : {})
     }
   }, {} as Record<string, z.ZodTypeAny>)
 

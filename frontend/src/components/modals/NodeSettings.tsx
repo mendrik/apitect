@@ -135,6 +135,8 @@ const NodeSettings: ModalFC = ({ close }) => {
     }
   })
 
+  console.log(form.watch())
+
   return (
     <SocketForm form={form} onValid={updateNodeSettingsFx} close={close} submitButton="common.save">
       <TextInput

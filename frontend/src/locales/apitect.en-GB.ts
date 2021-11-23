@@ -52,9 +52,7 @@ const en = {
           password: 'Password (values will be encrypted)'
         },
         object: {
-          apiEndpoint: 'Accessible via REST api',
-          individual: 'Each user has their own version',
-          taggable: 'Taggable content underneath'
+          apiEndpoint: 'Accessible via REST api'
         },
         number: {
           min: 'Minimum',
