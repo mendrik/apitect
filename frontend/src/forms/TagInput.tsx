@@ -21,12 +21,12 @@ type OwnProps<T extends Tag> = {
 } & HTMLAttributes<HTMLInputElement>
 
 const StyledTagInput = styled.div`
-  padding: 1.25rem 0.5rem 0.25rem 0.5rem;
+  padding: 1.5rem 0.5rem 0.25rem 0.5rem;
   line-height: 1.25;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  min-height: 2.75rem;
+  min-height: 3rem;
   position: relative;
 
   &:focus-within > label,
