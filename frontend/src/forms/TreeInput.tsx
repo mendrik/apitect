@@ -46,9 +46,11 @@ const StyledTreeInput = styled.div`
 const NodeSelector = styled.div`
   position: absolute;
   width: 100%;
-  border: 1px solid #ececec;
-  border-radius: 4px;
-  box-shadow: 0px 0px 6px rgba(120, 120, 120, 0.2);
+  border: 1px solid #ced4da;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0px 4px 5px 0px rgba(120, 120, 120, 0.2);
+  border-top: 0;
+  margin-top: -5px;
   background-color: white;
 `
 
@@ -59,6 +61,10 @@ const OverlayStub = styled.div`
 `
 
 const Selected = styled.div`
+  &:focus:before {
+    content: none;
+  }
+
   &:not(:empty):focus ~ .delete {
     display: flex;
     top: 20px;
@@ -141,10 +147,10 @@ export const TreeInput = <T extends any>({
         placement="bottom-start"
       >
         <NodeSelector hidden={!show}>
+          <div className="p-2">
+            <TextInput label="form.fields.search" name="search" />
+          </div>
           <Scrollable fade style={{ height: 300 }}>
-            <div className="p-2">
-              <TextInput label="form.fields.search" name="search" />
-            </div>
             <NodeTree>
               {mapIndexed(
                 child => (
