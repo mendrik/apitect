@@ -108,8 +108,12 @@ const NodeTree = styled.ul`
 const NodeNode = styled.li<{ 'data-depth': number }>`
   font-weight: 400;
   padding: 0;
-  background-color: 999;
   font-weight: 300;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #dcf0f8 !important;
+  }
 
   .name {
     padding: 0rem 0.5rem;
@@ -122,10 +126,6 @@ const NodeNode = styled.li<{ 'data-depth': number }>`
     background-color: rgb(
       ${props => repeat(Math.max(260 - props['data-depth'] * 5, 200), 3).join(',')}
     );
-  }
-
-  &.thick {
-    font-weight: 400;
   }
 `
 
