@@ -30,4 +30,4 @@
 - SelectInput
 - MultiTagInput
 - ListInput
-
+- TreeInput: arrow keys, remember open state, open selected

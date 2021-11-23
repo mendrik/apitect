@@ -113,7 +113,7 @@ const NodeNode = styled.li<{ 'data-depth': number }>`
   font-weight: 300;
 
   .name {
-    padding: 0.25rem 0.5rem;
+    padding: 0rem 0.5rem;
   }
 
   &[data-depth='${props => props['data-depth']}'] {
@@ -239,7 +239,7 @@ TreeInput.Node = <T extends any>({ node }: Jsx<TreeNodeProps<T>>) => {
   const [open, setOpen] = useState(false)
   const hasChildren = isNotNilOrEmpty(node.children)
 
-  const ref = useOnActivate<HTMLDivElement>(() => setOpen(not))
+  const toggleRef = useOnActivate<HTMLDivElement>(() => setOpen(not))
   const nameRef = useOnActivate<HTMLSpanElement>(() => {
     onSelect(node)
     setValue(name, node.value)
@@ -249,16 +249,18 @@ TreeInput.Node = <T extends any>({ node }: Jsx<TreeNodeProps<T>>) => {
   return (
     <NodeNode data-depth={node.depth} data-children={hasChildren} className={clsx({ thick: open })}>
       <Tuple first={Scale.CONTENT} second={Scale.MAX}>
-        <div tabIndex={0} className="icn" ref={ref}>
-          {hasChildren && (
+        {hasChildren ? (
+          <div className="icn" ref={toggleRef}>
             <IconChevronRight
               stroke={1}
               width={16}
               height={16}
               className={clsx('rotate', { deg90: open })}
             />
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="icn" />
+        )}
         <span
           tabIndex={0}
           className="name"
