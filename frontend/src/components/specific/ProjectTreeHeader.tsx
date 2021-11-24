@@ -10,10 +10,10 @@ import { Scale, Tuple } from '../generic/Tuple'
 import { WithTooltip } from '../generic/WithTooltip'
 
 export const ProjectTreeHeader = () => {
-  const { selectedNode } = useStore($appStore)
+  const { selectedNode, document } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
-      <div className="text-truncate">Project tree</div>
+      <div className="text-truncate">{document.name}</div>
       <HGrid>
         <WithTooltip tooltipText="Tags">
           <Icon icon={IconTag} onClick={() => void 0} />

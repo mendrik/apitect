@@ -112,7 +112,7 @@ const NodeNode = styled.li<{ 'data-depth': number }>`
   border-radius: 4px;
 
   &:hover {
-    background-color: #dcf0f8 !important;
+    background-color: #d9e8b5 !important;
   }
 
   .name {
