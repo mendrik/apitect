@@ -13,6 +13,7 @@ body {
     -webkit-appearance: none;
     width: 7px;
   }
+
   &::-webkit-scrollbar-thumb {
     border-radius: 4px;
     background-color: #b6b6b6;
@@ -178,6 +179,15 @@ input[required] + label:after {
   overflow: hidden;
   padding-right: 7px;
 }
+
+.form-control[type=search] {
+  margin-right: 1rem;
+  width: 180px;
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
 
 .navbar {
   flex-wrap: nowrap !important;

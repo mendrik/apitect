@@ -13,7 +13,6 @@ import React, {
   useState
 } from 'react'
 import { Overlay } from 'react-bootstrap'
-import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -31,7 +30,7 @@ import { TextInput } from './TextInput'
 
 type TreeSelectConfig<T> = {
   name: string
-  onSelect: (node: T) => void
+  onSelect: (node: Maybe<T>) => void
   itemRender: (node: T) => ReactNode
   selectionFilter: (node: TreeNode<T>) => boolean
 }
@@ -111,7 +110,8 @@ const NodeNode = styled.li<{ 'data-depth': number }>`
   font-weight: 300;
   border-radius: 4px;
 
-  &:hover {
+  &:hover > * > .name {
+    border-radius: 4px;
     background-color: #d9e8b5 !important;
   }
 
@@ -130,7 +130,10 @@ const NodeNode = styled.li<{ 'data-depth': number }>`
 `
 
 const TreeInputContext = createContext<
-  TreeSelectConfig<any> & { setShow: Dispatch<SetStateAction<boolean>> }
+  TreeSelectConfig<any> & {
+    setShow: Dispatch<SetStateAction<boolean>>
+    setSelected: Dispatch<SetStateAction<any>>
+  }
 >({} as any)
 
 export const TreeInput = <T extends any>({
@@ -146,12 +149,10 @@ export const TreeInput = <T extends any>({
 }: Jsx<OwnProps<T>>) => {
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
-  const { watch, setValue } = useFormContext<any>()
+  const [selected, setSelected] = useState<Maybe<T>>()
 
   const target = useRef<HTMLDivElement>(null)
   const container = useRef<HTMLDivElement>(null)
-
-  const value = watch(name)
 
   const keyMap = cond([
     [propEq('key', 'ArrowDown'), pd(() => 0)],
@@ -178,11 +179,12 @@ export const TreeInput = <T extends any>({
       {...props}
     >
       <Selected className="form-select" tabIndex={0} onClick={() => setShow(not)}>
-        {value && itemRender(value)}
+        {selected && itemRender(selected)}
       </Selected>
       <DeleteIcon
         onPointerDown={() => {
-          setValue(name, undefined)
+          setSelected(undefined)
+          onSelect(undefined)
           setShow(false)
         }}
       />
@@ -201,6 +203,7 @@ export const TreeInput = <T extends any>({
           </div>
           <TreeInputContext.Provider
             value={{
+              setSelected,
               setShow,
               itemRender,
               name,
@@ -232,16 +235,15 @@ type TreeNodeProps<T> = {
 }
 
 TreeInput.Node = <T extends any>({ node }: Jsx<TreeNodeProps<T>>) => {
-  const { itemRender, onSelect, selectionFilter, name, setShow } = useContext(TreeInputContext)
-  const { setValue } = useFormContext()
-
+  const { itemRender, onSelect, selectionFilter, setShow, setSelected } =
+    useContext(TreeInputContext)
   const [open, setOpen] = useState(false)
   const hasChildren = isNotNilOrEmpty(node.children)
 
   const toggleRef = useOnActivate<HTMLDivElement>(() => setOpen(not))
   const nameRef = useOnActivate<HTMLSpanElement>(() => {
     onSelect(node)
-    setValue(name, node.value)
+    setSelected(node.value)
     setShow(false)
   })
 

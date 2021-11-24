@@ -10,10 +10,10 @@ import { Scale, Tuple } from '../generic/Tuple'
 import { WithTooltip } from '../generic/WithTooltip'
 
 export const ProjectTreeHeader = () => {
-  const { selectedNode, document } = useStore($appStore)
+  const { selectedNode } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
-      <div className="text-truncate">{document.name}</div>
+      <div />
       <HGrid>
         <WithTooltip tooltipText="Delete selected node" shortcut="Del">
           <Icon

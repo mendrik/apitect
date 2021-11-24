@@ -1,8 +1,8 @@
-import { IconLogin, IconTag, IconUsers } from '@tabler/icons'
+import { IconEyeglass, IconLogin, IconTag, IconUsers } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import { append, concat, join, map, pipe, propOr, reverse, tail, tap } from 'ramda'
 import React, { useContext } from 'react'
-import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { addParams } from 'shared/utils/url'
@@ -18,6 +18,11 @@ import { Scale, Tuple } from './generic/Tuple'
 const Item = styled(Nav.Item)`
   font-weight: 400;
   padding-right: 1rem;
+  cursor: pointer;
+
+  span {
+    color: #1c7fa1;
+  }
 `
 
 export const Navigation = () => {
@@ -25,40 +30,38 @@ export const Navigation = () => {
   const navigate = useNavigate()
   const logout = useLogout()
   const { user } = useContext(userContext)
-  const { selectedNode } = useStore($appStore)
-  console.log(selectedNode?.pathToRoot())
+  const { document } = useStore($appStore)
   return (
     <Navbar variant="light" expand="sm" className="px-2 bevel-bottom bevel-shadow w-auto">
       <Navbar.Brand href="#home" tabIndex={-1}>
         <Logo className="logo" style={{ height: 32, marginTop: -8 }} />
       </Navbar.Brand>
       {user != null && (
-        <Tuple first={Scale.AUTO} second={Scale.AUTO} style={{ overflow: 'hidden' }}>
-          <Item className="thin text-truncate" dir="rtl">
-            {selectedNode != null
-              ? pipe<any, any, any, any, any, any>(
-                  reverse,
-                  map(propOr('', 'name')),
-                  append(selectedNode.value.name),
-                  tail,
-                  join(' / ')
-                )(selectedNode.pathToRoot())
-              : null}
-          </Item>
-          <HGrid>
-            <Item>
-              <Tuple first={Scale.CONTENT}>
-                <IconUsers className="icn" stroke={1} />
-                <span>Users</span>
-              </Tuple>
-            </Item>
-            <Item>
-              <Tuple first={Scale.CONTENT}>
-                <IconTag className="icn" stroke={1} />
-                <span>Tags</span>
-              </Tuple>
-            </Item>
-          </HGrid>
+        <Tuple first={Scale.MAX} second={Scale.CONTENT} style={{ overflow: 'hidden' }}>
+          <div>{document.name}</div>
+          <Tuple>
+            <HGrid>
+              <Item>
+                <Tuple first={Scale.CONTENT}>
+                  <IconEyeglass className="icn" stroke={1} />
+                  <span>View</span>
+                </Tuple>
+              </Item>
+              <Item>
+                <Tuple first={Scale.CONTENT}>
+                  <IconUsers className="icn" stroke={1} />
+                  <span>Users</span>
+                </Tuple>
+              </Item>
+              <Item>
+                <Tuple first={Scale.CONTENT}>
+                  <IconTag className="icn" stroke={1} />
+                  <span>Tags</span>
+                </Tuple>
+              </Item>
+            </HGrid>
+            <FormControl size="sm" type="search" placeholder="Search" aria-label="Search" />
+          </Tuple>
         </Tuple>
       )}
       <Nav className="ms-auto">
