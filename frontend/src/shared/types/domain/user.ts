@@ -1,13 +1,12 @@
-import { object } from 'zod'
+import { object, string } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
-import { emailCodec } from '../../codecs/emailCodec'
 import { idCodec } from '../../codecs/idCodec'
 import { nonEmptyString } from '../../codecs/nonEmptyString'
 
 export const ZUser = object({
   name: nonEmptyString,
-  email: emailCodec,
+  email: string().email(),
   lastDocument: idCodec,
   password: nonEmptyString.optional(),
   token: nonEmptyString.optional()

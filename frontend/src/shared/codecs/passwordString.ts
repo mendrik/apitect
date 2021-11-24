@@ -1,13 +1,13 @@
-import v from 'validator'
 import { string } from 'zod'
 
-const isPassword = (text: string): boolean =>
-  v.isStrongPassword(text, {
-    minLength: 4,
-    minLowercase: 0,
-    minSymbols: 0,
-    minNumbers: 1,
-    minUppercase: 0
-  })
-
-export const passwordString = string().refine(isPassword, 'form.validation.password')
+/**
+ ^                  Start anchor
+ (?=.*[A-Z])        Ensure string has two uppercase letters.
+ (?=.*[0-9])        Ensure string has two digits.
+ .{6}               Ensure string is of length 6.
+ $                  End anchor.
+ */
+export const passwordString = string().regex(
+  /^(?=.*[A-Z])(?=.*[0-9]).{6}$/,
+  'form.validation.password'
+)
