@@ -15,12 +15,6 @@ export const ProjectTreeHeader = () => {
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate">{document.name}</div>
       <HGrid>
-        <WithTooltip tooltipText="Tags">
-          <Icon icon={IconTag} onClick={() => void 0} />
-        </WithTooltip>
-        <WithTooltip tooltipText="Project users">
-          <Icon icon={IconUsers} onClick={() => void 0} />
-        </WithTooltip>
         <WithTooltip tooltipText="Delete selected node" shortcut="Del">
           <Icon
             icon={IconTrash}

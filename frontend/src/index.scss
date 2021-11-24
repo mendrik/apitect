@@ -179,5 +179,9 @@ input[required] + label:after {
   padding-right: 7px;
 }
 
+.navbar {
+  flex-wrap: nowrap !important;
+}
+
 @import "~bootstrap/scss/bootstrap";
 @import "./css/tooltip";
