@@ -1,4 +1,4 @@
-import { IconEyeglass, IconLogin, IconTag, IconUsers } from '@tabler/icons'
+import { IconDeviceFloppy, IconEyeglass, IconLogin, IconTag, IconUsers } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React, { useContext } from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
@@ -46,6 +46,12 @@ export const Navigation = () => {
           <div>{document.name}</div>
           <Tuple>
             <HGrid>
+              <Item disabled>
+                <Tuple first={Scale.CONTENT}>
+                  <IconDeviceFloppy className="icn" stroke={1} />
+                  <span>Publish</span>
+                </Tuple>
+              </Item>
               <Item>
                 <Tuple first={Scale.CONTENT}>
                   <IconEyeglass className="icn" stroke={1} />

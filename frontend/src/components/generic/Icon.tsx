@@ -29,13 +29,6 @@ const Button = styled.button`
     transition: all 0.2s ease-in-out;
   }
 
-  &[disabled] {
-    svg {
-      color: ${Palette.textDisabled};
-    }
-    pointer-events: none;
-  }
-
   &:not([disabled]) {
     &.focus:focus {
       border: 1px dotted ${Palette.iconBorder};

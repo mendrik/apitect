@@ -191,6 +191,11 @@ input[required] + label:after {
   }
 }
 
+[disabled] {
+  pointer-events: none;
+  opacity: 0.3;
+  user-focus: ignore;
+}
 
 .navbar {
   flex-wrap: nowrap !important;
