@@ -87,7 +87,8 @@ const en = {
         validRegExp: '$t(form.fields.{{ field }}) is not a valid regular expression',
         validEmail: '$t(form.fields.{{ field }}) is not valid',
         required: '$t(form.fields.{{ field }}) is required',
-        password: '$t(form.fields.{{ field }}) must be at least 4 characters long'
+        password:
+          '$t(form.fields.{{ field }}) must be at least 6 characters long, 1 digit and 1 uppercase letter'
       }
     },
     validation: {
