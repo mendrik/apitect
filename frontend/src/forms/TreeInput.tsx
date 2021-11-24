@@ -207,7 +207,7 @@ TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
         onClick={activate}
       >
         {hasChildren ? (
-          <div className="icn" onClick={() => (isOpen(node) ? remove(node) : add(node))}>
+          <div className="icn" onClick={sp(() => (isOpen(node) ? remove(node) : add(node)))}>
             <IconChevronRight
               stroke={1}
               width={16}
