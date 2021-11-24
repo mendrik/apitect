@@ -1,4 +1,4 @@
-import { IconFolderPlus, IconSettings, IconTag, IconTrash, IconUsers } from '@tabler/icons'
+import { IconFolderPlus, IconSettings, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React from 'react'
 

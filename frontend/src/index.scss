@@ -21,6 +21,8 @@ body {
   }
 }
 
+
+
 $font-family-base: 'Source Sans Pro';
 $color1: #e15b64;
 $color2: #f47e60;
@@ -32,6 +34,7 @@ $color6: #d9e8b5;
 $color7: #98a773;
 
 $form-feedback-invalid-color: $color2;
+
 $progress-border-radius: 0;
 $link-color: $color5;
 
@@ -181,7 +184,7 @@ input[required] + label:after {
 }
 
 .form-control[type=search] {
-  margin-right: 1rem;
+  margin: 0 1rem;
   width: 180px;
   &:focus {
     box-shadow: none !important;

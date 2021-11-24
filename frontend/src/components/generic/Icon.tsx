@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 
+import { Palette } from '../../css/colors'
 import { Jsx } from '../../shared/types/generic'
 
 export type OwnProps = {
@@ -24,20 +25,20 @@ const Button = styled.button`
   outline: none;
 
   svg {
-    color: #333;
+    color: ${Palette.iconText};
     transition: all 0.2s ease-in-out;
   }
 
   &[disabled] {
     svg {
-      color: #999;
+      color: ${Palette.textDisabled};
     }
     pointer-events: none;
   }
 
   &:not([disabled]) {
     &.focus:focus {
-      border: 1px dotted #999;
+      border: 1px dotted ${Palette.iconBorder};
     }
 
     &.focus:active {
@@ -45,8 +46,6 @@ const Button = styled.button`
     }
 
     &:hover {
-      border: 1px dotted $bezelDark;
-
       svg {
         color: black;
         filter: drop-shadow(1px 1px 1px #999);

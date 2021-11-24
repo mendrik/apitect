@@ -19,6 +19,7 @@ import styled from 'styled-components'
 import { DeleteIcon } from '../components/generic/DeleteIcon'
 import { Scrollable } from '../components/generic/Scrollable'
 import { Scale, Tuple } from '../components/generic/Tuple'
+import { Palette } from '../css/colors'
 import { useFocusOutside } from '../hooks/useFocusOutside'
 import { useOnActivate } from '../hooks/useOnActivate'
 import { TreeNode } from '../shared/algebraic/treeNode'
@@ -62,7 +63,7 @@ const StyledTreeInput = styled.div`
 const NodeSelector = styled.div`
   position: absolute;
   width: 100%;
-  border: 1px solid #ced4da;
+  border: 1px solid ${Palette.border};
   border-radius: 0 0 4px 4px;
   box-shadow: 0px 4px 5px 0px rgba(120, 120, 120, 0.2);
   border-top: 0;
@@ -112,7 +113,7 @@ const NodeNode = styled.li<{ 'data-depth': number }>`
 
   &:hover > * > .name {
     border-radius: 4px;
-    background-color: #d9e8b5 !important;
+    background-color: ${Palette.hover} !important;
   }
 
   .name {

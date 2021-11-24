@@ -6,6 +6,7 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { Palette } from '../../css/colors'
 import { createNodeFx } from '../../events/tree'
 import { SocketForm } from '../../forms/SocketForm'
 import { TextInput } from '../../forms/TextInput'
@@ -33,15 +34,15 @@ const TypeGrid = styled.ul`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid #ced4da;
+    border: 1px solid ${Palette.border};
     border-radius: 0.25rem;
     height: 70px;
     cursor: pointer;
 
     &.selected,
     &.selected:hover {
-      background-color: #d9e8b5;
-      border-color: #98a773;
+      background-color: ${Palette.selected};
+      border-color: ${Palette.selectedBorder};
     }
 
     &:hover {

@@ -1,6 +1,5 @@
 import { IconEyeglass, IconLogin, IconTag, IconUsers } from '@tabler/icons'
 import { useStore } from 'effector-react'
-import { append, concat, join, map, pipe, propOr, reverse, tail, tap } from 'ramda'
 import React, { useContext } from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +9,7 @@ import styled from 'styled-components'
 
 import { ReactComponent as Logo } from '../assets/logo.svg'
 import { userContext } from '../contexts/withUser'
+import { Palette } from '../css/colors'
 import { useLogout } from '../hooks/useLogout'
 import $appStore from '../stores/$appStore'
 import { HGrid } from './generic/HGrid'
@@ -17,11 +17,16 @@ import { Scale, Tuple } from './generic/Tuple'
 
 const Item = styled(Nav.Item)`
   font-weight: 400;
-  padding-right: 1rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  border-radius: 4px;
   cursor: pointer;
 
   span {
-    color: #1c7fa1;
+    color: ${Palette.iconText};
+  }
+
+  &:hover {
+    background-color: ${Palette.hover};
   }
 `
 

@@ -14,6 +14,7 @@ import { mapIndexed } from 'ramda-adjunct'
 import React, { Dispatch, SetStateAction, useMemo } from 'react'
 import styled from 'styled-components'
 
+import { Palette } from '../../css/colors'
 import { useOnActivate } from '../../hooks/useOnActivate'
 import { Jsx } from '../../shared/types/generic'
 
@@ -72,8 +73,7 @@ const Day = styled.div`
     font-weight: 600;
   }
   &.selected:not(.off) {
-    background-color: #0d6efd;
-    color: white;
+    background-color: ${Palette.selected};
     font-weight: 600;
     border-radius: 4px;
   }

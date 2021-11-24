@@ -12,7 +12,7 @@ type OwnProps = {
 export const WithTooltip = ({ tooltipText, shortcut, children }: Jsx<OwnProps>) => {
   return (
     <OverlayTrigger
-      placement="bottom"
+      placement="top"
       delay={1000}
       overlay={
         <Tooltip data-shortcut={shortcut} className={clsx({ shortcut })}>
