@@ -48,9 +48,10 @@ export const connect = async (): Promise<MongoClient> => {
   await db.collection(Collections.documents).createIndex({ id: 1 }, { unique: true })
   await db.collection(Collections.documents).createIndex({ owner: 1 })
   await db.collection(Collections.nodeSettings).createIndex({ nodeId: 1 }, { unique: true })
-  await db.collection(Collections.values).createIndex({ id: 1 }, { unique: true })
   await db.collection(Collections.values).createIndex({ nodeId: 1 })
-  await db.collection(Collections.values).createIndex({ tagId: 1 })
+  await db.collection(Collections.values).createIndex({ tag: 1 })
+  await db.collection(Collections.values).createIndex({ author: 1 })
+  await db.collection(Collections.values).createIndex({ owner: 1 })
   await db.collection(Collections.enums).createIndex({ docId: 1, name: 1 }, { unique: true })
   return client
 }

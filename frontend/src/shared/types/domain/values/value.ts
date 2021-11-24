@@ -1,18 +1,18 @@
-import { nativeEnum, object, union } from 'zod'
+import { boolean, nativeEnum, object, string, union } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { idCodec } from '../../../codecs/idCodec'
 import { NodeType } from '../nodeType'
-import { ZReference } from '../reference'
 import { ZNumberValue } from './numberValue'
 import { ZStringValue } from './stringValue'
 
 export const ZValueBase = object({
-  id: idCodec,
-  tagId: idCodec,
   nodeId: idCodec,
   nodeType: nativeEnum(NodeType),
-  owner: ZReference
+  tag: string().optional(),
+  owner: string().optional(),
+  author: string().optional(),
+  published: boolean()
 })
 
 export const ZValue = union([ZStringValue, ZNumberValue])

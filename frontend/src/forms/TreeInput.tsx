@@ -97,6 +97,7 @@ const Selected = styled.div`
 
 const NodeTree = styled.ul`
   padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
   &,
   ul {
     margin: 0;
@@ -106,14 +107,12 @@ const NodeTree = styled.ul`
 `
 
 const NodeNode = styled.li<{ 'data-depth': number }>`
-  font-weight: 400;
   padding: 0;
   font-weight: 300;
-  border-radius: 4px;
+  color: #666;
 
   &:hover > * > .name {
-    border-radius: 4px;
-    background-color: ${Palette.hover} !important;
+    font-weight: 400;
   }
 
   .name {

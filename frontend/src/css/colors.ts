@@ -9,11 +9,12 @@ enum Colors {
   color8 = '#ced4da',
   color9 = '#999',
   color10 = '#666',
-  color11 = '#333'
+  color11 = '#333',
+  color12 = '#e5e9ee'
 }
 
 export enum Palette {
-  hover = Colors.color8,
+  hover = Colors.color12,
   selected = Colors.color6,
   selectedBorder = Colors.color4,
   border = Colors.color8,
