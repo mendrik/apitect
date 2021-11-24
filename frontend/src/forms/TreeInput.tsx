@@ -1,11 +1,12 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { cond, not, propEq, propOr } from 'ramda'
+import { all, cond, not, propEq, propOr } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, {
   createContext,
   Dispatch,
   HTMLAttributes,
+  MouseEvent,
   ReactNode,
   SetStateAction,
   useContext,
@@ -27,10 +28,9 @@ import {
   StyledTreeInput
 } from '../css/TreeInput.css'
 import { useFocusOutside } from '../hooks/useFocusOutside'
-import { useOnActivate } from '../hooks/useOnActivate'
 import { SetAccess, useSet } from '../hooks/useSet'
 import { TreeNode } from '../shared/algebraic/treeNode'
-import { Jsx, Maybe } from '../shared/types/generic'
+import { Fn, Jsx, Maybe } from '../shared/types/generic'
 import { offset, sameWidth } from '../utils/sameWidthMod'
 import { stopPropagation as sp } from '../utils/stopPropagation'
 import { ErrorInfo } from './ErrorInfo'
@@ -54,10 +54,10 @@ type OwnProps<T extends WithId> = {
 
 const TreeInputContext = createContext<
   TreeSelectConfig<any> & {
-    setShow: Dispatch<SetStateAction<boolean>>
     setSelected: Dispatch<SetStateAction<any>>
     focusedNodeState: [Maybe<TreeNode<any>>, Dispatch<SetStateAction<Maybe<TreeNode<any>>>>]
     openStates: SetAccess<TreeNode<any>>
+    close: Fn
   }
 >({} as any)
 
@@ -77,22 +77,21 @@ export const TreeInput = <T extends WithId>({
   const [selected, setSelected] = useState<Maybe<T>>()
 
   const focusedNodeState = useState<Maybe<TreeNode<T>>>()
-  const openStates = useSet<TreeNode<T>>()
+  const openStates = useSet<TreeNode<T>>(new Set([tree]))
 
   const target = useRef<HTMLDivElement>(null)
   const container = useRef<HTMLDivElement>(null)
 
+  const close = sp(() => {
+    const el = target.current?.firstElementChild as Maybe<HTMLElement>
+    el?.focus()
+    setShow(false)
+  })
+
   const keyMap = cond([
     [propEq('code', 'Enter'), sp(() => setShow(not))],
     [propEq('code', 'Space'), sp(() => setShow(not))],
-    [
-      propEq('code', 'Escape'),
-      sp(() => {
-        setShow(false)
-        const el = target.current?.firstElementChild as Maybe<HTMLElement>
-        el?.focus()
-      })
-    ]
+    [propEq('code', 'Escape'), close]
   ])
 
   useFocusOutside(target, () => setShow(false))
@@ -129,10 +128,10 @@ export const TreeInput = <T extends WithId>({
           </div>
           <TreeInputContext.Provider
             value={{
+              close,
               openStates,
               focusedNodeState,
               setSelected,
-              setShow,
               nodeRender,
               name,
               onSelect,
@@ -163,29 +162,23 @@ type TreeNodeProps<T> = {
 }
 
 TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
-  const {
-    name,
-    nodeRender,
-    onSelect,
-    selectionFilter,
-    setShow,
-    setSelected,
-    focusedNodeState,
-    openStates
-  } = useContext(TreeInputContext)
-  const [focusedNode, setFocusedNode] = focusedNodeState
+  const { name, close, nodeRender, onSelect, setSelected, focusedNodeState, openStates } =
+    useContext(TreeInputContext)
   const { add, remove, has: isOpen } = openStates
+  const [focusedNode, setFocusedNode] = focusedNodeState
   const hasChildren = isNotNilOrEmpty(node.children)
 
-  const nameRef = useOnActivate<HTMLSpanElement>(() => {
+  const activate = (ev: MouseEvent) => {
     onSelect(node)
     setSelected(node.value)
-    setShow(false)
-  })
+    close(ev)
+  }
+
+  const isVisible = (node: TreeNode<T>) => all(isOpen, node.$pathToRoot())
 
   const focus = (method: 'next' | 'prev') =>
     sp(() => {
-      const id = focusedNode?.[method](isOpen)?.value.id
+      const id = focusedNode?.[method](isVisible)?.value.id
       document.getElementById(`${name}-${id}`)?.focus()
     })
 
@@ -193,7 +186,9 @@ TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
     [propEq('code', 'ArrowDown'), focus('next')],
     [propEq('code', 'ArrowUp'), focus('prev')],
     [propEq('code', 'ArrowLeft'), sp(() => remove(node))],
-    [propEq('code', 'ArrowRight'), sp(() => add(node))]
+    [propEq('code', 'ArrowRight'), sp(() => add(node))],
+    [propEq('key', 'Enter'), sp(activate)],
+    [propEq('code', 'Space'), sp(activate)]
   ])
 
   return (
@@ -203,7 +198,14 @@ TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
       data-children={hasChildren}
       className={clsx({ thick: isOpen(node) })}
     >
-      <Tuple first={Scale.CONTENT} second={Scale.MAX}>
+      <Tuple
+        onFocus={() => setFocusedNode(node)}
+        first={Scale.CONTENT}
+        second={Scale.MAX}
+        tabIndex={0}
+        id={`${name}-${node.value.id}`}
+        onClick={activate}
+      >
         {hasChildren ? (
           <div className="icn" onClick={() => (isOpen(node) ? remove(node) : add(node))}>
             <IconChevronRight
@@ -216,15 +218,7 @@ TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
         ) : (
           <div className="icn" />
         )}
-        <span
-          tabIndex={0}
-          onFocus={() => setFocusedNode(node)}
-          className="name"
-          id={`${name}-${node.value.id}`}
-          ref={!selectionFilter || selectionFilter(node) ? nameRef : undefined}
-        >
-          {nodeRender(node.value)}
-        </span>
+        <span className="name">{nodeRender(node.value)}</span>
       </Tuple>
       {hasChildren && (
         <ul hidden={!isOpen(node)}>

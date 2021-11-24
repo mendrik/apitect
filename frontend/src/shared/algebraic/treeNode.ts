@@ -4,6 +4,7 @@ import {
   defaultTo,
   equals,
   findIndex,
+  last,
   map,
   omit,
   pipe,
@@ -121,8 +122,10 @@ export class TreeNode<T> {
   first = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
     this.flatten(Strategy.Depth).find(node => pred(node.value))
 
-  pathToRoot = (): T[] =>
-    this.parent ? [this.parent.value].concat(...this.parent.pathToRoot()) : []
+  $pathToRoot = (): TreeNode<T>[] =>
+    this.parent ? [this.parent].concat(...this.parent.$pathToRoot()) : []
+
+  pathToRoot = (): T[] => this.$pathToRoot().map(prop('value'))
 
   insert = (underNodePred: (v: T) => boolean, v: T, position?: number): ChildOperation<T> => {
     const parent = this.first(underNodePred) ?? this
@@ -181,11 +184,15 @@ export class TreeNode<T> {
     return this.parent != null ? this.parent.depth + 1 : 0
   }
 
+  get root(): TreeNode<T> {
+    return last(this.$pathToRoot())!
+  }
+
   next = (pred: Pred = RT, strategy: Strategy = Strategy.Depth): Maybe<TreeNode<T>> =>
-    $next(equals(this))(this.flatten(strategy).filter(pred))
+    $next(equals(this))(this.root.flatten(strategy).filter(pred))
 
   prev = (pred: Pred = RT, strategy: Strategy = Strategy.Depth): Maybe<TreeNode<T>> =>
-    $prev(equals(this))(this.flatten(strategy).filter(pred))
+    $prev(equals(this))(this.root.flatten(strategy).filter(pred))
 
   toString = () =>
     JSON.stringify(
