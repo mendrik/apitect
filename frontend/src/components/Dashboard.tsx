@@ -56,7 +56,7 @@ const Dashboard = () => {
                   onSelect={node => console.log(node)}
                   containerClasses="mb-3"
                   selectionFilter={T}
-                  itemRender={prop('name')}
+                  nodeRender={prop('name')}
                 />
                 <DateInput name="date" label="form.fields.number" className="mb-3" />
                 <TagInput

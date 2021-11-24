@@ -14,7 +14,7 @@ import { useLocation } from '../../hooks/useLocation'
 import { Node } from '../../shared/types/domain/node'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '../../shared/types/forms/newNode'
-import { Fn, Maybe } from '../../shared/types/generic'
+import { Maybe } from '../../shared/types/generic'
 import { capitalize, spaceOrEnter } from '../../shared/utils/ramda'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { ModalFC } from '../ModalStub'
@@ -80,7 +80,7 @@ const NewNode: ModalFC = ({ close }) => {
     [propEq('key', 'ArrowUp'), pd(focus(-COLS))],
     [propEq('key', 'ArrowRight'), pd(focus(1))],
     [propEq('key', 'ArrowLeft'), pd(focus(-1))]
-  ]) as Fn
+  ])
 
   return (
     <SocketForm

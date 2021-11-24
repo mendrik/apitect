@@ -14,7 +14,7 @@ import {
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { Strategy, TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/node'
-import { Fn, Jsx, Maybe } from '../../shared/types/generic'
+import { Jsx, Maybe } from '../../shared/types/generic'
 import { next, prev } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
@@ -51,7 +51,7 @@ export const VisualTree = ({ children }: Jsx) => {
     [propEq('key', 'Delete'), pd(() => selectedNode && deleteNodeFx(selectedNode.value.id))],
     [propEq('key', 'n'), pd(() => newNodeFx(selectedNode?.value))],
     [propEq('key', 'Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))]
-  ]) as Fn
+  ])
 
   return (
     <div onKeyDown={keyMap}>

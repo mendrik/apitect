@@ -7,14 +7,17 @@ import {
   map,
   omit,
   pipe,
+  Pred,
   prop,
   propOr,
   reduce,
+  T as RT,
   unless
 } from 'ramda'
 import { isArray, isFunction } from 'ramda-adjunct'
 
 import { Maybe } from '../types/generic'
+import { next, prev } from '../utils/ramda'
 
 export enum Strategy {
   Depth,
@@ -177,6 +180,12 @@ export class TreeNode<T> {
   get depth(): number {
     return this.parent != null ? this.parent.depth + 1 : 0
   }
+
+  next = (pred: Pred = RT, strategy: Strategy = Strategy.Breadth): Maybe<TreeNode<T>> =>
+    next(equals(this))(this.flatten(strategy).filter(pred))
+
+  prev = (pred: Pred = RT, strategy: Strategy = Strategy.Breadth): Maybe<TreeNode<T>> =>
+    prev(equals(this))(this.flatten(strategy).filter(pred))
 
   toString = () =>
     JSON.stringify(
