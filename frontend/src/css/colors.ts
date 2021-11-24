@@ -6,7 +6,7 @@ enum Colors {
   color5 = '#1c7fa1',
 
   color6 = '#d9e8b5',
-  color8 = '#e5ecf3',
+  color8 = '#ced4da',
   color9 = '#999',
   color10 = '#666',
   color11 = '#333'
@@ -17,6 +17,7 @@ export enum Palette {
   selected = Colors.color6,
   selectedBorder = Colors.color4,
   border = Colors.color8,
+  darkBorder = Colors.color9,
   link = Colors.color5,
   textDisabled = Colors.color9,
   iconBorder = Colors.color9,
