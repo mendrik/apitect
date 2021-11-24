@@ -17,7 +17,7 @@ import {
 import { isArray, isFunction } from 'ramda-adjunct'
 
 import { Maybe } from '../types/generic'
-import { next, prev } from '../utils/ramda'
+import { next as $next, prev as $prev } from '../utils/ramda'
 
 export enum Strategy {
   Depth,
@@ -181,11 +181,11 @@ export class TreeNode<T> {
     return this.parent != null ? this.parent.depth + 1 : 0
   }
 
-  next = (pred: Pred = RT, strategy: Strategy = Strategy.Breadth): Maybe<TreeNode<T>> =>
-    next(equals(this))(this.flatten(strategy).filter(pred))
+  next = (pred: Pred = RT, strategy: Strategy = Strategy.Depth): Maybe<TreeNode<T>> =>
+    $next(equals(this))(this.flatten(strategy).filter(pred))
 
-  prev = (pred: Pred = RT, strategy: Strategy = Strategy.Breadth): Maybe<TreeNode<T>> =>
-    prev(equals(this))(this.flatten(strategy).filter(pred))
+  prev = (pred: Pred = RT, strategy: Strategy = Strategy.Depth): Maybe<TreeNode<T>> =>
+    $prev(equals(this))(this.flatten(strategy).filter(pred))
 
   toString = () =>
     JSON.stringify(
