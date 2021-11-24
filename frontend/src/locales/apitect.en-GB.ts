@@ -61,6 +61,9 @@ const en = {
           unit: 'Unit',
           precision: 'Precision'
         }
+      },
+      projectUserSettings: {
+        title: 'Project users'
       }
     },
     navbar: {

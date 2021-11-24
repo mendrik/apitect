@@ -6,8 +6,8 @@ import { failOn } from '~shared/utils/failOn'
 
 import { validateTree, withTree } from '../services'
 
-export const nodeDelete: ServerApiMethod<'nodeDelete'> = ({ email, payload: id }) =>
-  withTree(email)(root => root.delete(propEq('id', id)))
+export const nodeDelete: ServerApiMethod<'nodeDelete'> = ({ docId, payload: id }) =>
+  withTree(docId)(root => root.delete(propEq('id', id)))
     .then(failOn<ChildOperation<Node>>(propSatisfies(isNil, 'node'), 'Node not found'))
     .then(validateTree)
     .then(op => ({

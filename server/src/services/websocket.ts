@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { SocketStream } from 'fastify-websocket'
 import { verify } from 'jsonwebtoken'
 import { ApiMethod } from '~shared/api'
-import { ZApiResponse } from '~shared/apiResponse'
+import { ServerParam, ZApiResponse } from '~shared/apiResponse'
 import { ZApiRequest } from '~shared/types/apiRequest'
 import { JwtPayload } from '~shared/types/response/token'
 import { logger } from '~shared/utils/logger'
@@ -28,7 +28,7 @@ const openWebsocket = (connection: SocketStream) => {
       return payload
     }
   try {
-    const { email, name } = JwtPayload.parse(
+    const { email, name, docId } = JwtPayload.parse(
       verify(connection.socket.protocol, `${config.TOKEN_KEY}`)
     )
     connection.socket.on('message', (buffer: Buffer) => {
@@ -37,8 +37,12 @@ const openWebsocket = (connection: SocketStream) => {
         const apiRequest = ZApiRequest.parse(data)
         logger.info(`${name} [${email}]/${apiRequest.method}`, data)
         const apiCall = apiMapping[apiRequest.method]
-        const param = { email, payload: apiRequest.payload } as any
-        return apiCall(param).then(send(apiRequest.id, apiRequest.method))
+        const param: ServerParam<ApiMethod> = {
+          email,
+          payload: apiRequest.payload,
+          docId
+        }
+        return apiCall(param as any).then(send(apiRequest.id, apiRequest.method))
       } catch (e) {
         logger.error('Error in socket', e)
       }

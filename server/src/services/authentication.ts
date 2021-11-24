@@ -19,13 +19,13 @@ import { body, endpoint, noContent, user } from './endpoint'
 
 const pHashSync = promiseFn(hashSync)
 
-const signedToken = ({ email, name }: Record<string, string>) =>
-  sign({ email, name }, `${config.TOKEN_KEY}`, {
+const signedToken = ({ email, name, docId }: Record<string, string>) =>
+  sign({ email, name, docId }, `${config.TOKEN_KEY}`, {
     expiresIn: '90d'
   })
 
 const refreshToken = async (user: User): Promise<Token> => {
-  const token = signedToken({ email: user.email, name: user.name })
+  const token = signedToken({ email: user.email, name: user.name, docId: user.lastDocument })
   await collection(Collections.users).updateOne({ email: user.email }, { $set: { token } })
   return { token }
 }
@@ -45,7 +45,7 @@ const register = endpoint({ register: body(ZRegister) }, ({ register }) =>
     const docId = newId()
     const rootId = newId()
     const token = {
-      token: signedToken({ email: data.email, name: data.name })
+      token: signedToken({ email: data.email, name: data.name, docId })
     }
     await collection(Collections.users).insertOne(
       { ...data, ...token, lastDocument: docId },

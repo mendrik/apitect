@@ -8,9 +8,9 @@ import { collection, Collections } from './database'
 import { getLastDocument } from './document'
 
 export const withTree =
-  (email: string) =>
+  (docId: string) =>
   <T extends Node>(fn: (root: TreeNode<Node>) => ChildOperation<T>): Promise<ChildOperation<T>> =>
-    getLastDocument(email).then(async doc => {
+    getLastDocument(docId).then(async doc => {
       const tree = toTreeNode(doc.tree)
       const res = await fn(tree)
       const docTree = ZNode.parse(res.self.extract())

@@ -7,7 +7,8 @@ export const ZToken = object({
 
 export const JwtPayload = object({
   name: string().nonempty(),
-  email: string().nonempty()
+  email: string().nonempty(),
+  docId: string().nonempty()
 })
 
 export type Token = TypeOf<typeof ZToken>

@@ -4,8 +4,8 @@ import { newId } from '~shared/codecs/idCodec'
 
 import { validateTree, withTree } from '../services/'
 
-export const nodeCreate: ServerApiMethod<'nodeCreate'> = ({ email, payload: newNode }) =>
-  withTree(email)(root =>
+export const nodeCreate: ServerApiMethod<'nodeCreate'> = ({ docId, payload: newNode }) =>
+  withTree(docId)(root =>
     root.insert(propEq('id', newNode.parentNode), {
       id: newId(),
       name: newNode.name,

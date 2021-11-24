@@ -3,10 +3,10 @@ import { TypeOf } from 'zod/lib/types'
 
 import { idCodec } from '../../codecs/idCodec'
 
-export const ZProjectUsers = object({
+export const ZProjectUsersSettings = object({
   nodeId: idCodec,
   emailId: idCodec,
   passwordId: idCodec
 })
 
-export type ProjectUsers = TypeOf<typeof ZProjectUsers>
+export type ProjectUsersSettings = TypeOf<typeof ZProjectUsersSettings>

@@ -41,10 +41,15 @@ export const Modals = () => {
         name="new-node"
       />
       <ModalStub
-        title={`modals.nodeSettings.title`}
+        title="modals.nodeSettings.title"
         titleOptions={{ property: selectedNode?.value.name ?? '' }}
         from={() => import('./modals/NodeSettings')}
         name="node-settings"
+      />
+      <ModalStub
+        title={`modals.projectUserSettings.title`}
+        from={() => import('./modals/ProjectUsersSettings')}
+        name="project-user-settings"
       />
     </>
   )

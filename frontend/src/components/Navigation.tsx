@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import { ReactComponent as Logo } from '../assets/logo.svg'
 import { userContext } from '../contexts/withUser'
 import { Palette } from '../css/colors'
+import { projectUserSettingsFx } from '../events/project'
 import { useLogout } from '../hooks/useLogout'
 import $appStore from '../stores/$appStore'
 import { HGrid } from './generic/HGrid'
@@ -58,7 +59,7 @@ export const Navigation = () => {
                   <span>View</span>
                 </Tuple>
               </Item>
-              <Item>
+              <Item onClick={projectUserSettingsFx}>
                 <Tuple first={Scale.CONTENT}>
                   <IconUsers className="icn" stroke={1} />
                   <span>Users</span>

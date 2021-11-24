@@ -10,6 +10,7 @@ import { Enum } from '~shared/types/domain/enum'
 import { User } from '~shared/types/domain/user'
 import { Value } from '~shared/types/domain/values/value'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
+import { ProjectUsersSettings } from '~shared/types/forms/projectUsersSettings'
 import { ensure } from '~shared/utils/ramda'
 
 import { config } from './config'
@@ -21,6 +22,7 @@ export enum Collections {
   users = 'users',
   documents = 'documents',
   nodeSettings = 'nodeSettings',
+  projectUsersSettings = 'projectUsersSettings',
   values = 'values',
   enums = 'enums'
 }
@@ -29,6 +31,7 @@ export type CollectionMap = {
   users: User
   documents: Document
   nodeSettings: NodeSettings
+  projectUsersSettings: ProjectUsersSettings
   values: Value
   enums: Enum
 }
@@ -48,6 +51,7 @@ export const connect = async (): Promise<MongoClient> => {
   await db.collection(Collections.documents).createIndex({ id: 1 }, { unique: true })
   await db.collection(Collections.documents).createIndex({ owner: 1 })
   await db.collection(Collections.nodeSettings).createIndex({ nodeId: 1 }, { unique: true })
+  await db.collection(Collections.projectUsersSettings).createIndex({ docId: 1 }, { unique: true })
   await db.collection(Collections.values).createIndex({ nodeId: 1 })
   await db.collection(Collections.values).createIndex({ tag: 1 })
   await db.collection(Collections.values).createIndex({ author: 1 })

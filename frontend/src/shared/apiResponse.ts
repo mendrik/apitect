@@ -6,6 +6,7 @@ import { idCodec } from './codecs/idCodec'
 
 export type ServerParam<T extends ApiMethod> = {
   email: string
+  docId: string
   payload: ApiParam<T>
 }
 

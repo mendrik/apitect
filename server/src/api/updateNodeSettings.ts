@@ -1,23 +1,21 @@
 import { assoc, propEq } from 'ramda'
 import { ServerApiMethod } from '~shared/apiResponse'
 
-import { getLastDocumentId, withTree } from '../services'
+import { withTree } from '../services'
 import { collection, Collections } from '../services/database'
 
 export const updateNodeSettings: ServerApiMethod<'updateNodeSettings'> = ({
-  email,
+  docId,
   payload: nodeSettings
 }) =>
-  withTree(email)(root =>
+  withTree(docId)(root =>
     root.update(propEq('id', nodeSettings.nodeId), assoc('name', nodeSettings.name))
   ).then(op =>
-    getLastDocumentId(email).then(documentId =>
-      collection(Collections.nodeSettings)
-        .findOneAndReplace(
-          { nodeId: nodeSettings.nodeId },
-          { ...nodeSettings, documentId },
-          { upsert: true }
-        )
-        .then(() => op.self.extract())
-    )
+    collection(Collections.nodeSettings)
+      .findOneAndReplace(
+        { nodeId: nodeSettings.nodeId },
+        { ...nodeSettings, docId },
+        { upsert: true }
+      )
+      .then(() => op.self.extract())
   )
