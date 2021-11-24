@@ -6,7 +6,7 @@ import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { DeleteIcon } from '../components/generic/DeleteIcon'
-import { Fn, Jsx } from '../shared/types/generic'
+import { Jsx } from '../shared/types/generic'
 import { preventDefault } from '../utils/preventDefault'
 import { ErrorInfo } from './ErrorInfo'
 
@@ -75,7 +75,7 @@ export const TagInput = <T extends Tag>({
         })
       )
     ]
-  ]) as Fn
+  ])
 
   return (
     <StyledTagInput
