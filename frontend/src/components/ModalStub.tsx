@@ -8,12 +8,13 @@ import { removeParams } from 'shared/utils/url'
 
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
+import { ModalNames } from '../shared/types/modals'
 
 export type ModalFC = ({ close }: { close: Fn }) => JSX.Element | null
 
 type OwnProps = {
   from: () => Promise<{ default: ModalFC }>
-  name: string
+  name: ModalNames
   title: TFuncKey
   titleOptions?: Record<string, string>
 }

@@ -11,7 +11,7 @@ const state = () => sample($appStore).getState()
 export const projectUserSettingsFx = createEffect(() =>
   state()
     .api.projectUsersSettings()
-    .then(tap(params => openModal({ name: ModalNames.NODE_SETTINGS, params })))
+    .then(tap(params => openModal({ name: ModalNames.PROJECT_USER_SETTINGS, params })))
 )
 
 export const updateProjectUserSettingsFx = createEffect<Api['updateProjectUsersSettings']>(

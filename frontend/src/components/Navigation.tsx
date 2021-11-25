@@ -1,4 +1,11 @@
-import { IconDeviceFloppy, IconEyeglass, IconLogin, IconTag, IconUsers } from '@tabler/icons'
+import {
+  IconDeviceFloppy,
+  IconEyeglass,
+  IconKey,
+  IconLogin,
+  IconTag,
+  IconUsers
+} from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React, { useContext } from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
@@ -24,6 +31,7 @@ const Item = styled(Nav.Item)`
 
   span {
     color: ${Palette.iconText};
+    white-space: nowrap;
   }
 
   &:hover {
@@ -63,6 +71,12 @@ export const Navigation = () => {
                 <Tuple first={Scale.CONTENT}>
                   <IconUsers className="icn" stroke={1} />
                   <span>Users</span>
+                </Tuple>
+              </Item>
+              <Item>
+                <Tuple first={Scale.CONTENT}>
+                  <IconKey className="icn" stroke={1} />
+                  <span>API keys</span>
                 </Tuple>
               </Item>
               <Item>

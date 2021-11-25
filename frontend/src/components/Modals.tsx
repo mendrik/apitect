@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { closeModal, openModal } from '../events/modals'
+import { ModalNames } from '../shared/types/modals'
 import { addParams, removeParams } from '../shared/utils/url'
 import $appStore from '../stores/$appStore'
 import { ModalStub } from './ModalStub'
@@ -28,28 +29,28 @@ export const Modals = () => {
       <ModalStub
         title="modals.authenticate.title"
         from={() => import('./modals/Authenticate')}
-        name="login"
+        name={ModalNames.LOGIN}
       />
       <ModalStub
         title="modals.forgotPassword.title"
         from={() => import('./modals/ForgotPasswordForm')}
-        name="forgot-password"
+        name={ModalNames.FORGOT_PASSWORD}
       />
       <ModalStub
         title="modals.newNode.title"
         from={() => import('./modals/NewNode')}
-        name="new-node"
+        name={ModalNames.NEW_NODE}
       />
       <ModalStub
         title="modals.nodeSettings.title"
         titleOptions={{ property: selectedNode?.value.name ?? '' }}
         from={() => import('./modals/NodeSettings')}
-        name="node-settings"
+        name={ModalNames.NODE_SETTINGS}
       />
       <ModalStub
         title={`modals.projectUserSettings.title`}
         from={() => import('./modals/ProjectUsersSettings')}
-        name="project-user-settings"
+        name={ModalNames.PROJECT_USER_SETTINGS}
       />
     </>
   )
