@@ -1,6 +1,6 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { all, cond, not, propEq, propOr } from 'ramda'
+import { all, cond, not, propEq, propOr, T as RT } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, {
   createContext,
@@ -42,7 +42,7 @@ type TreeSelectConfig<T extends WithId> = {
   name: string
   onSelect: (node: Maybe<T>) => void
   nodeRender: (node: T) => ReactNode
-  selectionFilter: (node: TreeNode<T>) => boolean
+  selectionFilter?: (node: TreeNode<T>) => boolean
 }
 
 type OwnProps<T extends WithId> = {
@@ -68,7 +68,7 @@ export const TreeInput = <T extends WithId>({
   onSelect,
   containerClasses,
   children,
-  selectionFilter,
+  selectionFilter = RT,
   nodeRender,
   ...props
 }: Jsx<OwnProps<T>>) => {

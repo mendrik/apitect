@@ -71,7 +71,8 @@ export const NodeNode = styled.li<{ 'data-depth': number }>`
   font-weight: 300;
   color: #666;
 
-  &:hover > * > .name {
+  &:hover > * > .name,
+  &:focus-within > * > .name {
     font-weight: 400;
   }
 

@@ -4,7 +4,6 @@ import { TypeOf } from 'zod/lib/types'
 import { idCodec } from '../../codecs/idCodec'
 
 export const ZProjectUsersSettings = object({
-  nodeId: idCodec,
   emailId: idCodec,
   passwordId: idCodec
 })

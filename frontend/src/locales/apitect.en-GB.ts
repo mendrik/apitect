@@ -63,7 +63,8 @@ const en = {
         }
       },
       projectUserSettings: {
-        title: 'Project users'
+        title: 'Project users',
+        info: 'Make sure email and password field belong to the same array-typed parent!'
       }
     },
     navbar: {
@@ -76,6 +77,8 @@ const en = {
         nodeName: 'Name',
         nodeType: 'Type',
         email: 'E-Mail',
+        emailField: 'E-Mail',
+        passwordField: 'E-Mail',
         password: 'Password',
         passwordRepeat: 'Repeat password',
         rememberMe: 'Remember me',
