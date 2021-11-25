@@ -31,3 +31,61 @@
 - MultiTagInput
 - ListInput
 - TreeInput: arrow keys, remember open state, open selected
+
+# Type expansion
+
+- Color
+  ```typescript
+  export default {
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number,
+    hex: string,
+    alphaHex: string
+  }
+  ```
+
+- Location
+  ```typescript
+  export default {
+    longitude: number,
+    latitude: number
+  }
+  ``` 
+
+- Binary
+  ```typescript
+  export default {
+    contentType: string,
+    length: number,
+    base64: string
+  }
+  ```   
+  
+- Reference
+  ```typescript
+  export default {
+    path: string[]
+  }
+  ```   
+
+- String
+  ```typescript
+  export default string | '***'
+  ```   
+
+- Date
+  ```typescript
+  export default {
+    date: string,
+    timeZone: string
+  }
+  ```   
+
+- Richtext
+  ```typescript
+  export default {
+    html: string
+  }
+  ```   
