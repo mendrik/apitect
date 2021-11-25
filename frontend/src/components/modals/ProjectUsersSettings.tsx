@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
-import { path, prop } from 'ramda'
+import { prop } from 'ramda'
 import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -38,20 +38,16 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
       <TreeInput
         label="form.fields.emailField"
         tree={root}
+        name="emailId"
         containerClasses="mb-3"
         nodeRender={prop('name')}
-        {...form.register('emailId', {
-          setValueAs: path(['value', 'id'])
-        })}
       />
       <TreeInput
         label="form.fields.passwordField"
         tree={root}
+        name="passwordId"
         containerClasses="mb-3"
         nodeRender={prop('name')}
-        {...form.register('passwordId', {
-          setValueAs: path(['value', 'id'])
-        })}
       />
     </SocketForm>
   )

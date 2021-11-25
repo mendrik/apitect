@@ -5,7 +5,6 @@ import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, {
   createContext,
   Dispatch,
-  HTMLAttributes,
   MouseEvent,
   ReactNode,
   SetStateAction,
@@ -47,8 +46,7 @@ type OwnProps<T extends WithId> = {
   tree: TreeNode<T>
   label: TFuncKey
   containerClasses: string
-} & TreeSelectConfig<T> &
-  HTMLAttributes<HTMLDivElement>
+} & TreeSelectConfig<T>
 
 const TreeInputContext = createContext<
   TreeSelectConfig<any> & {
@@ -64,7 +62,6 @@ export const TreeInput = <T extends WithId>({
   label,
   name,
   containerClasses,
-  children,
   selectionFilter = RT,
   nodeRender,
   ...props
@@ -79,8 +76,6 @@ export const TreeInput = <T extends WithId>({
   const target = useRef<HTMLDivElement>(null)
   const container = useRef<HTMLDivElement>(null)
 
-  const { setValue } = useFormContext()
-
   const close = sp(() => {
     const el = target.current?.firstElementChild as Maybe<HTMLElement>
     el?.focus()
@@ -94,6 +89,7 @@ export const TreeInput = <T extends WithId>({
   ])
 
   useFocusOutside(target, () => setShow(false))
+  const { setValue } = useFormContext()
 
   return (
     <StyledTreeInput
@@ -171,12 +167,12 @@ TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
   const hasChildren = isNotNilOrEmpty(node.children)
 
   const activate = (ev: MouseEvent) => {
-    setValue(name, node)
+    setValue(name, node.value.id)
     setSelected(node.value)
     close(ev)
   }
 
-  const isVisible = (node: TreeNode<T>) => all(isOpen, node.$pathToRoot())
+  const isVisible = (n: TreeNode<T>) => all(isOpen, n.$pathToRoot())
 
   const focus = (method: 'next' | 'prev') =>
     sp(() => {

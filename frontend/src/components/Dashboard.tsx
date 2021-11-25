@@ -1,13 +1,12 @@
 import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import { append, prop, T, without } from 'ramda'
+import { append, without } from 'ramda'
 import React, { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
 import { DateInput } from '../forms/DateInput'
 import { TagInput } from '../forms/TagInput'
-import { TreeInput } from '../forms/TreeInput'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Node } from '../shared/types/domain/node'
 import { Tag } from '../shared/types/domain/tag'
@@ -49,15 +48,6 @@ const Dashboard = () => {
             </Column>
             <Column>
               <FormProvider {...form}>
-                <TreeInput
-                  name="tree"
-                  label="form.fields.number"
-                  tree={root}
-                  onSelect={node => console.log(node)}
-                  containerClasses="mb-3"
-                  selectionFilter={T}
-                  nodeRender={prop('name')}
-                />
                 <DateInput name="date" label="form.fields.number" className="mb-3" />
                 <TagInput
                   name="tags"
