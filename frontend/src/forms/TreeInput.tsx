@@ -66,11 +66,11 @@ export const TreeInput = <T extends WithId>({
   nodeRender,
   ...props
 }: Jsx<OwnProps<T>>) => {
-  const { setValue, watch } = useFormContext()
+  const { setValue, getValues } = useFormContext()
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
   const [selected, setSelected] = useState<Maybe<T>>(
-    () => tree.first(propEq('id', watch(name)))?.value
+    () => tree.first(propEq('id', getValues(name)))?.value
   )
 
   const focusedNodeState = useState<Maybe<TreeNode<T>>>()

@@ -29,27 +29,29 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
   const root = useMemo(() => TreeNode.from<Node, 'children'>('children')(tree), [tree])
 
   return (
-    <SocketForm
-      form={form}
-      onValid={updateProjectUserSettingsFx}
-      close={close}
-      submitButton="common.save"
-    >
-      <TreeInput
-        label="form.fields.emailField"
-        tree={root}
-        name="emailId"
-        containerClasses="mb-3"
-        nodeRender={prop('name')}
-      />
-      <TreeInput
-        label="form.fields.passwordField"
-        tree={root}
-        name="passwordId"
-        containerClasses="mb-3"
-        nodeRender={prop('name')}
-      />
-    </SocketForm>
+    tree && (
+      <SocketForm
+        form={form}
+        onValid={updateProjectUserSettingsFx}
+        close={close}
+        submitButton="common.save"
+      >
+        <TreeInput
+          label="form.fields.emailField"
+          tree={root}
+          name="emailId"
+          containerClasses="mb-3"
+          nodeRender={prop('name')}
+        />
+        <TreeInput
+          label="form.fields.passwordField"
+          tree={root}
+          name="passwordId"
+          containerClasses="mb-3"
+          nodeRender={prop('name')}
+        />
+      </SocketForm>
+    )
   )
 }
 
