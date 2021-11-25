@@ -1,4 +1,4 @@
-import { IconFolderPlus, IconSettings, IconTrash } from '@tabler/icons'
+import { IconFileImport, IconFolderPlus, IconSettings, IconTrash, IconUpload } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React from 'react'
 
@@ -15,6 +15,9 @@ export const ProjectTreeHeader = () => {
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div />
       <HGrid>
+        <WithTooltip tooltipText="Import" shortcut="I">
+          <Icon icon={IconFileImport} />
+        </WithTooltip>
         <WithTooltip tooltipText="Delete selected node" shortcut="Del">
           <Icon
             icon={IconTrash}
