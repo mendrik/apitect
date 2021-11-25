@@ -56,9 +56,9 @@ export const Selected = styled.div`
 `
 
 export const NodeTree = styled.ul`
-  padding-left: 0.5rem !important;
-  padding-right: 0.5rem !important;
-  &,
+  list-style: none;
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
   ul {
     margin: 0;
     padding: 0;
