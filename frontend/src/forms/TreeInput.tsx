@@ -13,7 +13,8 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { Overlay } from 'react-bootstrap'
+import { FormControl, Overlay } from 'react-bootstrap'
+import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { DeleteIcon } from '../components/generic/DeleteIcon'
@@ -33,13 +34,11 @@ import { Fn, Jsx, Maybe } from '../shared/types/generic'
 import { offset, sameWidth } from '../utils/sameWidthMod'
 import { stopPropagation as sp } from '../utils/stopPropagation'
 import { ErrorInfo } from './ErrorInfo'
-import { TextInput } from './TextInput'
 
 type WithId = { id: string }
 
 type TreeSelectConfig<T extends WithId> = {
   name: string
-  onSelect?: (node: Maybe<T>) => void
   nodeRender: (node: T) => ReactNode
   selectionFilter?: (node: TreeNode<T>) => boolean
 }
@@ -64,7 +63,6 @@ export const TreeInput = <T extends WithId>({
   tree,
   label,
   name,
-  onSelect,
   containerClasses,
   children,
   selectionFilter = RT,
@@ -80,6 +78,8 @@ export const TreeInput = <T extends WithId>({
 
   const target = useRef<HTMLDivElement>(null)
   const container = useRef<HTMLDivElement>(null)
+
+  const { setValue } = useFormContext()
 
   const close = sp(() => {
     const el = target.current?.firstElementChild as Maybe<HTMLElement>
@@ -108,7 +108,7 @@ export const TreeInput = <T extends WithId>({
       <DeleteIcon
         onPointerDown={() => {
           setSelected(undefined)
-          onSelect?.(undefined)
+          setValue(name, undefined)
           setShow(false)
         }}
       />
@@ -121,8 +121,14 @@ export const TreeInput = <T extends WithId>({
         placement="bottom-start"
       >
         <NodeSelector hidden={!show}>
-          <div className="p-2">
-            <TextInput label="form.fields.search" name="search" />
+          <div className="mx-2">
+            <FormControl
+              className="w-100 m-auto mt-2"
+              size="sm"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
           </div>
           <TreeInputContext.Provider
             value={{
@@ -132,7 +138,6 @@ export const TreeInput = <T extends WithId>({
               setSelected,
               nodeRender,
               name,
-              onSelect,
               selectionFilter
             }}
           >
@@ -158,14 +163,15 @@ type TreeNodeProps<T> = {
 }
 
 TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
-  const { name, close, nodeRender, onSelect, setSelected, focusedNodeState, openStates } =
+  const { name, close, nodeRender, setSelected, focusedNodeState, openStates } =
     useContext(TreeInputContext)
+  const { setValue } = useFormContext()
   const { add, remove, has: isOpen } = openStates
   const [focusedNode, setFocusedNode] = focusedNodeState
   const hasChildren = isNotNilOrEmpty(node.children)
 
   const activate = (ev: MouseEvent) => {
-    onSelect?.(node)
+    setValue(name, node)
     setSelected(node.value)
     close(ev)
   }
