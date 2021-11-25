@@ -187,11 +187,17 @@ export class TreeNode<T> {
     return this.$pathToRoot().pop()!
   }
 
-  next = (pred: Pred = RT, strategy: Strategy = Strategy.Depth): Maybe<TreeNode<T>> =>
-    $next(equals(this))(this.root.flatten(strategy).filter(pred))
+  next = (
+    pred: Pred = RT,
+    isEqual: Pred = equals(this),
+    strategy: Strategy = Strategy.Depth
+  ): Maybe<TreeNode<T>> => $next(isEqual)(this.root.flatten(strategy).slice(1).filter(pred))
 
-  prev = (pred: Pred = RT, strategy: Strategy = Strategy.Depth): Maybe<TreeNode<T>> =>
-    $prev(equals(this))(this.root.flatten(strategy).filter(pred))
+  prev = (
+    pred: Pred = RT,
+    isEqual: Pred = equals(this),
+    strategy: Strategy = Strategy.Depth
+  ): Maybe<TreeNode<T>> => $prev(isEqual)(this.root.flatten(strategy).slice(1).filter(pred))
 
   toString = () =>
     JSON.stringify(

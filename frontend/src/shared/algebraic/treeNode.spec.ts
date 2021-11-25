@@ -53,6 +53,26 @@ describe('TreeNode', () => {
     expect(x.filter(isOdd)?.toArray()).toStrictEqual([1, 3, 5, 7])
   })
 
+  it('Node next', () => {
+    const start = TreeNode.of(6)
+    const x = TreeNode.of(1, [
+      TreeNode.of(2),
+      TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
+      TreeNode.of(4, [start])
+    ])
+    expect(start.next()?.value).toEqual(2)
+  })
+
+  it('Node prev', () => {
+    const start = TreeNode.of(2)
+    const x = TreeNode.of(1, [
+      start,
+      TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
+      TreeNode.of(4, [TreeNode.of(6)])
+    ])
+    expect(start.prev()?.value).toEqual(6)
+  })
+
   it('Tree equals', () => {
     const a = TreeNode.of(1, [TreeNode.of(2), TreeNode.of(3)])
     const b = TreeNode.of(1, [TreeNode.of(2), TreeNode.of(3)])

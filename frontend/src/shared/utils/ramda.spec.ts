@@ -17,6 +17,7 @@ describe('ramda', () => {
   it('prev(pred)(arr) works', () => {
     const arr = [1, 2, 3, 4, 5]
     expect(prev(equals(1))(arr)).toBe(5)
+    expect(prev(equals(2))(arr)).toBe(1)
     expect(prev(equals(3))(arr)).toBe(2)
     expect(prev(equals(5))(arr)).toBe(4)
   })
