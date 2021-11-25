@@ -13,6 +13,19 @@ export const sameWidth: Modifier<any, any> = {
   }
 }
 
+export const maxHeight: Modifier<any, any> = {
+  name: 'maxHeight',
+  enabled: true,
+  phase: 'beforeWrite',
+  requires: ['computeStyles'],
+  fn: ({ state }: any) => {
+    const reference: DOMRect = state.elements.reference.getBoundingClientRect()
+    const popper: DOMRect = state.rects.popper
+    const overflow = window.innerHeight - (reference.y + reference.height + popper.height)
+    state.styles.popper.height = `${popper.height + overflow - 10}px`
+  }
+}
+
 export const offset = {
   name: 'offset',
   options: {

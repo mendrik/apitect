@@ -17,7 +17,6 @@ import { Overlay } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { DeleteIcon } from '../components/generic/DeleteIcon'
-import { Scrollable } from '../components/generic/Scrollable'
 import { Scale, Tuple } from '../components/generic/Tuple'
 import {
   NodeNode,
@@ -40,7 +39,7 @@ type WithId = { id: string }
 
 type TreeSelectConfig<T extends WithId> = {
   name: string
-  onSelect: (node: Maybe<T>) => void
+  onSelect?: (node: Maybe<T>) => void
   nodeRender: (node: T) => ReactNode
   selectionFilter?: (node: TreeNode<T>) => boolean
 }
@@ -109,7 +108,7 @@ export const TreeInput = <T extends WithId>({
       <DeleteIcon
         onPointerDown={() => {
           setSelected(undefined)
-          onSelect(undefined)
+          onSelect?.(undefined)
           setShow(false)
         }}
       />
@@ -118,7 +117,6 @@ export const TreeInput = <T extends WithId>({
         target={target}
         container={container}
         popperConfig={{ modifiers: [offset, sameWidth] }}
-        flip
         show={show}
         placement="bottom-start"
       >
@@ -138,16 +136,14 @@ export const TreeInput = <T extends WithId>({
               selectionFilter
             }}
           >
-            <Scrollable fade style={{ height: 300 }}>
-              <NodeTree>
-                {mapIndexed(
-                  child => (
-                    <TreeInput.Node<T> node={child} key={propOr('', 'id', child.value)} />
-                  ),
-                  tree.children
-                )}
-              </NodeTree>
-            </Scrollable>
+            <NodeTree>
+              {mapIndexed(
+                child => (
+                  <TreeInput.Node<T> node={child} key={propOr('', 'id', child.value)} />
+                ),
+                tree.children
+              )}
+            </NodeTree>
           </TreeInputContext.Provider>
         </NodeSelector>
       </Overlay>
@@ -169,7 +165,7 @@ TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
   const hasChildren = isNotNilOrEmpty(node.children)
 
   const activate = (ev: MouseEvent) => {
-    onSelect(node)
+    onSelect?.(node)
     setSelected(node.value)
     close(ev)
   }

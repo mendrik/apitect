@@ -36,7 +36,6 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
         name="emailId"
         label="form.fields.emailField"
         tree={root}
-        onSelect={node => console.log(node)}
         containerClasses="mb-3"
         nodeRender={prop('name')}
       />
@@ -44,7 +43,6 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
         name="passwordId"
         label="form.fields.passwordField"
         tree={root}
-        onSelect={node => console.log(node)}
         containerClasses="mb-3"
         nodeRender={prop('name')}
       />

@@ -23,6 +23,8 @@ export const StyledTreeInput = styled.div`
 export const NodeSelector = styled.div`
   position: absolute;
   width: 100%;
+  height: auto;
+  min-height: 100px;
   border: 1px solid ${Palette.border};
   border-radius: 0 0 4px 4px;
   box-shadow: 0px 4px 5px 0px rgba(120, 120, 120, 0.2);
@@ -58,7 +60,7 @@ export const Selected = styled.div`
 export const NodeTree = styled.ul`
   list-style: none;
   padding: 0 0.5rem;
-  margin-bottom: 0.5rem;
+  margin: 1rem 0;
   ul {
     margin: 0;
     padding: 0;
