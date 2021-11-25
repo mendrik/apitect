@@ -66,9 +66,12 @@ export const TreeInput = <T extends WithId>({
   nodeRender,
   ...props
 }: Jsx<OwnProps<T>>) => {
+  const { setValue, watch } = useFormContext()
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
-  const [selected, setSelected] = useState<Maybe<T>>()
+  const [selected, setSelected] = useState<Maybe<T>>(
+    () => tree.first(propEq('id', watch(name)))?.value
+  )
 
   const focusedNodeState = useState<Maybe<TreeNode<T>>>()
   const openStates = useSet<TreeNode<T>>(new Set([tree]))
@@ -89,7 +92,6 @@ export const TreeInput = <T extends WithId>({
   ])
 
   useFocusOutside(target, () => setShow(false))
-  const { setValue } = useFormContext()
 
   return (
     <StyledTreeInput

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { updateProjectUserSettingsFx } from '../../events/project'
 import { SocketForm } from '../../forms/SocketForm'
 import { TreeInput } from '../../forms/TreeInput'
+import { useLocation } from '../../hooks/useLocation'
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/node'
 import {
@@ -17,9 +18,11 @@ import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../ModalStub'
 
 const ProjectUsersSettings: ModalFC = ({ close }) => {
+  const { state } = useLocation<Settings>()
+
   const form = useForm<Settings>({
     resolver: zodResolver(ZProjectUsersSettings),
-    defaultValues: {}
+    defaultValues: state
   })
 
   const { tree } = useStore($appStore)
