@@ -25,9 +25,6 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
   const { tree } = useStore($appStore)
   const root = useMemo(() => TreeNode.from<Node, 'children'>('children')(tree), [tree])
 
-  const message = form.watch()
-  console.log(message)
-
   return (
     <SocketForm
       form={form}

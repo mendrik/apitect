@@ -4,7 +4,6 @@ import {
   defaultTo,
   equals,
   findIndex,
-  last,
   map,
   omit,
   pipe,
@@ -185,7 +184,7 @@ export class TreeNode<T> {
   }
 
   get root(): TreeNode<T> {
-    return last(this.$pathToRoot())!
+    return this.$pathToRoot().pop()!
   }
 
   next = (pred: Pred = RT, strategy: Strategy = Strategy.Depth): Maybe<TreeNode<T>> =>

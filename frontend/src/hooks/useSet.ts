@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export type SetAccess<T> = {
   add: (item: T) => void
@@ -9,7 +9,7 @@ export type SetAccess<T> = {
 export const useSet = <T>(initial?: Set<T>): SetAccess<T> => {
   const [set, setSet] = useState(initial ?? new Set())
 
-  const has = (item: T) => set.has(item)
+  const has = useCallback((item: T) => set.has(item), [set])
   const add = (item: T) => setSet(s => new Set(s).add(item))
   const remove = (item: T) =>
     setSet(s => {
