@@ -83,6 +83,7 @@ export const TreeInput = <T extends WithId>({
   const focusedNodeState = useState<Maybe<TreeNode<T>>>()
   const openStates = useSet<TreeNode<T>>(new Set([tree]))
 
+  const parent = useRef<HTMLDivElement>(null)
   const target = useRef<HTMLDivElement>(null)
   const container = useRef<HTMLDivElement>(null)
 
@@ -98,16 +99,20 @@ export const TreeInput = <T extends WithId>({
     [propEq('code', 'Escape'), close]
   ])
 
-  useFocusOutside(target, () => setShow(false))
+  useFocusOutside(
+    parent,
+    sp(() => setShow(false))
+  )
 
   return (
     <StyledTreeInput
-      ref={target}
+      ref={parent}
       onKeyDown={keyMap}
       className={clsx('form-floating', containerClasses)}
       {...props}
     >
       <Selected
+        ref={target}
         className={clsx('form-select', { 'is-invalid': path(name.split('.'), errors) })}
         tabIndex={0}
         onClick={() => setShow(not)}
@@ -121,7 +126,6 @@ export const TreeInput = <T extends WithId>({
           setShow(false)
         }}
       />
-      <OverlayStub ref={container} />
       <Overlay
         target={target}
         container={container}
@@ -163,6 +167,7 @@ export const TreeInput = <T extends WithId>({
       </Overlay>
       <label>{t(label)}</label>
       <ErrorInfo name={name} />
+      <OverlayStub ref={container} />
     </StyledTreeInput>
   )
 }
