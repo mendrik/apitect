@@ -1,8 +1,9 @@
 import { literal, object, union, ZodLiteral, ZodObject, ZodString } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
-import { ApiInput, ApiMethod, ApiMethods, ApiSchema } from '../api'
+import { ApiSchema } from '../api'
 import { idCodec } from '../codecs/idCodec'
+import type { ApiInput, ApiMethod, ApiMethods } from './api'
 
 const apiMethods = Object.keys(ApiSchema) as ApiMethods
 type Codec<T extends ApiMethod> = ZodObject<{

@@ -6,11 +6,12 @@ import { resolvePromised } from '~shared/utils/promise'
 
 import { getLastDocument } from '../services'
 import { tagsSettings } from './tagsSettings'
+import { userSettings } from './userSettings'
 
-export const project: ServerApiMethod<'project'> = ({ docId, email, payload }) => {
+export const project: ServerApiMethod<'project'> = ({ docId, email }) => {
   return resolvePromised<Project>({
     document: getLastDocument(docId),
-    // todo make this come from user settings
-    tags: tagsSettings({ docId, email, payload }).then<Tag[]>(propOr([], 'tags'))
+    tags: tagsSettings({ docId, email }).then<Tag[]>(propOr([], 'tags')),
+    visibleTags: userSettings({ docId, email }).then<string[]>(propOr([], 'visibleTags'))
   })
 }

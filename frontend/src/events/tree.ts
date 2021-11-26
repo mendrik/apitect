@@ -2,7 +2,7 @@ import { createEffect, createEvent, sample } from 'effector'
 import { tap } from 'ramda'
 
 import { TreeNode } from '../shared/algebraic/treeNode'
-import { Api } from '../shared/api'
+import { Api } from '../shared/types/api'
 import { Node } from '../shared/types/domain/node'
 import { Maybe } from '../shared/types/generic'
 import { ModalNames } from '../shared/types/modals'

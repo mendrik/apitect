@@ -1,5 +1,6 @@
 import { createEvent, createStore } from 'effector'
-import { omit, propEq } from 'ramda'
+import { omit, pipe, prop, propEq } from 'ramda'
+import { included } from 'ramda-adjunct'
 import { Document } from 'shared/types/domain/document'
 import { v4 as uuid } from 'uuid'
 
@@ -13,8 +14,9 @@ import {
   updateNodeSettingsFx
 } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
-import { Api, ApiMethod, ApiSchema } from '../shared/api'
+import { ApiSchema } from '../shared/api'
 import { ApiError, ApiResponse } from '../shared/apiResponse'
+import { Api, ApiMethod } from '../shared/types/api'
 import { ZApiRequest } from '../shared/types/apiRequest'
 import { Node } from '../shared/types/domain/node'
 import { Tag } from '../shared/types/domain/tag'
@@ -25,6 +27,7 @@ export type AppState = {
   document: Omit<Document, 'tree'>
   tree: Node
   tags: Tag[]
+  visibleTags: Tag[]
   selectedNode: Maybe<TreeNode<Node>>
   openNodes: Record<string, boolean>
   api: Api
@@ -78,6 +81,7 @@ $appStore.on(projectFx.done, (state, { result }) => {
     document: omit(['tree'], result.document),
     tree: tree,
     tags: result.tags,
+    visibleTags: result.tags.filter(pipe(prop('name'), included(result.visibleTags))),
     openNodes: {
       ...state.openNodes,
       [tree.id]: true

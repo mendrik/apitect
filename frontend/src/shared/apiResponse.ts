@@ -1,14 +1,13 @@
 import { literal, number, object, string, union, ZodLiteral, ZodObject, ZodString } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
-import { ApiMethod, ApiMethods, ApiOutput, ApiParam, ApiResult, ApiSchema } from './api'
+import { ApiSchema } from './api'
 import { idCodec } from './codecs/idCodec'
+import { ApiMethod, ApiMethods, ApiOutput, ApiParam, ApiResult } from './types/api'
 
-export type ServerParam<T extends ApiMethod> = {
-  email: string
-  docId: string
-  payload: ApiParam<T>
-}
+export type ServerParam<T extends ApiMethod> = ApiParam<T> extends undefined
+  ? { email: string; docId: string }
+  : { email: string; docId: string; payload: ApiParam<T> }
 
 export type ServerApiMethod<T extends ApiMethod> = (obj: ServerParam<T>) => Promise<ApiResult<T>>
 

@@ -1,5 +1,5 @@
-import { ApiMethod } from '~shared/api'
 import { ServerApiMethod } from '~shared/apiResponse'
+import { ApiMethod } from '~shared/types/api'
 
 import { nodeCreate } from './nodeCreate'
 import { nodeDelete } from './nodeDelete'
@@ -10,6 +10,8 @@ import { tagsSettings } from './tagsSettings'
 import { updateNodeSettings } from './updateNodeSettings'
 import { updateProjectUsersSettings } from './updateProjectUsersSettings'
 import { updateTagsSettings } from './updateTagsSettings'
+import { updateUserSettings } from './updateUserSettings'
+import { userSettings } from './userSettings'
 
 export const apiMapping: { [K in ApiMethod]: ServerApiMethod<K> } = {
   project,
@@ -20,5 +22,7 @@ export const apiMapping: { [K in ApiMethod]: ServerApiMethod<K> } = {
   updateProjectUsersSettings,
   projectUsersSettings,
   tagsSettings,
-  updateTagsSettings
+  updateTagsSettings,
+  userSettings,
+  updateUserSettings
 }

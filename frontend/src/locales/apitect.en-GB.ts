@@ -80,6 +80,9 @@ const en = {
       tagsSettings: {
         title: 'Tags',
         info: 'Tags represent copies of your project data. Furthermore tags can extend each other so that missing values can be resolved by looking up parent tags.'
+      },
+      userSettings: {
+        title: 'User settings'
       }
     },
     navbar: {

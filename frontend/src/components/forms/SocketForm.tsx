@@ -5,7 +5,7 @@ import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { ExtendedError } from '../../hooks/usePromise'
-import type { Api, FormApiMethod } from '../../shared/api'
+import { Api, FormApiMethod } from '../../shared/types/api'
 import { Fn, Maybe } from '../../shared/types/generic'
 import { logger } from '../../shared/utils/logger'
 import { ButtonRow } from './ButtonRow'

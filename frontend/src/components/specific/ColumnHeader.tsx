@@ -2,6 +2,7 @@ import { IconColumns, IconDownload, IconSettings } from '@tabler/icons'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { userSettingsFx } from '../../events/user'
 import { Tag } from '../../shared/types/domain/tag'
 import { Jsx } from '../../shared/types/generic'
 import { HGrid } from '../generic/HGrid'
@@ -22,7 +23,7 @@ export const ColumnHeader = ({ name, tag }: Jsx<OwnProps>) => {
       <HGrid>
         {tag == null ? (
           <WithTooltip tooltipText={t('app.tags')}>
-            <Icon icon={IconColumns} />
+            <Icon icon={IconColumns} onClick={() => userSettingsFx()} />
           </WithTooltip>
         ) : (
           <WithTooltip tooltipText={t('app.tagSettings')}>

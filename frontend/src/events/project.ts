@@ -1,7 +1,7 @@
 import { createEffect, sample } from 'effector'
 import { tap } from 'ramda'
 
-import { Api } from '../shared/api'
+import { Api } from '../shared/types/api'
 import { ModalNames } from '../shared/types/modals'
 import $appStore from '../stores/$appStore'
 import { openModal } from './modals'
