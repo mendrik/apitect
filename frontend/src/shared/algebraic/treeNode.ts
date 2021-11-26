@@ -121,6 +121,9 @@ export class TreeNode<T> {
   first = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
     this.flatten(Strategy.Depth).find(node => pred(node.value))
 
+  closest = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
+    this.$pathToRoot().find(node => pred(node.value))
+
   $pathToRoot = (): TreeNode<T>[] =>
     this.parent ? [this.parent].concat(...this.parent.$pathToRoot()) : []
 

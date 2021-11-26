@@ -67,7 +67,10 @@ const en = {
         info: 'Make sure email and password field belong to the same array-typed parent!',
         errors: {
           invalidParent:
-            'Email and Password field must be descendants of the same array-typed parent node'
+            'Email and Password field must be descendants of the same array-typed parent node',
+          invalidNodes: 'Invalid node types selected',
+          emailType: 'Email field must be of type string with email constraint',
+          passwordType: 'Password field must be of type string with password constraint'
         }
       }
     },

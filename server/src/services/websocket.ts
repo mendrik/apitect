@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { SocketStream } from 'fastify-websocket'
 import { verify } from 'jsonwebtoken'
 import { ZodError } from 'zod'
-import { ApiMethod } from '~shared/api'
+import type { ApiMethod } from '~shared/api'
 import { ApiError, ServerParam, ZApiError, ZApiResponse } from '~shared/apiResponse'
 import { ZApiRequest } from '~shared/types/apiRequest'
 import { Fn } from '~shared/types/generic'
@@ -16,8 +16,10 @@ import { config } from './config'
 const handleError =
   (send: Fn, id: string) =>
   (e: Error): void => {
+    logger.error(e.message, '\n' + e.stack?.split('\n').slice(1).join('\n'))
     const $send = (data: Omit<ApiError, 'error' | 'id'>) =>
       send(JSON.stringify(ZApiError.parse({ id, error: 'error', ...data })))
+
     if (e instanceof ZodError) {
       return $send({ status: 400, message: e.message })
     }
