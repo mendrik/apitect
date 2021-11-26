@@ -7,6 +7,7 @@ import { TFuncKey, useTranslation } from 'react-i18next'
 import { ExtendedError } from '../../hooks/usePromise'
 import type { Api, FormApiMethod } from '../../shared/api'
 import { Fn, Maybe } from '../../shared/types/generic'
+import { logger } from '../../shared/utils/logger'
 import { ButtonRow } from './ButtonRow'
 import { SubmitButton } from './SubmitButton'
 
@@ -25,21 +26,23 @@ export const SocketForm = <M extends FormApiMethod>({
   close
 }: PropsWithChildren<OwnProps<M>>): ReactElement | null => {
   const [globalError, setGlobalError] = useState<Maybe<ExtendedError>>()
+
   const { t } = useTranslation()
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit(data => {
-          return onValid(data)
+        onSubmit={form.handleSubmit(data =>
+          onValid(data)
             .then(close)
             .catch((e: ExtendedError) => {
+              logger.error('Error', e)
               if (e.field != null) {
                 form.setError(e.field as string, { message: e.message })
               } else {
                 setGlobalError(e)
               }
             })
-        })}
+        )}
         noValidate
       >
         {children}

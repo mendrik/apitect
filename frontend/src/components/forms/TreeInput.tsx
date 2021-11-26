@@ -88,7 +88,7 @@ export const TreeInput = <T extends WithId>({
   const container = useRef<HTMLDivElement>(null)
 
   const close = sp(() => {
-    const el = target.current?.firstElementChild as Maybe<HTMLElement>
+    const el = target.current
     el?.focus()
     setShow(false)
   })
@@ -99,10 +99,7 @@ export const TreeInput = <T extends WithId>({
     [propEq('code', 'Escape'), close]
   ])
 
-  useFocusOutside(
-    parent,
-    sp(() => setShow(false))
-  )
+  useFocusOutside(parent, () => setShow(false))
 
   return (
     <StyledTreeInput

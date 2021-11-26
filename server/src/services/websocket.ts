@@ -30,37 +30,44 @@ const handleError =
   }
 
 const openWebsocket = (connection: SocketStream) => {
-  try {
-    const send =
-      (id: string, method: ApiMethod) =>
-      <T>(payload: T) => {
-        const res = {
-          id,
-          method,
-          payload
-        }
+  const send =
+    (id: string, method: ApiMethod) =>
+    <T>(payload: T) => {
+      const res = {
+        id,
+        method,
+        payload
+      }
+      try {
         const validMessage = ZApiResponse.parse(res)
         connection.socket.send(JSON.stringify(validMessage))
-        return payload
+      } catch (e) {
+        logger.error('Failed to validate or send out response', { ...res, error: e })
       }
-
+      return payload
+    }
+  try {
     const { email, name, docId } = JwtPayload.parse(
       verify(connection.socket.protocol, `${config.TOKEN_KEY}`)
     )
 
     connection.socket.on('message', (buffer: Buffer) => {
-      const data = JSON.parse(buffer.toString('utf-8'))
-      const apiRequest = ZApiRequest.parse(data)
-      logger.info(`${name} [${email}]/${apiRequest.method}`, data)
-      const apiCall = apiMapping[apiRequest.method]
-      const param: ServerParam<ApiMethod> = {
-        email,
-        payload: apiRequest.payload,
-        docId
+      try {
+        const data = JSON.parse(buffer.toString('utf-8'))
+        const apiRequest = ZApiRequest.parse(data)
+        logger.info(`${name} [${email}]/${apiRequest.method}`, data)
+        const apiCall = apiMapping[apiRequest.method]
+        const param: ServerParam<ApiMethod> = {
+          email,
+          payload: apiRequest.payload,
+          docId
+        }
+        return apiCall(param as any)
+          .then(send(apiRequest.id, apiRequest.method))
+          .catch(handleError(connection.socket.send.bind(connection.socket), apiRequest.id))
+      } catch (e) {
+        logger.error('Error in socket', e)
       }
-      return apiCall(param as any)
-        .then(send(apiRequest.id, apiRequest.method))
-        .catch(handleError(connection.socket.send.bind(connection.socket), apiRequest.id))
     })
   } catch (e) {
     logger.error('Unauthorized socket access', e)
