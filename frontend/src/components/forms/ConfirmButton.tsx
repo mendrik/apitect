@@ -2,8 +2,8 @@ import React from 'react'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
-import { State } from '../hooks/usePromise'
-import { Jsx } from '../shared/types/generic'
+import { State } from '../../hooks/usePromise'
+import { Jsx } from '../../shared/types/generic'
 import { Spinner } from './Spinner'
 
 type OwnProps = {

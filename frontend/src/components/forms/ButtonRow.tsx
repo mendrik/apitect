@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import React, { HTMLAttributes } from 'react'
 
-import { Jsx } from '../shared/types/generic'
+import { Jsx } from '../../shared/types/generic'
 
 export const ButtonRow = ({
   className,

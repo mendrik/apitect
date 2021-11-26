@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { FieldSet } from '../../../forms/FieldSet'
-import { NumberInput } from '../../../forms/NumberInput'
-import { TextInput } from '../../../forms/TextInput'
+import { FieldSet } from '../../forms/FieldSet'
+import { NumberInput } from '../../forms/NumberInput'
+import { TextInput } from '../../forms/TextInput'
 import { HGrid } from '../../generic/HGrid'
 
 const Number = () => {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Checkbox } from '../../../forms/Checkbox'
+import { Checkbox } from '../../forms/Checkbox'
 
 const Object = () => {
   return (

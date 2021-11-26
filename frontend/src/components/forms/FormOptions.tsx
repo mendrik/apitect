@@ -2,8 +2,8 @@ import React, { Children, useEffect } from 'react'
 import { Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 
-import { Scale, Tuple } from '../components/generic/Tuple'
-import { Jsx } from '../shared/types/generic'
+import { Jsx } from '../../shared/types/generic'
+import { Scale, Tuple } from '../generic/Tuple'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {

@@ -3,7 +3,7 @@ import React from 'react'
 import { FieldError, useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
-import { Jsx } from '../shared/types/generic'
+import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = {
   name: string

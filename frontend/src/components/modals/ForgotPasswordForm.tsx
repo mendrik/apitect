@@ -5,16 +5,16 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ForgotPassword, TForgotPassword } from 'shared/types/forms/forgotPassword'
 
-import { ButtonRow } from '../../forms/ButtonRow'
-import { Form } from '../../forms/Form'
-import { GenericError } from '../../forms/GenericError'
-import { SubmitButton } from '../../forms/SubmitButton'
-import { TextInput } from '../../forms/TextInput'
 import usePromise from '../../hooks/usePromise'
 import { useServerError } from '../../hooks/useServerError'
 import { forgotPassword } from '../../utils/restApi'
 import { ModalFC } from '../ModalStub'
 import { SuccessView } from '../SuccessView'
+import { ButtonRow } from '../forms/ButtonRow'
+import { Form } from '../forms/Form'
+import { GenericError } from '../forms/GenericError'
+import { SubmitButton } from '../forms/SubmitButton'
+import { TextInput } from '../forms/TextInput'
 
 const ForgotPasswordForm: ModalFC = ({ close }) => {
   const { t } = useTranslation()

@@ -5,8 +5,6 @@ import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { updateProjectUserSettingsFx } from '../../events/project'
-import { SocketForm } from '../../forms/SocketForm'
-import { TreeInput } from '../../forms/TreeInput'
 import { useLocation } from '../../hooks/useLocation'
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/node'
@@ -16,6 +14,8 @@ import {
 } from '../../shared/types/forms/projectUsersSettings'
 import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../ModalStub'
+import { SocketForm } from '../forms/SocketForm'
+import { TreeInput } from '../forms/TreeInput'
 
 const ProjectUsersSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Settings>()

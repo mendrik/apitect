@@ -11,8 +11,8 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
-import { ButtonRow } from '../../forms/ButtonRow'
 import { Jsx } from '../../shared/types/generic'
+import { ButtonRow } from '../forms/ButtonRow'
 import { Scrollable } from '../generic/Scrollable'
 import { Month } from './Month'
 

@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import React, { useContext } from 'react'
 import { Jsx, Milliseconds } from 'shared/types/generic'
 
-import { progressContext } from '../contexts/withProgress'
+import { progressContext } from '../../contexts/withProgress'
 
 type OwnProps = {
   spinnerDelay?: Milliseconds

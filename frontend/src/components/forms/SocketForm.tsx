@@ -4,8 +4,8 @@ import { Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
-import { Api, FormApiMethod } from '../shared/api'
-import { Fn } from '../shared/types/generic'
+import { Api, FormApiMethod } from '../../shared/api'
+import { Fn } from '../../shared/types/generic'
 import { ButtonRow } from './ButtonRow'
 import { SubmitButton } from './SubmitButton'
 

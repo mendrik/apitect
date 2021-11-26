@@ -8,8 +8,6 @@ import styled from 'styled-components'
 
 import { Palette } from '../../css/colors'
 import { createNodeFx } from '../../events/tree'
-import { SocketForm } from '../../forms/SocketForm'
-import { TextInput } from '../../forms/TextInput'
 import { useLocation } from '../../hooks/useLocation'
 import { Node } from '../../shared/types/domain/node'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
@@ -18,6 +16,8 @@ import { Maybe } from '../../shared/types/generic'
 import { capitalize, spaceOrEnter } from '../../shared/utils/ramda'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { ModalFC } from '../ModalStub'
+import { SocketForm } from '../forms/SocketForm'
+import { TextInput } from '../forms/TextInput'
 
 const COLS = 4
 

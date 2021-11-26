@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React, { Children, createContext, HTMLAttributes, ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Jsx } from '../shared/types/generic'
+import { Jsx } from '../../shared/types/generic'
 import { OwnProps as TabProps } from './Tab'
 
 type TabContext = {

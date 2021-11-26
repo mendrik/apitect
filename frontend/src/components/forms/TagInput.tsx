@@ -5,9 +5,9 @@ import React, { HTMLAttributes, useRef, useState } from 'react'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { DeleteIcon } from '../components/generic/DeleteIcon'
-import { Jsx } from '../shared/types/generic'
-import { preventDefault } from '../utils/preventDefault'
+import { Jsx } from '../../shared/types/generic'
+import { preventDefault } from '../../utils/preventDefault'
+import { DeleteIcon } from '../generic/DeleteIcon'
 import { ErrorInfo } from './ErrorInfo'
 
 type Tag = Record<'name', string>

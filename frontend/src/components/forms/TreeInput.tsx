@@ -16,8 +16,6 @@ import { FormControl, Overlay } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
-import { DeleteIcon } from '../components/generic/DeleteIcon'
-import { Scale, Tuple } from '../components/generic/Tuple'
 import {
   NodeNode,
   NodeSelector,
@@ -25,13 +23,15 @@ import {
   OverlayStub,
   Selected,
   StyledTreeInput
-} from '../css/TreeInput.css'
-import { useFocusOutside } from '../hooks/useFocusOutside'
-import { SetAccess, useSet } from '../hooks/useSet'
-import { TreeNode } from '../shared/algebraic/treeNode'
-import { Fn, Jsx, Maybe } from '../shared/types/generic'
-import { offset, sameWidth } from '../utils/sameWidthMod'
-import { stopPropagation as sp } from '../utils/stopPropagation'
+} from '../../css/TreeInput.css'
+import { useFocusOutside } from '../../hooks/useFocusOutside'
+import { SetAccess, useSet } from '../../hooks/useSet'
+import { TreeNode } from '../../shared/algebraic/treeNode'
+import { Fn, Jsx, Maybe } from '../../shared/types/generic'
+import { offset, sameWidth } from '../../utils/sameWidthMod'
+import { stopPropagation as sp } from '../../utils/stopPropagation'
+import { DeleteIcon } from '../generic/DeleteIcon'
+import { Scale, Tuple } from '../generic/Tuple'
 import { ErrorInfo } from './ErrorInfo'
 
 type WithId = { id: string }

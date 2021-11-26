@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { Jsx, Milliseconds } from 'shared/types/generic'
 
-import { progressContext } from '../contexts/withProgress'
+import { progressContext } from '../../contexts/withProgress'
 import { formWrappingContext } from './Form'
 import { Spinner } from './Spinner'
 
