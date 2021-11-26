@@ -1,4 +1,4 @@
-import { literal, number, object } from 'zod'
+import { literal, number, object, string } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { NodeType } from '../../domain/nodeType'
@@ -9,7 +9,8 @@ export const ZArraySettings = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.Array),
     validation: object({ maxItems: number().optional() }),
-    idFields: ZReference
+    display: string().optional(),
+    idField: ZReference
   })
 )
 
