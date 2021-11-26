@@ -20,7 +20,7 @@ const state = () => sample($appStore).getState()
 
 export const createNodeFx = createEffect<Api['nodeCreate']>(node => state().api.nodeCreate(node))
 export const deleteNodeFx = createEffect<Api['nodeDelete']>(id => state().api.nodeDelete(id))
-export const documentFx = createEffect<Api['document']>(() => state().api.document())
+export const projectFx = createEffect<Api['project']>(() => state().api.project())
 export const updateNodeSettingsFx = createEffect<Api['updateNodeSettings']>(settings =>
   state().api.updateNodeSettings(settings)
 )

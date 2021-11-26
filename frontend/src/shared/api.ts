@@ -3,8 +3,8 @@ import { undefined as undef } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { idCodec } from './codecs/idCodec'
-import { ZDocument } from './types/domain/document'
 import { ZNode } from './types/domain/node'
+import { ZProject } from './types/domain/project'
 import { TNewNode } from './types/forms/newNode'
 import { ZNodeSettings } from './types/forms/nodetypes/nodeSettings'
 import { ZProjectUsersSettings } from './types/forms/projectUsersSettings'
@@ -14,7 +14,7 @@ import { TNodeCreated } from './types/response/nodeCreated'
 import { TNodeDeleted } from './types/response/nodeDeleted'
 
 export const ApiSchema = {
-  document: [undef(), ZDocument],
+  project: [undef(), ZProject],
   nodeSettings: [idCodec, ZNodeSettings.nullable()],
   updateNodeSettings: [ZNodeSettings, ZNode],
   projectUsersSettings: [undef(), ZProjectUsersSettings.nullable()],

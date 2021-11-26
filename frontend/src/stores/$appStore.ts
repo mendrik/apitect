@@ -7,8 +7,8 @@ import { apiResponse, socketEstablished } from '../events/messages'
 import {
   createNodeFx,
   deleteNodeFx,
-  documentFx,
   openNodeState,
+  projectFx,
   selectNode,
   updateNodeSettingsFx
 } from '../events/tree'
@@ -17,12 +17,14 @@ import { Api, ApiMethod, ApiSchema } from '../shared/api'
 import { ApiError, ApiResponse } from '../shared/apiResponse'
 import { ZApiRequest } from '../shared/types/apiRequest'
 import { Node } from '../shared/types/domain/node'
+import { Tag } from '../shared/types/domain/tag'
 import { Maybe } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
 
 export type AppState = {
   document: Omit<Document, 'tree'>
   tree: Node
+  tags: Tag[]
   selectedNode: Maybe<TreeNode<Node>>
   openNodes: Record<string, boolean>
   api: Api
@@ -69,12 +71,13 @@ $appStore.on(deleteNodeFx.done, (state, { result }) => {
   return { ...state, tree: result.tree, ...selectedNodeState(state, node) }
 })
 
-$appStore.on(documentFx.done, (state, { result }) => {
-  const tree = result.tree
+$appStore.on(projectFx.done, (state, { result }) => {
+  const tree = result.document.tree
   return {
     ...state,
-    document: omit(['tree'], result),
+    document: omit(['tree'], result.document),
     tree: tree,
+    tags: result.tags,
     openNodes: {
       ...state.openNodes,
       [tree.id]: true

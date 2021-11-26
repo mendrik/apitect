@@ -49,41 +49,33 @@ export const Navigation = () => {
         <Logo className="logo" style={{ height: 32, marginTop: -8 }} />
       </Navbar.Brand>
       {user != null && (
-        <>
-          <div className="d-flex align-items-center">
-            <Item disabled>
-              <Tuple first={Scale.CONTENT}>
-                <IconDeviceFloppy className="icn" stroke={1} />
-                <span>Publish</span>
-              </Tuple>
-            </Item>
-            <Item>
-              <Tuple first={Scale.CONTENT}>
-                <IconEyeglass className="icn" stroke={1} />
-                <span>View</span>
-              </Tuple>
-            </Item>
-            <Item onClick={projectUserSettingsFx}>
-              <Tuple first={Scale.CONTENT}>
-                <IconUsers className="icn" stroke={1} />
-                <span>Users</span>
-              </Tuple>
-            </Item>
-            <Item>
-              <Tuple first={Scale.CONTENT}>
-                <IconKey className="icn" stroke={1} />
-                <span>API keys</span>
-              </Tuple>
-            </Item>
-            <Item onClick={tagsSettingsFx}>
-              <Tuple first={Scale.CONTENT}>
-                <IconTag className="icn" stroke={1} />
-                <span>Tags</span>
-              </Tuple>
-            </Item>
-          </div>
+        <div className="d-flex align-items-center">
+          <Item disabled>
+            <Tuple first={Scale.CONTENT}>
+              <IconDeviceFloppy className="icn" stroke={1} />
+              <span>Publish</span>
+            </Tuple>
+          </Item>
+          <Item onClick={projectUserSettingsFx}>
+            <Tuple first={Scale.CONTENT}>
+              <IconUsers className="icn" stroke={1} />
+              <span>Users</span>
+            </Tuple>
+          </Item>
+          <Item>
+            <Tuple first={Scale.CONTENT}>
+              <IconKey className="icn" stroke={1} />
+              <span>API keys</span>
+            </Tuple>
+          </Item>
+          <Item onClick={tagsSettingsFx}>
+            <Tuple first={Scale.CONTENT}>
+              <IconTag className="icn" stroke={1} />
+              <span>Tags</span>
+            </Tuple>
+          </Item>
           <FormControl size="sm" type="search" placeholder="Search" aria-label="Search" />
-        </>
+        </div>
       )}
       <Nav>
         {user != null ? (

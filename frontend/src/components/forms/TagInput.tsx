@@ -31,7 +31,6 @@ const StyledTagInput = styled.div`
   position: relative;
 
   &:focus-within > label,
-  input:valid + label,
   .tag ~ label {
     opacity: 0.65;
     transform: scale(0.85) translateY(-0.75rem) translateX(-0.15rem);
@@ -91,7 +90,6 @@ export const TagInput = <T extends Tag>({
 
       <Input
         ref={inpRef}
-        required
         autoComplete="off"
         value={currentName}
         type="text"

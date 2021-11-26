@@ -1,7 +1,9 @@
 const en = {
   translation: {
     app: {
-      name: 'Apitect'
+      name: 'Apitect',
+      defaultValues: 'Values',
+      tags: 'Select tags'
     },
     common: {
       error: 'Error',
