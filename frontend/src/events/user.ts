@@ -18,5 +18,5 @@ export const userSettingsFx = createEffect(() =>
 export const updateUserSettingsFx = createEffect<Api['updateUserSettings']>(userSettings =>
   state()
     .api.updateUserSettings(userSettings)
-    .then(p => projectFx.doneData(p))
+    .then(tap(() => projectFx()))
 )

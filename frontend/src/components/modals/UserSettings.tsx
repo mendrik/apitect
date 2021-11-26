@@ -23,12 +23,16 @@ const UserSettings: ModalFC = ({ close }) => {
   return (
     <SocketForm form={form} onValid={updateUserSettingsFx} close={close} submitButton="common.save">
       {tags.map(tag => (
-        <Form.Check
-          type="checkbox"
-          label={tag.name}
-          value={tag.name}
-          {...form.register('visibleTags')}
-        />
+        <Form.Check>
+          <Form.Check.Input
+            id={`view-${tag.name}`}
+            value={tag.name}
+            {...form.register('visibleTags')}
+          />
+          <Form.Check.Label className={'ms-2 pointer'} role="button" htmlFor={`view-${tag.name}`}>
+            {tag.name}
+          </Form.Check.Label>
+        </Form.Check>
       ))}
     </SocketForm>
   )

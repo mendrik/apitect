@@ -31,6 +31,7 @@
 - MultiTagInput
 - ListInput
 - TreeInput: arrow keys, remember open state, open selected
+- wait for user loading state missing
 
 # Type expansion
 

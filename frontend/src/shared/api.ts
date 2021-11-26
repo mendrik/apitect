@@ -20,7 +20,7 @@ export const ApiSchema = {
   tagsSettings: [undef(), ZTagsSettings.nullable()],
   updateTagsSettings: [ZTagsSettings, ZTagsSettings],
   userSettings: [undef(), ZUserSettings.nullable()],
-  updateUserSettings: [ZUserSettings, ZProject],
+  updateUserSettings: [ZUserSettings, ZUserSettings],
   nodeDelete: [idCodec, TNodeDeleted],
   nodeCreate: [TNewNode, TNodeCreated]
 } as const
