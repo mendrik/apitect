@@ -46,19 +46,12 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
     .with(Views.FORGOT_PASSWORD, () => <ForgotPasswordForm close={() => setView(Views.LOGIN)} />)
     .otherwise(() => (
       <Form form={form} state={submit} onSuccess={setJwt}>
-        <TextInput
-          name="email"
-          label="form.fields.email"
-          type="email"
-          containerClassNames="mb-3"
-          options={{ required: true }}
-        />
+        <TextInput name="email" label="form.fields.email" type="email" containerClassNames="mb-3" />
         <TextInput
           name="password"
           label="form.fields.password"
           type="password"
           containerClassNames="mb-3"
-          options={{ required: true }}
         />
         <GenericError />
         <ButtonRow>

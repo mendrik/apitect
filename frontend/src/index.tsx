@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter } from 'react-router-dom'
+import { setErrorMap, ZodErrorMap } from 'zod'
 
 import App from './components/App'
 import { Modals } from './components/Modals'
@@ -16,6 +17,15 @@ import reportWebVitals from './reportWebVitals'
 const myErrorHandler = (error: Error, info: { componentStack: string }) => {
   console.error(error, info)
 }
+
+const errorMap: ZodErrorMap = (error, ctx) => {
+  if (ctx.defaultError === 'Required') {
+    return { message: 'form.validation.required' }
+  }
+  return { message: ctx.defaultError }
+}
+
+setErrorMap(errorMap)
 
 const render = (): void =>
   void ReactDOM.render(

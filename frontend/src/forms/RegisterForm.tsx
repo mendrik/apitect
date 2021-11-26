@@ -42,32 +42,19 @@ export const RegisterForm: ModalFC = ({ close }) => {
 
   return (
     <Form form={form} state={state} successView={Success} onSuccess={setJwt}>
-      <TextInput
-        name="name"
-        containerClassNames="mb-3"
-        label="form.fields.name"
-        options={{ required: true }}
-      />
-      <TextInput
-        name="email"
-        containerClassNames="mb-3"
-        label="form.fields.email"
-        type="email"
-        options={{ required: true }}
-      />
+      <TextInput name="name" containerClassNames="mb-3" label="form.fields.name" />
+      <TextInput name="email" containerClassNames="mb-3" label="form.fields.email" type="email" />
       <TextInput
         name="password"
         label="form.fields.password"
         type="password"
         containerClassNames="mb-3"
-        options={{ required: true }}
       />
       <TextInput
         name="passwordRepeat"
         label="form.fields.passwordRepeat"
         type="password"
         containerClassNames="mb-3"
-        options={{ required: true }}
       />
       <GenericError />
       <ButtonRow>

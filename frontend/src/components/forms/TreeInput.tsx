@@ -1,6 +1,6 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { all, cond, not, propEq, propOr, T as RT } from 'ramda'
+import { all, cond, not, path, propEq, propOr, T as RT } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React, {
   createContext,
@@ -26,6 +26,7 @@ import {
 } from '../../css/TreeInput.css'
 import { useFocusOutside } from '../../hooks/useFocusOutside'
 import { SetAccess, useSet } from '../../hooks/useSet'
+import { useUndefinedEffect } from '../../hooks/useUndefinedEffect'
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { Fn, Jsx, Maybe, UseState } from '../../shared/types/generic'
 import { offset, sameWidth } from '../../utils/sameWidthMod'
@@ -66,12 +67,18 @@ export const TreeInput = <T extends WithId>({
   nodeRender,
   ...props
 }: Jsx<OwnProps<T>>) => {
-  const { setValue, getValues } = useFormContext()
+  const {
+    setValue,
+    getValues,
+    formState: { errors }
+  } = useFormContext()
   const { t } = useTranslation()
   const [show, setShow] = useState(false)
   const [selected, setSelected] = useState<Maybe<T>>(
     () => tree.first(propEq('id', getValues(name)))?.value
   )
+
+  useUndefinedEffect(() => setValue(name, undefined), selected)
 
   const focusedNodeState = useState<Maybe<TreeNode<T>>>()
   const openStates = useSet<TreeNode<T>>(new Set([tree]))
@@ -100,7 +107,11 @@ export const TreeInput = <T extends WithId>({
       className={clsx('form-floating', containerClasses)}
       {...props}
     >
-      <Selected className="form-select" tabIndex={0} onClick={() => setShow(not)}>
+      <Selected
+        className={clsx('form-select', { 'is-invalid': path(name.split('.'), errors) })}
+        tabIndex={0}
+        onClick={() => setShow(not)}
+      >
         {selected && nodeRender(selected)}
       </Selected>
       <DeleteIcon

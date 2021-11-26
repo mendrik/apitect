@@ -37,14 +37,14 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
         submitButton="common.save"
       >
         <TreeInput
-          label="form.fields.emailField"
+          label="form.fields.emailId"
           tree={root}
           name="emailId"
           containerClasses="mb-3"
           nodeRender={prop('name')}
         />
         <TreeInput
-          label="form.fields.passwordField"
+          label="form.fields.passwordId"
           tree={root}
           name="passwordId"
           containerClasses="mb-3"
