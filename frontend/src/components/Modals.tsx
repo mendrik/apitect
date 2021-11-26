@@ -52,6 +52,11 @@ export const Modals = () => {
         from={() => import('./modals/ProjectUsersSettings')}
         name={ModalNames.PROJECT_USER_SETTINGS}
       />
+      <ModalStub
+        title={`modals.tagsSettings.title`}
+        from={() => import('./modals/TagsSettings')}
+        name={ModalNames.TAGS_SETTINGS}
+      />
     </>
   )
 }

@@ -72,6 +72,10 @@ const en = {
           emailType: 'Email field must be of type string with email constraint',
           passwordType: 'Password field must be of type string with password constraint'
         }
+      },
+      tagsSettings: {
+        title: 'Tags',
+        info: 'Tags represent copies of your project data. Furthermore tags can extend each other so that missing values can be resolved by looking up parent tags.'
       }
     },
     navbar: {
@@ -85,6 +89,7 @@ const en = {
         nodeType: 'Type',
         email: 'E-Mail',
         emailId: 'E-Mail node',
+        tags: 'Tags',
         passwordId: 'Password node',
         password: 'Password',
         passwordRepeat: 'Repeat password',

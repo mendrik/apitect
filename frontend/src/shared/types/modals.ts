@@ -3,6 +3,6 @@ export enum ModalNames {
   FORGOT_PASSWORD = 'forgot-password',
   NEW_NODE = 'new-node',
   NODE_SETTINGS = 'node-settings',
-  TAG_SETTINGS = 'tag-settings',
+  TAGS_SETTINGS = 'tags-settings',
   PROJECT_USER_SETTINGS = 'project-user-settings'
 }

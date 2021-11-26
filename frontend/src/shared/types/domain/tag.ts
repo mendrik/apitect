@@ -4,13 +4,11 @@ import { idCodec } from '../../codecs/idCodec'
 import { Id } from './id'
 
 export interface Tag {
-  id: Id
   name: string
-  parent?: Tag
+  parent?: string
 }
 
 export const ZTag: Schema<Tag> = object({
-  id: idCodec,
   name: string(),
-  parent: lazy(() => ZTag.optional())
+  parent: string().optional()
 })

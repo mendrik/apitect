@@ -8,6 +8,7 @@ import { ZNode } from './types/domain/node'
 import { TNewNode } from './types/forms/newNode'
 import { ZNodeSettings } from './types/forms/nodetypes/nodeSettings'
 import { ZProjectUsersSettings } from './types/forms/projectUsersSettings'
+import { ZTagsSettings } from './types/forms/tagsSettings'
 import { UnionToTuple } from './types/generic'
 import { TNodeCreated } from './types/response/nodeCreated'
 import { TNodeDeleted } from './types/response/nodeDeleted'
@@ -16,8 +17,10 @@ export const ApiSchema = {
   document: [undef(), ZDocument],
   nodeSettings: [idCodec, ZNodeSettings.nullable()],
   updateNodeSettings: [ZNodeSettings, ZNode],
-  updateProjectUsersSettings: [ZProjectUsersSettings, ZProjectUsersSettings],
   projectUsersSettings: [undef(), ZProjectUsersSettings.nullable()],
+  updateProjectUsersSettings: [ZProjectUsersSettings, ZProjectUsersSettings],
+  tagsSettings: [undef(), ZTagsSettings.nullable()],
+  updateTagsSettings: [ZTagsSettings, ZTagsSettings],
   nodeDelete: [idCodec, TNodeDeleted],
   nodeCreate: [TNewNode, TNodeCreated]
 } as const

@@ -17,3 +17,13 @@ export const projectUserSettingsFx = createEffect(() =>
 export const updateProjectUserSettingsFx = createEffect<Api['updateProjectUsersSettings']>(
   userSettings => state().api.updateProjectUsersSettings(userSettings)
 )
+
+export const tagsSettingsFx = createEffect(() =>
+  state()
+    .api.tagsSettings()
+    .then(tap(params => openModal({ name: ModalNames.TAGS_SETTINGS, params })))
+)
+
+export const updateTagsSettingsFx = createEffect<Api['updateTagsSettings']>(tagsSettings =>
+  state().api.updateTagsSettings(tagsSettings)
+)

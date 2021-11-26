@@ -54,7 +54,7 @@ export const updateProjectUsersSettings: ServerApiMethod<'updateProjectUsersSett
 
     return collection(Collections.projectUsersSettings)
       .findOneAndReplace(
-        { docId: docId },
+        { docId },
         { ...projectUsersSettings, docId },
         { upsert: true, returnDocument: 'after' }
       )

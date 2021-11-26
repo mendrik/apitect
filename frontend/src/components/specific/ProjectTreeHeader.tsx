@@ -11,9 +11,10 @@ import { WithTooltip } from '../generic/WithTooltip'
 
 export const ProjectTreeHeader = () => {
   const { selectedNode } = useStore($appStore)
+  const { document } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
-      <div />
+      <div className="text-truncate">{document.name}</div>
       <HGrid>
         <WithTooltip tooltipText="Import" shortcut="I">
           <Icon icon={IconFileImport} />
