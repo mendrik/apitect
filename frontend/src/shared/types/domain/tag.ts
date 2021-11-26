@@ -1,7 +1,4 @@
-import { lazy, object, Schema, string } from 'zod'
-
-import { idCodec } from '../../codecs/idCodec'
-import { Id } from './id'
+import { object, Schema, string } from 'zod'
 
 export interface Tag {
   name: string

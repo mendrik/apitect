@@ -1,11 +1,4 @@
-import {
-  IconDeviceFloppy,
-  IconEyeglass,
-  IconKey,
-  IconLogin,
-  IconTag,
-  IconUsers
-} from '@tabler/icons'
+import { IconDeviceFloppy, IconKey, IconLogin, IconTag, IconUsers } from '@tabler/icons'
 import React, { useContext } from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'

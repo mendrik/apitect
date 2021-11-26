@@ -1,7 +1,5 @@
 import { Dispatch, PropsWithChildren, SetStateAction } from 'react'
 
-import { TreeNode } from '../algebraic/treeNode'
-
 export type Fn<R = void> = (...args: any[]) => R
 
 export type Milliseconds = number
