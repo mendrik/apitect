@@ -1,4 +1,4 @@
-import { literal, object, union, ZodLiteral, ZodObject, ZodString } from 'zod'
+import { literal, number, object, string, union, ZodLiteral, ZodObject, ZodString } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { ApiMethod, ApiMethods, ApiOutput, ApiParam, ApiResult, ApiSchema } from './api'
@@ -32,6 +32,16 @@ const codecs = apiMethods.map(k =>
     payload: ApiSchema[k][1]
   })
 ) as Codecs<ApiMethods>
+
+export const ZApiError = object({
+  error: literal('error'),
+  id: idCodec,
+  status: number(),
+  message: string(),
+  field: string().optional()
+})
+
+export type ApiError = TypeOf<typeof ZApiError>
 
 export const ZApiResponse = union(codecs)
 

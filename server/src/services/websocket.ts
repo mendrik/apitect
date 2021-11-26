@@ -1,14 +1,31 @@
 import { FastifyInstance } from 'fastify'
 import { SocketStream } from 'fastify-websocket'
 import { verify } from 'jsonwebtoken'
+import { ZodError } from 'zod'
 import { ApiMethod } from '~shared/api'
-import { ServerParam, ZApiResponse } from '~shared/apiResponse'
+import { ApiError, ServerParam, ZApiError, ZApiResponse } from '~shared/apiResponse'
 import { ZApiRequest } from '~shared/types/apiRequest'
+import { Fn } from '~shared/types/generic'
+import { HttpError } from '~shared/types/httpError'
 import { JwtPayload } from '~shared/types/response/token'
 import { logger } from '~shared/utils/logger'
 
 import { apiMapping } from '../api/serverApi'
 import { config } from './config'
+
+const handleError =
+  (send: Fn, id: string) =>
+  (e: Error): void => {
+    const $send = (data: Omit<ApiError, 'error' | 'id'>) =>
+      send(JSON.stringify(ZApiError.parse({ id, error: 'error', ...data })))
+    if (e instanceof ZodError) {
+      return $send({ status: 400, message: e.message })
+    }
+    if (e instanceof HttpError) {
+      return $send({ status: e.status, message: e.message, field: e.field })
+    }
+    return $send({ status: 500, message: e.message })
+  }
 
 const openWebsocket = (connection: SocketStream) => {
   const send =
@@ -23,7 +40,7 @@ const openWebsocket = (connection: SocketStream) => {
         const validMessage = ZApiResponse.parse(res)
         connection.socket.send(JSON.stringify(validMessage))
       } catch (e) {
-        logger.error('Failed to respond', res)
+        logger.error('Failed to validate or send out response', { ...res, error: e })
       }
       return payload
     }
@@ -42,7 +59,9 @@ const openWebsocket = (connection: SocketStream) => {
           payload: apiRequest.payload,
           docId
         }
-        return apiCall(param as any).then(send(apiRequest.id, apiRequest.method))
+        return apiCall(param as any)
+          .then(send(apiRequest.id, apiRequest.method))
+          .catch(handleError(connection.socket.send.bind(connection.socket), apiRequest.id))
       } catch (e) {
         logger.error('Error in socket', e)
       }

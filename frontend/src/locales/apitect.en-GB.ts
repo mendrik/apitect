@@ -64,7 +64,11 @@ const en = {
       },
       projectUserSettings: {
         title: 'Project users',
-        info: 'Make sure email and password field belong to the same array-typed parent!'
+        info: 'Make sure email and password field belong to the same array-typed parent!',
+        errors: {
+          invalidParent:
+            'Email and Password field must be descendants of the same array-typed parent node'
+        }
       }
     },
     navbar: {

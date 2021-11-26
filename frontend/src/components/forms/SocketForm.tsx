@@ -28,8 +28,7 @@ export const SocketForm = <M extends FormApiMethod>({
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(data => {
-          close()
-          return onValid(data)
+          return onValid(data).then(close)
         })}
         noValidate
       >

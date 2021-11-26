@@ -14,6 +14,7 @@ import {
 } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Api, ApiMethod, ApiSchema } from '../shared/api'
+import { ApiError, ApiResponse } from '../shared/apiResponse'
 import { ZApiRequest } from '../shared/types/apiRequest'
 import { Node } from '../shared/types/domain/node'
 import { Maybe } from '../shared/types/generic'
@@ -37,8 +38,12 @@ const $appStore = createStore<AppState>(initial)
 export const updateState = createEvent<Partial<AppState>>()
 $appStore.on(updateState, (state, cur) => ({ ...state, ...cur }))
 
-apiResponse.watch(({ method, payload }) => {
-  logger.debug(`Message: ${method}`, payload)
+apiResponse.watch(data => {
+  if (isError(data)) {
+    logger.error(`Res[${data.status}]: ${data.message}`)
+  } else {
+    logger.debug(`Res[${data.method}]:`, data.payload)
+  }
 })
 
 const uiTree = (root: Node) => TreeNode.from<Node, 'children'>('children')(root)
@@ -87,6 +92,9 @@ $appStore.on(updateNodeSettingsFx.done, (state, { result }) => {
   return { ...state, tree: result }
 })
 
+const isError = (res: ApiResponse | ApiError): res is ApiError =>
+  'error' in res && res.error === 'error'
+
 $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
   ...state,
   api: new Proxy({} as any, {
@@ -105,11 +113,15 @@ $appStore.on(socketEstablished, (state, sendJsonMessage) => ({
           } catch (e) {
             logger.error('Failed to parse ApiRequest', e)
           }
-          return new Promise(resolve => {
+          return new Promise((resolve, reject) => {
             const unsubscribe = apiResponse.watch(res => {
               if (res.id === id) {
                 unsubscribe()
-                resolve(res.payload)
+                if (isError(res)) {
+                  reject(res)
+                } else {
+                  resolve(res.payload)
+                }
               }
             })
           })
