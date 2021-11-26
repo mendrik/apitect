@@ -3,7 +3,9 @@ const en = {
     app: {
       name: 'Apitect',
       defaultValues: 'Values',
-      tags: 'Select tags'
+      tags: 'Select tags',
+      tagSettings: 'Tag settings',
+      download: 'Download'
     },
     common: {
       error: 'Error',

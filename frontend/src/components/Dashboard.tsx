@@ -29,8 +29,8 @@ const Dashboard = () => {
   const { t } = useTranslation()
   const columns: JSX.Element[] = [
     <ProjectTreeHeader />,
-    <ColumnHeader name={t('app.defaultValues')} showColumnsIcon />,
-    ...tags.map(tag => <ColumnHeader name={tag.name} />)
+    <ColumnHeader name={t('app.defaultValues')} />,
+    ...tags.map(tag => <ColumnHeader name={tag.name} tag={tag} />)
   ]
 
   return (
