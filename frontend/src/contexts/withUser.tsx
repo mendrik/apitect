@@ -28,6 +28,10 @@ export const WithUser = ({ children }: Jsx) => {
     throw Error('Failed to load user')
   }
 
+  if (state.status === 'running') {
+    throw Promise.resolve()
+  }
+
   return (
     <userContext.Provider
       value={{

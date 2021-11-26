@@ -88,8 +88,6 @@ const bodyStyle = document.body.style
 export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
 
-  console.assert(columns.length === children.length, 'Children count must match column count')
-
   useDndMonitor({
     onDragStart(event) {
       const data = event.active.data.current as Draggable

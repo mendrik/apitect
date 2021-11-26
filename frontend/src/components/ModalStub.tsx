@@ -1,5 +1,5 @@
 import { always, prop } from 'ramda'
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -9,6 +9,7 @@ import { removeParams } from 'shared/utils/url'
 import useInstantPromise from '../hooks/useInstantPromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 import { ModalNames } from '../shared/types/modals'
+import { Loader } from './generic/Loader'
 
 export type ModalFC = ({ close }: { close: Fn }) => JSX.Element | null
 
@@ -47,9 +48,11 @@ export const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>) =>
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <modalState.data close={close} />
-      </Modal.Body>
+      <Suspense fallback={<Loader style={{ minHeight: 200 }} />}>
+        <Modal.Body>
+          <modalState.data close={close} />
+        </Modal.Body>
+      </Suspense>
     </Modal>
   ) : (
     (null as any)

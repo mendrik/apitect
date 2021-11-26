@@ -8,22 +8,27 @@ import { updateUserSettingsFx } from '../../events/user'
 import { useLocation } from '../../hooks/useLocation'
 import { UserSettings as Settings, ZUserSettings } from '../../shared/types/forms/userSettings'
 import $appStore from '../../stores/$appStore'
+import { waitFor } from '../../utils/waitFor'
 import { ModalFC } from '../ModalStub'
 import { SocketForm } from '../forms/SocketForm'
 
 const UserSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Settings>()
   const { tags } = useStore($appStore)
-
   const form = useForm<Settings>({
     resolver: zodResolver(ZUserSettings),
     defaultValues: state
   })
-
+  waitFor(tags)
   return (
     <SocketForm form={form} onValid={updateUserSettingsFx} close={close} submitButton="common.save">
       {tags.map(tag => (
-        <Form.Check type="checkbox" label={`${tag.name}`} />
+        <Form.Check
+          type="checkbox"
+          label={tag.name}
+          value={tag.name}
+          {...form.register('visibleTags')}
+        />
       ))}
     </SocketForm>
   )

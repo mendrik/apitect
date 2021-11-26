@@ -25,12 +25,12 @@ const Scroller = styled.div`
 `
 
 const Dashboard = () => {
-  const { tags } = useStore($appStore)
+  const { visibleTags } = useStore($appStore)
   const { t } = useTranslation()
   const columns: JSX.Element[] = [
     <ProjectTreeHeader />,
     <ColumnHeader name={t('app.defaultValues')} />,
-    ...tags.map(tag => <ColumnHeader name={tag.name} tag={tag} />)
+    ...visibleTags.map(tag => <ColumnHeader name={tag.name} tag={tag} />)
   ]
 
   return (
@@ -43,8 +43,8 @@ const Dashboard = () => {
               <VisualTree />
             </Column>
             <Column>Default</Column>
-            {tags.map(tag => (
-              <Column>{tag.name}</Column>
+            {visibleTags.map(tag => (
+              <Column key={tag.name}>{tag.name}</Column>
             ))}
           </ResizableTable>
         </DndContext>
