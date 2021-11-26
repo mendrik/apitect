@@ -11,15 +11,15 @@ import {
 } from 'date-fns'
 import { range, reduce, take } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { Dispatch, SetStateAction, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
 import { Palette } from '../../css/colors'
 import { useOnActivate } from '../../hooks/useOnActivate'
-import { Jsx } from '../../shared/types/generic'
+import { Jsx, UseState } from '../../shared/types/generic'
 
 type OwnProps = {
-  selected: [Date, Dispatch<SetStateAction<Date>>]
+  selected: UseState<Date>
   month: Date
 }
 

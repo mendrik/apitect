@@ -27,7 +27,7 @@ import {
 import { useFocusOutside } from '../../hooks/useFocusOutside'
 import { SetAccess, useSet } from '../../hooks/useSet'
 import { TreeNode } from '../../shared/algebraic/treeNode'
-import { Fn, Jsx, Maybe } from '../../shared/types/generic'
+import { Fn, Jsx, Maybe, UseState } from '../../shared/types/generic'
 import { offset, sameWidth } from '../../utils/sameWidthMod'
 import { stopPropagation as sp } from '../../utils/stopPropagation'
 import { DeleteIcon } from '../generic/DeleteIcon'
@@ -51,7 +51,7 @@ type OwnProps<T extends WithId> = {
 const TreeInputContext = createContext<
   TreeSelectConfig<any> & {
     setSelected: Dispatch<SetStateAction<any>>
-    focusedNodeState: [Maybe<TreeNode<any>>, Dispatch<SetStateAction<Maybe<TreeNode<any>>>>]
+    focusedNodeState: UseState<Maybe<TreeNode<any>>>
     openStates: SetAccess<TreeNode<any>>
     close: Fn
   }

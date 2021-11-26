@@ -1,4 +1,6 @@
-import { PropsWithChildren } from 'react'
+import { Dispatch, PropsWithChildren, SetStateAction } from 'react'
+
+import { TreeNode } from '../algebraic/treeNode'
 
 export type Fn<R = void> = (...args: any[]) => R
 
@@ -26,3 +28,5 @@ export type UnionToTuple<T> = UnionToIntersection<T extends never ? never : (t: 
   : []
 
 export type NonEmptyArray<T> = [T, ...T[]]
+
+export type UseState<T> = [T, Dispatch<SetStateAction<T>>]
