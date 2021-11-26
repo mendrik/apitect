@@ -1,11 +1,12 @@
 import { EffectByHandler } from 'effector'
-import React, { PropsWithChildren, ReactElement } from 'react'
-import { Button } from 'react-bootstrap'
+import React, { PropsWithChildren, ReactElement, useState } from 'react'
+import { Alert, Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
+import { ExtendedError } from '../../hooks/usePromise'
 import { Api, FormApiMethod } from '../../shared/api'
-import { Fn } from '../../shared/types/generic'
+import { Fn, Maybe } from '../../shared/types/generic'
 import { ButtonRow } from './ButtonRow'
 import { SubmitButton } from './SubmitButton'
 
@@ -23,17 +24,31 @@ export const SocketForm = <M extends FormApiMethod>({
   submitButton,
   close
 }: PropsWithChildren<OwnProps<M>>): ReactElement | null => {
+  const [globalError, setGlobalError] = useState<Maybe<ExtendedError>>()
   const { t } = useTranslation()
   return (
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(data => {
-          return onValid(data).then(close)
+          return onValid(data)
+            .then(close)
+            .catch((e: ExtendedError) => {
+              if (e.field != null) {
+                form.setError(e.field as string, { message: e.message })
+              } else {
+                setGlobalError(e)
+              }
+            })
         })}
         noValidate
       >
         {children}
-        <ButtonRow className="mt-4">
+        {globalError && (
+          <Alert variant={globalError.status === 500 ? 'danger' : 'warning'} className="mt-3">
+            {t(globalError.message as TFuncKey)}
+          </Alert>
+        )}
+        <ButtonRow className="mt-3">
           <Button variant="outline-secondary" onClick={close}>
             {t('common.cancel')}
           </Button>
