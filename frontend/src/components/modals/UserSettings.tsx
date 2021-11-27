@@ -23,7 +23,7 @@ const UserSettings: ModalFC = ({ close }) => {
   return (
     <SocketForm form={form} onValid={updateUserSettingsFx} close={close} submitButton="common.save">
       {tags.map(tag => (
-        <Form.Check>
+        <Form.Check key={tag.name}>
           <Form.Check.Input
             id={`view-${tag.name}`}
             value={tag.name}
