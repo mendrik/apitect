@@ -32,7 +32,7 @@ const ForgotPasswordForm: ModalFC = ({ close }) => {
   })
   const { view, successView } = useView(Views)
   const [withProgress, status] = useProgress()
-  const submit = usePromise<ForgotPassword>(data =>
+  const { trigger } = usePromise<ForgotPassword>(data =>
     withProgress(forgotPassword(data)).then(successView)
   )
 
@@ -41,7 +41,7 @@ const ForgotPasswordForm: ModalFC = ({ close }) => {
   }
 
   return (
-    <Form form={form} status={status}>
+    <Form form={form} status={status} trigger={trigger}>
       <TextInput
         name="email"
         label="form.fields.email"

@@ -48,7 +48,7 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
     return <ForgotPasswordForm close={loginView} />
   }
   return (
-    <Form form={form} tigger={trigger} status={status}>
+    <Form form={form} trigger={trigger} status={status}>
       <TextInput name="email" label="form.fields.email" type="email" containerClassNames="mb-3" />
       <TextInput
         name="password"
