@@ -1,17 +1,15 @@
 import clsx from 'clsx'
 import { path } from 'ramda'
 import { isEmptyString } from 'ramda-adjunct'
-import React, { InputHTMLAttributes, useContext } from 'react'
+import React, { InputHTMLAttributes } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
-import { progressContext } from '../../contexts/withProgress'
 import { useAutoFocus } from '../../hooks/useAutoFocus'
 import { useId } from '../../hooks/useId'
 import { Jsx } from '../../shared/types/generic'
 import { ErrorInfo } from './ErrorInfo'
-import { formWrappingContext } from './Form'
 
 type OwnProps = {
   label: TFuncKey
@@ -36,8 +34,6 @@ export const TextInput = ({
     register,
     formState: { errors }
   } = useFormContext()
-  const { isWorking } = useContext(progressContext)
-  const { promise } = useContext(formWrappingContext)
 
   const inpId = useId()
 
@@ -58,7 +54,7 @@ export const TextInput = ({
           setValueAs: (u: any) => (isEmptyString(u) ? undefined : u),
           ...options
         })}
-        readOnly={props.readOnly || isWorking(promise)}
+        readOnly={props.readOnly}
         required={!!options?.required}
         placeholder={placeholder ?? ' '}
         {...props}

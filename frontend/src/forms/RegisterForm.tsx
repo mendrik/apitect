@@ -35,7 +35,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
   })
   const { setJwt } = useContext(userContext)
   const { t } = useTranslation()
-  const [, trigger] = usePromise<Register>(data => register(data).then(setJwt).then(successView))
+  const { trigger } = usePromise<Register>(data => register(data).then(setJwt).then(successView))
 
   if (view === Views.Success) {
     return (

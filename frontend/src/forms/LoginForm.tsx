@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Login, ZLogin } from 'shared/types/forms/login'
 import { Fn, Jsx } from 'shared/types/generic'
-import { match } from 'ts-pattern'
 
 import { ButtonRow } from '../components/forms/ButtonRow'
 import { Form } from '../components/forms/Form'
@@ -45,24 +44,25 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   const { setJwt, user } = useContext(userContext)
   useEffect(() => (user != null ? close() : void 0), [user, close])
 
-  return match(view)
-    .with(Views.ForgotPassword, () => <ForgotPasswordForm close={loginView} />)
-    .otherwise(() => (
-      <Form form={form} tigger={trigger} status={status}>
-        <TextInput name="email" label="form.fields.email" type="email" containerClassNames="mb-3" />
-        <TextInput
-          name="password"
-          label="form.fields.password"
-          type="password"
-          containerClassNames="mb-3"
-        />
-        <GenericError />
-        <ButtonRow>
-          <Button onClick={forgotPasswordView} variant="outline-primary">
-            {t('modals.authenticate.login.forgotPassword')}
-          </Button>
-          <SubmitButton localeKey="modals.authenticate.login.submit" />
-        </ButtonRow>
-      </Form>
-    ))
+  if (view === Views.ForgotPassword) {
+    return <ForgotPasswordForm close={loginView} />
+  }
+  return (
+    <Form form={form} tigger={trigger} status={status}>
+      <TextInput name="email" label="form.fields.email" type="email" containerClassNames="mb-3" />
+      <TextInput
+        name="password"
+        label="form.fields.password"
+        type="password"
+        containerClassNames="mb-3"
+      />
+      <GenericError />
+      <ButtonRow>
+        <Button onClick={forgotPasswordView} variant="outline-primary">
+          {t('modals.authenticate.login.forgotPassword')}
+        </Button>
+        <SubmitButton localeKey="modals.authenticate.login.submit" />
+      </ButtonRow>
+    </Form>
+  )
 }

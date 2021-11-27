@@ -11,7 +11,6 @@ import styled from 'styled-components'
 import { progressContext } from '../../contexts/withProgress'
 import { useAutoFocus } from '../../hooks/useAutoFocus'
 import { ErrorInfo } from './ErrorInfo'
-import { formWrappingContext } from './Form'
 
 type OwnProps = {
   label: TFuncKey
@@ -74,7 +73,6 @@ export const NumberInput = ({
     formState: { errors }
   } = useFormContext<{ [K in typeof name]: number | undefined }>()
   const { isWorking } = useContext(progressContext)
-  const { promise } = useContext(formWrappingContext)
 
   const inpId = useId()
 
@@ -93,7 +91,7 @@ export const NumberInput = ({
         className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}
         id={inpId}
         autoComplete="off"
-        readOnly={props.readOnly || isWorking(promise)}
+        readOnly={props.readOnly}
         required={!!options?.required}
         type={type}
         placeholder={placeholder ?? ' '}
