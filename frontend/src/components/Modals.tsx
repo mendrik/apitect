@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react'
-import React, { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { closeModal, openModal } from '../events/modals'
@@ -7,6 +7,7 @@ import { ModalNames } from '../shared/types/modals'
 import { addParams, removeParams } from '../shared/utils/url'
 import $appStore from '../stores/$appStore'
 import { ModalStub } from './ModalStub'
+import { Loader } from './generic/Loader'
 
 export const Modals = () => {
   const navigate = useNavigate()
@@ -25,7 +26,7 @@ export const Modals = () => {
   }, [selectedNode])
 
   return (
-    <>
+    <Suspense fallback={<Loader className="d-fixed inset-0 min-vh-100" />}>
       <ModalStub
         title="modals.authenticate.title"
         from={() => import('./modals/Authenticate')}
@@ -62,6 +63,6 @@ export const Modals = () => {
         from={() => import('./modals/UserSettings')}
         name={ModalNames.USER_SETTINGS}
       />
-    </>
+    </Suspense>
   )
 }

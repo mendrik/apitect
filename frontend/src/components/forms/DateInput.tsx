@@ -1,17 +1,15 @@
 import clsx from 'clsx'
 import { useId } from 'hooks/useId'
 import { path } from 'ramda'
-import React, { InputHTMLAttributes, useContext } from 'react'
+import React, { InputHTMLAttributes } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { Jsx } from 'shared/types/generic'
 import styled from 'styled-components'
 
-import { progressContext } from '../../contexts/withProgress'
 import { useAutoFocus } from '../../hooks/useAutoFocus'
 import { useDatepicker } from '../../hooks/useDatepicker'
 import { ErrorInfo } from './ErrorInfo'
-import { formWrappingContext } from './Form'
 
 type OwnProps = {
   label: TFuncKey
@@ -48,8 +46,6 @@ export const DateInput = ({
     setValue,
     formState: { errors }
   } = useFormContext<{ [K in typeof name]: Date | undefined }>()
-  const { isWorking } = useContext(progressContext)
-  const { promise } = useContext(formWrappingContext)
 
   const inpId = useId()
 
@@ -67,7 +63,7 @@ export const DateInput = ({
         className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}
         id={inpId}
         autoComplete="off"
-        readOnly={props.readOnly || isWorking(promise)}
+        readOnly={props.readOnly}
         required={!!options?.required}
         type={type}
         onBlur={ev => {

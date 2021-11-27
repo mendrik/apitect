@@ -5,8 +5,9 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ForgotPassword, TForgotPassword } from 'shared/types/forms/forgotPassword'
 
-import usePromise from '../../hooks/usePromise'
-import { useServerError } from '../../hooks/useServerError'
+import useProgress from '../../hooks/useProgress'
+import { usePromise } from '../../hooks/usePromise'
+import { useView } from '../../hooks/useView'
 import { forgotPassword } from '../../utils/restApi'
 import { ModalFC } from '../ModalStub'
 import { SuccessView } from '../SuccessView'
@@ -16,6 +17,11 @@ import { GenericError } from '../forms/GenericError'
 import { SubmitButton } from '../forms/SubmitButton'
 import { TextInput } from '../forms/TextInput'
 
+enum Views {
+  Form = 'Form',
+  Success = 'Success'
+}
+
 const ForgotPasswordForm: ModalFC = ({ close }) => {
   const { t } = useTranslation()
   const form = useForm<ForgotPassword>({
@@ -24,13 +30,18 @@ const ForgotPasswordForm: ModalFC = ({ close }) => {
       email: 'andreas@mindmine.fi'
     }
   })
-  const submit = usePromise('doForgotPassword', forgotPassword)
-  useServerError(submit.error, form.setError)
+  const { view, successView } = useView(Views)
+  const [withProgress, status] = useProgress()
+  const submit = usePromise<ForgotPassword>(data =>
+    withProgress(forgotPassword(data)).then(successView)
+  )
 
-  const Success = <SuccessView title="common.success" body="modals.forgotPassword.success" />
+  if (view === Views.Success) {
+    return <SuccessView title="common.success" body="modals.forgotPassword.success" />
+  }
 
   return (
-    <Form form={form} state={submit} successView={Success}>
+    <Form form={form} status={status}>
       <TextInput
         name="email"
         label="form.fields.email"
