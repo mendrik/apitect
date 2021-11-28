@@ -1,5 +1,5 @@
-import { prop } from 'ramda'
-import React, { Suspense, useEffect, useState } from 'react'
+import { F, prop } from 'ramda'
+import React, { Suspense, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -9,7 +9,7 @@ import { removeParams } from 'shared/utils/url'
 import { usePromise } from '../hooks/usePromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 import { ModalNames } from '../shared/types/modals'
-import { ErrorBoundary } from './generic/ErrorBoundary'
+import { ErrorContext } from './generic/ErrorContext'
 import { Loader } from './generic/Loader'
 
 export type ModalFC = ({ close }: { close: Fn }) => JSX.Element | null
@@ -21,36 +21,37 @@ type OwnProps = {
   titleOptions?: Record<string, string>
 }
 
-export const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>) => {
+export const ModalStub = ({
+  name,
+  from,
+  title,
+  titleOptions
+}: Jsx<OwnProps>): JSX.Element | null => {
   const { modal } = useQueryParams()
   const modalMatch = modal === name
 
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const [show, setShow] = useState(true)
 
   const { result: ModalContent, trigger } = usePromise(() => from().then(prop('default')))
-  useEffect(() => (modalMatch ? trigger() : void 0), [modalMatch, trigger])
+  useEffect(modalMatch ? trigger : F, [modalMatch, trigger])
 
   const close = () => {
     navigate(removeParams(['modal']), { replace: true })
-    setShow(true)
   }
 
-  return modalMatch && ModalContent != null ? (
-    <Modal show={show} onHide={() => setShow(false)} onExited={close} centered enforceFocus>
+  return ModalContent != null ? (
+    <Modal show={true} onExited={close} centered enforceFocus>
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>
-      <ErrorBoundary>
+      <Modal.Body>
         <Suspense fallback={<Loader style={{ minHeight: 200 }} />}>
-          <Modal.Body>
+          <ErrorContext>
             <ModalContent close={close} />
-          </Modal.Body>
+          </ErrorContext>
         </Suspense>
-      </ErrorBoundary>
+      </Modal.Body>
     </Modal>
-  ) : (
-    (null as any)
-  )
+  ) : null
 }

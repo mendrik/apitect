@@ -1,36 +1,41 @@
-import { tap } from 'ramda'
-import { useEffect, useState } from 'react'
-import { usePromise as useMounted } from 'react-use'
+import { F, tap } from 'ramda'
+import { useCallback, useContext, useEffect, useState } from 'react'
 
-import { Fn, Maybe } from '../shared/types/generic'
-import { logAndThrow } from '../shared/utils/logAndThrow'
+import { errorContext } from '../components/generic/ErrorContext'
+import { Fn } from '../shared/types/generic'
+import { logger } from '../shared/utils/logger'
 
-type PromiseResult<T> = { result: T; trigger: Fn }
+type PromiseResult<T> = { result: T | undefined; trigger: Fn }
 
 export const usePromise = <ARG, T = void>(
   fn: (...args: ARG[]) => Promise<T>,
   instant: boolean = false
 ): PromiseResult<T> => {
-  const [result, setResult] = useState<Maybe<T>>(undefined)
-  const [promise, setPromise] = useState<Maybe<Promise<T>>>(undefined)
-  const mounted = useMounted()
-  const trigger = (...args: ARG[]) => {
-    const promise = (): Promise<T> =>
-      mounted<T>(fn(...args))
-        .then(tap(r => setResult(r)))
-        .catch(logAndThrow)
-        .finally(() => setPromise(undefined))
-    setPromise(promise())
-  }
+  const [result, setResult] = useState<T>()
+  const [promise, setPromise] = useState<Promise<T>>()
+  const { setError } = useContext(errorContext)
+
+  const trigger = useCallback(
+    (...args: ARG[]) => {
+      const promise = () =>
+        fn(...args)
+          .then(tap(r => setResult(r)))
+          .catch(e => {
+            logger.error('Error in usePromise', e)
+            setError(e)
+            return null as any as T
+          })
+          .finally(() => setPromise(undefined))
+      setPromise(promise())
+    },
+    [fn]
+  )
+
   if (promise != null) {
     throw promise
   }
 
-  useEffect(() => {
-    if (instant) {
-      trigger()
-    }
-  }, [instant])
+  useEffect(instant ? trigger : F, [instant, trigger])
 
-  return { result: result!, trigger }
+  return { result, trigger }
 }

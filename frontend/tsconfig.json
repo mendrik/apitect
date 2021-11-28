@@ -9,7 +9,8 @@
       "esnext"
     ],
     "module": "esnext",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
   "include": [
     "src"
