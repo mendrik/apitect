@@ -1,5 +1,6 @@
 import { F } from 'ramda'
 import { useCallback, useContext, useEffect, useState } from 'react'
+import { usePromise as useMounted } from 'react-use'
 
 import { errorContext } from '../components/generic/ErrorContext'
 import { Fn } from '../shared/types/generic'
@@ -13,11 +14,12 @@ export const usePromise = <ARG, T = void>(
   const [result, setResult] = useState<T>()
   const [promise, setPromise] = useState<Promise<void>>()
   const { setError } = useContext(errorContext)
+  const isMounted = useMounted()
 
   const trigger = useCallback(
     (...args: ARG[]) => {
       const promiseFn = () =>
-        fn(...args)
+        isMounted(fn(...args))
           .then(x => setResult(() => x))
           .catch(setError)
           .finally(() => setPromise(undefined))
