@@ -57,7 +57,10 @@ export const VisualNodeTemplate = ({ depth = 0, node, children: footer }: Jsx<Ow
           id={id}
           key={id}
           className={clsx('gap-1', { selectedNode: selectedNode?.value.id === id })}
-          onClick={() => selectNode(selectedNode?.value.id === id ? undefined : node)}
+          onMouseDown={ev => {
+            const isActive = document.activeElement?.id === node.value.id
+            selectNode(selectedNode?.value.id === id && isActive ? undefined : node)
+          }}
         >
           {hasChildren ? (
             <Icon

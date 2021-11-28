@@ -56,9 +56,8 @@ export type SelectedNode = {
 }
 
 const NewNode: ModalFC = ({ close }) => {
-  const {
-    state: { selectedNode }
-  } = useLocation<SelectedNode>()
+  const { state } = useLocation<SelectedNode>()
+  const selectedNode = state?.selectedNode
   const form = useForm<NewNodeType>({
     resolver: zodResolver(TNewNode),
     defaultValues: {
