@@ -24,8 +24,8 @@ type OwnProps = {
 }
 
 enum Views {
-  Login = 'Login',
-  ForgotPassword = 'ForgotPassword'
+  Login,
+  ForgotPassword
 }
 
 export const LoginForm = ({ close }: Jsx<OwnProps>) => {
@@ -38,6 +38,9 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
       password: 'qctxExmNQ9FEcZ'
     }
   })
+
+  console.log(view)
+
   const [withProgress, status] = useProgress<Token>()
   const { trigger } = usePromise<Login>(data => withProgress(login(data)).then(setJwt))
 
@@ -47,6 +50,7 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   if (view === Views.ForgotPassword) {
     return <ForgotPasswordForm close={loginView} />
   }
+
   return (
     <Form form={form} trigger={trigger} status={status}>
       <TextInput name="email" label="form.fields.email" type="email" containerClassNames="mb-3" />

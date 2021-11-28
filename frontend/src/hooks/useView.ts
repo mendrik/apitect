@@ -2,6 +2,7 @@ import { keys, reduce } from 'ramda'
 import { useRef, useState } from 'react'
 
 import { Fn } from '../shared/types/generic'
+import { decapitalizeFirst } from '../shared/utils/ramda'
 
 type ViewMethods<T extends string> = {
   [key in T as `${Uncapitalize<key>}View`]: Fn
@@ -16,7 +17,7 @@ export const useView = <T extends string, E extends string | number>(anEnum: {
     reduce(
       (p, v) => ({
         ...p,
-        [`${v.toLowerCase()}View`]: (ev: Event) => {
+        [`${decapitalizeFirst(v)}View`]: (ev: Event) => {
           ev?.preventDefault()
           setView(anEnum[v])
         }
@@ -25,6 +26,8 @@ export const useView = <T extends string, E extends string | number>(anEnum: {
       keys(anEnum)
     )
   )
+
+  console.log(methods)
 
   return {
     view,

@@ -8,6 +8,7 @@ import {
   either,
   head,
   identity,
+  isNil,
   join,
   juxt,
   last,
@@ -16,12 +17,14 @@ import {
   prop,
   propEq,
   reduce,
+  replace,
   reverse,
   tail,
   toLower,
   toPairs,
   toUpper,
-  tryCatch
+  tryCatch,
+  unless
 } from 'ramda'
 import { findOr } from 'ramda-adjunct'
 
@@ -74,3 +77,5 @@ export const prev =
 export const isNumeric: Pred = (str: string) => !isNaN(Number(str))
 
 export const spaceOrEnter = either(propEq<any>('code', 'Space'), propEq<any>('key', 'Enter'))
+
+export const decapitalizeFirst = unless(isNil, replace(/^./, toLower))
