@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import React, { HTMLAttributes } from 'react'
 
+import { delayedBlendIn } from '../../animations/delayedBlendIn'
 import { ReactComponent as LoadingSvg } from '../../assets/loader.svg'
 import { Jsx } from '../../shared/types/generic'
 
@@ -13,15 +14,7 @@ export const Loader = ({ className, ...props }: Jsx<OwnProps>) => {
       className={clsx('d-flex w-100 justify-content-center align-items-center', className)}
       {...props}
     >
-      <motion.div
-        className="icon"
-        initial={{
-          opacity: 0
-        }}
-        animate={{ opacity: 1 }}
-        transition={{ transitionProperty: 'opacity', delay: 200 }}
-        exit={{ opacity: 0, visibility: 'hidden' }}
-      >
+      <motion.div {...delayedBlendIn} style={{ width: 50, height: 50 }}>
         <LoadingSvg />
       </motion.div>
     </div>

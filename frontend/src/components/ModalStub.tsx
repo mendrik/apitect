@@ -35,10 +35,12 @@ const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>): JSX.Elem
     }
   }, [ModalContent, modalMatch])
 
-  const close = () => navigate(removeParams(['modal']), { replace: true })
+  const close = () => {
+    navigate(removeParams(['modal']), { replace: true })
+  }
 
   return ModalContent != null ? (
-    <Modal show={modalMatch} onHide={close} centered enforceFocus>
+    <Modal show={modalMatch} onHide={close} centered enforceFocus key={name}>
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>
@@ -52,7 +54,5 @@ const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>): JSX.Elem
     </Modal>
   ) : null
 }
-
-ModalStub.whyDidYouRender = true
 
 export { ModalStub }

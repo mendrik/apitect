@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Alert } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next'
+import { TFuncKey, useTranslation } from 'react-i18next'
 
 import { ExtendedError } from '../../shared/types/extendedError'
 import { errorContext } from '../generic/ErrorContext'
@@ -13,8 +13,7 @@ export const GenericError = () => {
 
   return error && isExtended(error) && !('field' in error) ? (
     <Alert variant={error.status === 500 ? 'danger' : 'warning'}>
-      <Alert.Heading>{t('common.unexpectedError')}</Alert.Heading>
-      {error.message}
+      {t(error.message as TFuncKey)}
     </Alert>
   ) : null
 }

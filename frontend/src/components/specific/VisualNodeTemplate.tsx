@@ -41,7 +41,7 @@ const NodeGrid = styled.div`
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNodeTemplate = ({ depth = 0, node, children: footer }: Jsx<OwnProps>) => {
+export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
   const { openNodes } = useStore($appStore)
   const hasChildren = isNotNilOrEmpty(node.children)
   const { selectedNode } = useStore($appStore)
@@ -57,10 +57,6 @@ export const VisualNodeTemplate = ({ depth = 0, node, children: footer }: Jsx<Ow
           id={id}
           key={id}
           className={clsx('gap-1', { selectedNode: selectedNode?.value.id === id })}
-          onMouseDown={ev => {
-            const isActive = document.activeElement?.id === node.value.id
-            selectNode(selectedNode?.value.id === id && isActive ? undefined : node)
-          }}
         >
           {hasChildren ? (
             <Icon
@@ -74,7 +70,14 @@ export const VisualNodeTemplate = ({ depth = 0, node, children: footer }: Jsx<Ow
           ) : (
             <div />
           )}
-          <div className={clsx('text-truncate', { thin: !hasChildren })} title={node.value.name}>
+          <div
+            className={clsx('text-truncate', { thin: !hasChildren })}
+            title={node.value.name}
+            onMouseDown={() => {
+              const isActive = document.activeElement?.id === node.value.id
+              selectNode(selectedNode?.value.id === id && isActive ? undefined : node)
+            }}
+          >
             {node.value.name}
           </div>
           {nodeType === NodeType.Array && <Icon icon={iconMap[nodeType]} size={14} disabled />}
@@ -89,7 +92,6 @@ export const VisualNodeTemplate = ({ depth = 0, node, children: footer }: Jsx<Ow
           ))}
         </NotEmptyList>
       )}
-      {footer}
     </>
   )
 }

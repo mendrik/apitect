@@ -3,6 +3,7 @@ import { useLocalStorage } from 'react-use'
 import { User } from 'shared/types/domain/user'
 import { Jsx, Maybe } from 'shared/types/generic'
 
+import useProgress from '../hooks/useProgress'
 import { usePromise } from '../hooks/usePromise'
 import { whoAmI } from '../utils/restApi'
 
@@ -20,12 +21,13 @@ export const userContext = createContext<UserContext>({
 
 export const WithUser = ({ children }: Jsx) => {
   const [jwt, setJwt] = useLocalStorage<string>('jwt', undefined)
-  const { result: user, trigger } = usePromise(whoAmI, true)
+  const [withProgress, res] = useProgress<User | null>()
+  const { trigger } = usePromise(() => withProgress(whoAmI()), true)
 
-  return (
+  return res.status === 'done' ? (
     <userContext.Provider
       value={{
-        user,
+        user: res.result,
         jwt,
         setJwt: j => {
           if (j) {
@@ -39,5 +41,5 @@ export const WithUser = ({ children }: Jsx) => {
     >
       {children}
     </userContext.Provider>
-  )
+  ) : null
 }

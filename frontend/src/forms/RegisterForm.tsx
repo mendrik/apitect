@@ -24,6 +24,8 @@ enum Views {
 
 export const RegisterForm: ModalFC = ({ close }) => {
   const { view, successView } = useView(Views)
+  const { setJwt } = useContext(userContext)
+  const { t } = useTranslation()
   const form = useForm<Register>({
     resolver: zodResolver(ZRegister),
     defaultValues: {
@@ -33,8 +35,6 @@ export const RegisterForm: ModalFC = ({ close }) => {
       passwordRepeat: 'qctxExmNQ9FEcZ'
     }
   })
-  const { setJwt } = useContext(userContext)
-  const { t } = useTranslation()
   const { trigger } = usePromise<Register>(data => register(data).then(setJwt).then(successView))
 
   if (view === Views.Success) {
