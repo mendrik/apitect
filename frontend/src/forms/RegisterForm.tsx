@@ -13,10 +13,19 @@ import { GenericError } from '../components/forms/GenericError'
 import { SubmitButton } from '../components/forms/SubmitButton'
 import { TextInput } from '../components/forms/TextInput'
 import { userContext } from '../contexts/withUser'
-import usePromise from '../hooks/usePromise'
+import { usePromise } from '../hooks/usePromise'
+import { useView } from '../hooks/useView'
 import { register } from '../utils/restApi'
 
+enum Views {
+  Form = 'Form',
+  Success = 'Success'
+}
+
 export const RegisterForm: ModalFC = ({ close }) => {
+  const { view, successView } = useView(Views)
+  const { setJwt } = useContext(userContext)
+  const { t } = useTranslation()
   const form = useForm<Register>({
     resolver: zodResolver(ZRegister),
     defaultValues: {
@@ -26,22 +35,22 @@ export const RegisterForm: ModalFC = ({ close }) => {
       passwordRepeat: 'qctxExmNQ9FEcZ'
     }
   })
-  const { t } = useTranslation()
-  const state = usePromise('doRegister', register)
-  const { setJwt } = useContext(userContext)
+  const { trigger } = usePromise<Register>(data => register(data).then(setJwt).then(successView))
 
-  const Success = (
-    <SuccessView title="common.success" body="modals.authenticate.register.success">
-      <ButtonRow className="mt-4">
-        <Button onClick={close} variant="primary">
-          {t('common.close')}
-        </Button>
-      </ButtonRow>
-    </SuccessView>
-  )
+  if (view === Views.Success) {
+    return (
+      <SuccessView title="common.success" body="modals.authenticate.register.success">
+        <ButtonRow className="mt-4">
+          <Button onClick={close} variant="primary">
+            {t('common.close')}
+          </Button>
+        </ButtonRow>
+      </SuccessView>
+    )
+  }
 
   return (
-    <Form form={form} state={state} successView={Success} onSuccess={setJwt}>
+    <Form form={form} trigger={trigger}>
       <TextInput name="name" containerClassNames="mb-3" label="form.fields.name" />
       <TextInput name="email" containerClassNames="mb-3" label="form.fields.email" type="email" />
       <TextInput

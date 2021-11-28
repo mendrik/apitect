@@ -8,7 +8,6 @@ import App from './components/App'
 import { Modals } from './components/Modals'
 import { ErrorView } from './components/generic/ErrorView'
 import { Loader } from './components/generic/Loader'
-import { WithProgress } from './contexts/withProgress'
 import { WithUser } from './contexts/withUser'
 import './index.scss'
 import { initLocales } from './locales/locales'
@@ -31,14 +30,12 @@ const render = (): void =>
   void ReactDOM.render(
     <React.StrictMode>
       <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
-        <Suspense fallback={<Loader className="vh-100" />}>
+        <Suspense fallback={<Loader className="vh-100" delay={true} />}>
           <WithUser>
-            <WithProgress>
-              <BrowserRouter>
-                <App />
-                <Modals />
-              </BrowserRouter>
-            </WithProgress>
+            <BrowserRouter>
+              <App />
+              <Modals />
+            </BrowserRouter>
           </WithUser>
         </Suspense>
       </ErrorBoundary>

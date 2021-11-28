@@ -9,11 +9,8 @@ import { ErrorView } from './generic/ErrorView'
 import { WaitForDocument } from './specific/WaitForDocument'
 
 const App = () => {
-  const userState = useContext(userContext)
-  if (userState.status === 'running' || document == null) {
-    return null
-  }
-  return userState.user ? (
+  const { user } = useContext(userContext)
+  return user ? (
     <WithSocket>
       <WaitForDocument>
         <Routes>

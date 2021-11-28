@@ -1,70 +1,38 @@
-import { useCallback, useContext, useReducer, useRef } from 'react'
-import { Primitives } from 'ts-pattern/lib/types/helpers'
+import { F } from 'ramda'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { usePromise as useMounted } from 'react-use'
 
-import { progressContext } from '../contexts/withProgress'
+import { errorContext } from '../components/generic/ErrorContext'
+import { Fn } from '../shared/types/generic'
 
-export type ExtendedError = Error & Record<string, Primitives>
+type PromiseResult<T> = { result: T | undefined; trigger: Fn }
 
-type Action<T> =
-  | { status: 'idle' }
-  | { status: 'running' }
-  | { status: 'done'; payload: T }
-  | { status: 'error'; payload: ExtendedError }
-
-export interface State<T> {
-  data?: T
-  error?: ExtendedError
-  trigger: (...args: any) => Promise<T | void>
-  status: Action<T>['status']
-  name: string
-}
-const usePromise = <T = unknown>(name: string, fn: (...args: any[]) => Promise<T>): State<T> => {
-  const progress = useContext(progressContext)
-
-  const initialState = useRef<State<T>>({
-    error: undefined,
-    data: undefined,
-    status: 'idle',
-    trigger: () => Promise.resolve<any>(null),
-    name
-  })
-
-  const promiseReducer = useCallback((state: State<T>, action: Action<T>): State<T> => {
-    switch (action.status) {
-      case 'running':
-        return { ...state, status: action.status, data: undefined }
-      case 'done':
-        return { ...state, status: action.status, data: action.payload }
-      case 'error':
-        return { ...state, status: action.status, error: action.payload }
-      default:
-        return state
-    }
-  }, [])
-
-  const [state, dispatch] = useReducer(promiseReducer, initialState.current)
+export const usePromise = <ARG, T = void>(
+  fn: (...args: ARG[]) => Promise<T>,
+  instant: boolean = false
+): PromiseResult<T> => {
+  const [result, setResult] = useState<T>()
+  const [promise, setPromise] = useState<Promise<void>>()
+  const { setError } = useContext(errorContext)
+  const isMounted = useMounted()
 
   const trigger = useCallback(
-    (...args: any[]) => {
-      dispatch({ status: 'running' })
-      progress.setWorking(name, true)
-      return fn(...args)
-        .then(payload => {
-          dispatch({ status: 'done', payload })
-          return payload
-        })
-        .catch(e => {
-          console.error(`Promise[${name}] failed: ${e.message}`, e.stackTrace)
-          dispatch({ status: 'error', payload: e as ExtendedError })
-        })
-        .finally(() => {
-          progress.setWorking(name, false)
-        })
+    (...args: ARG[]) => {
+      const promiseFn = () =>
+        isMounted(fn(...args))
+          .then(x => setResult(() => x))
+          .catch(setError)
+          .finally(() => setPromise(undefined))
+      setPromise(promiseFn())
     },
-    [fn, name, progress]
+    [result]
   )
 
-  return { ...state, trigger }
-}
+  if (promise != null) {
+    throw promise
+  }
 
-export default usePromise
+  useEffect(instant ? trigger : F, [])
+
+  return { result, trigger }
+}

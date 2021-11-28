@@ -15,7 +15,7 @@ export const apiUrl = (url: string) => `http://localhost:3001/${url}`
 
 const request =
   (method: string) =>
-  <B, S>(url: string, schema?: ZodSchema<S>, body?: B): Promise<S | undefined> =>
+  <B, S>(url: string, schema?: ZodSchema<S>, body?: B): Promise<S> =>
     fetch(apiUrl(url), {
       method,
       headers: satiated({
@@ -26,7 +26,7 @@ const request =
     })
       .then(failOn<Request>(r => !r.ok, fetchError(`Fetch ${url}`)))
       .then(v => v.clone().json())
-      .then(json => (schema ? schema.parse(json) : undefined))
+      .then(json => schema?.parse(json) ?? json)
       .catch(async (e: FetchError<Request>) => {
         throw await e.data.json()
       })

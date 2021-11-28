@@ -1,12 +1,10 @@
 import React from 'react'
 
 import { ReactComponent as ErrorSvg } from '../../assets/error.svg'
-import { Navigation } from '../Navigation'
 
 export const ErrorView = () => {
   return (
     <div className="min-vh-100 d-flex flex-column">
-      <Navigation />
       <div className="d-flex justify-content-center align-items-center flex-grow-1">
         <div className="d-flex flex-column align-items-center">
           <h2 className="fw-bold">Oh no, something went wrong!</h2>

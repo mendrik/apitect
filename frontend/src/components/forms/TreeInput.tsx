@@ -15,6 +15,8 @@ import React, {
 import { FormControl, Overlay } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
+import { useSet } from 'react-use'
+import { Actions } from 'react-use/lib/useSet'
 
 import {
   NodeNode,
@@ -25,7 +27,6 @@ import {
   StyledTreeInput
 } from '../../css/TreeInput.css'
 import { useFocusOutside } from '../../hooks/useFocusOutside'
-import { SetAccess, useSet } from '../../hooks/useSet'
 import { useUndefinedEffect } from '../../hooks/useUndefinedEffect'
 import { TreeNode } from '../../shared/algebraic/treeNode'
 import { Fn, Jsx, Maybe, UseState } from '../../shared/types/generic'
@@ -53,7 +54,7 @@ const TreeInputContext = createContext<
   TreeSelectConfig<any> & {
     setSelected: Dispatch<SetStateAction<any>>
     focusedNodeState: UseState<Maybe<TreeNode<any>>>
-    openStates: SetAccess<TreeNode<any>>
+    openStateActions: Actions<TreeNode<any>>
     close: Fn
   }
 >({} as any)
@@ -81,7 +82,7 @@ export const TreeInput = <T extends WithId>({
   useUndefinedEffect(() => setValue(name, undefined), selected)
 
   const focusedNodeState = useState<Maybe<TreeNode<T>>>()
-  const openStates = useSet<TreeNode<T>>(new Set([tree]))
+  const [, openStateActions] = useSet<TreeNode<T>>(new Set([tree]))
 
   const parent = useRef<HTMLDivElement>(null)
   const target = useRef<HTMLDivElement>(null)
@@ -143,7 +144,7 @@ export const TreeInput = <T extends WithId>({
           <TreeInputContext.Provider
             value={{
               close,
-              openStates,
+              openStateActions,
               focusedNodeState,
               setSelected,
               nodeRender,
@@ -174,10 +175,10 @@ type TreeNodeProps<T> = {
 }
 
 TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
-  const { name, close, nodeRender, setSelected, focusedNodeState, openStates } =
+  const { name, close, nodeRender, setSelected, focusedNodeState, openStateActions } =
     useContext(TreeInputContext)
   const { setValue } = useFormContext()
-  const { add, remove, has: isOpen } = openStates
+  const { add, remove, has: isOpen } = openStateActions
   const [focusedNode, setFocusedNode] = focusedNodeState
   const hasChildren = isNotNilOrEmpty(node.children)
 

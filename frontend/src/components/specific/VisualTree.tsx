@@ -30,7 +30,10 @@ export const VisualTree = ({ children }: Jsx) => {
       .every(isTrue)
 
   useDefinedEffect(node => {
-    document.getElementById(node.value.id)?.focus({ preventScroll: true })
+    const domNode = document.getElementById(node.value.id)
+    console.log(domNode)
+    domNode?.focus()
+    console.log(domNode === document.activeElement)
   }, selectedNode)
 
   const nextNode = () => selectedNode?.next(isVisible)
