@@ -36,7 +36,12 @@ export const Navigation = () => {
   const { user } = useContext(userContext)
 
   return (
-    <Navbar variant="light" expand="sm" className="px-2 bevel-bottom bevel-shadow overflow-hidden">
+    <Navbar
+      variant="light"
+      expand="sm"
+      className="px-2 bevel-bottom bevel-shadow"
+      style={{ overflowX: 'clip', overflowY: 'visible' }}
+    >
       <Navbar.Brand href="#home" tabIndex={-1} className="me-auto">
         <Logo className="logo" style={{ height: 32, marginTop: -8 }} />
       </Navbar.Brand>
