@@ -16,20 +16,21 @@ export const usePromise = <ARG, T = void>(
 
   const trigger = useCallback(
     (...args: ARG[]) => {
-      const promise = () =>
+      const promiseFn = () =>
         fn(...args)
           .then(x => setResult(() => x))
           .catch(setError)
           .finally(() => setPromise(undefined))
-      setPromise(promise())
+      setPromise(promiseFn())
     },
-    [fn]
+    [result]
   )
 
   if (promise != null) {
     throw promise
   }
-  useEffect(instant ? trigger : F, [instant, trigger])
+
+  useEffect(instant ? trigger : F, [])
 
   return { result, trigger }
 }

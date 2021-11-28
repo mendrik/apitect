@@ -14,6 +14,7 @@ export type ApiInput<T extends ApiMethod> = ApiSchema[T][0]
 export type ApiOutput<T extends ApiMethod> = ApiSchema[T][1]
 export type ApiParam<T extends ApiMethod> = TypeOf<ApiInput<T>>
 export type ApiResult<T extends ApiMethod> = TypeOf<ApiOutput<T>>
+
 export type Api = {
   [K in ApiMethod]: ApiParam<K> extends undefined
     ? () => Promise<ApiResult<K>>

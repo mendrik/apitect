@@ -1,4 +1,4 @@
-import { F, prop } from 'ramda'
+import { prop } from 'ramda'
 import React, { Suspense, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
@@ -29,12 +29,16 @@ const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>): JSX.Elem
   const navigate = useNavigate()
 
   const { result: ModalContent, trigger } = usePromise(() => from().then(prop('default')))
-  useEffect(modalMatch ? trigger : F, [modalMatch, trigger])
+  useEffect(() => {
+    if (ModalContent == null && modalMatch) {
+      trigger()
+    }
+  }, [ModalContent, modalMatch])
 
   const close = () => navigate(removeParams(['modal']), { replace: true })
 
   return ModalContent != null ? (
-    <Modal show={true} onExited={close} centered enforceFocus>
+    <Modal show={modalMatch} onHide={close} centered enforceFocus>
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>

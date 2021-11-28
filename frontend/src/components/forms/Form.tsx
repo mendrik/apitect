@@ -20,7 +20,7 @@ export const Form = <T extends FieldValues>({
     <form
       onSubmit={form.handleSubmit(trigger)}
       noValidate
-      data-disabled={status?.status === 'running'}
+      data-disabled={status?.status === 'running' ? 'true' : 'false'}
     >
       {children}
     </form>
