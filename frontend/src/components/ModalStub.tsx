@@ -21,12 +21,7 @@ type OwnProps = {
   titleOptions?: Record<string, string>
 }
 
-export const ModalStub = ({
-  name,
-  from,
-  title,
-  titleOptions
-}: Jsx<OwnProps>): JSX.Element | null => {
+const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>): JSX.Element | null => {
   const { modal } = useQueryParams()
   const modalMatch = modal === name
 
@@ -36,9 +31,7 @@ export const ModalStub = ({
   const { result: ModalContent, trigger } = usePromise(() => from().then(prop('default')))
   useEffect(modalMatch ? trigger : F, [modalMatch, trigger])
 
-  const close = () => {
-    navigate(removeParams(['modal']), { replace: true })
-  }
+  const close = () => navigate(removeParams(['modal']), { replace: true })
 
   return ModalContent != null ? (
     <Modal show={true} onExited={close} centered enforceFocus>
@@ -46,12 +39,16 @@ export const ModalStub = ({
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Suspense fallback={<Loader style={{ minHeight: 200 }} />}>
-          <ErrorContext>
+        <ErrorContext>
+          <Suspense fallback={<Loader style={{ minHeight: 200 }} />}>
             <ModalContent close={close} />
-          </ErrorContext>
-        </Suspense>
+          </Suspense>
+        </ErrorContext>
       </Modal.Body>
     </Modal>
   ) : null
 }
+
+ModalStub.whyDidYouRender = true
+
+export { ModalStub }
