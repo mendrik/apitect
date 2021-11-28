@@ -31,9 +31,7 @@ export const VisualTree = ({ children }: Jsx) => {
 
   useDefinedEffect(node => {
     const domNode = document.getElementById(node.value.id)
-    console.log(domNode)
     domNode?.focus()
-    console.log(domNode === document.activeElement)
   }, selectedNode)
 
   const nextNode = () => selectedNode?.next(isVisible)

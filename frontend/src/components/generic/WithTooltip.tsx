@@ -13,6 +13,9 @@ export const WithTooltip = ({ tooltipText, shortcut, children }: Jsx<OwnProps>) 
   return (
     <OverlayTrigger
       placement="top"
+      popperConfig={{
+        strategy: 'fixed'
+      }}
       delay={1000}
       overlay={
         <Tooltip data-shortcut={shortcut} className={clsx({ shortcut })}>

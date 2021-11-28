@@ -21,7 +21,6 @@ const StyledGrid = styled.div<{ columns: any[] }>`
   grid-template-rows: 32px;
   grid-auto-rows: auto;
   align-items: stretch;
-  min-width: ${pipe(pathOr(1, ['columns', 'length']), multiply(200))}px;
   width: 100%;
 `
 

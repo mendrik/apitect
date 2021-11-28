@@ -18,7 +18,6 @@ const Item = styled(Nav.Item)`
   padding: 0.25rem 0.5rem 0.25rem 0.25rem;
   border-radius: 4px;
   cursor: pointer;
-  width: min-content;
 
   span {
     color: ${Palette.iconText};
@@ -37,7 +36,7 @@ export const Navigation = () => {
   const { user } = useContext(userContext)
 
   return (
-    <Navbar variant="light" expand="sm" className="px-2 bevel-bottom bevel-shadow w-auto">
+    <Navbar variant="light" expand="sm" className="px-2 bevel-bottom bevel-shadow overflow-hidden">
       <Navbar.Brand href="#home" tabIndex={-1} className="me-auto">
         <Logo className="logo" style={{ height: 32, marginTop: -8 }} />
       </Navbar.Brand>
