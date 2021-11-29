@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { addParams } from 'shared/utils/url'
 import styled from 'styled-components'
 
-import { ReactComponent as Logo } from '../assets/logo.svg'
 import { userContext } from '../contexts/withUser'
 import { Palette } from '../css/colors'
 import { projectUserSettingsFx, tagsSettingsFx } from '../events/project'
@@ -30,14 +29,14 @@ const Item = styled(Nav.Item)`
 `
 
 const LogoText = styled.span`
-  font-weight: 600;
-  color: #86ab51;
-  -webkit-text-stroke: 0.2pt black;
-  text-shadow: 2px 2px 4px rgb(120 120 120 / 50%);
+  color: #558117;
+  text-shadow: 2px 2px 2px rgb(160 160 160 / 25%);
   font-size: 30px;
   padding: 0;
   margin: 0;
   line-height: 30px;
+  letter-spacing: -1px;
+  font-style: italic;
 `
 
 export const Navigation = () => {
