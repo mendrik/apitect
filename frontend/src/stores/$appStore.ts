@@ -5,6 +5,7 @@ import { Document } from 'shared/types/domain/document'
 import { v4 as uuid } from 'uuid'
 
 import { apiResponse, socketEstablished } from '../events/messages'
+import { resetStore } from '../events/project'
 import {
   createNodeFx,
   deleteNodeFx,
@@ -36,7 +37,10 @@ export type AppState = {
 const initial: AppState = {
   document: null,
   tree: null,
-  openNodes: {}
+  openNodes: {},
+  tags: [],
+  visibleTags: [],
+  selectedNode: null
 } as any
 
 const $appStore = createStore<AppState>(initial)
@@ -149,5 +153,7 @@ $appStore.on(openNodeState, (state, [node, open]) => ({
   ...state,
   openNodes: { ...state.openNodes, [node.value.id]: open }
 }))
+
+$appStore.reset(resetStore)
 
 export default $appStore

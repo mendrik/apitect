@@ -1,4 +1,4 @@
-import { createEffect, sample } from 'effector'
+import { createEffect, createEvent, sample } from 'effector'
 import { tap } from 'ramda'
 
 import { Api } from '../shared/types/api'
@@ -30,3 +30,5 @@ export const updateTagsSettingsFx = createEffect<Api['updateTagsSettings']>(tags
     .api.updateTagsSettings(tagsSettings)
     .then(tap(() => projectFx()))
 )
+
+export const resetStore = createEvent()
