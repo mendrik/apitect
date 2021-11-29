@@ -1,4 +1,4 @@
-import { IconColumns, IconDownload, IconSettings } from '@tabler/icons'
+import { IconColumns, IconDownload, IconSettings, IconShieldCheck } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React from 'react'
@@ -25,6 +25,9 @@ export const ColumnHeader = ({ name, tag }: Jsx<OwnProps>) => {
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate">{name}</div>
       <HGrid>
+        <WithTooltip tooltipText={t('app.validation')}>
+          <Icon icon={IconShieldCheck} onClick={() => userSettingsFx()} />
+        </WithTooltip>
         {tag == null ? (
           isNotNilOrEmpty(tags) && (
             <WithTooltip tooltipText={t('app.tags')}>
@@ -36,9 +39,6 @@ export const ColumnHeader = ({ name, tag }: Jsx<OwnProps>) => {
             <Icon icon={IconSettings} />
           </WithTooltip>
         )}
-        <WithTooltip tooltipText={t('app.download')}>
-          <Icon icon={IconDownload} />
-        </WithTooltip>
       </HGrid>
     </Tuple>
   )

@@ -5,7 +5,8 @@ const en = {
       defaultValues: 'Values',
       tags: 'Select tags',
       tagSettings: 'Tag settings',
-      download: 'Download'
+      download: 'Download',
+      validation: 'Validation issues'
     },
     common: {
       error: 'Error',

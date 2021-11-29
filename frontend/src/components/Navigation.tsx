@@ -1,4 +1,13 @@
-import { IconKey, IconLogin, IconTags, IconUsers, IconWorldUpload } from '@tabler/icons'
+import {
+  IconDownload,
+  IconKey,
+  IconLogin,
+  IconShieldCheck,
+  IconTags,
+  IconTrees,
+  IconUsers,
+  IconWorldUpload
+} from '@tabler/icons'
 import React, { useContext } from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -30,6 +39,7 @@ const Item = styled(Nav.Item)`
 
 const LogoText = styled.span`
   font-weight: 600;
+  margin-left: 0.25rem;
 `
 
 export const Navigation = () => {
@@ -46,6 +56,7 @@ export const Navigation = () => {
       style={{ overflowX: 'clip', overflowY: 'visible' }}
     >
       <Navbar.Brand tabIndex={-1} className="me-auto p-0 user-select-none">
+        <IconTrees stroke={1} width={24} />
         <LogoText>
           <span style={{ color: 'red' }}>api</span>tect
         </LogoText>
@@ -56,6 +67,12 @@ export const Navigation = () => {
             <Tuple first={Scale.CONTENT}>
               <IconWorldUpload className="icn" stroke={1} />
               <span>Publish</span>
+            </Tuple>
+          </Item>
+          <Item>
+            <Tuple first={Scale.CONTENT}>
+              <IconDownload className="icn" stroke={1} />
+              <span>Download</span>
             </Tuple>
           </Item>
           <Item onClick={projectUserSettingsFx}>
