@@ -17,7 +17,11 @@ const en = {
       save: 'Save',
       delete: 'Delete',
       yesImSure: 'I am sure!',
-      unexpectedError: 'Oops! An unexpected error'
+      unexpectedError: 'Oops! An unexpected error',
+      confirmation: 'Confirmation required',
+      questions: {
+        delete: 'Are you sure you want to delete this node? This action is irreversible.'
+      }
     },
     modals: {
       newNode: {
