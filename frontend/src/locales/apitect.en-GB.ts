@@ -1,7 +1,7 @@
 const en = {
   translation: {
     app: {
-      name: 'Apitect',
+      name: '{ api/tect }',
       defaultValues: 'Values',
       tags: 'Select tags',
       tagSettings: 'Tag settings',

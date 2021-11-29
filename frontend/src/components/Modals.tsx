@@ -42,6 +42,7 @@ export const Modals = () => {
         from={() => import('./modals/NewNode')}
         name={ModalNames.NEW_NODE}
         restoreFocus={false}
+        autoFocus={false}
       />
       <ModalStub
         title="modals.nodeSettings.title"

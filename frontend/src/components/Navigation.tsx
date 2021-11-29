@@ -29,14 +29,7 @@ const Item = styled(Nav.Item)`
 `
 
 const LogoText = styled.span`
-  color: #558117;
-  text-shadow: 2px 2px 2px rgb(160 160 160 / 25%);
-  font-size: 30px;
-  padding: 0;
-  margin: 0;
-  line-height: 30px;
-  letter-spacing: -1px;
-  font-style: italic;
+  font-weight: 600;
 `
 
 export const Navigation = () => {
@@ -53,7 +46,9 @@ export const Navigation = () => {
       style={{ overflowX: 'clip', overflowY: 'visible' }}
     >
       <Navbar.Brand tabIndex={-1} className="me-auto p-0 user-select-none">
-        <LogoText>{t('app.name')}</LogoText>
+        <LogoText>
+          <span style={{ color: 'red' }}>api</span>tect
+        </LogoText>
       </Navbar.Brand>
       {user != null && (
         <div className="d-flex align-items-center">
