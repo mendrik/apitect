@@ -63,6 +63,7 @@ export const Modals = () => {
         title={`modals.userSettings.title`}
         from={() => import('./modals/UserSettings')}
         name={ModalNames.USER_SETTINGS}
+        restoreFocus={false}
       />
     </Suspense>
   )

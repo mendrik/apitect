@@ -6,7 +6,6 @@ import { errorContext } from '../components/generic/ErrorContext'
 
 type Trigger = () => void
 
-// todo prevent throwing
 export const usePromise = <ARG, T = void>(
   fn: (...args: ARG[]) => Promise<T>,
   instant: boolean = false,

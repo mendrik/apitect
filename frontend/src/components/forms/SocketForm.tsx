@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 
+import useProgress from '../../hooks/useProgress'
 import type { FormApiMethod } from '../../shared/types/api'
 import { ExtendedError } from '../../shared/types/extendedError'
 import { Fn } from '../../shared/types/generic'
@@ -25,13 +26,14 @@ export const SocketForm = <M extends FormApiMethod>({
   submitButton,
   close
 }: PropsWithChildren<OwnProps<M>>): ReactElement | null => {
+  const [withProgress, status] = useProgress()
   const { setError } = useContext(errorContext)
   const { t } = useTranslation()
   return (
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(data =>
-          onValid(data)
+          withProgress(onValid(data))
             .then(close)
             .catch((e: ExtendedError) => {
               if (e.field != null) {
@@ -41,6 +43,7 @@ export const SocketForm = <M extends FormApiMethod>({
               }
             })
         )}
+        data-disabled={status?.is === 'running' ? 'true' : 'false'}
         noValidate
       >
         {children}

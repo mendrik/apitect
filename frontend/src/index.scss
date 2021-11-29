@@ -192,6 +192,11 @@ input[required] + label:after {
   }
 }
 
+[data-disabled] {
+  transition: opacity 0.3s;
+  transition-delay: 0.3s;
+}
+
 [disabled], [data-disabled=true] {
   pointer-events: none;
   opacity: 0.3;
