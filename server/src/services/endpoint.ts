@@ -48,6 +48,7 @@ const handleError = (reply: FastifyReply) => (e: Error) => {
   logger.error(e.message, e.stack)
   const send = (status: number, data: any) =>
     reply.code(status).send(JSON.stringify({ ...data, status }))
+
   if (e instanceof ZodError) {
     return send(400, { message: e.message })
   }
@@ -83,7 +84,7 @@ export const endpoint =
         return dependencyResolver
       }, dependencies)
       const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
-      return resolvePromised(resObj).then(body).then(OK(reply))
+      return resolvePromised(resObj).then(body).then(OK(reply)).catch(handleError(reply))
     } catch (e) {
       handleError(reply)(e as Error)
     }

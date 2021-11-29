@@ -3,6 +3,7 @@ import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form'
 import { Fn, Jsx } from 'shared/types/generic'
 
 import { Status } from '../../hooks/useProgress'
+import { useServerError } from '../../hooks/useServerError'
 
 type OwnProps<T, S = any> = {
   form: UseFormReturn<T>
@@ -15,14 +16,17 @@ export const Form = <T extends FieldValues>({
   trigger,
   status,
   children
-}: Jsx<OwnProps<T>>) => (
-  <FormProvider {...form}>
-    <form
-      onSubmit={form.handleSubmit(trigger)}
-      noValidate
-      data-disabled={status?.status === 'running' ? 'true' : 'false'}
-    >
-      {children}
-    </form>
-  </FormProvider>
-)
+}: Jsx<OwnProps<T>>) => {
+  useServerError(form.setError)
+  return (
+    <FormProvider {...form}>
+      <form
+        onSubmit={form.handleSubmit(trigger)}
+        noValidate
+        data-disabled={status?.status === 'running' ? 'true' : 'false'}
+      >
+        {children}
+      </form>
+    </FormProvider>
+  )
+}

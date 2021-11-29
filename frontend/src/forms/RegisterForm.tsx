@@ -14,6 +14,7 @@ import { SubmitButton } from '../components/forms/SubmitButton'
 import { TextInput } from '../components/forms/TextInput'
 import { userContext } from '../contexts/withUser'
 import { usePromise } from '../hooks/usePromise'
+import { useServerError } from '../hooks/useServerError'
 import { useView } from '../hooks/useView'
 import { register } from '../utils/restApi'
 
