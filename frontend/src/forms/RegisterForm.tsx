@@ -13,6 +13,7 @@ import { GenericError } from '../components/forms/GenericError'
 import { SubmitButton } from '../components/forms/SubmitButton'
 import { TextInput } from '../components/forms/TextInput'
 import { userContext } from '../contexts/withUser'
+import useProgress from '../hooks/useProgress'
 import { usePromise } from '../hooks/usePromise'
 import { useView } from '../hooks/useView'
 import { Token } from '../shared/types/response/token'
@@ -37,7 +38,12 @@ export const RegisterForm: ModalFC = ({ close }) => {
       passwordRepeat: 'qctxExmNQ9FEcZ'
     }
   })
-  const trigger = usePromise<Register>(data => register(data).then(setJwt).then(successView))
+  const [withProgress, status] = useProgress()
+  const onSubmit = usePromise<Register>(
+    data => withProgress(register(data).then(setJwt)).then(successView),
+    false,
+    false
+  )
 
   if (view === Views.Success) {
     return (
@@ -58,7 +64,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
   }
 
   return (
-    <Form form={form} trigger={trigger}>
+    <Form form={form} onSubmit={onSubmit} status={status}>
       <TextInput name="name" containerClassNames="mb-3" label="form.fields.name" />
       <TextInput name="email" containerClassNames="mb-3" label="form.fields.email" type="email" />
       <TextInput

@@ -7,13 +7,13 @@ import { useServerError } from '../../hooks/useServerError'
 
 type OwnProps<T, S = any> = {
   form: UseFormReturn<T>
-  trigger: Fn
+  onSubmit: Fn
   status?: Status<S>
 }
 
 export const Form = <T extends FieldValues>({
   form,
-  trigger,
+  onSubmit,
   status,
   children
 }: Jsx<OwnProps<T>>) => {
@@ -21,7 +21,7 @@ export const Form = <T extends FieldValues>({
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit(trigger)}
+        onSubmit={form.handleSubmit(onSubmit)}
         noValidate
         data-disabled={status?.is === 'running' ? 'true' : 'false'}
       >

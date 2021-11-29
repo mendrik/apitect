@@ -50,7 +50,7 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   }
 
   return (
-    <Form form={form} trigger={trigger} status={status}>
+    <Form form={form} onSubmit={trigger} status={status}>
       <TextInput name="email" label="form.fields.email" type="email" containerClassNames="mb-3" />
       <TextInput
         name="password"

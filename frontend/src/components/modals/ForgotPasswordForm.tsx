@@ -41,7 +41,7 @@ const ForgotPasswordForm: ModalFC = ({ close }) => {
   }
 
   return (
-    <Form form={form} status={status} trigger={trigger}>
+    <Form form={form} status={status} onSubmit={trigger}>
       <TextInput
         name="email"
         label="form.fields.email"

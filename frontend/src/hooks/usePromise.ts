@@ -9,7 +9,8 @@ type Trigger = () => void
 // todo prevent throwing
 export const usePromise = <ARG, T = void>(
   fn: (...args: ARG[]) => Promise<T>,
-  instant: boolean = false
+  instant: boolean = false,
+  throwSuspense: boolean = false
 ): Trigger => {
   const [promise, setPromise] = useState<Promise<any>>()
   const { setError } = useContext(errorContext)
@@ -23,7 +24,7 @@ export const usePromise = <ARG, T = void>(
     setPromise(promiseFn())
   }, [])
 
-  if (promise != null) {
+  if (throwSuspense && promise != null) {
     throw promise
   }
 
