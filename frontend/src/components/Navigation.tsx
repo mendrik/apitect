@@ -1,4 +1,4 @@
-import { IconDeviceFloppy, IconKey, IconLogin, IconTag, IconUsers } from '@tabler/icons'
+import { IconKey, IconLogin, IconTag, IconUsers, IconWorldUpload } from '@tabler/icons'
 import React, { useContext } from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -49,7 +49,7 @@ export const Navigation = () => {
         <div className="d-flex align-items-center">
           <Item disabled>
             <Tuple first={Scale.CONTENT}>
-              <IconDeviceFloppy className="icn" stroke={1} />
+              <IconWorldUpload className="icn" stroke={1} />
               <span>Publish</span>
             </Tuple>
           </Item>
