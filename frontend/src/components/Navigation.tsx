@@ -1,4 +1,4 @@
-import { IconKey, IconLogin, IconTag, IconUsers, IconWorldUpload } from '@tabler/icons'
+import { IconKey, IconLogin, IconTags, IconUsers, IconWorldUpload } from '@tabler/icons'
 import React, { useContext } from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -67,7 +67,7 @@ export const Navigation = () => {
           </Item>
           <Item onClick={tagsSettingsFx}>
             <Tuple first={Scale.CONTENT}>
-              <IconTag className="icn" stroke={1} />
+              <IconTags className="icn" stroke={1} />
               <span>Tags</span>
             </Tuple>
           </Item>
