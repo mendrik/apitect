@@ -29,6 +29,17 @@ const Item = styled(Nav.Item)`
   }
 `
 
+const LogoText = styled.span`
+  font-weight: 600;
+  color: #86ab51;
+  -webkit-text-stroke: 0.2pt black;
+  text-shadow: 2px 2px 4px rgb(120 120 120 / 50%);
+  font-size: 30px;
+  padding: 0;
+  margin: 0;
+  line-height: 30px;
+`
+
 export const Navigation = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -42,8 +53,8 @@ export const Navigation = () => {
       className="px-2 bevel-bottom bevel-shadow"
       style={{ overflowX: 'clip', overflowY: 'visible' }}
     >
-      <Navbar.Brand href="#home" tabIndex={-1} className="me-auto">
-        <Logo className="logo" style={{ height: 32, marginTop: -8 }} />
+      <Navbar.Brand tabIndex={-1} className="me-auto p-0 user-select-none">
+        <LogoText>{t('app.name')}</LogoText>
       </Navbar.Brand>
       {user != null && (
         <div className="d-flex align-items-center">
