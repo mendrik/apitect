@@ -1,3 +1,4 @@
+import { BaseModalProps } from '@restart/ui/Modal'
 import { prop } from 'ramda'
 import React, { Suspense, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
@@ -20,9 +21,15 @@ type OwnProps = {
   name: ModalNames
   title: TFuncKey
   titleOptions?: Record<string, string>
-}
+} & BaseModalProps
 
-const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>): JSX.Element | null => {
+const ModalStub = ({
+  name,
+  from,
+  title,
+  titleOptions,
+  ...modalProps
+}: Jsx<OwnProps>): JSX.Element | null => {
   const { modal } = useQueryParams()
   const modalMatch = modal === name
 
@@ -42,7 +49,7 @@ const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>): JSX.Elem
   }
 
   return status.is === 'done' ? (
-    <Modal show={modalMatch} onHide={close} centered enforceFocus key={name}>
+    <Modal show={modalMatch} onHide={close} centered enforceFocus key={name} {...modalProps}>
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>
