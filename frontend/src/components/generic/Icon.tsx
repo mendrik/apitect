@@ -52,7 +52,7 @@ export const Icon = ({
   disabled = false,
   size = 16,
   iconClasses,
-  tabIndex = 0,
+  tabIndex = -1,
   ...props
 }: Jsx<OwnProps>) => (
   <Button
