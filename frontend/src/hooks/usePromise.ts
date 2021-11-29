@@ -7,6 +7,7 @@ import { Fn } from '../shared/types/generic'
 
 type PromiseResult<T> = { result: T | undefined; trigger: Fn }
 
+// todo prevent throwing
 export const usePromise = <ARG, T = void>(
   fn: (...args: ARG[]) => Promise<T>,
   instant: boolean = false

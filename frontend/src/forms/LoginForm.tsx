@@ -39,8 +39,6 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
     }
   })
 
-  console.log(view)
-
   const [withProgress, status] = useProgress<Token>()
   const { trigger } = usePromise<Login>(data => withProgress(login(data)).then(setJwt))
 

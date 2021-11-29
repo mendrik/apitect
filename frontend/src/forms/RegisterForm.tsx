@@ -18,8 +18,8 @@ import { useView } from '../hooks/useView'
 import { register } from '../utils/restApi'
 
 enum Views {
-  Form = 'Form',
-  Success = 'Success'
+  Form,
+  Success
 }
 
 export const RegisterForm: ModalFC = ({ close }) => {

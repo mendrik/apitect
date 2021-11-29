@@ -18,8 +18,8 @@ import { SubmitButton } from '../forms/SubmitButton'
 import { TextInput } from '../forms/TextInput'
 
 enum Views {
-  Form = 'Form',
-  Success = 'Success'
+  Form,
+  Success
 }
 
 const ForgotPasswordForm: ModalFC = ({ close }) => {

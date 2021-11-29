@@ -8,7 +8,7 @@ type ViewMethods<T extends string> = {
   [key in T as `${Uncapitalize<key>}View`]: Fn
 }
 
-export const useView = <T extends string, E extends string | number>(anEnum: {
+export const useView = <T extends string, E extends number>(anEnum: {
   [K in T]: E
 }) => {
   const [view, setView] = useState<E>((anEnum as any)[(anEnum as any)[0]] as any)
@@ -26,8 +26,6 @@ export const useView = <T extends string, E extends string | number>(anEnum: {
       keys(anEnum)
     )
   )
-
-  console.log(methods)
 
   return {
     view,
