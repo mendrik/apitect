@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -15,6 +15,7 @@ import { TextInput } from '../components/forms/TextInput'
 import { userContext } from '../contexts/withUser'
 import { usePromise } from '../hooks/usePromise'
 import { useView } from '../hooks/useView'
+import { Token } from '../shared/types/response/token'
 import { register } from '../utils/restApi'
 
 enum Views {
@@ -24,7 +25,8 @@ enum Views {
 
 export const RegisterForm: ModalFC = ({ close }) => {
   const { view, successView } = useView(Views)
-  const { setJwt } = useContext(userContext)
+  const { setJwt: login } = useContext(userContext)
+  const [jwt, setJwt] = useState<Token>()
   const { t } = useTranslation()
   const form = useForm<Register>({
     resolver: zodResolver(ZRegister),
@@ -41,7 +43,13 @@ export const RegisterForm: ModalFC = ({ close }) => {
     return (
       <SuccessView title="common.success" body="modals.authenticate.register.success">
         <ButtonRow className="mt-4">
-          <Button onClick={close} variant="primary">
+          <Button
+            onClick={() => {
+              close()
+              login(jwt)
+            }}
+            variant="primary"
+          >
             {t('common.close')}
           </Button>
         </ButtonRow>
