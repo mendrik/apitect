@@ -40,7 +40,7 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   })
 
   const [withProgress, status] = useProgress<Token>()
-  const { trigger } = usePromise<Login>(data => withProgress(login(data)).then(setJwt))
+  const trigger = usePromise<Login>(data => withProgress(login(data)).then(setJwt))
 
   const { setJwt, user } = useContext(userContext)
   useEffect(() => (user != null ? close() : void 0), [user, close])

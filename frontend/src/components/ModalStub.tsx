@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { Fn, Jsx } from 'shared/types/generic'
 import { removeParams } from 'shared/utils/url'
 
+import useProgress from '../hooks/useProgress'
 import { usePromise } from '../hooks/usePromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 import { ModalNames } from '../shared/types/modals'
@@ -28,18 +29,19 @@ const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>): JSX.Elem
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const { result: ModalContent, trigger } = usePromise(() => from().then(prop('default')))
+  const [withProgress, status] = useProgress<ModalFC>()
+  const trigger = usePromise(() => withProgress(from().then(prop('default'))))
   useEffect(() => {
-    if (ModalContent == null && modalMatch) {
+    if (status.is === 'idle' && modalMatch) {
       trigger()
     }
-  }, [ModalContent, modalMatch])
+  }, [status, modalMatch])
 
   const close = () => {
     navigate(removeParams(['modal']), { replace: true })
   }
 
-  return ModalContent != null ? (
+  return status.is === 'done' ? (
     <Modal show={modalMatch} onHide={close} centered enforceFocus key={name}>
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
@@ -47,7 +49,7 @@ const ModalStub = ({ name, from, title, titleOptions }: Jsx<OwnProps>): JSX.Elem
       <Modal.Body>
         <ErrorContext>
           <Suspense fallback={<Loader style={{ minHeight: 200 }} />}>
-            <ModalContent close={close} />
+            <status.result close={close} />
           </Suspense>
         </ErrorContext>
       </Modal.Body>

@@ -22,9 +22,9 @@ export const userContext = createContext<UserContext>({
 export const WithUser = ({ children }: Jsx) => {
   const [jwt, setJwt] = useLocalStorage<string>('jwt', undefined)
   const [withProgress, res] = useProgress<User | null>()
-  const { trigger } = usePromise(() => withProgress(whoAmI()), true)
+  const trigger = usePromise(() => withProgress(whoAmI()), true)
 
-  return res.status === 'done' ? (
+  return res.is === 'done' ? (
     <userContext.Provider
       value={{
         user: res.result,

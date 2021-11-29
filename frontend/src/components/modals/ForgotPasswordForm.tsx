@@ -32,7 +32,7 @@ const ForgotPasswordForm: ModalFC = ({ close }) => {
   })
   const { view, successView } = useView(Views)
   const [withProgress, status] = useProgress()
-  const { trigger } = usePromise<ForgotPassword>(data =>
+  const trigger = usePromise<ForgotPassword>(data =>
     withProgress(forgotPassword(data)).then(successView)
   )
 

@@ -37,7 +37,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
       passwordRepeat: 'qctxExmNQ9FEcZ'
     }
   })
-  const { trigger } = usePromise<Register>(data => register(data).then(setJwt).then(successView))
+  const trigger = usePromise<Register>(data => register(data).then(setJwt).then(successView))
 
   if (view === Views.Success) {
     return (

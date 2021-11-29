@@ -3,31 +3,25 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { usePromise as useMounted } from 'react-use'
 
 import { errorContext } from '../components/generic/ErrorContext'
-import { Fn } from '../shared/types/generic'
 
-type PromiseResult<T> = { result: T | undefined; trigger: Fn }
+type Trigger = () => void
 
 // todo prevent throwing
 export const usePromise = <ARG, T = void>(
   fn: (...args: ARG[]) => Promise<T>,
   instant: boolean = false
-): PromiseResult<T> => {
-  const [result, setResult] = useState<T>()
-  const [promise, setPromise] = useState<Promise<void>>()
+): Trigger => {
+  const [promise, setPromise] = useState<Promise<any>>()
   const { setError } = useContext(errorContext)
   const isMounted = useMounted()
 
-  const trigger = useCallback(
-    (...args: ARG[]) => {
-      const promiseFn = () =>
-        isMounted(fn(...args))
-          .then(x => setResult(() => x))
-          .catch(setError)
-          .finally(() => setPromise(undefined))
-      setPromise(promiseFn())
-    },
-    [result]
-  )
+  const trigger = useCallback((...args: ARG[]) => {
+    const promiseFn = () =>
+      isMounted(fn(...args))
+        .catch(setError)
+        .finally(() => setPromise(undefined))
+    setPromise(promiseFn())
+  }, [])
 
   if (promise != null) {
     throw promise
@@ -35,5 +29,5 @@ export const usePromise = <ARG, T = void>(
 
   useEffect(instant ? trigger : F, [])
 
-  return { result, trigger }
+  return trigger
 }
