@@ -96,7 +96,8 @@ $appStore.on(projectFx.done, (state, { result }) => {
 $appStore.on(createNodeFx.done, (state, { result }) => {
   const uiRoot = uiTree(result.tree)
   const node = uiRoot.first(propEq('id', result.nodeId))
-  return { ...state, tree: result.tree, ...selectedNodeState(state, node) }
+  setTimeout(() => selectNode(node), 200) // wait for popup to close, it messes with focus
+  return { ...state, tree: result.tree }
 })
 
 $appStore.on(updateNodeSettingsFx.done, (state, { result }) => {

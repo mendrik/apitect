@@ -31,12 +31,7 @@ export const VisualTree = ({ children }: Jsx) => {
       .map(n => openNodes[n.id])
       .every(isTrue)
 
-  useDefinedEffect(node => {
-    requestAnimationFrame(() => {
-      const domNode = document.getElementById(node.value.id)!
-      focus(domNode)
-    })
-  }, selectedNode)
+  useDefinedEffect(node => focus(document.getElementById(node.value.id)), selectedNode)
 
   const nextNode = () => selectedNode?.next(isVisible)
   const prevNode = () => selectedNode?.prev(isVisible)
