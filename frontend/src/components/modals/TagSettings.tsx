@@ -1,11 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
-import { map } from 'ramda'
+import { always, fromPairs, juxt, map, prop, propEq } from 'ramda'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
+import { updateTagsSettingsFx } from '../../events/project'
 import { useLocation } from '../../hooks/useLocation'
 import { Tag, ZTag } from '../../shared/types/domain/tag'
+import { isCyclic, updateArrayBy } from '../../shared/utils/ramda'
 import $appStore from '../../stores/$appStore'
 import { ModalFC } from '../ModalStub'
 import { Dropdown } from '../forms/Dropdown'
@@ -21,8 +23,21 @@ const TagSettings: ModalFC = ({ close }) => {
     defaultValues: tag
   })
 
+  const extendableTags = tags.filter(t => {
+    const mockTags = updateArrayBy(propEq('name', tag), always({ ...tag, parent: t.name }), tags)
+    const pathMap = fromPairs(map(juxt<any[], any, any>([prop('name'), prop('parent')]), mockTags))
+    return !isCyclic(pathMap)(t.name)
+  })
+
   return (
-    <SocketForm form={form} onValid={Promise.resolve} close={close} submitButton="common.save">
+    <SocketForm
+      form={form}
+      onValid={async data =>
+        updateTagsSettingsFx({ tags: updateArrayBy(propEq('name', tag.name), always(data), tags) })
+      }
+      close={close}
+      submitButton="common.save"
+    >
       <TextInput
         name="name"
         label="form.fields.nodeName"
@@ -34,7 +49,7 @@ const TagSettings: ModalFC = ({ close }) => {
       <Dropdown
         label="form.fields.parentTag"
         name="parent"
-        options={map(tag => [tag.name, tag.name], tags)}
+        options={map(tag => [tag.name, tag.name], extendableTags)}
       />
     </SocketForm>
   )

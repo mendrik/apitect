@@ -5,7 +5,9 @@ import {
   assoc,
   compose,
   converge,
+  curry,
   either,
+  findIndex,
   head,
   identity,
   isNil,
@@ -24,11 +26,12 @@ import {
   toPairs,
   toUpper,
   tryCatch,
-  unless
+  unless,
+  update
 } from 'ramda'
 import { findOr } from 'ramda-adjunct'
 
-import { Fn, Maybe } from '../types/generic'
+import { AFn, Fn, Maybe } from '../types/generic'
 
 export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]), toLower)
 
@@ -79,3 +82,16 @@ export const isNumeric: Pred = (str: string) => !isNaN(Number(str))
 export const spaceOrEnter = either(propEq<any>('code', 'Space'), propEq<any>('key', 'Enter'))
 
 export const decapitalizeFirst = unless(isNil, replace(/^./, toLower))
+
+export const updateArrayBy = curry(<T>(pred: Pred, updateFn: AFn<T, T>, arr: T[]) => {
+  const index = findIndex(pred, arr)
+  return update(index, updateFn(arr[index]), arr)
+})
+
+export const isCyclic =
+  (pathMap: Record<string, string>) =>
+  (node: string, visited: string[] = []): boolean => {
+    if (node === pathMap[node] || visited.includes(node)) return true
+    if (pathMap[node] == null) return false
+    return isCyclic(pathMap)(pathMap[node], [node, ...visited])
+  }
