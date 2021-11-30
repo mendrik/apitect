@@ -30,6 +30,7 @@ export const useConfirmation = (
   }, [open])
 
   const keyMap = cond([
+    [propEq('code', 'Escape'), (e: Event) => setOpen(false)],
     [propEq('key', 'Enter'), (e: Event) => e.stopPropagation()],
     [propEq('code', 'Space'), (e: Event) => e.stopPropagation()]
   ])
