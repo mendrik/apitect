@@ -5,6 +5,7 @@ import { valueListFx } from '../../events/project'
 import useProgress from '../../hooks/useProgress'
 import { usePromise } from '../../hooks/usePromise'
 import { Jsx } from '../../shared/types/generic'
+import { Placeholder } from '../generic/Placeholder'
 
 type OwnProps = {
   tag?: string
@@ -16,5 +17,5 @@ export const VisualValueList = ({ tag, nodeIds }: Jsx<OwnProps>) => {
   const [withProgress, status] = useProgress()
   usePromise(() => withProgress(valueListFx({ tag, nodeIds })), true, false)
 
-  return status.is === 'done' ? <div>Loaded</div> : <div>Loading</div>
+  return status.is === 'done' ? <Placeholder.List lines={nodeIds.length} /> : <div>Loading</div>
 }
