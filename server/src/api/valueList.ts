@@ -10,7 +10,7 @@ export const valueList: ServerApiMethod<'valueList'> = async ({
   payload: { tag, nodeIds }
 }) => {
   const values = collection(Collections.values)
-    .find<Value>({ docId, nodeId: { $in: nodeIds } })
+    .find<Value>({ docId, tag, nodeId: { $in: nodeIds } })
     .toArray()
   const nodeSettings = collection(Collections.nodeSettings)
     .find<NodeSettings>({ docId, nodeId: { $in: nodeIds } })

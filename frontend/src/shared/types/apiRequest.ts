@@ -4,19 +4,17 @@ import { TypeOf } from 'zod/lib/types'
 import { ApiSchema } from '../api'
 import { idCodec } from '../codecs/idCodec'
 import type { ApiInput, ApiMethod, ApiMethods } from './api'
+import { UnionToTuple } from './generic'
 
 const apiMethods = Object.keys(ApiSchema) as ApiMethods
-type Codec<T extends ApiMethod> = ZodObject<{
-  id: ZodString
-  method: ZodLiteral<T>
-  payload: ApiInput<T>
-}>
 
-type Codecs<T extends ApiMethod[]> = T extends [infer H, ...infer Tail]
-  ? H extends ApiMethod
-    ? [Codec<H>, ...(Tail extends [ApiMethod, ...ApiMethod[]] ? Codecs<Tail> : [])]
-    : never
-  : never
+type AllCodecs = {
+  [K in ApiMethod]: ZodObject<{
+    id: ZodString
+    method: ZodLiteral<K>
+    payload: ApiInput<K>
+  }>
+}[ApiMethod]
 
 const codecs = apiMethods.map(k =>
   object({
@@ -24,7 +22,7 @@ const codecs = apiMethods.map(k =>
     method: literal(k),
     payload: ApiSchema[k][0]
   })
-) as Codecs<ApiMethods>
+) as UnionToTuple<AllCodecs>
 
 export const ZApiRequest = union(codecs)
 
