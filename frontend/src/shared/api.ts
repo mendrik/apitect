@@ -1,8 +1,9 @@
-import { undefined as undef } from 'zod'
+import { string, undefined as undef } from 'zod'
 
 import { idCodec } from './codecs/idCodec'
 import { ZNode } from './types/domain/node'
 import { ZProject } from './types/domain/project'
+import { ZTag } from './types/domain/tag'
 import { TNewNode } from './types/forms/newNode'
 import { ZNodeSettings } from './types/forms/nodetypes/nodeSettings'
 import { ZProjectUsersSettings } from './types/forms/projectUsersSettings'

@@ -1,9 +1,10 @@
-import { IconColumns, IconDownload, IconSettings, IconShieldCheck } from '@tabler/icons'
+import { IconColumns, IconSettings, IconShieldCheck } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { tagSettingsFx } from '../../events/project'
 import { userSettingsFx } from '../../events/user'
 import { Tag } from '../../shared/types/domain/tag'
 import { Jsx } from '../../shared/types/generic'
@@ -36,7 +37,7 @@ export const ColumnHeader = ({ name, tag }: Jsx<OwnProps>) => {
           )
         ) : (
           <WithTooltip tooltipText={t('app.tagSettings')}>
-            <Icon icon={IconSettings} />
+            <Icon icon={IconSettings} onClick={() => tagSettingsFx(tag.name)} />
           </WithTooltip>
         )}
       </HGrid>

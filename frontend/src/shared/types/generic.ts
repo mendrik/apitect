@@ -1,6 +1,7 @@
 import { Dispatch, PropsWithChildren, SetStateAction } from 'react'
 
 export type Fn<R = void> = (...args: any[]) => R
+export type AFn<A, R = void> = (arg: A) => R
 
 export type Milliseconds = number
 export type Seconds = number

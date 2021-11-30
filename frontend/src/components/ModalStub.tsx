@@ -3,7 +3,7 @@ import { prop } from 'ramda'
 import React, { Suspense, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Fn, Jsx } from 'shared/types/generic'
 import { removeParams } from 'shared/utils/url'
 
@@ -31,6 +31,7 @@ const ModalStub = ({
   enforceFocus = true,
   ...modalProps
 }: Jsx<OwnProps>): JSX.Element | null => {
+  const { state } = useLocation()
   const { modal } = useQueryParams()
   const modalMatch = modal === name
 
@@ -52,7 +53,7 @@ const ModalStub = ({
   return status.is === 'done' ? (
     <Modal show={modalMatch} centered onHide={close} key={name} {...modalProps}>
       <Modal.Header closeButton>
-        <Modal.Title>{t(title, titleOptions)}</Modal.Title>
+        <Modal.Title>{t(title, titleOptions ?? state)}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <ErrorContext>

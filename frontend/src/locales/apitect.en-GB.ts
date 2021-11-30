@@ -86,6 +86,9 @@ const en = {
         title: 'Tags',
         info: 'Tags represent copies of your project data. Furthermore tags can extend each other so that missing values can be resolved by looking up parent tags.'
       },
+      tagSettings: {
+        title: 'Tag {{ name }}'
+      },
       userSettings: {
         title: 'User settings'
       }
@@ -109,7 +112,8 @@ const en = {
         submit: 'Login',
         regexp: 'Regular Expression',
         number: 'Number',
-        search: 'Search'
+        search: 'Search',
+        parentTag: 'Extends from'
       },
       validation: {
         sherlock: 'Unable not understand this expression',
@@ -119,6 +123,9 @@ const en = {
         required: '$t(form.fields.{{ field }}) is required',
         password:
           '$t(form.fields.{{ field }}) must be at least 6 characters long, 1 digit and 1 uppercase letter'
+      },
+      dropDown: {
+        noValue: 'Select...'
       }
     },
     validation: {

@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react'
 import React, { Suspense, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { closeModal, openModal } from '../events/modals'
 import { ModalNames } from '../shared/types/modals'
@@ -61,6 +61,11 @@ export const Modals = () => {
         title={`modals.tagsSettings.title`}
         from={() => import('./modals/TagsSettings')}
         name={ModalNames.TAGS_SETTINGS}
+      />
+      <ModalStub
+        title={`modals.tagSettings.title`}
+        from={() => import('./modals/TagSettings')}
+        name={ModalNames.TAG_SETTINGS}
       />
       <ModalStub
         title={`modals.userSettings.title`}
