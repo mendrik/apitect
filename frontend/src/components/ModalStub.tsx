@@ -28,6 +28,7 @@ const ModalStub = ({
   from,
   title,
   titleOptions,
+  enforceFocus = true,
   ...modalProps
 }: Jsx<OwnProps>): JSX.Element | null => {
   const { modal } = useQueryParams()
@@ -49,7 +50,7 @@ const ModalStub = ({
   }
 
   return status.is === 'done' ? (
-    <Modal show={modalMatch} onHide={close} centered enforceFocus key={name} {...modalProps}>
+    <Modal show={modalMatch} centered onHide={close} key={name} {...modalProps}>
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions)}</Modal.Title>
       </Modal.Header>

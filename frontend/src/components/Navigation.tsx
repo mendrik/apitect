@@ -2,7 +2,6 @@ import {
   IconDownload,
   IconKey,
   IconLogin,
-  IconShieldCheck,
   IconTags,
   IconTrees,
   IconUsers,
@@ -40,6 +39,7 @@ const Item = styled(Nav.Item)`
 const LogoText = styled.span`
   font-weight: 600;
   margin-left: 0.25rem;
+  color: #999;
 `
 
 export const Navigation = () => {
@@ -58,7 +58,7 @@ export const Navigation = () => {
       <Navbar.Brand tabIndex={-1} className="me-auto p-0 user-select-none">
         <IconTrees stroke={1} width={24} />
         <LogoText>
-          <span style={{ color: 'red' }}>api</span>tect
+          <span style={{ color: 'black' }}>api</span>tect
         </LogoText>
       </Navbar.Brand>
       {user != null && (
