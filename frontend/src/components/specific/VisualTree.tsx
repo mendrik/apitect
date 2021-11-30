@@ -52,7 +52,7 @@ export const VisualTree = ({ children }: Jsx) => {
   ])
 
   return (
-    <div onKeyDown={keyMap}>
+    <div onKeyDown={keyMap} id="doc-tree">
       <VisualNodeTemplate node={root}>{children}</VisualNodeTemplate>
       <ConfirmModal />
     </div>
