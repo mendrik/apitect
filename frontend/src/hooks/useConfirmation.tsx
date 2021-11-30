@@ -7,6 +7,7 @@ import { QuestionView } from '../components/QuestionView'
 import { ButtonRow } from '../components/forms/ButtonRow'
 import { Fn } from '../shared/types/generic'
 import { focus } from '../utils/focus'
+import { stopPropagation as sp } from '../utils/stopPropagation'
 import { useOnActivate } from './useOnActivate'
 
 export const useConfirmation = (
@@ -30,9 +31,9 @@ export const useConfirmation = (
   }, [open])
 
   const keyMap = cond([
-    [propEq('code', 'Escape'), (e: Event) => setOpen(false)],
-    [propEq('key', 'Enter'), (e: Event) => e.stopPropagation()],
-    [propEq('code', 'Space'), (e: Event) => e.stopPropagation()]
+    [propEq('code', 'Escape'), sp(() => setOpen(false))],
+    [propEq('key', 'Enter'), sp],
+    [propEq('code', 'Space'), sp]
   ])
 
   const Confirm = useCallback(() => {
