@@ -13,7 +13,7 @@ import { logger } from '~shared/utils/logger'
 import { apiMapping } from '../api/serverApi'
 import { config } from './config'
 
-const handleError =
+const socketErrorHandler =
   (send: Fn, id: string) =>
   (e: Error): void => {
     logger.error(e.message, '\n' + e.stack?.split('\n').slice(1).join('\n'))
@@ -64,7 +64,7 @@ const openWebsocket = (connection: SocketStream) => {
         }
         return apiCall(param as any)
           .then(send(apiRequest.id, apiRequest.method))
-          .catch(handleError(connection.socket.send.bind(connection.socket), apiRequest.id))
+          .catch(socketErrorHandler(connection.socket.send.bind(connection.socket), apiRequest.id))
       } catch (e) {
         logger.error('Error in socket', e)
       }

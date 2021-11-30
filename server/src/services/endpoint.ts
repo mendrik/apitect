@@ -44,7 +44,7 @@ export const user = (req: FastifyRequest): Promise<User> =>
       throw httpError(403, `Unauthorized: ${e.message}`)
     })
 
-const handleError = (reply: FastifyReply) => (e: Error) => {
+const endpointErrorHandler = (reply: FastifyReply) => (e: Error) => {
   logger.error(e.message, e.stack)
   const send = (status: number, data: any) =>
     reply.code(status).send(JSON.stringify({ ...data, status }))
@@ -59,20 +59,18 @@ const handleError = (reply: FastifyReply) => (e: Error) => {
 }
 
 export const endpoint =
-  <
-    DEPS extends Collector,
-    RESOLVED = {
-      [KEY in keyof DEPS]: DEPS[KEY] extends (...args: any[]) => Promise<infer PROMISED>
-        ? PROMISED
-        : DEPS[KEY] extends (...args: any[]) => any
-        ? ReturnType<DEPS[KEY]>
-        : DEPS[KEY] extends ZodSchema<infer S>
-        ? S
-        : DEPS[KEY]
-    }
-  >(
-    dependencies: DEPS,
-    body: (obj: RESOLVED) => Promise<RouteGenericInterface['Reply']>
+  // prettier-ignore
+  <D extends Collector, R = {
+    [K in keyof D]: D[K] extends (...args: any[]) => Promise<infer P>
+      ? P
+      : D[K] extends (...args: any[]) => any
+        ? ReturnType<D[K]>
+        : D[K] extends ZodSchema<infer S>
+          ? S
+          : D[K]
+  }>(
+    dependencies: D,
+    body: (obj: R) => Promise<RouteGenericInterface['Reply']>
   ): RouteHandlerMethod =>
   (req, reply) => {
     try {
@@ -83,9 +81,9 @@ export const endpoint =
         }
         return dependencyResolver
       }, dependencies)
-      const resObj = applySpec<Promised<RESOLVED>>(paramObj)(req)
-      return resolvePromised(resObj).then(body).then(OK(reply)).catch(handleError(reply))
+      const resObj = applySpec<Promised<R>>(paramObj)(req)
+      return resolvePromised(resObj).then(body).then(OK(reply)).catch(endpointErrorHandler(reply))
     } catch (e) {
-      handleError(reply)(e as Error)
+      endpointErrorHandler(reply)(e as Error)
     }
   }
