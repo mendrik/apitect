@@ -4,6 +4,7 @@ import { TypeOf } from 'zod/lib/types'
 import { ApiSchema } from './api'
 import { idCodec } from './codecs/idCodec'
 import { ApiMethod, ApiMethods, ApiOutput, ApiParam, ApiResult } from './types/api'
+import { UnionToTuple } from './types/generic'
 
 export type ServerParam<T extends ApiMethod> = ApiParam<T> extends undefined
   ? { email: string; docId: string }
@@ -12,17 +13,14 @@ export type ServerParam<T extends ApiMethod> = ApiParam<T> extends undefined
 export type ServerApiMethod<T extends ApiMethod> = (obj: ServerParam<T>) => Promise<ApiResult<T>>
 
 const apiMethods = Object.keys(ApiSchema) as ApiMethods
-type Codec<T extends ApiMethod> = ZodObject<{
-  id: ZodString
-  method: ZodLiteral<T>
-  payload: ApiOutput<T>
-}>
 
-type Codecs<T extends ApiMethod[]> = T extends [infer H, ...infer Tail]
-  ? H extends ApiMethod
-    ? [Codec<H>, ...(Tail extends [ApiMethod, ...ApiMethod[]] ? Codecs<Tail> : [])]
-    : never
-  : never
+type AllCodecs = {
+  [K in ApiMethod]: ZodObject<{
+    id: ZodString
+    method: ZodLiteral<K>
+    payload: ApiOutput<K>
+  }>
+}[ApiMethod]
 
 const codecs = apiMethods.map(k =>
   object({
@@ -30,7 +28,7 @@ const codecs = apiMethods.map(k =>
     method: literal(k),
     payload: ApiSchema[k][1]
   })
-) as Codecs<ApiMethods>
+) as UnionToTuple<AllCodecs>
 
 export const ZApiError = object({
   error: literal('error'),

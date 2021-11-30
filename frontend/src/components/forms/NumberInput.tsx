@@ -2,13 +2,12 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons'
 import clsx from 'clsx'
 import { useId } from 'hooks/useId'
 import { path } from 'ramda'
-import React, { InputHTMLAttributes, useContext } from 'react'
+import React, { InputHTMLAttributes } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { Jsx } from 'shared/types/generic'
 import styled from 'styled-components'
 
-import { progressContext } from '../../contexts/withProgress'
 import { useAutoFocus } from '../../hooks/useAutoFocus'
 import { ErrorInfo } from './ErrorInfo'
 
@@ -72,7 +71,6 @@ export const NumberInput = ({
     register,
     formState: { errors }
   } = useFormContext<{ [K in typeof name]: number | undefined }>()
-  const { isWorking } = useContext(progressContext)
 
   const inpId = useId()
 
