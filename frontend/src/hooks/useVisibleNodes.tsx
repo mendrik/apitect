@@ -1,4 +1,5 @@
 import { useStore } from 'effector-react'
+import { prop } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
 import { useMemo } from 'react'
 
@@ -16,5 +17,13 @@ export const useVisibleNodes = () => {
       .map(n => openNodes[n.id])
       .every(isTrue)
 
-  return useMemo(() => root.flatten().filter(isVisible), [root, openNodes])
+  return useMemo(
+    () =>
+      root
+        .flatten()
+        .filter(isVisible)
+        .map(n => n.extract())
+        .map(prop('id')),
+    [root, openNodes]
+  )
 }

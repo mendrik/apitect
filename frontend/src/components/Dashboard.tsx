@@ -29,7 +29,7 @@ const Scroller = styled.div`
 const Dashboard = () => {
   const { visibleTags } = useStore($appStore)
   const { t } = useTranslation()
-  const visibleNodes = useVisibleNodes()
+  const visibleNodeId = useVisibleNodes()
 
   const columns: JSX.Element[] = [
     <ProjectTreeHeader />,
@@ -47,11 +47,11 @@ const Dashboard = () => {
               <VisualTree />
             </Column>
             <Column>
-              <VisualValueList nodeList={visibleNodes} />
+              <VisualValueList nodeIds={visibleNodeId} />
             </Column>
             {visibleTags.map(tag => (
               <Column key={tag.name}>
-                <VisualValueList tag={tag.name} nodeList={visibleNodes} />
+                <VisualValueList tag={tag.name} nodeIds={visibleNodeId} />
               </Column>
             ))}
           </ResizableTable>

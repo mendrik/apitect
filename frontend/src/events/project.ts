@@ -43,4 +43,6 @@ export const tagSettingsFx = createEffect<AFn<string>>(name =>
     .then(params => openModal({ name: ModalNames.TAG_SETTINGS, params }))
 )
 
+export const valueListFx = createEffect<Api['valueList']>(req => state().api.valueList(req))
+
 export const resetStore = createEvent()

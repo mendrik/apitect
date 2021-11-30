@@ -1,17 +1,20 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { TreeNode } from '../../shared/algebraic/treeNode'
-import { Node } from '../../shared/types/domain/node'
+import { valueListFx } from '../../events/project'
+import useProgress from '../../hooks/useProgress'
+import { usePromise } from '../../hooks/usePromise'
 import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = {
   tag?: string
-  nodeList: TreeNode<Node>[]
+  nodeIds: string[]
 }
 
-export const VisualValueList = ({ tag, nodeList }: Jsx<OwnProps>) => {
+export const VisualValueList = ({ tag, nodeIds }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
+  const [withProgress, status] = useProgress()
+  usePromise(() => withProgress(valueListFx({ tag, nodeIds })), true, false)
 
-  return <div>{t('app.name')}</div>
+  return status.is === 'done' ? <div>Loaded</div> : <div>Loading</div>
 }
