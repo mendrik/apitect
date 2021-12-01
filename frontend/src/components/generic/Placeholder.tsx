@@ -65,8 +65,8 @@ const StyledPlaceholderList = styled.ul`
 
 Placeholder.List = ({ lines }: { lines: number }) => (
   <StyledPlaceholderList>
-    {range(1, lines).map(() => (
-      <Placeholder />
+    {range(1, lines).map(n => (
+      <Placeholder key={n} />
     ))}
   </StyledPlaceholderList>
 )
