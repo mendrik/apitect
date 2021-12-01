@@ -14,7 +14,7 @@ export const ProjectTreeHeader = () => {
   const { document } = useStore($appStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
-      <div className="text-truncate">{document.name}</div>
+      <div className="text-truncate editable">{document.name}</div>
       <HGrid>
         <WithTooltip tooltipText="Import" shortcut="I">
           <Icon icon={IconFileImport} />

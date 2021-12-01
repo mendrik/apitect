@@ -124,7 +124,7 @@ input[required] + label:after {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-*:focus {
+@mixin focus-css {
   position: relative;
   outline: none;
 
@@ -133,12 +133,13 @@ input[required] + label:after {
     position: absolute;
     border: 1px dotted #999;
     border-radius: 4px;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0px;
     pointer-events: none;
   }
+}
+
+*:focus {
+  @include focus-css;
 }
 
 .rotate {
@@ -208,6 +209,32 @@ input[required] + label:after {
 
 .navbar {
   flex-wrap: nowrap !important;
+}
+
+.editable {
+  cursor: url('./assets/pointer.svg'), pointer;
+  height: 100%;
+
+  &:hover {
+    @include focus-css;
+  }
+}
+
+.editor {
+  height: 24px;
+  font-weight: 300;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px dotted #666;
+
+  &::placeholder {
+    color: #999;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-style: italic;
+    text-indent: 5px;
+  }
 }
 
 @import "~bootstrap/scss/bootstrap";
