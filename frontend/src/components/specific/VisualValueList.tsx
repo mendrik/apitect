@@ -1,5 +1,6 @@
 import { difference } from 'ramda'
-import React, { useEffect, useRef } from 'react'
+import { isNotEmpty } from 'ramda-adjunct'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDeepCompareEffect } from 'react-use'
 
@@ -21,18 +22,24 @@ export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProp
   const { t } = useTranslation()
   const [withProgress, status] = useProgress<ValueList>()
   const valueMap = useRef<Map<string, Value>>(new Map()).current
-  const trigger = usePromise(() => {
-    const missingNodes = difference(newNodeIds, Array.from(valueMap.keys()))
-    return missingNodes
-      ? withProgress(
-          valueListFx({
-            tag,
-            nodeIds: missingNodes
-          })
-        )
-      : Promise.reject()
-  })
-  useDeepCompareEffect(trigger, [newNodeIds, tag])
+  const missingNodes = useMemo(
+    () => difference(newNodeIds, Array.from(valueMap.keys())),
+    [newNodeIds]
+  )
+  const trigger = usePromise(() =>
+    withProgress(
+      valueListFx({
+        tag,
+        nodeIds: missingNodes
+      })
+    )
+  )
+
+  useDeepCompareEffect(() => {
+    if (isNotEmpty(missingNodes)) {
+      trigger()
+    }
+  }, [newNodeIds, tag, missingNodes])
 
   useEffect(() => {
     if (status.is === 'done') {
