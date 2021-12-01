@@ -17,9 +17,10 @@ export const ButtonRow = ({
 }: Jsx<HTMLAttributes<HTMLDivElement>>) => {
   const ref = useRef<HTMLDivElement>(null)
 
-  const moveFocus = (dir: Direction) => () => {
+  const moveFocus = (dir: Direction) => (ev: Event) => {
     if (ref.current != null && ref.current.matches(':focus-within')) {
       const buttons = Array.from(ref.current.querySelectorAll('button'))
+      ev.preventDefault()
       if (dir === Direction.Right) {
         next(b => document.activeElement === b)(buttons)?.focus()
       } else {
