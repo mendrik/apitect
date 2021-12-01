@@ -22,7 +22,6 @@ const StyledGrid = styled.div<{ columns: any[] }>`
   grid-auto-rows: auto;
   overflow: auto;
   max-width: 100vw;
-  min-width: 100vw;
 `
 
 const StyledHeader = styled.div`
@@ -49,6 +48,9 @@ const Header = ({ index, last, children }: Jsx<HeaderProps>) => {
           index
         }
       }
+    },
+    onDragEnd(event) {
+      bodyStyle.setProperty('cursor', 'default')
     }
   })
 
@@ -69,6 +71,7 @@ const ColResizer = styled.div`
   top: 0px;
   cursor: col-resize;
   z-index: 1;
+
   &:after {
     content: '';
     position: absolute;
