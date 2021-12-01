@@ -1,4 +1,4 @@
-import { difference, map } from 'ramda'
+import { difference } from 'ramda'
 import { isNotEmpty } from 'ramda-adjunct'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,6 @@ import { usePromise } from '../../hooks/usePromise'
 import { Value } from '../../shared/types/domain/values/value'
 import { Jsx } from '../../shared/types/generic'
 import { ValueList } from '../../shared/types/response/valueList'
-import { Placeholder } from '../generic/Placeholder'
 import { VisualValue } from './VisualValue'
 
 type OwnProps = {
@@ -59,12 +58,9 @@ export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProp
 
   return (
     <Values>
-      {map(
-        id => (
-          <VisualValue key={id} value={valueMap.get(id)} nodeId={id} />
-        ),
-        visibleNodeIds
-      )}
+      {visibleNodeIds.map(id => (
+        <VisualValue key={id} value={valueMap.get(id)} nodeId={id} />
+      ))}
     </Values>
   )
 }
