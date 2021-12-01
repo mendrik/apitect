@@ -1,10 +1,14 @@
 import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import React from 'react'
+import React, { createContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useMap } from 'react-use'
 import styled from 'styled-components'
 
 import { useVisibleNodes } from '../hooks/useVisibleNodes'
+import { TreeNode } from '../shared/algebraic/treeNode'
+import { Node } from '../shared/types/domain/node'
+import { byProp } from '../shared/utils/ramda'
 import $appStore from '../stores/$appStore'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
@@ -20,16 +24,32 @@ const Column = styled.div`
 
 const Scroller = styled.div`
   max-width: 100%;
-  flex: 1;
-  overflow: auto;
-  align-items: stretch;
-  display: flex;
+  position: sticky;
+  top: 0;
 `
 
+type DashboardContextType = {
+  nodeMap: Record<string, Node>
+}
+
+export const dashboardContext = createContext<DashboardContextType>({ nodeMap: {} })
+
 const Dashboard = () => {
-  const { visibleTags } = useStore($appStore)
+  const { tree, visibleTags } = useStore($appStore)
   const { t } = useTranslation()
-  const nodes = useVisibleNodes()
+  const [nodeMap, { setAll }] = useMap<Record<string, Node>>()
+
+  const root = useMemo(() => {
+    const root = TreeNode.from<Node, 'children'>('children')(tree)
+    const record = byProp(
+      'id',
+      root.flatten().map(x => x.value)
+    )
+    setAll(record)
+    return root
+  }, [tree])
+
+  const nodes = useVisibleNodes(root)
 
   const columns: JSX.Element[] = [
     <ProjectTreeHeader />,
@@ -42,19 +62,21 @@ const Dashboard = () => {
       <Navigation />
       <Scroller>
         <DndContext>
-          <ResizableTable columns={columns}>
-            <Column>
-              <VisualTree />
-            </Column>
-            <Column>
-              <VisualValueList {...nodes} />
-            </Column>
-            {visibleTags.map(tag => (
-              <Column key={tag.name}>
-                <VisualValueList tag={tag.name} {...nodes} />
+          <dashboardContext.Provider value={{ nodeMap }}>
+            <ResizableTable columns={columns}>
+              <Column>
+                <VisualTree />
               </Column>
-            ))}
-          </ResizableTable>
+              <Column>
+                <VisualValueList {...nodes} />
+              </Column>
+              {visibleTags.map(tag => (
+                <Column key={tag.name}>
+                  <VisualValueList tag={tag.name} {...nodes} />
+                </Column>
+              ))}
+            </ResizableTable>
+          </dashboardContext.Provider>
         </DndContext>
       </Scroller>
     </AppFrame>

@@ -57,13 +57,11 @@ export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProp
     }
   }, [status])
 
-  return status.is === 'running' && valueMap.size === 0 ? (
-    <Placeholder.List lines={visibleNodeIds.length} />
-  ) : (
+  return (
     <Values>
       {map(
         id => (
-          <VisualValue key={id} value={valueMap.get(id)} />
+          <VisualValue key={id} value={valueMap.get(id)} nodeId={id} />
         ),
         visibleNodeIds
       )}

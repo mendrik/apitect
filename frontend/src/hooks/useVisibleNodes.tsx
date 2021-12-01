@@ -1,18 +1,17 @@
 import { useStore } from 'effector-react'
 import { difference, prop } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 
-import { TreeNode } from '../shared/algebraic/treeNode'
+import { Strategy, TreeNode } from '../shared/algebraic/treeNode'
 import { Node } from '../shared/types/domain/node'
 import $appStore from '../stores/$appStore'
 
-export const useVisibleNodes = () => {
-  const { tree, openNodes } = useStore($appStore)
+export const useVisibleNodes = (root: TreeNode<Node>) => {
+  const { openNodes } = useStore($appStore)
   const [visibleNodeIds, setVisibleNodeIs] = useState<string[]>([])
   const [newNodeIds, setNewNodeIds] = useState<string[]>([])
-  const root = useMemo(() => TreeNode.from<Node, 'children'>('children')(tree), [tree])
 
   const isVisible = (n: TreeNode<Node>) =>
     n
@@ -22,7 +21,7 @@ export const useVisibleNodes = () => {
 
   useDeepCompareEffect(() => {
     const nodeIds = root
-      .flatten()
+      .flatten(Strategy.Depth)
       .filter(isVisible)
       .slice(1) // skip root
       .map(n => n.extract())
