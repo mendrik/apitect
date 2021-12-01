@@ -27,7 +27,7 @@ export const ColumnHeader = ({ name, tag }: Jsx<OwnProps>) => {
       <div className="text-truncate">{name}</div>
       <HGrid>
         <WithTooltip tooltipText={t('app.validation')}>
-          <Icon icon={IconShieldCheck} onClick={() => userSettingsFx()} />
+          <Icon icon={IconShieldCheck} />
         </WithTooltip>
         {tag == null ? (
           isNotNilOrEmpty(tags) && (

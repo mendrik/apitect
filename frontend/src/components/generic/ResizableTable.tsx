@@ -1,10 +1,13 @@
 import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
+import { useStore } from 'effector-react'
 import { pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { ReactNode, useRef } from 'react'
+import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
 
 import { Jsx } from '../../shared/types/generic'
+import $appStore from '../../stores/$appStore'
 import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
@@ -85,6 +88,17 @@ const bodyStyle = document.body.style
 
 export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
+  const style = grid.current?.style
+
+  const { visibleTags } = useStore($appStore)
+
+  useDeepCompareEffect(
+    () =>
+      void requestAnimationFrame(() =>
+        Array.from(columns).forEach((_, idx) => style?.setProperty(`--col-width-${idx}`, `0px`))
+      ),
+    [visibleTags]
+  )
 
   useDndMonitor({
     onDragStart(event) {
@@ -106,7 +120,6 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
         const startWidth = event.active.rect.current.initial?.width ?? NaN
         const nextWidth = data.nextWidth
         const deltaX = event.delta.x - document.documentElement.scrollLeft
-        const style = grid.current?.style
         if (nextWidth - deltaX >= 200 && startWidth + deltaX >= 200) {
           style?.setProperty(`--col-width-${data.index}`, `${startWidth + deltaX}px`)
           style?.setProperty(`--col-width-${data.index + 1}`, `${nextWidth - deltaX}px`)
@@ -122,12 +135,12 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
         const bodyWidth = document.body.offsetWidth
         const ar = bodyWidth / totalWidth
         const children = grid.current.children
-        requestAnimationFrame(() => {
+        requestAnimationFrame(() =>
           Array.from(columns).forEach((_, idx) => {
             const relativeWidth = children[idx].getBoundingClientRect().width * ar
-            grid.current?.style?.setProperty(`--col-width-${idx}`, `${relativeWidth.toFixed(1)}px`)
+            style?.setProperty(`--col-width-${idx}`, `${relativeWidth.toFixed(1)}px`)
           })
-        })
+        )
       }
     }
   })
