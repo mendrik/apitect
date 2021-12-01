@@ -97,7 +97,7 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
     Array.from(columns).forEach((_, idx) =>
       style?.setProperty(`--col-width-${idx}`, `${width / columns.length}px`)
     )
-  }, [visibleTags])
+  }, [columns, visibleTags])
 
   useDndMonitor({
     onDragStart(event) {
