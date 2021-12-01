@@ -18,23 +18,22 @@ export const useConfirmation = (
 ): [Fn<JSX.Element>, Fn] => {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
-  const ref = useOnActivate<HTMLButtonElement>(() => {
+  const refOk = useOnActivate<HTMLButtonElement>(() => {
     setOpen(false)
     onConfirm()
+  })
+  const refCancel = useOnActivate<HTMLButtonElement>(() => {
+    setOpen(false)
   })
   const close = () => setOpen(false)
 
   useEffect(() => {
-    if (ref.current) {
-      focus(ref.current)
+    if (refOk.current) {
+      focus(refOk.current)
     }
   }, [open])
 
-  const keyMap = cond([
-    [propEq('code', 'Escape'), sp(() => setOpen(false))],
-    [propEq('key', 'Enter'), sp],
-    [propEq('code', 'Space'), sp]
-  ])
+  const keyMap = cond([[propEq('code', 'Escape'), sp(() => setOpen(false))]])
 
   const Confirm = useCallback(() => {
     return (
@@ -45,10 +44,10 @@ export const useConfirmation = (
         <Modal.Body>
           <QuestionView body={question}>
             <ButtonRow>
-              <Button onClick={close} variant="outline-primary" type="button">
+              <Button ref={refCancel} variant="outline-primary" type="button">
                 {t(cancelButton)}
               </Button>
-              <Button ref={ref} type="button" variant="primary">
+              <Button ref={refOk} type="button" variant="primary">
                 {t(confirmButton)}
               </Button>
             </ButtonRow>
