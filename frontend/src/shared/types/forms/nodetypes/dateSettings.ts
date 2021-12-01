@@ -8,6 +8,7 @@ export const ZDateSettings = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.Date),
     validation: object({}),
+    required: boolean().default(false),
     display: object({
       humanReadable: boolean()
     })

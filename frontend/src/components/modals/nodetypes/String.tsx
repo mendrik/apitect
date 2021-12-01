@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { StringValidationType } from '../../../shared/types/forms/nodetypes/stringSettings'
+import { Checkbox } from '../../forms/Checkbox'
 import { FieldSet } from '../../forms/FieldSet'
 import { FormOptions } from '../../forms/FormOptions'
 import { TextInput } from '../../forms/TextInput'
@@ -13,7 +14,7 @@ const String = () => {
   const { setValue } = useFormContext()
   return (
     <FieldSet title="modals.nodeSettings.validation">
-      <FormOptions name="validationType" values={values(StringValidationType)}>
+      <FormOptions name="validationType" values={values(StringValidationType)} className="mb-3">
         <label htmlFor={`validationType-${StringValidationType.None}`}>
           {t('modals.nodeSettings.string.none')}
         </label>
@@ -31,6 +32,7 @@ const String = () => {
           {t('modals.nodeSettings.string.password')}
         </label>
       </FormOptions>
+      <Checkbox name="required" label={'modals.nodeSettings.required'} className={'mb-3'} />
     </FieldSet>
   )
 }

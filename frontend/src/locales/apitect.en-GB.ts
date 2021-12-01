@@ -54,6 +54,7 @@ const en = {
         title: 'Settings: {{ property }}',
         validation: 'Validation',
         appearance: 'Appearance',
+        required: 'Required',
         string: {
           none: 'No validation',
           regexp: 'Regular expression',

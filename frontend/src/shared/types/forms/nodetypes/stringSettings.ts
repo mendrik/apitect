@@ -1,4 +1,4 @@
-import { literal, object, union } from 'zod'
+import { literal, object, string, union } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { regexpCodecAlt } from '../../../codecs/regexpCodecAlt'

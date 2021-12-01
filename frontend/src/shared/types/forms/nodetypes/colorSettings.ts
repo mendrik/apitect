@@ -1,4 +1,4 @@
-import { literal, nativeEnum, object } from 'zod'
+import { boolean, literal, nativeEnum, object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { NodeType } from '../../domain/nodeType'
@@ -14,6 +14,7 @@ export const ZColorSettings = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.Color),
     validation: object({}),
+    required: boolean().default(false),
     display: object({
       format: nativeEnum(ColorFormat)
     })

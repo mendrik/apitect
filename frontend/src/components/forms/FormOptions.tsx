@@ -1,4 +1,4 @@
-import React, { Children, useEffect } from 'react'
+import React, { Children, HTMLAttributes, useEffect } from 'react'
 import { Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 
@@ -9,16 +9,16 @@ import { ErrorInfo } from './ErrorInfo'
 type OwnProps = {
   name: string
   values: string[]
-}
+} & HTMLAttributes<HTMLDivElement>
 
-export const FormOptions = ({ name, values, children }: Jsx<OwnProps>) => {
+export const FormOptions = ({ name, values, children, ...props }: Jsx<OwnProps>) => {
   const { register, watch, clearErrors } = useFormContext<{ [K in typeof name]: string }>()
   const val = watch(name)
 
   useEffect(clearErrors, [val])
 
   return (
-    <>
+    <div {...props}>
       <ListGroup>
         {Children.map(children, (child, idx) => {
           return (
@@ -37,6 +37,6 @@ export const FormOptions = ({ name, values, children }: Jsx<OwnProps>) => {
         })}
       </ListGroup>
       <ErrorInfo name={name} />
-    </>
+    </div>
   )
 }

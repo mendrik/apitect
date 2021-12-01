@@ -8,6 +8,7 @@ const ZInteger = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.Number),
     integer: boolean(),
+    required: boolean().default(false),
     validation: object({
       min: number().optional(),
       max: number().optional(),
@@ -24,6 +25,7 @@ const ZFloat = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.Number),
     integer: boolean(),
+    required: boolean().default(false),
     validation: object({
       min: number().optional(),
       max: number().optional(),
