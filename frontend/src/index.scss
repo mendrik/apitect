@@ -8,18 +8,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: 1rem;
   cursor: var(--cursor);
-
-  &::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 7px;
-    height: 7px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: #b6b6b6;
-    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-  }
 }
 
 .custom-scrollbars {
