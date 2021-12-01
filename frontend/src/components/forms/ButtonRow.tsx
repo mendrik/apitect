@@ -4,6 +4,7 @@ import React, { HTMLAttributes, useRef } from 'react'
 
 import { Jsx } from '../../shared/types/generic'
 import { next, prev } from '../../shared/utils/ramda'
+import { stopPropagation } from '../../utils/stopPropagation'
 
 enum Direction {
   Left,
@@ -20,7 +21,6 @@ export const ButtonRow = ({
   const moveFocus = (dir: Direction) => (ev: Event) => {
     if (ref.current != null && ref.current.matches(':focus-within')) {
       const buttons = Array.from(ref.current.querySelectorAll('button'))
-      ev.preventDefault()
       if (dir === Direction.Right) {
         next(b => document.activeElement === b)(buttons)?.focus()
       } else {
@@ -37,7 +37,7 @@ export const ButtonRow = ({
   return (
     <div
       ref={ref}
-      onKeyDown={keyMap}
+      onKeyDown={stopPropagation(keyMap)}
       className={clsx('d-grid gap-2 d-sm-flex justify-content-sm-end', className)}
       {...props}
     >
