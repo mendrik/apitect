@@ -24,6 +24,7 @@ export const useVisibleNodes = () => {
     const nodeIds = root
       .flatten()
       .filter(isVisible)
+      .slice(1) // skip root
       .map(n => n.extract())
       .map(prop('id'))
     setVisibleNodeIs(oldVisibleNodeIds => {
