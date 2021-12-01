@@ -90,3 +90,7 @@
     html: string
   }
   ```   
+
+## Ideas
+
+- integrate https://github.com/quicktype/quicktype

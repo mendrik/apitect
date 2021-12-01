@@ -8,12 +8,14 @@ import {
   curry,
   either,
   findIndex,
+  groupBy,
   head,
   identity,
   isNil,
   join,
   juxt,
   last,
+  map,
   pipe,
   Pred,
   prop,
@@ -95,3 +97,6 @@ export const isCyclic =
     if (pathMap[node] == null) return false
     return isCyclic(pathMap)(pathMap[node], [node, ...visited])
   }
+
+export const byProp = <T>(p: keyof T, arr: T[]): { [k in T[typeof p] & string]: T } =>
+  map(head, groupBy(prop(p as string) as any, arr))

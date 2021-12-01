@@ -5,8 +5,7 @@ import { ZValue } from '../domain/values/value'
 import { ZNodeSettings } from '../forms/nodetypes/nodeSettings'
 
 export const ZValueList = object({
-  values: array(ZValue),
-  nodeSettings: array(ZNodeSettings)
+  values: array(ZValue)
 })
 
 export type ValueList = TypeOf<typeof ZValueList>

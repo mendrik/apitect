@@ -1,8 +1,9 @@
-import { difference } from 'ramda'
+import { difference, map } from 'ramda'
 import { isNotEmpty } from 'ramda-adjunct'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDeepCompareEffect } from 'react-use'
+import styled from 'styled-components'
 
 import { valueListFx } from '../../events/project'
 import useProgress from '../../hooks/useProgress'
@@ -11,12 +12,19 @@ import { Value } from '../../shared/types/domain/values/value'
 import { Jsx } from '../../shared/types/generic'
 import { ValueList } from '../../shared/types/response/valueList'
 import { Placeholder } from '../generic/Placeholder'
+import { VisualValue } from './VisualValue'
 
 type OwnProps = {
   tag?: string
   visibleNodeIds: string[]
   newNodeIds: string[]
 }
+
+const Values = styled.ol`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`
 
 export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
@@ -52,6 +60,13 @@ export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProp
   return status.is === 'running' && valueMap.size === 0 ? (
     <Placeholder.List lines={visibleNodeIds.length} />
   ) : (
-    <div>Loaded</div>
+    <Values>
+      {map(
+        id => (
+          <VisualValue key={id} value={valueMap.get(id)} />
+        ),
+        visibleNodeIds
+      )}
+    </Values>
   )
 }
