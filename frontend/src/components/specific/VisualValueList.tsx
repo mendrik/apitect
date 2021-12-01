@@ -20,9 +20,14 @@ type OwnProps = {
 }
 
 const Values = styled.ol`
+  display: block;
   list-style: none;
   margin: 0;
   padding: 0;
+
+  > li {
+    height: 24px;
+  }
 `
 
 export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProps>) => {
@@ -59,7 +64,9 @@ export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProp
   return (
     <Values>
       {visibleNodeIds.map(id => (
-        <VisualValue key={id} value={valueMap.get(id)} nodeId={id} />
+        <li key={id}>
+          <VisualValue value={valueMap.get(id)} nodeId={id} />
+        </li>
       ))}
     </Values>
   )

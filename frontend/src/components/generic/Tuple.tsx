@@ -27,7 +27,7 @@ const StyledTuple = styled.div`
     flex-basis: auto;
   }
   &.first-content > :first-child {
-    flex-basis: fit-content;
+    flex-basis: min-content;
   }
   &.first-max > :first-child {
     flex-basis: 100%;
@@ -39,7 +39,7 @@ const StyledTuple = styled.div`
     flex-basis: 100%;
   }
   &.second-content > :nth-child(2) {
-    flex-basis: fit-content;
+    flex-basis: min-content;
   }
 `
 

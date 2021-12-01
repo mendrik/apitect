@@ -22,11 +22,7 @@ const Column = styled.div`
   padding: 0.5rem;
 `
 
-const Scroller = styled.div`
-  max-width: 100%;
-  position: sticky;
-  top: 0;
-`
+const Scroller = styled.div``
 
 type DashboardContextType = {
   nodeMap: Record<string, Node>
@@ -60,25 +56,23 @@ const Dashboard = () => {
   return (
     <AppFrame>
       <Navigation />
-      <Scroller>
-        <DndContext>
-          <dashboardContext.Provider value={{ nodeMap }}>
-            <ResizableTable columns={columns}>
-              <Column>
-                <VisualTree />
+      <DndContext>
+        <dashboardContext.Provider value={{ nodeMap }}>
+          <ResizableTable columns={columns}>
+            <Column>
+              <VisualTree />
+            </Column>
+            <Column>
+              <VisualValueList {...nodes} />
+            </Column>
+            {visibleTags.map(tag => (
+              <Column key={tag.name}>
+                <VisualValueList tag={tag.name} {...nodes} />
               </Column>
-              <Column>
-                <VisualValueList {...nodes} />
-              </Column>
-              {visibleTags.map(tag => (
-                <Column key={tag.name}>
-                  <VisualValueList tag={tag.name} {...nodes} />
-                </Column>
-              ))}
-            </ResizableTable>
-          </dashboardContext.Provider>
-        </DndContext>
-      </Scroller>
+            ))}
+          </ResizableTable>
+        </dashboardContext.Provider>
+      </DndContext>
     </AppFrame>
   )
 }
