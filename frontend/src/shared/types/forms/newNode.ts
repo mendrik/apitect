@@ -2,11 +2,12 @@ import { nativeEnum, object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { idCodec } from '../../codecs/idCodec'
+import { nameCodec } from '../../codecs/nameCodec'
 import { nonEmptyString } from '../../codecs/nonEmptyString'
 import { NodeType } from '../domain/nodeType'
 
 export const TNewNode = object({
-  name: nonEmptyString,
+  name: nameCodec,
   nodeType: nativeEnum(NodeType),
   parentNode: idCodec.optional()
 })

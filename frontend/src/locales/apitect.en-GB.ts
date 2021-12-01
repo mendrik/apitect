@@ -121,6 +121,9 @@ const en = {
         validRegExp: '$t(form.fields.{{ field }}) is not a valid regular expression',
         validEmail: '$t(form.fields.{{ field }}) is not valid',
         required: '$t(form.fields.{{ field }}) is required',
+        noSpecialCharactersOrSpace:
+          "$t(form.fields.{{ field }}) mustn't contain special characters or spaces",
+        noSpecialCharacters: "$t(form.fields.{{ field }}) mustn't contain special characters",
         password:
           '$t(form.fields.{{ field }}) must be at least 6 characters long, 1 digit and 1 uppercase letter'
       },

@@ -8,25 +8,40 @@ type OwnProps = HTMLAttributes<HTMLDivElement>
 
 const StyledPlaceholder = styled.div`
   @keyframes loading-slide {
-    from {
-      background-position: left;
-    }
     to {
-      background-position: right;
+      transform: translateX(-50%) skewX(30deg);
     }
   }
-
+  display: block;
+  width: 100%;
   height: 16px;
-  background-clip: content-box;
-  background-image: repeating-linear-gradient(110deg, transparent, #ddd 20px, transparent 40px);
-  background-size: 200% 100%;
+  margin-bottom: 0px;
   background-color: #efefef;
-  animation: loading-slide 4s linear infinite;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 2px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 400%;
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 10px,
+      #ececec 10px,
+      #ececec 20px
+    );
+    transform: skewX(30deg);
+    transform-origin: bottom left;
+    animation: loading-slide 8s linear infinite;
+  }
 `
 
 const Wrapper = styled.div`
   padding: 4px 0;
-  overflow: hidden;
 `
 
 export const Placeholder = ({ ...props }: Jsx<OwnProps>) => (
@@ -36,8 +51,16 @@ export const Placeholder = ({ ...props }: Jsx<OwnProps>) => (
 )
 
 const StyledPlaceholderList = styled.ul`
+  @keyframes blend-in {
+    to {
+      opacity: 1;
+    }
+  }
   margin: 0;
   padding: 0;
+  opacity: 0;
+  animation: blend-in 1s linear forwards;
+  animation-delay: 0.3s;
 `
 
 Placeholder.List = ({ lines }: { lines: number }) => (

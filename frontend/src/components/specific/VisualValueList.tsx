@@ -17,5 +17,5 @@ export const VisualValueList = ({ tag, nodeIds }: Jsx<OwnProps>) => {
   const [withProgress, status] = useProgress()
   usePromise(() => withProgress(valueListFx({ tag, nodeIds })), true, false)
 
-  return status.is === 'done' ? <Placeholder.List lines={nodeIds.length} /> : <div>Loading</div>
+  return status.is === 'done' ? <div>Loaded</div> : <Placeholder.List lines={nodeIds.length} />
 }
