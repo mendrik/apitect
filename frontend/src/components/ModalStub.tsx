@@ -11,6 +11,7 @@ import useProgress from '../hooks/useProgress'
 import { usePromise } from '../hooks/usePromise'
 import { useQueryParams } from '../hooks/useQueryParams'
 import { ModalNames } from '../shared/types/modals'
+import { stopPropagation } from '../utils/stopPropagation'
 import { ErrorContext } from './generic/ErrorContext'
 import { Loader } from './generic/Loader'
 

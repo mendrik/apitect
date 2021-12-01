@@ -1,4 +1,5 @@
 import { cond, propEq } from 'ramda'
+import { propNotEq } from 'ramda-adjunct'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
@@ -33,7 +34,10 @@ export const useConfirmation = (
     }
   }, [open])
 
-  const keyMap = cond([[propEq('code', 'Escape'), sp(() => setOpen(false))]])
+  const keyMap = cond([
+    [propEq('code', 'Escape'), sp(() => setOpen(false))],
+    [propNotEq('code', 'Tab'), sp]
+  ])
 
   const Confirm = useCallback(() => {
     return (
