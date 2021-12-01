@@ -1,5 +1,5 @@
 import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
-import { max, pipe, propOr } from 'ramda'
+import { pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { ReactNode, useRef } from 'react'
 import styled from 'styled-components'
@@ -16,11 +16,12 @@ const StyledGrid = styled.div<{ columns: any[] }>`
   display: grid;
   grid-template-columns: ${pipe(
     propOr([], 'columns'),
-    mapIndexed((_, i, c) => `minmax(var(--col-width-${i}, ${100 / c.length}%), 1fr)`)
+    mapIndexed((_, i, c) => `minmax(var(--col-width-${i}, ${100 / c.length}%), auto)`)
   )};
   grid-template-rows: 32px;
   grid-auto-rows: auto;
   max-width: 100vw;
+  overflow: hidden;
 `
 
 const StyledHeader = styled.div`
@@ -47,9 +48,6 @@ const Header = ({ index, last, children }: Jsx<HeaderProps>) => {
           index
         }
       }
-    },
-    onDragEnd() {
-      bodyStyle.setProperty('cursor', 'default')
     }
   })
 
@@ -109,8 +107,27 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
         const nextWidth = data.nextWidth
         const deltaX = event.delta.x - document.documentElement.scrollLeft
         const style = grid.current?.style
-        style?.setProperty(`--col-width-${data.index}`, `${max(startWidth + deltaX, 200)}px`)
-        style?.setProperty(`--col-width-${data.index + 1}`, `${max(nextWidth - deltaX, 200)}px`)
+        if (nextWidth - deltaX >= 200 && startWidth + deltaX >= 200) {
+          style?.setProperty(`--col-width-${data.index}`, `${startWidth + deltaX}px`)
+          style?.setProperty(`--col-width-${data.index + 1}`, `${nextWidth - deltaX}px`)
+        }
+      }
+    },
+    onDragEnd(event) {
+      bodyStyle.setProperty('cursor', 'default')
+      const data = event.active.data.current as Draggable
+      if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {
+        // when we are done let's convert pixels to relative units
+        const totalWidth = grid.current.scrollWidth
+        const bodyWidth = document.body.offsetWidth
+        const ar = bodyWidth / totalWidth
+        const children = grid.current.children
+        requestAnimationFrame(() => {
+          Array.from(columns).forEach((_, idx) => {
+            const relativeWidth = children[idx].getBoundingClientRect().width * ar
+            grid.current?.style?.setProperty(`--col-width-${idx}`, `${relativeWidth.toFixed(1)}px`)
+          })
+        })
       }
     }
   })
