@@ -20,7 +20,7 @@ const StyledGrid = styled.div<{ columns: any[] }>`
   )};
   grid-template-rows: 32px;
   grid-auto-rows: auto;
-  overflow: hidden;
+  overflow: auto;
   max-width: 100vw;
   min-width: 100vw;
 `
@@ -114,7 +114,7 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
   })
 
   return (
-    <StyledGrid ref={grid} columns={columns}>
+    <StyledGrid ref={grid} columns={columns} className="custom-scrollbars">
       {columns.map((column, col) => (
         <div key={col}>
           <Header index={col} last={col === columns.length - 1}>
