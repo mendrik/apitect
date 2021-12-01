@@ -20,7 +20,6 @@ const StyledGrid = styled.div<{ columns: any[] }>`
   )};
   grid-template-rows: 32px;
   grid-auto-rows: auto;
-  overflow: auto;
   max-width: 100vw;
 `
 
@@ -49,7 +48,7 @@ const Header = ({ index, last, children }: Jsx<HeaderProps>) => {
         }
       }
     },
-    onDragEnd(event) {
+    onDragEnd() {
       bodyStyle.setProperty('cursor', 'default')
     }
   })
