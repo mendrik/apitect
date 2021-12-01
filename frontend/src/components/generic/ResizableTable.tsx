@@ -92,20 +92,20 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
 
   const { visibleTags } = useStore($appStore)
 
-  useDeepCompareEffect(
-    () =>
-      void requestAnimationFrame(() =>
-        Array.from(columns).forEach((_, idx) => style?.setProperty(`--col-width-${idx}`, `0px`))
-      ),
-    [visibleTags]
-  )
+  useDeepCompareEffect(() => {
+    const width = grid.current?.offsetWidth ?? 0
+    Array.from(columns).forEach((_, idx) =>
+      style?.setProperty(`--col-width-${idx}`, `${width / columns.length}px`)
+    )
+  }, [visibleTags])
 
   useDndMonitor({
     onDragStart(event) {
       const data = event.active.data.current as Draggable
-      if (data?.type === Draggables.COLUMN_HEADER) {
+      if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {
         bodyStyle.setProperty('cursor', 'col-resize')
-        const nextWidth = grid.current?.children.item(data.index + 1)?.getBoundingClientRect().width
+        const next = grid.current?.children.item(data.index + 1) as HTMLElement | undefined
+        const nextWidth = next?.offsetWidth
         if (nextWidth) {
           event.active.data.current = {
             ...event.active.data.current,
@@ -120,7 +120,7 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
         const startWidth = event.active.rect.current.initial?.width ?? NaN
         const nextWidth = data.nextWidth
         const deltaX = event.delta.x - document.documentElement.scrollLeft
-        if (nextWidth - deltaX >= 200 && startWidth + deltaX >= 200) {
+        if (startWidth + deltaX >= 100 && nextWidth - deltaX >= 100) {
           style?.setProperty(`--col-width-${data.index}`, `${startWidth + deltaX}px`)
           style?.setProperty(`--col-width-${data.index + 1}`, `${nextWidth - deltaX}px`)
         }
@@ -128,20 +128,6 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
     },
     onDragEnd(event) {
       bodyStyle.setProperty('cursor', 'default')
-      const data = event.active.data.current as Draggable
-      if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {
-        // when we are done let's convert pixels to relative units
-        const totalWidth = grid.current.scrollWidth
-        const bodyWidth = document.body.offsetWidth
-        const ar = bodyWidth / totalWidth
-        const children = grid.current.children
-        requestAnimationFrame(() =>
-          Array.from(columns).forEach((_, idx) => {
-            const relativeWidth = children[idx].getBoundingClientRect().width * ar
-            style?.setProperty(`--col-width-${idx}`, `${relativeWidth.toFixed(1)}px`)
-          })
-        )
-      }
     }
   })
 
