@@ -1,48 +1,29 @@
 import { cond, propEq } from 'ramda'
-import React, { useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import React, { useRef } from 'react'
 
-import { useView } from '../../hooks/useView'
 import { Node } from '../../shared/types/domain/node'
 import { StringValue } from '../../shared/types/domain/values/stringValue'
 import { StringSettings } from '../../shared/types/forms/nodetypes/stringSettings'
 import { Jsx, Maybe } from '../../shared/types/generic'
 import { stopPropagation as sp } from '../../utils/stopPropagation'
+import { Views, ViewUtils } from '../specific/VisualValue'
 
 type OwnProps = {
   node: Node
   settings: Maybe<StringSettings>
   value?: Maybe<StringValue>
-}
+} & ViewUtils
 
-enum Views {
-  Display,
-  Edit
-}
-
-export const StringEditor = ({ node, settings, value }: Jsx<OwnProps>) => {
-  const { view, editView, displayView } = useView(Views)
+export const StringEditor = ({ node, settings, value, view, displayView }: Jsx<OwnProps>) => {
   const ref = useRef<HTMLInputElement>(null)
-  const { t } = useTranslation()
-
-  useEffect(() => {
-    if (view === Views.Edit && ref.current != null) {
-      ref.current.focus()
-    }
-  }, [view])
 
   const save = () => {
     displayView()
   }
 
-  const next = () => {
-    // todo: next editor
-  }
-
   const keyMap = cond([
     [propEq('code', 'Escape'), sp(displayView)],
-    [propEq('code', 'Enter'), sp(save)],
-    [propEq('code', 'Tab'), sp(next)]
+    [propEq('code', 'Enter'), sp(save)]
   ])
 
   switch (view) {

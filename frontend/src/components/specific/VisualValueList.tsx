@@ -1,7 +1,6 @@
 import { difference } from 'ramda'
 import { isNotEmpty } from 'ramda-adjunct'
 import React, { useEffect, useMemo, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
 
@@ -31,7 +30,6 @@ const Values = styled.ol`
 `
 
 export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProps>) => {
-  const { t } = useTranslation()
   const [withProgress, status] = useProgress<ValueList>()
   const valueMap = useRef<Map<string, Value>>(new Map()).current
   const missingNodes = useMemo(
@@ -64,9 +62,7 @@ export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProp
   return (
     <Values>
       {visibleNodeIds.map(id => (
-        <li key={id} tabIndex={0}>
-          <VisualValue value={valueMap.get(id)} nodeId={id} />
-        </li>
+        <VisualValue value={valueMap.get(id)} nodeId={id} tag={tag} />
       ))}
     </Values>
   )

@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { Fn } from '../shared/types/generic'
 import { decapitalizeFirst } from '../shared/utils/ramda'
 
-type ViewMethods<T extends string> = {
+export type ViewMethods<T extends string> = {
   [key in T as `${Uncapitalize<key>}View`]: Fn
 }
 

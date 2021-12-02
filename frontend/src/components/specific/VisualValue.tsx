@@ -1,7 +1,7 @@
 import { useStore } from 'effector-react'
 import React, { useContext } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useView, ViewMethods } from '../../hooks/useView'
 import { Node } from '../../shared/types/domain/node'
 import { NodeType } from '../../shared/types/domain/nodeType'
 import { Value } from '../../shared/types/domain/values/value'
@@ -13,20 +13,38 @@ import { StringEditor } from '../editors/StringEditor'
 type OwnProps = {
   nodeId: string
   value: Value | undefined
+  tag?: string
 }
 
-export const VisualValue = ({ nodeId, value }: Jsx<OwnProps>) => {
-  const { nodeMap } = useContext(dashboardContext)
-  const { t } = useTranslation()
-  const { nodeSettings } = useStore($appStore)
-  const node: Node = nodeMap[nodeId]
-  const settings = nodeSettings[value?.nodeId ?? '']
-  const params = { node, settings, value } as any
+export enum Views {
+  Display,
+  Edit
+}
 
-  switch (node.nodeType) {
+export type ViewUtils = { view: Views } & ViewMethods<'Display' | 'Edit'>
+
+const getEditor = (nodeType: NodeType) => {
+  switch (nodeType) {
     case NodeType.String:
-      return <StringEditor {...params} />
+      return StringEditor
     default:
       return null
   }
+}
+
+export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
+  const views = useView(Views)
+  const { nodeMap } = useContext(dashboardContext)
+  const { nodeSettings } = useStore($appStore)
+  const node: Node = nodeMap[nodeId]
+  const settings = nodeSettings[value?.nodeId ?? '']
+  const params = { node, settings, value, views } as any
+
+  const Editor = getEditor(node.nodeType)
+
+  return (
+    <li key={nodeId} tabIndex={0} onFocus={views.editView}>
+      {Editor && <Editor {...params} />}
+    </li>
+  )
 }

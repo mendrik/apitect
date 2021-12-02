@@ -214,10 +214,6 @@ input[required] + label:after {
 .editable {
   cursor: url('./assets/pointer.svg'), pointer;
   height: 100%;
-
-  &:hover {
-    @include focus-css;
-  }
 }
 
 .editor {

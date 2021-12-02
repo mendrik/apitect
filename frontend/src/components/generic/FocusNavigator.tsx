@@ -31,9 +31,6 @@ export const FocusNavigator = ({ columns = 1, rotated, children, ...props }: Jsx
         )
 
         const rowCount = (rotated ? focusables.length / columns : columns) + 1
-
-        console.log(focusables.length, rowCount)
-
         const currentIndex = focusables.findIndex(equals(current))
 
         if (dir === Direction.Right) {
