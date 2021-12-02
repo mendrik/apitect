@@ -60,7 +60,11 @@ const Dashboard = () => {
       <DndContext>
         <dashboardContext.Provider value={{ nodeMap }}>
           <ResizableTable columns={columns}>
-            <FocusNavigator columns={visibleTags.length} rotated style={{ display: 'contents' }}>
+            <FocusNavigator
+              columns={visibleTags.length + 2}
+              rotated
+              style={{ display: 'contents' }}
+            >
               <Column>
                 <VisualTree />
               </Column>

@@ -64,7 +64,7 @@ export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProp
   return (
     <Values>
       {visibleNodeIds.map(id => (
-        <li key={id}>
+        <li key={id} tabIndex={0}>
           <VisualValue value={valueMap.get(id)} nodeId={id} />
         </li>
       ))}
