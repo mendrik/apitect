@@ -2,7 +2,7 @@ import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
 import { pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { ReactNode, useRef } from 'react'
+import React, { useRef } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
 
@@ -12,7 +12,6 @@ import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
   columns: JSX.Element[]
-  children: ReactNode[]
 }
 
 const StyledGrid = styled.div<{ columns: any[] }>`

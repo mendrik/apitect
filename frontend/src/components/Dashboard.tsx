@@ -12,6 +12,7 @@ import { byProp } from '../shared/utils/ramda'
 import $appStore from '../stores/$appStore'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
+import { FocusNavigator } from './generic/FocusNavigator'
 import { ResizableTable } from './generic/ResizableTable'
 import { ColumnHeader } from './specific/ColumnHeader'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
@@ -59,17 +60,19 @@ const Dashboard = () => {
       <DndContext>
         <dashboardContext.Provider value={{ nodeMap }}>
           <ResizableTable columns={columns}>
-            <Column>
-              <VisualTree />
-            </Column>
-            <Column>
-              <VisualValueList {...nodes} />
-            </Column>
-            {visibleTags.map(tag => (
-              <Column key={tag.name}>
-                <VisualValueList tag={tag.name} {...nodes} />
+            <FocusNavigator columns={visibleTags.length} rotated style={{ display: 'contents' }}>
+              <Column>
+                <VisualTree />
               </Column>
-            ))}
+              <Column>
+                <VisualValueList {...nodes} />
+              </Column>
+              {visibleTags.map(tag => (
+                <Column key={tag.name}>
+                  <VisualValueList tag={tag.name} {...nodes} />
+                </Column>
+              ))}
+            </FocusNavigator>
           </ResizableTable>
         </dashboardContext.Provider>
       </DndContext>

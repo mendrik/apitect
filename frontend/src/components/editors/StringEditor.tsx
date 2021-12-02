@@ -48,7 +48,7 @@ export const StringEditor = ({ node, settings, value }: Jsx<OwnProps>) => {
   switch (view) {
     case Views.Display:
       return (
-        <div className="text-truncate editable w-100" onClick={editView}>
+        <div className="text-truncate editable w-100" onFocus={editView} tabIndex={-1}>
           {value}
         </div>
       )

@@ -1,14 +1,13 @@
 import { useStore } from 'effector-react'
-import { cond, pipe, propEq } from 'ramda'
-import { isTrue } from 'ramda-adjunct'
+import { cond, propEq } from 'ramda'
+import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React, { useMemo } from 'react'
 
 import {
-  closeNode,
   deleteNodeFx,
   newNodeFx,
   nodeSettingsFx,
-  openNode,
+  openNodeState,
   selectNode
 } from '../../events/tree'
 import { useConfirmation } from '../../hooks/useConfirmation'
@@ -22,29 +21,28 @@ import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNodeTemplate } from './VisualNodeTemplate'
 
 export const VisualTree = ({ children }: Jsx) => {
-  const { tree, openNodes, selectedNode } = useStore($appStore)
+  const { tree, selectedNode } = useStore($appStore)
   const root = useMemo(() => TreeNode.from<Node, 'children'>('children')(tree), [tree])
-
-  const isVisible = (n: TreeNode<Node>) =>
-    n
-      .pathToRoot()
-      .map(n => openNodes[n.id])
-      .every(isTrue)
 
   useDefinedEffect(node => focus(document.getElementById(node.value.id)), selectedNode)
 
-  const nextNode = () => selectedNode?.next(isVisible)
-  const prevNode = () => selectedNode?.prev(isVisible)
   const [ConfirmModal, confirmDelete] = useConfirmation(
     'common.questions.delete',
     () => selectedNode && deleteNodeFx(selectedNode.value.id)
   )
 
+  const setOpen = (toggle: boolean) => (ev: Event) => {
+    if (selectedNode != null) {
+      if (isNotNilOrEmpty(selectedNode?.children)) {
+        ev.stopPropagation()
+      }
+      openNodeState([selectedNode, toggle])
+    }
+  }
+
   const keyMap = cond([
-    [propEq('key', 'ArrowDown'), pd(pipe(nextNode, selectNode))],
-    [propEq('key', 'ArrowUp'), pd(pipe(prevNode, selectNode))],
-    [propEq('key', 'ArrowRight'), pd(() => openNode(selectedNode))],
-    [propEq('key', 'ArrowLeft'), pd(() => closeNode(selectedNode))],
+    [propEq('key', 'ArrowRight'), setOpen(true)],
+    [propEq('key', 'ArrowLeft'), setOpen(false)],
     [propEq('key', 'Delete'), confirmDelete],
     [propEq('key', 'n'), pd(() => newNodeFx(selectedNode?.value))],
     [propEq('key', 'Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],

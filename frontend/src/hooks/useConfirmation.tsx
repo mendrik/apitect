@@ -16,7 +16,7 @@ export const useConfirmation = (
   onConfirm: Fn,
   confirmButton: TFuncKey = 'common.confirm',
   cancelButton: TFuncKey = 'common.cancel'
-): [Fn<JSX.Element>, Fn] => {
+): [Fn<JSX.Element | null>, Fn] => {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const refOk = useOnActivate<HTMLButtonElement>(() => {
@@ -40,7 +40,7 @@ export const useConfirmation = (
   ])
 
   const Confirm = useCallback(() => {
-    return (
+    return open ? (
       <Modal show={open} onHide={close} centered enforceFocus onKeyDown={keyMap}>
         <Modal.Header closeButton>
           <Modal.Title>{t('common.confirmation')}</Modal.Title>
@@ -58,7 +58,7 @@ export const useConfirmation = (
           </QuestionView>
         </Modal.Body>
       </Modal>
-    )
+    ) : null
   }, [open])
 
   return [
