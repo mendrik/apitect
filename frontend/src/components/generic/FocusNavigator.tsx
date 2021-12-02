@@ -25,19 +25,24 @@ export const FocusNavigator = ({ columns = 1, rotated, children, ...props }: Jsx
       const current = document.activeElement as Maybe<HTMLElement>
       if (ref.current != null && ref.current.matches(':focus-within') && current != null) {
         const focusables = Array.from<HTMLElement>(
-          ref.current.querySelectorAll('[tabindex]:not([tabindex^="-"])')
+          ref.current.querySelectorAll(
+            '[tabindex]:not([tabindex^="-"]),button:not([disabled]):not([tabindex^="-"]),input:not([disabled]),textarea:not([disabled]),select:not([disabled])'
+          )
         )
+
         const rowCount = (rotated ? focusables.length / columns : columns) + 1
         const currentIndex = focusables.findIndex(equals(current))
+        console.log(ref.current.outerHTML)
+        console.log({ focusables: focusables.length, rowCount, currentIndex })
 
         if (dir === Direction.Right) {
           next(equals(current))(focusables)?.focus()
         } else if (dir === Direction.Left) {
           prev(equals(current))(focusables)?.focus()
         } else if (dir === Direction.Up) {
-          next(equals(focusables[(currentIndex - rowCount) % focusables.length]))(
-            focusables
-          )?.focus()
+          next(
+            equals(focusables[(currentIndex - rowCount + focusables.length) % focusables.length])
+          )(focusables)?.focus()
         } else if (dir === Direction.Down) {
           prev(equals(focusables[(currentIndex + rowCount) % focusables.length]))(
             focusables

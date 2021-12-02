@@ -1,46 +1,22 @@
 import clsx from 'clsx'
-import { cond, propEq } from 'ramda'
-import React, { HTMLAttributes, useRef } from 'react'
+import React, { HTMLAttributes } from 'react'
 
 import { Jsx } from '../../shared/types/generic'
-import { next, prev } from '../../shared/utils/ramda'
-
-enum Direction {
-  Left,
-  Right
-}
+import { FocusNavigator } from '../generic/FocusNavigator'
 
 export const ButtonRow = ({
   className,
   children,
   ...props
 }: Jsx<HTMLAttributes<HTMLDivElement>>) => {
-  const ref = useRef<HTMLDivElement>(null)
-
-  const moveFocus = (dir: Direction) => () => {
-    if (ref.current != null && ref.current.matches(':focus-within')) {
-      const buttons = Array.from(ref.current.querySelectorAll('button'))
-      if (dir === Direction.Right) {
-        next(b => document.activeElement === b)(buttons)?.focus()
-      } else {
-        prev(b => document.activeElement === b)(buttons)?.focus()
-      }
-    }
-  }
-
-  const keyMap = cond([
-    [propEq('key', 'ArrowLeft'), moveFocus(Direction.Left)],
-    [propEq('key', 'ArrowRight'), moveFocus(Direction.Right)]
-  ])
-
   return (
-    <div
-      ref={ref}
-      onKeyDown={keyMap}
+    <FocusNavigator
+      columns={2}
+      rotated
       className={clsx('d-grid gap-2 d-sm-flex justify-content-sm-end', className)}
       {...props}
     >
       {children}
-    </div>
+    </FocusNavigator>
   )
 }
