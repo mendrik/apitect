@@ -1,19 +1,23 @@
 import { useStore } from 'effector-react'
-import React, { useContext, FocusEvent } from 'react'
+import { cond, propEq } from 'ramda'
+import React, { FocusEvent, useContext, useRef } from 'react'
 
-import { useOnActivate } from '../../hooks/useOnActivate'
-import { useView, ViewMethods } from '../../hooks/useView'
+import { useView } from '../../hooks/useView'
 import { Node } from '../../shared/types/domain/node'
 import { NodeType } from '../../shared/types/domain/nodeType'
+import { StringValue } from '../../shared/types/domain/values/stringValue'
 import { Value } from '../../shared/types/domain/values/value'
-import { Jsx } from '../../shared/types/generic'
+import { StringSettings } from '../../shared/types/forms/nodetypes/stringSettings'
+import { Jsx, Maybe } from '../../shared/types/generic'
 import $appStore from '../../stores/$appStore'
+import { preventDefault as pd } from '../../utils/preventDefault'
+import { stopPropagation } from '../../utils/stopPropagation'
 import { dashboardContext } from '../Dashboard'
 import { StringEditor } from '../editors/StringEditor'
 
 type OwnProps = {
   nodeId: string
-  value: Value | undefined
+  value?: Value
   tag?: string
 }
 
@@ -22,40 +26,84 @@ export enum Views {
   Edit
 }
 
-export type ViewUtils = { view: Views } & ViewMethods<'Display' | 'Edit'>
+export type EditorProps = {
+  node: Node
+  settings: Maybe<StringSettings>
+  value?: Maybe<StringValue>
+  tag?: string
+}
 
-const getEditor = (nodeType: NodeType) => {
+type Editor = (e: Jsx<EditorProps>) => JSX.Element | null
+
+const valueToString = (value?: Value): string | null => {
+  if (value == null) {
+    return null
+  }
+  return `${value.value}`
+}
+
+const getEditor = (nodeType: NodeType): Editor | null => {
   switch (nodeType) {
     case NodeType.String:
       return StringEditor
     default:
-      return null
+      return null // todo throw Error instead when all are implemented
   }
 }
 
+const noOp = () => void 0
+
 export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
-  const views = useView(Views)
+  const { view, displayView, editView } = useView(Views)
   const { nodeMap } = useContext(dashboardContext)
   const { nodeSettings } = useStore($appStore)
-  const ref = useOnActivate<HTMLLIElement>(views.editView)
+  const ref = useRef<HTMLLIElement>(null) // useOnActivate<HTMLLIElement>(editView)
 
   const node: Node = nodeMap[nodeId]
   const settings = nodeSettings[value?.nodeId ?? '']
+  const Editor = getEditor(node?.nodeType)
+  const editorProps = { node, settings, value, tag }
 
-  const Editor = getEditor(node.nodeType)
+  const handleBlur = (ev: FocusEvent) => {
+    displayView()
+  }
 
-  const childBlur = (ev: FocusEvent) => {
-    if (ev.target !== ev.relatedTarget && ev.target.contains(ev.relatedTarget)) {
-      console.log('inp blur', ev.target, ev.relatedTarget)
-      // ref.current.focus()
+  const handleFocus = (ev: FocusEvent) => {
+    editView()
+  }
+
+  const grabFocus = () => ref.current?.focus()
+
+  const handleAbort = () => {
+    ref.current?.focus()
+    displayView()
+  }
+
+  const handleEnter = () => {
+    if (view === Views.Display) {
+      editView()
+    } else {
+      grabFocus()
+      displayView()
     }
   }
 
+  const keyMap = cond([
+    [propEq('code', 'Escape'), pd(handleAbort)],
+    [propEq('code', 'Enter'), pd(handleEnter)],
+    [propEq('code', 'ArrowUp'), grabFocus],
+    [propEq('code', 'ArrowDown'), grabFocus],
+    // todo doesn't work yet
+    [propEq('code', 'ArrowRight'), view === Views.Edit ? stopPropagation : noOp],
+    [propEq('code', 'ArrowLeft'), view === Views.Edit ? stopPropagation : noOp],
+    [propEq('code', 'Tab'), grabFocus]
+  ])
+
   return (
-    <li tabIndex={0} ref={ref} onFocus={childBlur}>
-      {Editor ? (
-        <Editor node={node} {...views} settings={settings as any} value={value as any} tag={tag} />
-      ) : null}
+    <li onKeyDown={keyMap} tabIndex={0} ref={ref} onBlur={handleBlur} onFocus={handleFocus}>
+      {view === Views.Display
+        ? valueToString(value)
+        : Editor && <Editor {...(editorProps as any)} />}
     </li>
   )
 }

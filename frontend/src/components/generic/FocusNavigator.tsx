@@ -1,4 +1,4 @@
-import { allPass, always, both, cond, equals, propEq } from 'ramda'
+import { allPass, always, cond, equals, propEq } from 'ramda'
 import React, { HTMLAttributes, useRef } from 'react'
 
 import { Jsx, Maybe } from '../../shared/types/generic'
@@ -26,12 +26,12 @@ export const FocusNavigator = ({
   const ref = useRef<HTMLDivElement>(null)
 
   const moveFocus = (dir: Direction) =>
-    stopPropagation((ev: Event) => {
+    stopPropagation(() => {
       const current = document.activeElement as Maybe<HTMLElement>
       if (ref.current != null && ref.current.matches(':focus-within') && current != null) {
         const focusables = Array.from<HTMLElement>(
           ref.current.querySelectorAll(
-            '[tabindex]:not([tabindex^="-"]),button:not([disabled]):not([tabindex^="-"]),input:not([disabled]),textarea:not([disabled]),select:not([disabled])'
+            '[tabindex]:not([tabindex^="-"]),button:not([disabled]):not([tabindex^="-"])'
           )
         )
 
@@ -63,7 +63,7 @@ export const FocusNavigator = ({
       allPass([always(rotated), propEq('shiftKey', true), propEq('key', 'Tab')]),
       moveFocus(Direction.Up)
     ],
-    [both(always(rotated), propEq('key', 'Tab')), moveFocus(Direction.Down)]
+    [allPass([always(rotated), propEq('key', 'Tab')]), moveFocus(Direction.Down)]
   ])
 
   return (
