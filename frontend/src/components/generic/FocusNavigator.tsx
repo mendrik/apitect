@@ -1,4 +1,4 @@
-import { cond, equals, propEq } from 'ramda'
+import { allPass, always, both, cond, equals, propEq } from 'ramda'
 import React, { HTMLAttributes, useRef } from 'react'
 
 import { Jsx, Maybe } from '../../shared/types/generic'
@@ -17,7 +17,12 @@ enum Direction {
   Down
 }
 
-export const FocusNavigator = ({ columns = 1, rotated, children, ...props }: Jsx<OwnProps>) => {
+export const FocusNavigator = ({
+  columns = 1,
+  rotated = false,
+  children,
+  ...props
+}: Jsx<OwnProps>) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const moveFocus = (dir: Direction) =>
@@ -53,7 +58,12 @@ export const FocusNavigator = ({ columns = 1, rotated, children, ...props }: Jsx
     [propEq('key', 'ArrowLeft'), moveFocus(rotated ? Direction.Up : Direction.Left)],
     [propEq('key', 'ArrowRight'), moveFocus(rotated ? Direction.Down : Direction.Right)],
     [propEq('key', 'ArrowUp'), moveFocus(rotated ? Direction.Left : Direction.Up)],
-    [propEq('key', 'ArrowDown'), moveFocus(rotated ? Direction.Right : Direction.Down)]
+    [propEq('key', 'ArrowDown'), moveFocus(rotated ? Direction.Right : Direction.Down)],
+    [
+      allPass([always(rotated), propEq('shiftKey', true), propEq('key', 'Tab')]),
+      moveFocus(Direction.Up)
+    ],
+    [both(always(rotated), propEq('key', 'Tab')), moveFocus(Direction.Down)]
   ])
 
   return (

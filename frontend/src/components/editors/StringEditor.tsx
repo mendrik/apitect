@@ -1,5 +1,5 @@
 import { cond, propEq } from 'ramda'
-import React, { useRef } from 'react'
+import React from 'react'
 
 import { Node } from '../../shared/types/domain/node'
 import { StringValue } from '../../shared/types/domain/values/stringValue'
@@ -12,11 +12,10 @@ type OwnProps = {
   node: Node
   settings: Maybe<StringSettings>
   value?: Maybe<StringValue>
+  tag?: string
 } & ViewUtils
 
 export const StringEditor = ({ node, settings, value, view, displayView }: Jsx<OwnProps>) => {
-  const ref = useRef<HTMLInputElement>(null)
-
   const save = () => {
     displayView()
   }
@@ -34,11 +33,13 @@ export const StringEditor = ({ node, settings, value, view, displayView }: Jsx<O
         <input
           type="text"
           className="editor"
-          ref={ref}
+          autoFocus
           onBlur={save}
           onKeyDown={keyMap}
           placeholder={node.name}
         />
       )
+    default:
+      return null
   }
 }

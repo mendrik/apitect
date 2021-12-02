@@ -1,6 +1,7 @@
 import { useStore } from 'effector-react'
-import React, { useContext } from 'react'
+import React, { useContext, FocusEvent } from 'react'
 
+import { useOnActivate } from '../../hooks/useOnActivate'
 import { useView, ViewMethods } from '../../hooks/useView'
 import { Node } from '../../shared/types/domain/node'
 import { NodeType } from '../../shared/types/domain/nodeType'
@@ -36,15 +37,25 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const views = useView(Views)
   const { nodeMap } = useContext(dashboardContext)
   const { nodeSettings } = useStore($appStore)
+  const ref = useOnActivate<HTMLLIElement>(views.editView)
+
   const node: Node = nodeMap[nodeId]
   const settings = nodeSettings[value?.nodeId ?? '']
-  const params = { node, settings, value, views } as any
 
   const Editor = getEditor(node.nodeType)
 
+  const childBlur = (ev: FocusEvent) => {
+    if (ev.target !== ev.relatedTarget && ev.target.contains(ev.relatedTarget)) {
+      console.log('inp blur', ev.target, ev.relatedTarget)
+      // ref.current.focus()
+    }
+  }
+
   return (
-    <li key={nodeId} tabIndex={0} onFocus={views.editView}>
-      {Editor && <Editor {...params} />}
+    <li tabIndex={0} ref={ref} onFocus={childBlur}>
+      {Editor ? (
+        <Editor node={node} {...views} settings={settings as any} value={value as any} tag={tag} />
+      ) : null}
     </li>
   )
 }
