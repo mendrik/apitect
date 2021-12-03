@@ -12,18 +12,19 @@ import {
 } from '../../events/tree'
 import { useConfirmation } from '../../hooks/useConfirmation'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
-import { Jsx } from '../../shared/types/generic'
 import { $selectedNode } from '../../stores/$selectedNode'
 import { $treeStore } from '../../stores/$treeStore'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNodeTemplate } from './VisualNodeTemplate'
 
-export const VisualTree = ({ children }: Jsx) => {
+export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
 
-  useDefinedEffect(node => focus(document.getElementById(node.value.id)), selectedNode)
+  useDefinedEffect(sn => {
+    focus(document.getElementById(sn.value.id))
+  }, selectedNode)
 
   const [ConfirmModal, confirmDelete] = useConfirmation(
     'common.questions.delete',
@@ -50,7 +51,7 @@ export const VisualTree = ({ children }: Jsx) => {
 
   return (
     <div onKeyDown={keyMap} id="doc-tree">
-      <VisualNodeTemplate node={root}>{children}</VisualNodeTemplate>
+      <VisualNodeTemplate node={root} />
       <ConfirmModal />
     </div>
   )
