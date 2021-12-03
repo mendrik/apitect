@@ -30,10 +30,6 @@ type DashboardContextType = {
 export const dashboardContext = createContext<DashboardContextType>({ nodeMap: {} })
 
 const Dashboard = () => {
-  useEffectOnce(() => {
-    void projectFx()
-  })
-
   const { visibleTags } = useStore($tagStore)
   const root = useStore($treeStore)
   const nodeMap = useStore($mappedNodesStore)

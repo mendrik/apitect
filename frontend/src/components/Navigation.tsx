@@ -7,17 +7,18 @@ import {
   IconUsers,
   IconWorldUpload
 } from '@tabler/icons'
-import React, { useContext } from 'react'
+import { useStore } from 'effector-react'
+import React from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { addParams } from 'shared/utils/url'
 import styled from 'styled-components'
 
-import { userContext } from '../contexts/withUser'
 import { Palette } from '../css/colors'
 import { projectUserSettingsFx, tagsSettingsFx } from '../events/project'
 import { useLogout } from '../hooks/useLogout'
+import { $user } from '../stores/$userStore'
 import { Scale, Tuple } from './generic/Tuple'
 
 const Item = styled(Nav.Item)`
@@ -46,7 +47,7 @@ export const Navigation = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const logout = useLogout()
-  const { user } = useContext(userContext)
+  const user = useStore($user)
 
   return (
     <Navbar

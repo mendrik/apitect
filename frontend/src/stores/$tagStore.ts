@@ -17,7 +17,7 @@ export const $tagStore = createStore<TagStore>({
   visibleTags: []
 })
 
-$tagStore.watch(projectFx.done, (_, { result }) =>
+$tagStore.on(projectFx.done, (_, { result }) =>
   applySpec<TagStore>({
     tags: identity,
     visibleTags: filter(pipe(field('name'), included(result.visibleTags)))

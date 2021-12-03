@@ -22,18 +22,18 @@ export const $mappedNodesStore = $treeStore.map<Record<string, Node>>(root =>
   byProp('id', root.flatten().map(prop('value')))
 )
 
-$rawTree.watch(projectFx.done, (state, { result }) => result.document.tree)
-$rawTree.watch(deleteNodeFx.done, (state, { result }) => result.tree)
-$rawTree.watch(createNodeFx.done, (state, { result }) => result.tree)
-$rawTree.watch(updateNodeSettingsFx.done, (state, { result }) => result)
+$rawTree.on(projectFx.done, (state, { result }) => result.document.tree)
+$rawTree.on(deleteNodeFx.done, (state, { result }) => result.tree)
+$rawTree.on(createNodeFx.done, (state, { result }) => result.tree)
+$rawTree.on(updateNodeSettingsFx.done, (state, { result }) => result)
 
-$treeStore.watch(deleteNodeFx.done, (state, { result }) => {
+$treeStore.on(deleteNodeFx.done, (state, { result }) => {
   const parent = state.first(propEq('id', result.parentNode))
   const node = parent?.children[result.position - 1] ?? parent ?? null
   void selectNode(node)
 })
 
-$treeStore.watch(createNodeFx.done, (state, { result }) => {
+$treeStore.on(createNodeFx.done, (state, { result }) => {
   const node = state.first(propEq('id', result.nodeId)) ?? null
   void selectNode(node)
 })

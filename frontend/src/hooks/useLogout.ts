@@ -1,14 +1,15 @@
-import { useContext } from 'react'
+import { useLocalStorage } from 'react-use'
 import { Fn } from 'shared/types/generic'
 
-import { userContext } from '../contexts/withUser'
 import { resetProject } from '../events/reset'
+import { whoAmIFx } from '../events/user'
 import { logout } from '../utils/restApi'
 
 export const useLogout = (): Fn<Promise<any>> => {
-  const { setJwt } = useContext(userContext)
+  const [_, setJwt] = useLocalStorage('jwt')
   return () =>
     logout()
       .then(() => setJwt(undefined))
       .then(resetProject)
+      .then(whoAmIFx)
 }

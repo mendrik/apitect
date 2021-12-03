@@ -12,7 +12,6 @@ import { openModal } from './modals'
 const api = () => sample($api).getState()
 
 export const projectFx = createEffect<Api['project']>(() => {
-  console.log(api())
   return api().project()
 })
 

@@ -8,5 +8,5 @@ import { byProp } from '../shared/utils/ramda'
 const $rawNodeSettings = createStore<NodeSettings[]>([])
 export const $nodeSettings = $rawNodeSettings.map(arr => byProp('nodeId', arr))
 
-$rawNodeSettings.watch(projectFx.done, (state, { result }) => result.nodeSettings)
+$rawNodeSettings.on(projectFx.done, (state, { result }) => result.nodeSettings)
 $rawNodeSettings.reset(resetProject)

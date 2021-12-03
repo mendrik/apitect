@@ -13,6 +13,6 @@ export const $documentStore = createStore<Doc>({
   owner: ''
 })
 
-$documentStore.watch(projectFx.done, (_, { result }) => omit(['tree'], result.document))
+$documentStore.on(projectFx.done, (_, { result }) => omit(['tree'], result.document))
 
 $documentStore.reset(resetProject)
