@@ -12,7 +12,11 @@ export const WithSocket = ({ children }: Jsx) => {
     protocols: jwt!
   })
 
-  useEffect(() => void socketEstablished(sendJsonMessage), [])
+  useEffect(() => {
+    if (readyState === ReadyState.OPEN) {
+      void socketEstablished(sendJsonMessage)
+    }
+  }, [readyState])
 
   useEffect(() => {
     if (lastMessage?.data) {

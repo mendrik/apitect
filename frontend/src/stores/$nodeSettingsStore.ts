@@ -1,7 +1,7 @@
 import { createStore } from 'effector'
 
+import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
-import { projectFx } from '../events/tree'
 import { NodeSettings } from '../shared/types/forms/nodetypes/nodeSettings'
 import { byProp } from '../shared/utils/ramda'
 

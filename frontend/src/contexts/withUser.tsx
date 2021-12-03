@@ -1,10 +1,8 @@
-import { tap } from 'ramda'
 import React, { createContext } from 'react'
 import { useLocalStorage } from 'react-use'
 import { User } from 'shared/types/domain/user'
 import { Jsx, Maybe } from 'shared/types/generic'
 
-import { projectFx } from '../events/tree'
 import useProgress from '../hooks/useProgress'
 import { usePromise } from '../hooks/usePromise'
 import { logAndRecover } from '../shared/utils/logAndRecover'
@@ -25,15 +23,7 @@ export const userContext = createContext<UserContext>({
 export const WithUser = ({ children }: Jsx) => {
   const [jwt, setJwt] = useLocalStorage<string>('jwt', undefined)
   const [withProgress, res] = useProgress<User | null>()
-  const trigger = usePromise(
-    () =>
-      withProgress(
-        whoAmI()
-          .then(tap(() => projectFx()))
-          .catch(logAndRecover(null))
-      ),
-    true
-  )
+  const trigger = usePromise(() => withProgress(whoAmI().catch(logAndRecover(null))), true)
 
   return res.is === 'done' ? (
     <userContext.Provider

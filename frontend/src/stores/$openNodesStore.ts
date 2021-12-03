@@ -1,7 +1,8 @@
 import { createStore } from 'effector'
 
+import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
-import { openNodeState, projectFx, selectNode } from '../events/tree'
+import { openNodeState, selectNode } from '../events/tree'
 
 export const $openNodes = createStore<Record<string, boolean>>({})
 

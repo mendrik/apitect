@@ -5,7 +5,7 @@ import { Api } from '../shared/types/api'
 import { ModalNames } from '../shared/types/modals'
 import { $api } from '../stores/$apiStore'
 import { openModal } from './modals'
-import { projectFx } from './tree'
+import { projectFx } from './project'
 
 const api = () => sample($api).getState()
 

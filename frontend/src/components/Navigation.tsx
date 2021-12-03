@@ -55,7 +55,11 @@ export const Navigation = () => {
       className="px-2 bevel-bottom bevel-shadow"
       style={{ overflowX: 'clip', overflowY: 'visible' }}
     >
-      <Navbar.Brand tabIndex={-1} className="me-auto p-0 user-select-none">
+      <Navbar.Brand
+        tabIndex={-1}
+        className="me-auto p-0 user-select-none"
+        style={{ marginTop: -3 }}
+      >
         <IconTrees stroke={1} width={24} />
         <LogoText>
           <span style={{ color: 'black' }}>api</span>tect

@@ -1,17 +1,13 @@
 import { createStore } from 'effector'
 import { isNil, prop, propEq, unless } from 'ramda'
 
+import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
-import {
-  createNodeFx,
-  deleteNodeFx,
-  projectFx,
-  selectNode,
-  updateNodeSettingsFx
-} from '../events/tree'
+import { createNodeFx, deleteNodeFx, selectNode, updateNodeSettingsFx } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Node } from '../shared/types/domain/node'
 import { NodeType } from '../shared/types/domain/nodeType'
+import { logger } from '../shared/utils/logger'
 import { byProp } from '../shared/utils/ramda'
 
 const $rawTree = createStore<Node>({

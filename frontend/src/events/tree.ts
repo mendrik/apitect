@@ -20,7 +20,6 @@ const api = () => sample($api).getState()
 
 export const createNodeFx = createEffect<Api['nodeCreate']>(node => api().nodeCreate(node))
 export const deleteNodeFx = createEffect<Api['nodeDelete']>(id => api().nodeDelete(id))
-export const projectFx = createEffect<Api['project']>(() => api().project())
 export const updateNodeSettingsFx = createEffect<Api['updateNodeSettings']>(settings =>
   api().updateNodeSettings(settings)
 )

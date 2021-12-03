@@ -8,9 +8,13 @@ import { ModalNames } from '../shared/types/modals'
 import { failOn } from '../shared/utils/failOn'
 import { $api } from '../stores/$apiStore'
 import { openModal } from './modals'
-import { projectFx } from './tree'
 
 const api = () => sample($api).getState()
+
+export const projectFx = createEffect<Api['project']>(() => {
+  console.log(api())
+  return api().project()
+})
 
 export const projectUserSettingsFx = createEffect(() =>
   api()

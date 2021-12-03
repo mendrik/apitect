@@ -2,8 +2,8 @@ import { createStore } from 'effector'
 import { applySpec, filter, identity, pipe } from 'ramda'
 import { included } from 'ramda-adjunct'
 
+import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
-import { projectFx } from '../events/tree'
 import { Tag } from '../shared/types/domain/tag'
 import { field } from '../shared/utils/ramda'
 
