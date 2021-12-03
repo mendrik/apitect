@@ -8,7 +8,7 @@ import { tagSettingsFx } from '../../events/project'
 import { userSettingsFx } from '../../events/user'
 import { Tag } from '../../shared/types/domain/tag'
 import { Jsx } from '../../shared/types/generic'
-import $appStore from '../../stores/$appStore'
+import { $tagStore } from '../../stores/$tagStore'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'
@@ -20,7 +20,7 @@ type OwnProps = {
 }
 
 export const ColumnHeader = ({ name, tag }: Jsx<OwnProps>) => {
-  const { tags } = useStore($appStore)
+  const { tags } = useStore($tagStore)
   const { t } = useTranslation()
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>

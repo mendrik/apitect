@@ -3,20 +3,20 @@ import { tap } from 'ramda'
 
 import { Api } from '../shared/types/api'
 import { ModalNames } from '../shared/types/modals'
-import $appStore from '../stores/$appStore'
+import { $api } from '../stores/$apiStore'
 import { openModal } from './modals'
 import { projectFx } from './tree'
 
-const state = () => sample($appStore).getState()
+const api = () => sample($api).getState()
 
 export const userSettingsFx = createEffect(() =>
-  state()
-    .api.userSettings()
+  api()
+    .userSettings()
     .then(tap(params => openModal({ name: ModalNames.USER_SETTINGS, params })))
 )
 
 export const updateUserSettingsFx = createEffect<Api['updateUserSettings']>(userSettings =>
-  state()
-    .api.updateUserSettings(userSettings)
+  api()
+    .updateUserSettings(userSettings)
     .then(tap(() => projectFx()))
 )

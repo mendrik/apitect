@@ -10,7 +10,8 @@ import { TreeNode } from '../../shared/algebraic/treeNode'
 import { Node } from '../../shared/types/domain/node'
 import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { Jsx } from '../../shared/types/generic'
-import $appStore from '../../stores/$appStore'
+import { $openNodes } from '../../stores/$openNodesStore'
+import { $selectedNode } from '../../stores/$selectedNode'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
@@ -42,9 +43,9 @@ const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
-  const { openNodes } = useStore($appStore)
+  const openNodes = useStore($openNodes)
   const hasChildren = isNotNilOrEmpty(node.children)
-  const { selectedNode } = useStore($appStore)
+  const selectedNode = useStore($selectedNode)
   const id = node.value.id
   const open = openNodes[id]
 
@@ -76,7 +77,7 @@ export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
             title={node.value.name}
             onMouseDown={() => {
               const isActive = document.activeElement?.id === node.value.id
-              selectNode(selectedNode?.value.id === id && isActive ? undefined : node)
+              selectNode(selectedNode?.value.id === id && isActive ? null : node)
             }}
           >
             {node.value.name}

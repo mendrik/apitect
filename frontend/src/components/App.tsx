@@ -6,18 +6,15 @@ import { userContext } from '../contexts/withUser'
 import Dashboard from './Dashboard'
 import { NotLoggedIn } from './NotLoggedIn'
 import { ErrorView } from './generic/ErrorView'
-import { WaitForDocument } from './specific/WaitForDocument'
 
 const App = () => {
   const { user } = useContext(userContext)
   return user ? (
     <WithSocket>
-      <WaitForDocument>
-        <Routes>
-          <Route path="/error" element={<ErrorView />} />
-          <Route path="/" element={<Dashboard />} />
-        </Routes>
-      </WaitForDocument>
+      <Routes>
+        <Route path="/error" element={<ErrorView />} />
+        <Route path="/" element={<Dashboard />} />
+      </Routes>
     </WithSocket>
   ) : (
     <Routes>

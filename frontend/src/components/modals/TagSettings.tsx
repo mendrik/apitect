@@ -8,7 +8,7 @@ import { updateTagsSettingsFx } from '../../events/project'
 import { useLocation } from '../../hooks/useLocation'
 import { Tag, ZTag } from '../../shared/types/domain/tag'
 import { isCyclic, updateArrayBy } from '../../shared/utils/ramda'
-import $appStore from '../../stores/$appStore'
+import { $tagStore } from '../../stores/$tagStore'
 import { ModalFC } from '../ModalStub'
 import { Dropdown } from '../forms/Dropdown'
 import { SocketForm } from '../forms/SocketForm'
@@ -16,7 +16,7 @@ import { TextInput } from '../forms/TextInput'
 
 const TagSettings: ModalFC = ({ close }) => {
   const { state: tag } = useLocation<Tag>()
-  const { tags } = useStore($appStore)
+  const { tags } = useStore($tagStore)
 
   const form = useForm<Tag>({
     resolver: zodResolver(ZTag),

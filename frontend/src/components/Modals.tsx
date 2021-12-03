@@ -5,20 +5,20 @@ import { useNavigate } from 'react-router-dom'
 import { closeModal, openModal } from '../events/modals'
 import { ModalNames } from '../shared/types/modals'
 import { addParams, removeParams } from '../shared/utils/url'
-import $appStore from '../stores/$appStore'
+import { $selectedNode } from '../stores/$selectedNode'
 import { ModalStub } from './ModalStub'
 import { Loader } from './generic/Loader'
 
 export const Modals = () => {
   const navigate = useNavigate()
-  const { selectedNode } = useStore($appStore)
+  const selectedNode = useStore($selectedNode)
 
   useEffect(() => {
-    const openSub = $appStore.watch(openModal, (_, config) => {
+    const openSub = openModal.watch(config => {
       const to = addParams({ modal: config.name })
       navigate(to, { state: config.params })
     })
-    const closeSub = $appStore.watch(closeModal, () => navigate(removeParams(['modal'])))
+    const closeSub = closeModal.watch(() => navigate(removeParams(['modal'])))
     return () => {
       openSub()
       closeSub()

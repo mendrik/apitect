@@ -7,14 +7,14 @@ import { useForm } from 'react-hook-form'
 import { updateUserSettingsFx } from '../../events/user'
 import { useLocation } from '../../hooks/useLocation'
 import { UserSettings as Settings, ZUserSettings } from '../../shared/types/forms/userSettings'
-import $appStore from '../../stores/$appStore'
+import { $tagStore } from '../../stores/$tagStore'
 import { waitFor } from '../../utils/waitFor'
 import { ModalFC } from '../ModalStub'
 import { SocketForm } from '../forms/SocketForm'
 
 const UserSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Settings>()
-  const { tags } = useStore($appStore)
+  const { tags } = useStore($tagStore)
   const form = useForm<Settings>({
     resolver: zodResolver(ZUserSettings),
     defaultValues: state
