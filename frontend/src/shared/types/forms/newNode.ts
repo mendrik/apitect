@@ -3,7 +3,6 @@ import { TypeOf } from 'zod/lib/types'
 
 import { idCodec } from '../../codecs/idCodec'
 import { nameCodec } from '../../codecs/nameCodec'
-import { nonEmptyString } from '../../codecs/nonEmptyString'
 import { NodeType } from '../domain/nodeType'
 
 export const TNewNode = object({

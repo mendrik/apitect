@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react'
 import React, { Suspense, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { closeModal, openModal } from '../events/modals'
 import { ModalNames } from '../shared/types/modals'
