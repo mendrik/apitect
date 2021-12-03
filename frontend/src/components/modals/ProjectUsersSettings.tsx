@@ -1,35 +1,31 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
 import { prop } from 'ramda'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import { updateProjectUserSettingsFx } from '../../events/project'
 import { useLocation } from '../../hooks/useLocation'
-import { TreeNode } from '../../shared/algebraic/treeNode'
-import { Node } from '../../shared/types/domain/node'
 import {
   ProjectUsersSettings as Settings,
   ZProjectUsersSettings
 } from '../../shared/types/forms/projectUsersSettings'
-import $appStore from '../../stores/$appStore'
+import { $treeStore } from '../../stores/$treeStore'
 import { ModalFC } from '../ModalStub'
 import { SocketForm } from '../forms/SocketForm'
 import { TreeInput } from '../forms/TreeInput'
 
 const ProjectUsersSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Settings>()
+  const root = useStore($treeStore)
 
   const form = useForm<Settings>({
     resolver: zodResolver(ZProjectUsersSettings),
     defaultValues: state
   })
 
-  const { tree } = useStore($appStore)
-  const root = useMemo(() => TreeNode.from<Node, 'children'>('children')(tree), [tree])
-
   return (
-    tree && (
+    root && (
       <SocketForm
         form={form}
         onValid={updateProjectUserSettingsFx}

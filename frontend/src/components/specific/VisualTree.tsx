@@ -1,7 +1,7 @@
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import React, { useMemo } from 'react'
+import React from 'react'
 
 import {
   deleteNodeFx,
@@ -12,17 +12,16 @@ import {
 } from '../../events/tree'
 import { useConfirmation } from '../../hooks/useConfirmation'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
-import { TreeNode } from '../../shared/algebraic/treeNode'
-import { Node } from '../../shared/types/domain/node'
 import { Jsx } from '../../shared/types/generic'
 import $appStore from '../../stores/$appStore'
+import { $treeStore } from '../../stores/$treeStore'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNodeTemplate } from './VisualNodeTemplate'
 
 export const VisualTree = ({ children }: Jsx) => {
-  const { tree, selectedNode } = useStore($appStore)
-  const root = useMemo(() => TreeNode.from<Node, 'children'>('children')(tree), [tree])
+  const { selectedNode } = useStore($appStore)
+  const root = useStore($treeStore)
 
   useDefinedEffect(node => focus(document.getElementById(node.value.id)), selectedNode)
 

@@ -1,15 +1,13 @@
 import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import React, { createContext, useMemo } from 'react'
+import React, { createContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useMap } from 'react-use'
 import styled from 'styled-components'
 
 import { useVisibleNodes } from '../hooks/useVisibleNodes'
-import { TreeNode } from '../shared/algebraic/treeNode'
 import { Node } from '../shared/types/domain/node'
-import { byProp } from '../shared/utils/ramda'
 import $appStore from '../stores/$appStore'
+import { $mappedNodesStore, $treeStore } from '../stores/$treeStore'
 import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { FocusNavigator } from './generic/FocusNavigator'
@@ -32,20 +30,10 @@ type DashboardContextType = {
 export const dashboardContext = createContext<DashboardContextType>({ nodeMap: {} })
 
 const Dashboard = () => {
-  const { tree, visibleTags } = useStore($appStore)
+  const { visibleTags } = useStore($appStore)
+  const root = useStore($treeStore)
+  const nodeMap = useStore($mappedNodesStore)
   const { t } = useTranslation()
-  const [nodeMap, { setAll }] = useMap<Record<string, Node>>()
-
-  const root = useMemo(() => {
-    const root = TreeNode.from<Node, 'children'>('children')(tree)
-    const record = byProp(
-      'id',
-      root.flatten().map(x => x.value)
-    )
-    setAll(record)
-    return root
-  }, [tree])
-
   const nodes = useVisibleNodes(root)
 
   const columns: JSX.Element[] = [

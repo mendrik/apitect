@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector'
+import { createStore } from 'effector'
 import { omit, pipe, prop, propEq } from 'ramda'
 import { included } from 'ramda-adjunct'
 import { Document } from 'shared/types/domain/document'
@@ -28,7 +28,6 @@ import { byProp } from '../shared/utils/ramda'
 
 export type AppState = {
   document: Omit<Document, 'tree'>
-  tree: Node
   tags: Tag[]
   visibleTags: Tag[]
   selectedNode: Maybe<TreeNode<Node>>
@@ -39,7 +38,6 @@ export type AppState = {
 
 const initial: AppState = {
   document: null,
-  tree: null,
   openNodes: {},
   tags: [],
   visibleTags: [],
@@ -47,8 +45,6 @@ const initial: AppState = {
 } as any
 
 const $appStore = createStore<AppState>(initial)
-export const updateState = createEvent<Partial<AppState>>()
-$appStore.on(updateState, (state, cur) => ({ ...state, ...cur }))
 
 apiResponse.watch(data => {
   if (isError(data)) {
