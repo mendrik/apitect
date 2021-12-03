@@ -7,7 +7,7 @@ import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
 
 import { Jsx } from '../../shared/types/generic'
-import $appStore from '../../stores/$appStore'
+import { $tagStore } from '../../stores/$tagStore'
 import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
@@ -89,7 +89,7 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
   const style = grid.current?.style
 
-  const { visibleTags } = useStore($appStore)
+  const { visibleTags } = useStore($tagStore)
 
   useDeepCompareEffect(() => {
     const width = grid.current?.offsetWidth ?? 0
@@ -125,7 +125,7 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
         }
       }
     },
-    onDragEnd(event) {
+    onDragEnd() {
       bodyStyle.setProperty('cursor', 'default')
     }
   })

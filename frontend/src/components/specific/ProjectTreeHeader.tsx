@@ -3,15 +3,16 @@ import { useStore } from 'effector-react'
 import React from 'react'
 
 import { deleteNodeFx, newNodeFx, nodeSettingsFx } from '../../events/tree'
-import $appStore from '../../stores/$appStore'
+import { $documentStore } from '../../stores/$documentStore'
+import { $selectedNode } from '../../stores/$selectedNode'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'
 import { WithTooltip } from '../generic/WithTooltip'
 
 export const ProjectTreeHeader = () => {
-  const { selectedNode } = useStore($appStore)
-  const { document } = useStore($appStore)
+  const selectedNode = useStore($selectedNode)
+  const document = useStore($documentStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate editable">{document.name}</div>

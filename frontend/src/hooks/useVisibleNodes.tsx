@@ -6,10 +6,10 @@ import { useDeepCompareEffect } from 'react-use'
 
 import { Strategy, TreeNode } from '../shared/algebraic/treeNode'
 import { Node } from '../shared/types/domain/node'
-import $appStore from '../stores/$appStore'
+import { $openNodes } from '../stores/$openNodesStore'
 
 export const useVisibleNodes = (root: TreeNode<Node>) => {
-  const { openNodes } = useStore($appStore)
+  const openNodes = useStore($openNodes)
   const [visibleNodeIds, setVisibleNodeIs] = useState<string[]>([])
   const [newNodeIds, setNewNodeIds] = useState<string[]>([])
 

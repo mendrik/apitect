@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useContext, useEffect } from 'react'
+import { prop } from 'ramda'
+import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { useLocalStorage } from 'react-use'
 import { Login, ZLogin } from 'shared/types/forms/login'
 import { Fn, Jsx } from 'shared/types/generic'
 
@@ -12,7 +14,7 @@ import { GenericError } from '../components/forms/GenericError'
 import { SubmitButton } from '../components/forms/SubmitButton'
 import { TextInput } from '../components/forms/TextInput'
 import ForgotPasswordForm from '../components/modals/ForgotPasswordForm'
-import { userContext } from '../contexts/withUser'
+import { whoAmIFx } from '../events/user'
 import useProgress from '../hooks/useProgress'
 import { usePromise } from '../hooks/usePromise'
 import { useView } from '../hooks/useView'
@@ -31,6 +33,7 @@ enum Views {
 export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const { view, loginView, forgotPasswordView } = useView(Views)
+
   const form = useForm<Login>({
     resolver: zodResolver(ZLogin),
     defaultValues: {
@@ -40,10 +43,11 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   })
 
   const [withProgress, status] = useProgress<Token>()
-  const trigger = usePromise<Login>(data => withProgress(login(data)).then(setJwt))
+  const [, setJwt] = useLocalStorage('jwt')
 
-  const { setJwt, user } = useContext(userContext)
-  useEffect(() => (user != null ? close() : void 0), [user, close])
+  const trigger = usePromise<Login>(data =>
+    withProgress(login(data)).then(prop('token')).then(setJwt).then(whoAmIFx).then(close)
+  )
 
   if (view === Views.ForgotPassword) {
     return <ForgotPasswordForm close={loginView} />

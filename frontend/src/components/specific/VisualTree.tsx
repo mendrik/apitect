@@ -13,14 +13,14 @@ import {
 import { useConfirmation } from '../../hooks/useConfirmation'
 import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { Jsx } from '../../shared/types/generic'
-import $appStore from '../../stores/$appStore'
+import { $selectedNode } from '../../stores/$selectedNode'
 import { $treeStore } from '../../stores/$treeStore'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNodeTemplate } from './VisualNodeTemplate'
 
 export const VisualTree = ({ children }: Jsx) => {
-  const { selectedNode } = useStore($appStore)
+  const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
 
   useDefinedEffect(node => focus(document.getElementById(node.value.id)), selectedNode)
@@ -45,7 +45,7 @@ export const VisualTree = ({ children }: Jsx) => {
     [propEq('key', 'Delete'), confirmDelete],
     [propEq('key', 'n'), pd(() => newNodeFx(selectedNode?.value))],
     [propEq('key', 'Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],
-    [propEq('code', 'Escape'), pd(() => selectNode(undefined))]
+    [propEq('code', 'Escape'), pd(() => selectNode(null))]
   ])
 
   return (

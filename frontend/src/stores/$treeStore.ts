@@ -1,10 +1,13 @@
 import { createStore } from 'effector'
-import { isNil, prop, unless } from 'ramda'
+import { isNil, prop, propEq, unless } from 'ramda'
 
-import { projectFx } from '../events/tree'
+import { projectFx } from '../events/project'
+import { resetProject } from '../events/reset'
+import { createNodeFx, deleteNodeFx, selectNode, updateNodeSettingsFx } from '../events/tree'
 import { TreeNode } from '../shared/algebraic/treeNode'
 import { Node } from '../shared/types/domain/node'
 import { NodeType } from '../shared/types/domain/nodeType'
+import { logger } from '../shared/utils/logger'
 import { byProp } from '../shared/utils/ramda'
 
 const $rawTree = createStore<Node>({
@@ -20,3 +23,19 @@ export const $mappedNodesStore = $treeStore.map<Record<string, Node>>(root =>
 )
 
 $rawTree.on(projectFx.done, (state, { result }) => result.document.tree)
+$rawTree.on(deleteNodeFx.done, (state, { result }) => result.tree)
+$rawTree.on(createNodeFx.done, (state, { result }) => result.tree)
+$rawTree.on(updateNodeSettingsFx.done, (state, { result }) => result)
+
+$treeStore.on(deleteNodeFx.done, (state, { result }) => {
+  const parent = state.first(propEq('id', result.parentNode))
+  const node = parent?.children[result.position - 1] ?? parent ?? null
+  void selectNode(node)
+})
+
+$treeStore.on(createNodeFx.done, (state, { result }) => {
+  const node = state.first(propEq('id', result.nodeId)) ?? null
+  void selectNode(node)
+})
+
+$rawTree.reset(resetProject)

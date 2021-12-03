@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useContext, useState } from 'react'
+import { prop } from 'ramda'
+import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { useLocalStorage } from 'react-use'
 import { Register, ZRegister } from 'shared/types/forms/register'
 
 import { ModalFC } from '../components/ModalStub'
@@ -12,11 +14,10 @@ import { Form } from '../components/forms/Form'
 import { GenericError } from '../components/forms/GenericError'
 import { SubmitButton } from '../components/forms/SubmitButton'
 import { TextInput } from '../components/forms/TextInput'
-import { userContext } from '../contexts/withUser'
+import { whoAmIFx } from '../events/user'
 import useProgress from '../hooks/useProgress'
 import { usePromise } from '../hooks/usePromise'
 import { useView } from '../hooks/useView'
-import { Token } from '../shared/types/response/token'
 import { register } from '../utils/restApi'
 
 enum Views {
@@ -26,9 +27,9 @@ enum Views {
 
 export const RegisterForm: ModalFC = ({ close }) => {
   const { view, successView } = useView(Views)
-  const { setJwt: login } = useContext(userContext)
-  const [jwt, setJwt] = useState<Token>()
+  const [jwt, setJwt] = useLocalStorage('jwt')
   const { t } = useTranslation()
+
   const form = useForm<Register>({
     resolver: zodResolver(ZRegister),
     defaultValues: {
@@ -40,7 +41,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
   })
   const [withProgress, status] = useProgress()
   const onSubmit = usePromise<Register>(
-    data => withProgress(register(data).then(setJwt)).then(successView),
+    data => withProgress(register(data).then(prop('token')).then(setJwt)).then(successView),
     false,
     false
   )
@@ -52,7 +53,8 @@ export const RegisterForm: ModalFC = ({ close }) => {
           <Button
             onClick={() => {
               close()
-              login(jwt)
+              setJwt(jwt)
+              void whoAmIFx()
             }}
             variant="primary"
           >

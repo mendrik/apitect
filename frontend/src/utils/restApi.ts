@@ -44,4 +44,4 @@ export const login = (data: Login) => post('login', ZToken, data)
 export const forgotPassword = (data: ForgotPassword) => put('forgot-password', undefined, data)
 export const register = (data: Register) => post('register', ZToken, data)
 
-export const whoAmI = () => get('whoami', ZUser).catch(logAndRecover(null))
+export const whoAmI = () => get('whoami', ZUser)

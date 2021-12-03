@@ -22,7 +22,7 @@ import { ZReferenceSettings } from '../../shared/types/forms/nodetypes/reference
 import { ZRichTextSettings } from '../../shared/types/forms/nodetypes/richTextSettings'
 import { ZStringSettings } from '../../shared/types/forms/nodetypes/stringSettings'
 import { removeParams } from '../../shared/utils/url'
-import $appStore from '../../stores/$appStore'
+import { $selectedNode } from '../../stores/$selectedNode'
 import { generateDefaults } from '../../utils/zod'
 import { ModalFC } from '../ModalStub'
 import { SocketForm } from '../forms/SocketForm'
@@ -105,7 +105,7 @@ const resolver = (nodeType: NodeType) => {
 }
 
 const NodeSettings: ModalFC = ({ close }) => {
-  const { selectedNode } = useStore($appStore)
+  const selectedNode = useStore($selectedNode)
   const navigate = useNavigate()
   const { state } = useLocation<NodeSettingsType>()
 

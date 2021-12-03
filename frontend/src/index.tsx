@@ -8,7 +8,7 @@ import App from './components/App'
 import { Modals } from './components/Modals'
 import { ErrorView } from './components/generic/ErrorView'
 import { Loader } from './components/generic/Loader'
-import { WithUser } from './contexts/withUser'
+import { whoAmIFx } from './events/user'
 import './index.scss'
 import { initLocales } from './locales/locales'
 import reportWebVitals from './reportWebVitals'
@@ -31,19 +31,17 @@ const render = (): void =>
     <React.StrictMode>
       <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
         <Suspense fallback={<Loader className="vh-100" delay={true} />}>
-          <WithUser>
-            <BrowserRouter>
-              <App />
-              <Modals />
-            </BrowserRouter>
-          </WithUser>
+          <BrowserRouter>
+            <App />
+            <Modals />
+          </BrowserRouter>
         </Suspense>
       </ErrorBoundary>
     </React.StrictMode>,
     document.getElementById('root')
   )
 
-const start = async () => initLocales().then(render)
+const start = async () => initLocales().then(whoAmIFx).then(render)
 
 void start()
 
