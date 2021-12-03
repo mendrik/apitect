@@ -12,6 +12,7 @@ import { iconMap, NodeType } from '../../shared/types/domain/nodeType'
 import { Jsx } from '../../shared/types/generic'
 import { $openNodes } from '../../stores/$openNodesStore'
 import { $selectedNode } from '../../stores/$selectedNode'
+import { stopPropagation } from '../../utils/stopPropagation'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
@@ -76,8 +77,10 @@ export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
             className={clsx('text-truncate', { thin: !hasChildren })}
             title={node.value.name}
             onMouseDown={() => {
-              const isActive = document.activeElement?.id === node.value.id
-              selectNode(selectedNode?.value.id === id && isActive ? null : node)
+              const isActive = selectedNode && selectedNode?.value.id === node.value.id
+              if (document.activeElement?.id === node.value.id) {
+                selectNode(isActive ? null : node)
+              }
             }}
           >
             {node.value.name}

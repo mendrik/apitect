@@ -8,3 +8,5 @@ import { Node } from '../shared/types/domain/node'
 export const $selectedNode = createStore<TreeNode<Node> | null>(null)
   .on(selectNode, (_, selectedNode) => selectedNode)
   .reset(resetProject)
+
+selectNode.watch(n => console.log(n?.value.name))
