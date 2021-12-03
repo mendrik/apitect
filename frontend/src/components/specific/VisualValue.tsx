@@ -9,7 +9,7 @@ import { StringValue } from '../../shared/types/domain/values/stringValue'
 import { Value } from '../../shared/types/domain/values/value'
 import { StringSettings } from '../../shared/types/forms/nodetypes/stringSettings'
 import { Jsx, Maybe } from '../../shared/types/generic'
-import $appStore from '../../stores/$appStore'
+import { $nodeSettingsStore } from '../../stores/$nodeSettingsStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { dashboardContext } from '../Dashboard'
 import { StringEditor } from '../editors/StringEditor'
@@ -53,7 +53,7 @@ const getEditor = (nodeType: NodeType): Editor | null => {
 export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const { view, displayView, editView } = useView(Views)
   const { nodeMap } = useContext(dashboardContext)
-  const { nodeSettings } = useStore($appStore)
+  const nodeSettings = useStore($nodeSettingsStore)
   const ref = useRef<HTMLLIElement>(null)
 
   const node: Node = nodeMap[nodeId]

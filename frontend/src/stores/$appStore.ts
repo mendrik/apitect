@@ -21,10 +21,8 @@ import { Api, ApiMethod } from '../shared/types/api'
 import { ZApiRequest } from '../shared/types/apiRequest'
 import { Node } from '../shared/types/domain/node'
 import { Tag } from '../shared/types/domain/tag'
-import { NodeSettings } from '../shared/types/forms/nodetypes/nodeSettings'
 import { Maybe } from '../shared/types/generic'
 import { logger } from '../shared/utils/logger'
-import { byProp } from '../shared/utils/ramda'
 
 export type AppState = {
   document: Omit<Document, 'tree'>
@@ -32,7 +30,6 @@ export type AppState = {
   visibleTags: Tag[]
   selectedNode: Maybe<TreeNode<Node>>
   openNodes: Record<string, boolean>
-  nodeSettings: Record<string, NodeSettings>
   api: Api
 }
 
@@ -82,7 +79,6 @@ $appStore.on(projectFx.done, (state, { result }) => {
   return {
     ...state,
     document: omit(['tree'], result.document),
-    nodeSettings: byProp('nodeId', result.nodeSettings),
     tree: tree,
     tags: result.tags,
     visibleTags: result.tags.filter(pipe(prop('name'), included(result.visibleTags))),
