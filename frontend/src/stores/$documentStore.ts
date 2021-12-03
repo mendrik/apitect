@@ -12,7 +12,5 @@ export const $documentStore = createStore<Doc>({
   id: '',
   owner: ''
 })
-
-$documentStore.on(projectFx.done, (_, { result }) => omit(['tree'], result.document))
-
-$documentStore.reset(resetProject)
+  .on(projectFx.done, (_, { result }) => omit(['tree'], result.document))
+  .reset(resetProject)

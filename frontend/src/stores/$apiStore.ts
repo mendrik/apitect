@@ -19,6 +19,8 @@ apiResponse.watch(data => {
   }
 })
 
+socketEstablished.watch(() => projectFx())
+
 const isError = (res: ApiResponse | ApiError): res is ApiError =>
   'error' in res && res.error === 'error'
 
@@ -60,5 +62,3 @@ $api.on(
       }
     })
 )
-
-socketEstablished.watch(() => projectFx())

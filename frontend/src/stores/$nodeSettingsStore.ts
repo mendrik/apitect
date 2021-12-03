@@ -6,7 +6,7 @@ import { NodeSettings } from '../shared/types/forms/nodetypes/nodeSettings'
 import { byProp } from '../shared/utils/ramda'
 
 const $rawNodeSettings = createStore<NodeSettings[]>([])
-export const $nodeSettings = $rawNodeSettings.map(arr => byProp('nodeId', arr))
+  .on(projectFx.done, (state, { result }) => result.nodeSettings)
+  .reset(resetProject)
 
-$rawNodeSettings.on(projectFx.done, (state, { result }) => result.nodeSettings)
-$rawNodeSettings.reset(resetProject)
+export const $nodeSettings = $rawNodeSettings.map(arr => byProp('nodeId', arr))
