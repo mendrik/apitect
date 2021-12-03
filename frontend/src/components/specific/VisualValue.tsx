@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
-import React, { FocusEvent, HTMLAttributes, useContext, useRef } from 'react'
+import React, { FocusEvent, useContext, useRef } from 'react'
 
 import { useView } from '../../hooks/useView'
 import { Node } from '../../shared/types/domain/node'
@@ -30,7 +30,7 @@ export type EditorProps = {
   settings: Maybe<StringSettings>
   value?: Maybe<StringValue>
   tag?: string
-} & HTMLAttributes<HTMLElement>
+}
 
 type Editor = (e: Jsx<EditorProps>) => JSX.Element | null
 
@@ -93,16 +93,11 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     [propEq('code', 'Tab'), grabFocus]
   ])
 
-  const stopArrowPropagation = cond([
-    [propEq('code', 'ArrowRight'), (e: Event) => e.stopPropagation()],
-    [propEq('code', 'ArrowLeft'), (e: Event) => e.stopPropagation()]
-  ])
-
   return (
     <li onKeyDown={keyMap} tabIndex={0} ref={ref} onBlur={handleBlur} onFocus={handleFocus}>
       {view === Views.Display
         ? valueToString(value)
-        : Editor && <Editor {...(editorProps as any)} onKeyDown={stopArrowPropagation} />}
+        : Editor && <Editor {...(editorProps as any)} />}
     </li>
   )
 }
