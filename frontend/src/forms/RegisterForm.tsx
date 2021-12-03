@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { prop } from 'ramda'
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
@@ -40,7 +41,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
   })
   const [withProgress, status] = useProgress()
   const onSubmit = usePromise<Register>(
-    data => withProgress(register(data).then(setJwt)).then(successView),
+    data => withProgress(register(data).then(prop('token')).then(setJwt)).then(successView),
     false,
     false
   )

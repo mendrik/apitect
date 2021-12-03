@@ -9,7 +9,7 @@ export const useLogout = (): Fn<Promise<any>> => {
   const [_, setJwt] = useLocalStorage('jwt')
   return () =>
     logout()
-      .then(() => setJwt(undefined))
+      .then(() => setJwt(null))
       .then(resetProject)
       .then(whoAmIFx)
 }
