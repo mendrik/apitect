@@ -35,19 +35,23 @@ export const FocusNavigator = ({
           )
         )
 
-        const rowCount = (rotated ? focusables.length / columns : columns) + 1
+        const rowCount = rotated ? focusables.length / columns : columns
         const currentIndex = focusables.findIndex(equals(current))
 
         if (dir === Direction.Right) {
-          next(equals(current))(focusables)?.focus()
+          const startIndex = currentIndex - (currentIndex % rowCount)
+          next(equals(current))(focusables.slice(startIndex, startIndex + rowCount))?.focus()
         } else if (dir === Direction.Left) {
-          prev(equals(current))(focusables)?.focus()
+          const startIndex = currentIndex - (currentIndex % rowCount)
+          prev(equals(current))(focusables.slice(startIndex, startIndex + rowCount))?.focus()
         } else if (dir === Direction.Up) {
           next(
-            equals(focusables[(currentIndex - rowCount + focusables.length) % focusables.length])
+            equals(
+              focusables[(currentIndex - rowCount - 1 + focusables.length) % focusables.length]
+            )
           )(focusables)?.focus()
         } else if (dir === Direction.Down) {
-          prev(equals(focusables[(currentIndex + rowCount) % focusables.length]))(
+          prev(equals(focusables[(currentIndex + rowCount + 1) % focusables.length]))(
             focusables
           )?.focus()
         }
