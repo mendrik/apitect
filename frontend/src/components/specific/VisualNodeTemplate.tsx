@@ -48,8 +48,8 @@ export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
   const hasChildren = isNotNilOrEmpty(node.children)
   const id = node.value.id
   const open = openNodes[id]
-
   const nodeType = node.value.nodeType
+
   return (
     <>
       {depth > 0 && (

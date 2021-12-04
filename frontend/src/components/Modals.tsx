@@ -41,6 +41,11 @@ export const Modals = () => {
         title="modals.newNode.title"
         from={() => import('./modals/NewNode')}
         name={ModalNames.NEW_NODE}
+        restoreFocus={false}
+        onExited={() => {
+          const node = document.querySelector<HTMLElement>('#doc-tree .selectedNode')
+          setTimeout(() => node?.focus())
+        }}
       />
       <ModalStub
         title="modals.nodeSettings.title"
