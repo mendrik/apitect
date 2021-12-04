@@ -8,9 +8,19 @@ interface OwnProps<T> {
   as?: (...args: any[]) => JSX.Element
 }
 
-const isNotEmptyArray = <T,>(list: any): list is NonEmptyArray<T> =>
+const isNotEmptyArray = <T extends any>(list: any): list is NonEmptyArray<T> =>
   list != null && Array.isArray(list) && list.length > 0
 
-export function NotEmptyList<T>({ list, children, as: Tag }: OwnProps<T>): ReactElement | null {
-  return isNotEmptyArray<T>(list) ? Tag ? <Tag>{children(list)}</Tag> : <>{children(list)}</> : null
+export const NotEmptyList = <T extends any>({
+  list,
+  children,
+  as: Tag
+}: OwnProps<T>): ReactElement | null => {
+  return isNotEmptyArray<T>(list) ? (
+    Tag ? (
+      <Tag>{children(list)}</Tag>
+    ) : (
+      <React.Fragment>{children(list)}</React.Fragment>
+    )
+  ) : null
 }

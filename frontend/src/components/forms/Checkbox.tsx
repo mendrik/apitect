@@ -1,10 +1,11 @@
 import clsx from 'clsx'
-import { useId } from 'hooks/useId'
 import { assocPath, ifElse, pathEq } from 'ramda'
 import React, { HTMLAttributes } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
-import { Jsx } from 'shared/types/generic'
+
+import { useId } from '../../hooks/useId'
+import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = {
   label: TFuncKey

@@ -12,12 +12,12 @@ import React from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { addParams } from 'shared/utils/url'
 import styled from 'styled-components'
 
 import { Palette } from '../css/colors'
 import { projectUserSettingsFx, tagsSettingsFx } from '../events/project'
 import { useLogout } from '../hooks/useLogout'
+import { addParams } from '../shared/utils/url'
 import { $user } from '../stores/$userStore'
 import { Scale, Tuple } from './generic/Tuple'
 
