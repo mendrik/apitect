@@ -140,6 +140,13 @@ const en = {
         passwordMustMatch: "Password doesn't match",
         invalidId: 'ID must be a valid UUID'
       }
+    },
+    tooltips: {
+      import: 'Import',
+      deleteNode: 'Delete selected node',
+      createNode: 'Create a new node',
+      nodeSettings: 'Node settings',
+      tags: 'Select tags'
     }
   }
 }

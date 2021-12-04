@@ -11,9 +11,7 @@ import { openModal } from './modals'
 
 const api = () => sample($api).getState()
 
-export const projectFx = createEffect<Api['project']>(() => {
-  return api().project()
-})
+export const projectFx = createEffect<Api['project']>(() => api().project())
 
 export const projectUserSettingsFx = createEffect(() =>
   api()
@@ -45,5 +43,3 @@ export const tagSettingsFx = createEffect<AFn<string>>(name =>
     .then(failOn<Tag>(isNil, 'No Tag found'))
     .then(params => openModal({ name: ModalNames.TAG_SETTINGS, params }))
 )
-
-export const valueListFx = createEffect<Api['valueList']>(req => api().valueList(req))

@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
-import React, { FocusEvent, useContext, useRef } from 'react'
+import React, { FocusEvent, useRef } from 'react'
 import { useView } from '~hooks/useView'
 import { Node } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
@@ -10,14 +10,14 @@ import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
 import { Jsx, Maybe } from '~shared/types/generic'
 
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
+import { $mappedNodesStore } from '../../stores/$treeStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
-import { dashboardContext } from '../Dashboard'
 import { StringEditor } from '../editors/StringEditor'
 
 type OwnProps = {
   nodeId: string
   value?: Value
-  tag?: string
+  tag: string
 }
 
 export enum Views {
@@ -52,7 +52,7 @@ const getEditor = (nodeType: NodeType): Editor | null => {
 
 export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const { view, displayView, editView } = useView(Views)
-  const { nodeMap } = useContext(dashboardContext)
+  const nodeMap = useStore($mappedNodesStore)
   const nodeSettings = useStore($nodeSettings)
   const ref = useRef<HTMLLIElement>(null)
 

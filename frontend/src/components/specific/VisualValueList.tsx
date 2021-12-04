@@ -1,21 +1,16 @@
-import { difference } from 'ramda'
-import { isNotEmpty } from 'ramda-adjunct'
-import React, { useEffect, useMemo, useRef } from 'react'
-import { useDeepCompareEffect } from 'react-use'
+import { useList, useStore, useStoreMap } from 'effector-react'
+import { propEq } from 'ramda'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import useProgress from '~hooks/useProgress'
-import { usePromise } from '~hooks/usePromise'
-import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
-import { ValueList } from '~shared/types/response/valueList'
 
-import { valueListFx } from '../../events/project'
+import { valueListFx } from '../../events/values'
+import { $valuesStore } from '../../stores/$valuesStore'
+import { $visibleNodes } from '../../stores/$visibileNodes'
 import { VisualValue } from './VisualValue'
 
 type OwnProps = {
-  tag?: string
-  visibleNodeIds: string[]
-  newNodeIds: string[]
+  tag: string
 }
 
 const Values = styled.ol`
@@ -29,41 +24,18 @@ const Values = styled.ol`
   }
 `
 
-export const VisualValueList = ({ tag, visibleNodeIds, newNodeIds }: Jsx<OwnProps>) => {
-  const [withProgress, status] = useProgress<ValueList>()
-  const valueMap = useRef<Map<string, Value>>(new Map()).current
-  const missingNodes = useMemo(
-    () => difference(newNodeIds, Array.from(valueMap.keys())),
-    [newNodeIds]
-  )
-  const trigger = usePromise(() =>
-    withProgress(
-      valueListFx({
-        tag,
-        nodeIds: missingNodes
-      })
-    )
-  )
+export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
+  const tagValues = useStoreMap($valuesStore, state => state[tag] ?? [])
+  const nodeIds = useStore($visibleNodes)
+  useEffect(() => void valueListFx({ tag, nodeIds }), [tag, nodeIds])
+  const list = useList($visibleNodes, (nodeId, key) => (
+    <VisualValue
+      key={key}
+      value={tagValues.find(propEq('nodeId', nodeId))}
+      tag={tag}
+      nodeId={nodeId}
+    />
+  ))
 
-  useDeepCompareEffect(() => {
-    if (isNotEmpty(missingNodes)) {
-      trigger()
-    }
-  }, [newNodeIds, tag, missingNodes])
-
-  useEffect(() => {
-    if (status.is === 'done') {
-      status.result.values.forEach(v => {
-        valueMap.set(v.nodeId, v)
-      })
-    }
-  }, [status])
-
-  return (
-    <Values>
-      {visibleNodeIds.map(id => (
-        <VisualValue key={id} value={valueMap.get(id)} nodeId={id} tag={tag} />
-      ))}
-    </Values>
-  )
+  return <Values>{list}</Values>
 }

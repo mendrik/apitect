@@ -2,7 +2,7 @@ import { array, object, string } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 export const ZValueListRequest = object({
-  tag: string().optional(),
+  tag: string(),
   nodeIds: array(string())
 })
 
