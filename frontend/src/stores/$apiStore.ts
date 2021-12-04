@@ -1,4 +1,4 @@
-import { createStore, sample } from 'effector'
+import { createStore } from 'effector'
 import { v4 as uuid } from 'uuid'
 
 import { apiResponse, socketEstablished } from '../events/messages'
