@@ -1,11 +1,11 @@
 import { createEffect, sample } from 'effector'
 import { find, isNil, propEq, propOr, tap } from 'ramda'
+import { Api } from '~shared/types/api'
+import { Tag } from '~shared/types/domain/tag'
+import { AFn } from '~shared/types/generic'
+import { ModalNames } from '~shared/types/modals'
+import { failOn } from '~shared/utils/failOn'
 
-import { Api } from '../shared/types/api'
-import { Tag } from '../shared/types/domain/tag'
-import { AFn } from '../shared/types/generic'
-import { ModalNames } from '../shared/types/modals'
-import { failOn } from '../shared/utils/failOn'
 import { $api } from '../stores/$apiStore'
 import { openModal } from './modals'
 

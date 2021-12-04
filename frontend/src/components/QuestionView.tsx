@@ -1,8 +1,8 @@
 import React from 'react'
 import { TFuncKey } from 'react-i18next'
+import { Jsx } from '~shared/types/generic'
 
 import { ReactComponent as Question } from '../assets/question.svg'
-import { Jsx } from '../shared/types/generic'
 import { ImageView } from './generic/ImageView'
 
 type OwnProps = {

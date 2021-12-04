@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
-import { Jsx } from '../shared/types/generic'
+import { Jsx } from '~shared/types/generic'
 
 const Panel = styled.div`
   min-height: 100vh;

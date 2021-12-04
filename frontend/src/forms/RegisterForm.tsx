@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocalStorage } from 'react-use'
-import { Register, ZRegister } from 'shared/types/forms/register'
+import { Register, ZRegister } from '~shared/types/forms/register'
 
 import { ModalFC } from '../components/ModalStub'
 import { SuccessView } from '../components/SuccessView'

@@ -4,6 +4,6 @@ import { ZNumberSettings } from './numberSettings'
 describe('nodeSettings', () => {
   it('can extract defaults', () => {
     const defVal = generateDefaults(ZNumberSettings)
-    expect(defVal).toHaveProperty('integer', true)
+    expect(defVal).toHaveProperty('required', false)
   })
 })

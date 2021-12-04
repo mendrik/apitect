@@ -1,14 +1,14 @@
 import { createEvent, createStore } from 'effector'
 import { isNil, prop, propEq, unless } from 'ramda'
+import { TreeNode } from '~shared/algebraic/treeNode'
+import { ApiResult } from '~shared/types/api'
+import { Node } from '~shared/types/domain/node'
+import { NodeType } from '~shared/types/domain/nodeType'
+import { byProp } from '~shared/utils/ramda'
 
 import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
 import { createNodeFx, deleteNodeFx, selectNode, updateNodeSettingsFx } from '../events/tree'
-import { TreeNode } from '../shared/algebraic/treeNode'
-import { ApiResult } from '../shared/types/api'
-import { Node } from '../shared/types/domain/node'
-import { NodeType } from '../shared/types/domain/nodeType'
-import { byProp } from '../shared/utils/ramda'
 
 const rawTreeCreateNode = createEvent<ApiResult<'nodeCreate'>>()
 const treeCreateNode = createEvent<ApiResult<'nodeCreate'>>()

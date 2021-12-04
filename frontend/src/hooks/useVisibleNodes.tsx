@@ -3,9 +3,9 @@ import { difference, prop } from 'ramda'
 import { isTrue } from 'ramda-adjunct'
 import { useState } from 'react'
 import { useDeepCompareEffect } from 'react-use'
+import { Strategy, TreeNode } from '~shared/algebraic/treeNode'
+import { Node } from '~shared/types/domain/node'
 
-import { Strategy, TreeNode } from '../shared/algebraic/treeNode'
-import { Node } from '../shared/types/domain/node'
 import { $openNodes } from '../stores/$openNodesStore'
 
 export const useVisibleNodes = (root: TreeNode<Node>) => {

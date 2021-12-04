@@ -1,8 +1,7 @@
-import { Primitives } from 'ts-pattern/lib/types/helpers'
 import { TypeOf } from 'zod/lib/types'
 
 import { ApiSchema } from '../api'
-import { UnionToTuple } from './generic'
+import { Primitives, UnionToTuple } from './generic'
 
 export type ApiSchema = typeof ApiSchema
 export type ApiMethod = keyof ApiSchema

@@ -1,6 +1,5 @@
 import { createEvent } from 'effector'
-
-import { ModalNames } from '../shared/types/modals'
+import { ModalNames } from '~shared/types/modals'
 
 export type ModalParams<T> = {
   name: ModalNames

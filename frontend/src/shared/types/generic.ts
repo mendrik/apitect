@@ -29,3 +29,5 @@ export type UnionToTuple<T> = UnionToIntersection<T extends never ? never : (t: 
 export type NonEmptyArray<T> = [T, ...T[]]
 
 export type UseState<T> = [T, Dispatch<SetStateAction<T>>]
+
+export type Primitives = string | number | boolean | null | undefined

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form'
-import { Fn, Jsx } from 'shared/types/generic'
+import { Fn, Jsx } from '~shared/types/generic'
 
 import { Status } from '../../hooks/useProgress'
 import { useServerError } from '../../hooks/useServerError'

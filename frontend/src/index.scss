@@ -233,5 +233,5 @@ input[required] + label:after {
   }
 }
 
-@import "~bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap";
 @import "./css/tooltip";
