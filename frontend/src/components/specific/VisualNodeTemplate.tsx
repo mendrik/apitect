@@ -55,10 +55,7 @@ export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
       {depth > 0 && (
         <NodeGrid
           tabIndex={0}
-          onFocus={() => {
-            console.log('selecting node', node.value.name)
-            selectNode(node)
-          }}
+          onFocus={() => selectNode(node)}
           id={id}
           key={id}
           className={clsx('gap-1', { selectedNode: selectedNode?.value.id === id })}

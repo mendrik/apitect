@@ -133,7 +133,7 @@ input[required] + label:after {
     position: absolute;
     border: 1px dotted #999;
     border-radius: 4px;
-    inset: 0px;
+    inset: 0;
     pointer-events: none;
   }
 }
