@@ -1,8 +1,7 @@
 import { keys, reduce } from 'ramda'
 import { useRef, useState } from 'react'
-
-import { Fn } from '../shared/types/generic'
-import { decapitalizeFirst } from '../shared/utils/ramda'
+import { Fn } from '~shared/types/generic'
+import { decapitalizeFirst } from '~shared/utils/ramda'
 
 export type ViewMethods<T extends string> = {
   [key in T as `${Uncapitalize<key>}View`]: Fn

@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
-
-import { Fn } from '../shared/types/generic'
+import { Fn } from '~shared/types/generic'
 
 export const useDefinedEffect = <T>(
   fn: (dep: NonNullable<T>) => void | Fn,

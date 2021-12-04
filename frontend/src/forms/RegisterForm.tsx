@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocalStorage } from 'react-use'
+import { Register, ZRegister } from '~shared/types/forms/register'
 
 import { ModalFC } from '../components/ModalStub'
 import { SuccessView } from '../components/SuccessView'
@@ -17,7 +18,6 @@ import { whoAmIFx } from '../events/user'
 import useProgress from '../hooks/useProgress'
 import { usePromise } from '../hooks/usePromise'
 import { useView } from '../hooks/useView'
-import { Register, ZRegister } from '../shared/types/forms/register'
 import { register } from '../utils/restApi'
 
 enum Views {

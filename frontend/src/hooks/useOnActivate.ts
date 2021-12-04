@@ -1,7 +1,7 @@
 import { either, propEq, when } from 'ramda'
 import { RefObject, useRef } from 'react'
+import { Fn } from '~shared/types/generic'
 
-import { Fn } from '../shared/types/generic'
 import { stopPropagation } from '../utils/stopPropagation'
 import { useEvent } from './useEvent'
 

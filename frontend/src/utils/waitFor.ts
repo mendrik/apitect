@@ -1,4 +1,4 @@
-import { Maybe } from '../shared/types/generic'
+import { Maybe } from '~shared/types/generic'
 
 const suspense = Promise.resolve()
 

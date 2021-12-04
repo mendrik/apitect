@@ -1,5 +1,5 @@
 import { useLocalStorage } from 'react-use'
-import { Fn } from 'shared/types/generic'
+import { Fn } from '~shared/types/generic'
 
 import { resetProject } from '../events/reset'
 import { whoAmIFx } from '../events/user'
