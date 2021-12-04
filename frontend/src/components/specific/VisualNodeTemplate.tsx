@@ -63,7 +63,7 @@ export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() => (openNodes[id] ? closeNode(node) : openNode(node))}
+              onClick={() => (open ? closeNode(node) : openNode(node))}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />

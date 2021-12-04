@@ -35,6 +35,8 @@ export const FocusNavigator = ({
           )
         )
 
+        console.log(focusables.length)
+
         const rowCount = rotated ? focusables.length / columns : columns
         const currentIndex = focusables.findIndex(equals(current))
 
