@@ -1,8 +1,8 @@
 import { allPass, always, cond, equals, propEq } from 'ramda'
 import React, { HTMLAttributes, useRef } from 'react'
+import { Jsx, Maybe } from '~shared/types/generic'
+import { next, prev } from '~shared/utils/ramda'
 
-import { Jsx, Maybe } from '../../shared/types/generic'
-import { next, prev } from '../../shared/utils/ramda'
 import { stopPropagation } from '../../utils/stopPropagation'
 
 type OwnProps = {

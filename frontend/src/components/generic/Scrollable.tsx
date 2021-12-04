@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
+import { Jsx } from '~shared/types/generic'
 
-import { Jsx } from '../../shared/types/generic'
 import { VerticalFade } from './VerticalFade'
 
 type OwnProps = {

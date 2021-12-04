@@ -13,10 +13,10 @@ import { range, reduce, take } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
+import { Jsx, UseState } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
 import { useOnActivate } from '../../hooks/useOnActivate'
-import { Jsx, UseState } from '../../shared/types/generic'
 
 type OwnProps = {
   selected: UseState<Date>

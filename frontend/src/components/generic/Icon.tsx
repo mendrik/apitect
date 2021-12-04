@@ -2,9 +2,9 @@ import { TablerIcon as IconProp } from '@tabler/icons'
 import clsx from 'clsx'
 import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
+import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
-import { Jsx } from '../../shared/types/generic'
 
 export type OwnProps = {
   icon: IconProp

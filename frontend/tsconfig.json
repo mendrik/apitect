@@ -19,7 +19,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "~shared/*": ["shared/*"]
+      "~shared/*": ["shared/*"],
+      "~forms/*": ["components/forms/*"]
     }
   },
   "include": [

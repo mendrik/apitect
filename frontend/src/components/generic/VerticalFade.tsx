@@ -1,8 +1,8 @@
 import React, { HTMLAttributes, useCallback } from 'react'
 import styled from 'styled-components'
+import { Jsx } from '~shared/types/generic'
 
 import { useEvent } from '../../hooks/useEvent'
-import { Jsx } from '../../shared/types/generic'
 
 const VerticalFadeStyled = styled.div`
   --scrollOpacityTop: 0;

@@ -1,8 +1,8 @@
 import { cond, propEq } from 'ramda'
 import type { KeyboardEvent } from 'react'
 import React from 'react'
+import { Jsx } from '~shared/types/generic'
 
-import { Jsx } from '../../shared/types/generic'
 import { EditorProps } from '../specific/VisualValue'
 
 export const StringEditor = ({ node, settings, value, children, ...props }: Jsx<EditorProps>) => {

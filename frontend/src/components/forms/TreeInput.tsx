@@ -17,6 +17,8 @@ import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useSet } from 'react-use'
 import { Actions } from 'react-use/lib/useSet'
+import { TreeNode } from '~shared/algebraic/treeNode'
+import { Fn, Jsx, Maybe, UseState } from '~shared/types/generic'
 
 import {
   NodeNode,
@@ -28,8 +30,6 @@ import {
 } from '../../css/TreeInput.css'
 import { useFocusOutside } from '../../hooks/useFocusOutside'
 import { useUndefinedEffect } from '../../hooks/useUndefinedEffect'
-import { TreeNode } from '../../shared/algebraic/treeNode'
-import { Fn, Jsx, Maybe, UseState } from '../../shared/types/generic'
 import { offset, sameWidth } from '../../utils/sameWidthMod'
 import { stopPropagation as sp } from '../../utils/stopPropagation'
 import { DeleteIcon } from '../generic/DeleteIcon'

@@ -5,8 +5,8 @@ import { mapIndexed } from 'ramda-adjunct'
 import React, { useRef } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
+import { Jsx } from '~shared/types/generic'
 
-import { Jsx } from '../../shared/types/generic'
 import { $tagStore } from '../../stores/$tagStore'
 import { Draggable, Draggables } from '../../utils/draggables'
 

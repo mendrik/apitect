@@ -3,13 +3,13 @@ import { useStore } from 'effector-react'
 import { prop } from 'ramda'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-
-import { updateProjectUserSettingsFx } from '../../events/project'
-import { useLocation } from '../../hooks/useLocation'
 import {
   ProjectUsersSettings as Settings,
   ZProjectUsersSettings
-} from '../../shared/types/forms/projectUsersSettings'
+} from '~shared/types/forms/projectUsersSettings'
+
+import { updateProjectUserSettingsFx } from '../../events/project'
+import { useLocation } from '../../hooks/useLocation'
 import { $treeStore } from '../../stores/$treeStore'
 import { ModalFC } from '../ModalStub'
 import { SocketForm } from '../forms/SocketForm'

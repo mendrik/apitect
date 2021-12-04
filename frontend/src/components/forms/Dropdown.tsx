@@ -6,9 +6,9 @@ import { FormSelectProps } from 'react-bootstrap/FormSelect'
 import { Controller } from 'react-hook-form'
 import { ControllerProps } from 'react-hook-form/dist/types'
 import { TFuncKey, useTranslation } from 'react-i18next'
+import { Jsx } from '~shared/types/generic'
 
 import { useId } from '../../hooks/useId'
-import { Jsx } from '../../shared/types/generic'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {

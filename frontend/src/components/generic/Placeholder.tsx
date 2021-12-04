@@ -1,8 +1,7 @@
 import { range } from 'ramda'
 import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
-
-import { Jsx } from '../../shared/types/generic'
+import { Jsx } from '~shared/types/generic'
 
 type OwnProps = HTMLAttributes<HTMLDivElement>
 

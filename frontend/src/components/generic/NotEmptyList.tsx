@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
-
-import { Maybe, NonEmptyArray } from '../../shared/types/generic'
+import { Maybe, NonEmptyArray } from '~shared/types/generic'
 
 interface OwnProps<T> {
   list: Maybe<T[]>

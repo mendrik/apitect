@@ -1,10 +1,10 @@
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import React, { HTMLAttributes } from 'react'
+import { Jsx } from '~shared/types/generic'
 
 import { delayedBlendIn } from '../../animations/delayedBlendIn'
 import { ReactComponent as LoadingSvg } from '../../assets/loader.svg'
-import { Jsx } from '../../shared/types/generic'
 
 type OwnProps = { delay?: boolean } & HTMLAttributes<HTMLDivElement>
 

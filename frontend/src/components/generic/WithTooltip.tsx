@@ -1,8 +1,7 @@
 import clsx from 'clsx'
 import React, { ReactNode } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
-
-import { Jsx } from '../../shared/types/generic'
+import { Jsx } from '~shared/types/generic'
 
 type OwnProps = {
   tooltipText: ReactNode
