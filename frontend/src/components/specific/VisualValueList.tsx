@@ -3,13 +3,13 @@ import { isNotEmpty } from 'ramda-adjunct'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
+import useProgress from '~hooks/useProgress'
+import { usePromise } from '~hooks/usePromise'
 import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
 import { ValueList } from '~shared/types/response/valueList'
 
 import { valueListFx } from '../../events/project'
-import useProgress from '../../hooks/useProgress'
-import { usePromise } from '../../hooks/usePromise'
 import { VisualValue } from './VisualValue'
 
 type OwnProps = {

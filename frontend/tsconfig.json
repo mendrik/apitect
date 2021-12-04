@@ -20,7 +20,8 @@
     "jsx": "react-jsx",
     "paths": {
       "~shared/*": ["shared/*"],
-      "~forms/*": ["components/forms/*"]
+      "~forms/*": ["components/forms/*"],
+      "~hooks/*": ["hooks/*"],
     }
   },
   "include": [

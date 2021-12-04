@@ -5,10 +5,10 @@ import React, { InputHTMLAttributes } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { useAutoFocus } from '~hooks/useAutoFocus'
+import { useId } from '~hooks/useId'
 import { Jsx } from '~shared/types/generic'
 
-import { useAutoFocus } from '../../hooks/useAutoFocus'
-import { useId } from '../../hooks/useId'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {

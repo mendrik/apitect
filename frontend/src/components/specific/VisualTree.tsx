@@ -2,6 +2,8 @@ import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React from 'react'
+import { useConfirmation } from '~hooks/useConfirmation'
+import { useDefinedEffect } from '~hooks/useDefinedEffect'
 
 import {
   deleteNodeFx,
@@ -10,8 +12,6 @@ import {
   openNodeState,
   selectNode
 } from '../../events/tree'
-import { useConfirmation } from '../../hooks/useConfirmation'
-import { useDefinedEffect } from '../../hooks/useDefinedEffect'
 import { $selectedNode } from '../../stores/$selectedNode'
 import { $treeStore } from '../../stores/$treeStore'
 import { focus } from '../../utils/focus'
