@@ -1,10 +1,11 @@
 import { createStore } from 'effector'
+import { NodeId } from '~shared/types/domain/node'
 
 import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
 import { openNodeState, selectNode } from '../events/tree'
 
-export const $openNodes = createStore<Record<string, boolean>>({})
+export const $openNodes = createStore<Record<NodeId, boolean>>({})
   .on(projectFx.done, (state, { result }) => ({
     ...state,
     [result.document.tree.id]: true

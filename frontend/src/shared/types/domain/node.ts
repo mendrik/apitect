@@ -5,8 +5,10 @@ import { nameCodec } from '../../codecs/nameCodec'
 import { Id } from './id'
 import { NodeType } from './nodeType'
 
+export type NodeId = string
+
 export interface Node {
-  id: Id
+  id: NodeId
   name: string
   nodeType: NodeType
   children: Node[]

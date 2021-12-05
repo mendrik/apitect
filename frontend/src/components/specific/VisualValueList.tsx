@@ -3,6 +3,7 @@ import { filter, keys, pipe, propEq, without } from 'ramda'
 import React, { useMemo } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
+import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
 import { byProp } from '~shared/utils/ramda'
@@ -30,10 +31,7 @@ const Values = styled.ol`
 export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   const values = useStoreMap(
     $valuesStore,
-    pipe<Value[], Value[], Record<string, Value>>(
-      filter(propEq('tag', tag)),
-      byProp('nodeId' as any)
-    )
+    pipe<Value[], Value[], Record<NodeId, Value>>(filter(propEq('tag', tag)), byProp('nodeId'))
   )
   const nodeIds = useStore($visibleNodes)
   const missingNodeIds = useMemo(() => without(keys(values), nodeIds), [values, nodeIds])
@@ -41,7 +39,7 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
     () => void valueListFx({ tag, nodeIds: missingNodeIds }),
     [tag, missingNodeIds]
   )
-  const list = useList($visibleNodes, (nodeId: string) => (
+  const list = useList($visibleNodes, (nodeId: NodeId) => (
     <VisualValue key={nodeId} value={values[nodeId]} tag={tag} nodeId={nodeId} />
   ))
 

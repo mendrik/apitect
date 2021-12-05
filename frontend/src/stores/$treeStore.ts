@@ -2,7 +2,7 @@ import { createEvent, createStore } from 'effector'
 import { isNil, prop, propEq, unless } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { ApiResult } from '~shared/types/api'
-import { Node } from '~shared/types/domain/node'
+import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { byProp } from '~shared/utils/ramda'
 
@@ -41,8 +41,8 @@ createNodeFx.done.watch(({ result }) => {
   treeCreateNode(result)
 })
 
-export const $mappedNodesStore = $treeStore.map<Record<string, Node>>(root =>
-  byProp('id', root.flatten().map(prop('value')))
+export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
+  byProp<Node, 'id'>('id')(root.flatten().map(prop('value')))
 )
 
 $rawTree.reset(resetProject)

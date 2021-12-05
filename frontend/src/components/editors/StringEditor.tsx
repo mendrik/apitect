@@ -1,11 +1,10 @@
 import { cond, propEq } from 'ramda'
 import React from 'react'
-import { NodeType } from '~shared/types/domain/nodeType'
 import { Jsx } from '~shared/types/generic'
 
 import { EditorProps } from '../specific/VisualValue'
 
-export const StringEditor = ({ node, value }: Jsx<EditorProps<NodeType.String>>) => {
+export const StringEditor = ({ node, value }: Jsx<EditorProps>) => {
   const keyMap = cond([
     [propEq('code', 'ArrowRight'), (e: Event) => e.stopPropagation()],
     [propEq('code', 'ArrowLeft'), (e: Event) => e.stopPropagation()]

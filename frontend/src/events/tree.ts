@@ -7,6 +7,7 @@ import { ModalNames } from '~shared/types/modals'
 
 import { $api } from '../stores/$apiStore'
 import { openModal } from './modals'
+import { projectFx } from './project'
 
 export const openNodeState = createEvent<[TreeNode<Node>, boolean]>('toggle node')
 export const selectNode = createEvent<TreeNode<Node> | null>('select node')
@@ -16,7 +17,9 @@ const api = () => sample($api).getState()
 export const createNodeFx = createEffect<Api['nodeCreate']>(node => api().nodeCreate(node))
 export const deleteNodeFx = createEffect<Api['nodeDelete']>(id => api().nodeDelete(id))
 export const updateNodeSettingsFx = createEffect<Api['updateNodeSettings']>(settings =>
-  api().updateNodeSettings(settings)
+  api()
+    .updateNodeSettings(settings)
+    .then(tap(() => projectFx()))
 )
 
 export const nodeSettingsFx = createEffect<Api['nodeSettings']>(id =>

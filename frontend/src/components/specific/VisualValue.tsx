@@ -1,11 +1,11 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
-import React, { FocusEvent, KeyboardEvent, useRef, useState } from 'react'
+import React, { KeyboardEvent, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError, ZodType } from 'zod'
 import { useView } from '~hooks/useView'
-import { Node } from '~shared/types/domain/node'
+import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { getStringValidator } from '~shared/types/domain/values/stringValue'
 import { Value } from '~shared/types/domain/values/value'
@@ -20,7 +20,7 @@ import { preventDefault as pd } from '../../utils/preventDefault'
 import { StringEditor } from '../editors/StringEditor'
 
 type OwnProps = {
-  nodeId: string
+  nodeId: NodeId
   value?: Value
   tag: string
 }
@@ -82,7 +82,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     setError(undefined)
   }
 
-  const handleFocus = (ev: FocusEvent) => {
+  const handleFocus = () => {
     editView()
   }
 
