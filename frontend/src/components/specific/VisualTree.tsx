@@ -22,7 +22,6 @@ import { VisualNode } from './VisualNode'
 export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
-  const isMounted = useMountedState()
 
   useDefinedEffect(sn => {
     focus(document.getElementById(sn.value.id))
@@ -38,9 +37,7 @@ export const VisualTree = () => {
       if (isNotNilOrEmpty(selectedNode?.children)) {
         ev.stopPropagation()
       }
-      if (isMounted()) {
-        openNodeState([selectedNode, toggle])
-      }
+      openNodeState([selectedNode, toggle])
     }
   }
 

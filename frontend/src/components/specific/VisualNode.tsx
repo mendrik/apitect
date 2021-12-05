@@ -1,6 +1,7 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { useStore } from 'effector-react'
+import { useStore, useStoreMap } from 'effector-react'
+import { pathEq } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React from 'react'
 import styled from 'styled-components'
@@ -9,7 +10,7 @@ import { Node } from '~shared/types/domain/node'
 import { iconMap, NodeType } from '~shared/types/domain/nodeType'
 import { Jsx } from '~shared/types/generic'
 
-import { closeNode, openNode, selectNode } from '../../events/tree'
+import { openNodeState, selectNode } from '../../events/tree'
 import { $openNodes } from '../../stores/$openNodesStore'
 import { $selectedNode } from '../../stores/$selectedNode'
 import { Icon } from '../generic/Icon'
@@ -43,10 +44,10 @@ const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
-  const selectedNode = useStore($selectedNode)
+  const id = node.value.id
+  const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
   const openNodes = useStore($openNodes)
   const hasChildren = isNotNilOrEmpty(node.children)
-  const id = node.value.id
   const open = openNodes[id]
   const nodeType = node.value.nodeType
 
@@ -57,12 +58,12 @@ export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
           tabIndex={0}
           onFocus={() => selectNode(node)}
           id={id}
-          className={clsx('gap-1', { selectedNode: selectedNode?.value.id === id })}
+          className={clsx('gap-1', { selectedNode: isActive })}
         >
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() => (open ? closeNode(node) : openNode(node))}
+              onClick={() => openNodeState([node, open])}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
@@ -75,7 +76,6 @@ export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
             className={clsx('text-truncate', { thin: !hasChildren })}
             title={node.value.name}
             onMouseDown={() => {
-              const isActive = selectedNode && selectedNode?.value.id === node.value.id
               if (document.activeElement?.id === node.value.id) {
                 selectNode(isActive ? null : node)
               }
