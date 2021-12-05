@@ -5,11 +5,11 @@ import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from '../services/database'
 
-export const updateValue: ServerApiMethod<'updateValue'> = ({ docId, payload: value }) =>
+export const updateValue: ServerApiMethod<'updateValue'> = ({ docId, email, payload: value }) =>
   collection(Collections.values)
-    .findOneAndReplace(
+    .findOneAndUpdate(
       { docId, ...pick(['nodeId', 'tag'], value) },
-      { ...value },
+      { $set: { ...value, author: email, published: true } }, // todo publishing
       { upsert: true, returnDocument: 'after' }
     )
     .then(prop('value'))

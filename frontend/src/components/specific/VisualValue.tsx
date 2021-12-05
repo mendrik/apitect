@@ -103,7 +103,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
         if (result.success) {
           grabFocus()
           displayView()
-          updateValueFx({ ...value, value: newValue } as Value)
+          updateValueFx({ value: newValue, nodeId, tag, nodeType: node.nodeType as any }) // todo remove any when all is implemented
         } else {
           setError(result.error)
         }
