@@ -29,7 +29,7 @@ const Dashboard = () => {
     <AppFrame>
       <Navigation />
       <DndContext>
-        <ResizableTable columns={columns}>
+        <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
           <FocusNavigator columns={visibleTags.length + 1} rotated style={{ display: 'contents' }}>
             <Column>
               <VisualTree />

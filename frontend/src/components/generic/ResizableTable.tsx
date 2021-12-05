@@ -1,9 +1,7 @@
 import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import { pipe, propOr } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { useRef } from 'react'
-import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 
@@ -12,14 +10,15 @@ import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
   columns: JSX.Element[]
+  defaultWidths?: number[]
 }
 
-const StyledGrid = styled.div<{ columns: any[] }>`
+const StyledGrid = styled.div<{ columns: any[]; defaultWidths?: number[] }>`
   display: grid;
-  grid-template-columns: ${pipe(
-    propOr([], 'columns'),
-    mapIndexed((_, i, c) => `minmax(var(--col-width-${i}, ${100 / c.length}%), auto)`)
-  )};
+  grid-template-columns: ${({ columns, defaultWidths }) =>
+    mapIndexed((_, i) => `minmax(auto, var(--col-width-${i}, ${defaultWidths?.[i] ?? 1}fr)) `)(
+      columns
+    )};
   grid-template-rows: 32px;
   grid-auto-rows: auto;
   max-width: 100vw;
@@ -85,18 +84,20 @@ const ColResizer = styled.div`
 
 const bodyStyle = document.body.style
 
-export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
+export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
   const style = grid.current?.style
 
   const { visibleTags } = useStore($tagStore)
 
-  useDeepCompareEffect(() => {
+  /*
+  useUpdateEffect(() => {
     const width = grid.current?.offsetWidth ?? 0
     Array.from(columns).forEach((_, idx) =>
-      style?.setProperty(`--col-width-${idx}`, `${width / columns.length}px`)
+      style?.setProperty(`--col-width-${idx}`, `${(width / columns.length).toFixed(2)}px`)
     )
   }, [columns, visibleTags])
+*/
 
   useDndMonitor({
     onDragStart(event) {
@@ -131,7 +132,12 @@ export const ResizableTable = ({ columns, children }: Jsx<OwnProps>) => {
   })
 
   return (
-    <StyledGrid ref={grid} columns={columns} className="custom-scrollbars">
+    <StyledGrid
+      ref={grid}
+      columns={columns}
+      defaultWidths={defaultWidths}
+      className="custom-scrollbars"
+    >
       {columns.map((column, col) => (
         <div key={col}>
           <Header index={col} last={col === columns.length - 1}>
