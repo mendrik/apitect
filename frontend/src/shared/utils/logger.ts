@@ -1,4 +1,4 @@
-import { blue, red } from 'ansicolor'
+import { blue, darkGray, red, cyan } from 'ansicolor'
 import { log } from 'shrink-json'
 
 export const logger = {
@@ -8,7 +8,7 @@ export const logger = {
   error: (message: string, obj?: any) =>
     console.log(red(`ERROR: ${message}${obj ? ` ${logger.log(obj)}` : ''}`)),
   warn: (message: string, obj?: any) =>
-    console.warn(red(`WARN: ${message}${obj ? ` ${logger.log(obj)}` : ''}`)),
+    console.warn(cyan(`WARN: ${message}${obj ? ` ${logger.log(obj)}` : ''}`)),
   debug: (message: string, obj?: any) =>
-    console.debug(red(`DEBUG: ${message}${obj ? ` ${logger.log(obj)}` : ''}`))
+    console.debug(darkGray(`DEBUG: ${message}${obj ? ` ${logger.log(obj)}` : ''}`))
 }

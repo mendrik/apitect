@@ -14,6 +14,7 @@ import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
 import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
+import { updateValueFx } from '../../events/values'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
 import { $mappedNodesStore } from '../../stores/$treeStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
@@ -50,7 +51,6 @@ const valueToString = (value?: Value): string | null => {
 }
 
 const getEditor = <T extends NodeType>(nodeType: T, settings?: NodeSettings): Editor | null => {
-  console.log(settings)
   switch (nodeType) {
     case NodeType.String:
       return { component: StringEditor, validator: getStringValidator(settings as StringSettings) }
@@ -98,10 +98,12 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
       editView()
     } else {
       if (Editor != null) {
-        const result = Editor.validator.safeParse((ev.target as HTMLInputElement).value)
+        const newValue = (ev.target as HTMLInputElement).value
+        const result = Editor.validator.safeParse(newValue)
         if (result.success) {
           grabFocus()
           displayView()
+          updateValueFx({ ...value, value: newValue } as Value)
         } else {
           setError(result.error)
         }

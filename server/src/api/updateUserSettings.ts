@@ -17,4 +17,4 @@ export const updateUserSettings: ServerApiMethod<'updateUserSettings'> = ({
       { upsert: true, returnDocument: 'after' }
     )
     .then(prop('value'))
-    .then(failOn<UserSettings>(isNil, 'failed to persists user settings'))
+    .then(failOn<UserSettings>(isNil, 'failed to persist user settings'))

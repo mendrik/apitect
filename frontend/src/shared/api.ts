@@ -1,4 +1,5 @@
 import { undefined as undef } from 'zod'
+import { ZValue } from '~shared/types/domain/values/value'
 
 import { idCodec } from './codecs/idCodec'
 import { ZNode } from './types/domain/node'
@@ -25,5 +26,6 @@ export const ApiSchema = {
   updateUserSettings: [ZUserSettings, ZUserSettings],
   nodeDelete: [idCodec, TNodeDeleted],
   nodeCreate: [TNewNode, TNodeCreated],
-  valueList: [ZValueListRequest, ZValueList]
+  valueList: [ZValueListRequest, ZValueList],
+  updateValue: [ZValue, ZValue]
 } as const

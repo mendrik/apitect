@@ -11,6 +11,7 @@ import { updateNodeSettings } from './updateNodeSettings'
 import { updateProjectUsersSettings } from './updateProjectUsersSettings'
 import { updateTagsSettings } from './updateTagsSettings'
 import { updateUserSettings } from './updateUserSettings'
+import { updateValue } from './updateValue'
 import { userSettings } from './userSettings'
 import { valueList } from './valueList'
 
@@ -26,5 +27,6 @@ export const apiMapping: { [K in ApiMethod]: ServerApiMethod<K> } = {
   updateTagsSettings,
   userSettings,
   updateUserSettings,
-  valueList
+  valueList,
+  updateValue
 }
