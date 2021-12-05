@@ -24,17 +24,17 @@ const $rawTree = createStore<Node>({
   .on(rawTreeCreateNode, (state, result) => result.tree)
   .on(updateNodeSettingsFx.done, (state, { result }) => result)
 
-export const $treeStore = $rawTree
-  .map(unless(isNil, TreeNode.from<Node, 'children'>('children')))
-  .on(treeCreateNode, (state, result) => {
-    const node = state.first(propEq('id', result.nodeId)) ?? null
-    selectNode(node)
-  })
-  .on(deleteNodeFx.done, (state, { result }) => {
-    const parent = state.first(propEq('id', result.parentNode))
-    const node = parent?.children[result.position - 1] ?? parent ?? null
-    selectNode(node)
-  })
+export const $treeStore = $rawTree.map(unless(isNil, TreeNode.from<Node, 'children'>('children')))
+
+$treeStore.watch(treeCreateNode, (state, result) => {
+  const node = state.first(propEq('id', result.nodeId)) ?? null
+  selectNode(node)
+})
+$treeStore.watch(deleteNodeFx.done, (state, { result }) => {
+  const parent = state.first(propEq('id', result.parentNode))
+  const node = parent?.children[result.position - 1] ?? parent ?? null
+  selectNode(node)
+})
 
 createNodeFx.done.watch(({ result }) => {
   rawTreeCreateNode(result)
