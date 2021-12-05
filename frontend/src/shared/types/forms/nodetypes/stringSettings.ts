@@ -14,30 +14,30 @@ export enum StringValidationType {
 
 const ZNone = ZNodeSettingsBase.merge(
   object({
-    validationType: literal(StringValidationType.None).default(StringValidationType.None),
-    nodeType: literal(NodeType.String)
+    nodeType: literal(NodeType.String),
+    validationType: literal(StringValidationType.None).default(StringValidationType.None)
   })
 )
 
 const ZRegexp = ZNodeSettingsBase.merge(
   object({
-    validationType: literal(StringValidationType.Regexp),
     nodeType: literal(NodeType.String),
+    validationType: literal(StringValidationType.Regexp),
     regexp: regexpCodecAlt
   })
 )
 
 const ZEmail = ZNodeSettingsBase.merge(
   object({
-    validationType: literal(StringValidationType.Email),
-    nodeType: literal(NodeType.String)
+    nodeType: literal(NodeType.String),
+    validationType: literal(StringValidationType.Email)
   })
 )
 
 const ZPassword = ZNodeSettingsBase.merge(
   object({
-    validationType: literal(StringValidationType.Password),
-    nodeType: literal(NodeType.String)
+    nodeType: literal(NodeType.String),
+    validationType: literal(StringValidationType.Password)
   })
 )
 

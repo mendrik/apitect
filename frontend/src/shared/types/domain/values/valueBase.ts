@@ -6,7 +6,6 @@ import { NodeType } from '../nodeType'
 
 export const ZValueBase = object({
   nodeId: idCodec,
-  nodeType: nativeEnum(NodeType),
   tag: nameCodec,
   owner: string().optional(),
   author: string().optional(),

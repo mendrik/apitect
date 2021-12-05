@@ -9,4 +9,6 @@ const $rawNodeSettings = createStore<NodeSettings[]>([])
   .on(projectFx.done, (state, { result }) => result.nodeSettings)
   .reset(resetProject)
 
-export const $nodeSettings = $rawNodeSettings.map(arr => byProp('nodeId', arr))
+export const $nodeSettings = $rawNodeSettings.map<Record<string, NodeSettings>>(arr =>
+  byProp('nodeId' as any, arr)
+)

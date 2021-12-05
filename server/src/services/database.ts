@@ -9,7 +9,7 @@ import { Document } from '~shared/types/domain/document'
 import { Enum } from '~shared/types/domain/enum'
 import { User } from '~shared/types/domain/user'
 import { Value } from '~shared/types/domain/values/value'
-import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
+import { AnyNodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { ProjectUsersSettings } from '~shared/types/forms/projectUsersSettings'
 import { TagsSettings } from '~shared/types/forms/tagsSettings'
 import { UserSettings } from '~shared/types/forms/userSettings'
@@ -36,7 +36,7 @@ export type CollectionMap = {
   documents: Document
   tagsSettings: TagsSettings
   userSettings: UserSettings
-  nodeSettings: NodeSettings
+  nodeSettings: AnyNodeSettings
   projectUsersSettings: ProjectUsersSettings
   values: Value
   enums: Enum

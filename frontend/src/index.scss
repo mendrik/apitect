@@ -17,6 +17,10 @@ body {
     height: 7px;
   }
 
+  &::-webkit-scrollbar-track {
+    background-color: #efefef;
+  }
+
   &::-webkit-scrollbar-thumb {
     border-radius: 4px;
     background-color: #b6b6b6;

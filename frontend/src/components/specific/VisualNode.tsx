@@ -63,7 +63,7 @@ export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() => openNodeState([node, open])}
+              onClick={() => openNodeState([node, !open])}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
