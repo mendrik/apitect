@@ -110,6 +110,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
           displayView()
           updateValueFx({ value: newValue, nodeId, tag, nodeType: node.nodeType as any }) // todo remove any when all is implemented
         } else {
+          ev.stopPropagation()
           setError(result.error)
         }
       }
@@ -119,9 +120,9 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const keyMap = cond([
     [propEq('code', 'Escape'), pd(handleAbort)],
     [propEq('code', 'Enter'), pd(handleEnter)],
-    [propEq('code', 'ArrowUp'), grabFocus],
-    [propEq('code', 'ArrowDown'), grabFocus],
-    [propEq('code', 'Tab'), grabFocus]
+    [propEq('code', 'ArrowUp'), pd(handleEnter)],
+    [propEq('code', 'ArrowDown'), pd(handleEnter)],
+    [propEq('code', 'Tab'), pd(handleEnter)]
   ])
 
   return (

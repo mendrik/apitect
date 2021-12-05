@@ -1,16 +1,17 @@
 import { createStore } from 'effector'
-import { uniqBy } from 'ramda'
+import { join, juxt, pipe, prop, propOr, uniqBy } from 'ramda'
 import { Value } from '~shared/types/domain/values/value'
-import { field } from '~shared/utils/ramda'
 
 import { updateValueFx, valueListFx } from '../events/values'
 
 export const $valuesStore = createStore<Value[]>([])
 
+const byIdAndTag = pipe(juxt([prop('nodeId'), propOr('', 'tag')]), join('-'))
+
 $valuesStore.on(valueListFx.done, (state, { result }) =>
-  uniqBy(field('nodeId'), result.values.concat(state))
+  uniqBy(byIdAndTag, result.values.concat(state))
 )
 
 $valuesStore.on(updateValueFx.done, (state, { result }) =>
-  uniqBy(field('nodeId'), [result].concat(state))
+  uniqBy(byIdAndTag, [result].concat(state))
 )
