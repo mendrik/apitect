@@ -3,6 +3,7 @@ import { useStore } from 'effector-react'
 import React from 'react'
 import { Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
+import { SocketForm } from '~forms/SocketForm'
 import { useLocation } from '~hooks/useLocation'
 import { UserSettings as Settings, ZUserSettings } from '~shared/types/forms/userSettings'
 
@@ -10,7 +11,6 @@ import { updateUserSettingsFx } from '../../events/user'
 import { $tagStore } from '../../stores/$tagStore'
 import { waitFor } from '../../utils/waitFor'
 import { ModalFC } from '../ModalStub'
-import { SocketForm } from '../forms/SocketForm'
 
 const UserSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Settings>()

@@ -9,10 +9,10 @@ import { Button } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { ButtonRow } from '~forms/ButtonRow'
 import { Jsx } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
-import { ButtonRow } from '../forms/ButtonRow'
 import { Scrollable } from '../generic/Scrollable'
 import { Month } from './Month'
 

@@ -3,6 +3,8 @@ import { useStore } from 'effector-react'
 import { prop } from 'ramda'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { SocketForm } from '~forms/SocketForm'
+import { TreeInput } from '~forms/TreeInput'
 import { useLocation } from '~hooks/useLocation'
 import {
   ProjectUsersSettings as Settings,
@@ -12,8 +14,6 @@ import {
 import { updateProjectUserSettingsFx } from '../../events/project'
 import { $treeStore } from '../../stores/$treeStore'
 import { ModalFC } from '../ModalStub'
-import { SocketForm } from '../forms/SocketForm'
-import { TreeInput } from '../forms/TreeInput'
 
 const ProjectUsersSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Settings>()

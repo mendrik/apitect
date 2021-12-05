@@ -3,6 +3,11 @@ import React from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { ButtonRow } from '~forms/ButtonRow'
+import { Form } from '~forms/Form'
+import { GenericError } from '~forms/GenericError'
+import { SubmitButton } from '~forms/SubmitButton'
+import { TextInput } from '~forms/TextInput'
 import useProgress from '~hooks/useProgress'
 import { usePromise } from '~hooks/usePromise'
 import { useView } from '~hooks/useView'
@@ -11,11 +16,6 @@ import { ForgotPassword, TForgotPassword } from '~shared/types/forms/forgotPassw
 import { forgotPassword } from '../../utils/restApi'
 import { ModalFC } from '../ModalStub'
 import { SuccessView } from '../SuccessView'
-import { ButtonRow } from '../forms/ButtonRow'
-import { Form } from '../forms/Form'
-import { GenericError } from '../forms/GenericError'
-import { SubmitButton } from '../forms/SubmitButton'
-import { TextInput } from '../forms/TextInput'
 
 enum Views {
   Form,
