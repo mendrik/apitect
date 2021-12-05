@@ -29,9 +29,9 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   const tagValues = useStoreMap($valuesStore, state => state[tag] ?? [])
   const nodeIds = useStore($visibleNodes)
   useDeepCompareEffect(() => void valueListFx({ tag, nodeIds }), [tag, nodeIds])
-  const list = useList($visibleNodes, (nodeId, key) => (
+  const list = useList($visibleNodes, (nodeId: string) => (
     <VisualValue
-      key={key}
+      key={`value-${tag}-${nodeId}`}
       value={tagValues.find(propEq('nodeId', nodeId))}
       tag={tag}
       nodeId={nodeId}

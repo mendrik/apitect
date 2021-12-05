@@ -30,7 +30,7 @@ const Dashboard = () => {
       <Navigation />
       <DndContext>
         <ResizableTable columns={columns}>
-          <FocusNavigator columns={visibleTags.length + 2} rotated style={{ display: 'contents' }}>
+          <FocusNavigator columns={visibleTags.length + 1} rotated style={{ display: 'contents' }}>
             <Column>
               <VisualTree />
             </Column>
