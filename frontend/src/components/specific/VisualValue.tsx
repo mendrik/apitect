@@ -107,9 +107,14 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
         const result = Editor.validator.safeParse(newValue)
         if (result.success) {
           grabFocus()
-          displayView()
           if (newValue != value?.value) {
-            updateValueFx({ value: newValue, nodeId, tag, nodeType: node.nodeType as any }) // todo remove any when all is implemented
+            updateValueFx({ value: newValue, nodeId, tag, nodeType: node.nodeType as any }).finally(
+              () => {
+                displayView()
+              }
+            ) // todo remove any when all is implemented
+          } else {
+            displayView()
           }
         } else {
           ev.stopPropagation()
