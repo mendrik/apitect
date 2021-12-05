@@ -10,5 +10,5 @@ export const $valuesStore = createStore<Record<TagName, Value[]>>({})
 
 $valuesStore.on(valueListFx.done, (state, { params, result }) => ({
   ...state,
-  [params.tag]: uniqBy(field('nodeId'), result.values.concat(state[params.tag] ?? []))
+  [params.tag]: uniqBy(field('nodeId'), result.values.concat(state[params.tag]))
 }))
