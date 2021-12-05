@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react'
 import { UseFormSetError } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { isExtendedError } from '~forms/GenericError'
 
-import { isExtendedError } from '../components/forms/GenericError'
 import { errorContext } from '../components/generic/ErrorContext'
 
 export const useServerError = (setError: UseFormSetError<any>): void => {
