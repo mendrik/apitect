@@ -108,7 +108,9 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
         if (result.success) {
           grabFocus()
           displayView()
-          updateValueFx({ value: newValue, nodeId, tag, nodeType: node.nodeType as any }) // todo remove any when all is implemented
+          if (newValue != value?.value) {
+            updateValueFx({ value: newValue, nodeId, tag, nodeType: node.nodeType as any }) // todo remove any when all is implemented
+          }
         } else {
           ev.stopPropagation()
           setError(result.error)
