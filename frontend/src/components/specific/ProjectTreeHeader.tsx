@@ -20,9 +20,6 @@ export const ProjectTreeHeader = () => {
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate editable">{document.name}</div>
       <HGrid>
-        <WithTooltip tooltipText={t('tooltips.import')} shortcut="I">
-          <Icon icon={IconFileImport} />
-        </WithTooltip>
         <WithTooltip tooltipText={t('tooltips.deleteNode')} shortcut="Del">
           <Icon
             icon={IconTrash}

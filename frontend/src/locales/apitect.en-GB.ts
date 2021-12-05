@@ -91,7 +91,8 @@ const en = {
         title: 'Tag {{ name }}'
       },
       userSettings: {
-        title: 'User settings'
+        title: 'User settings',
+        visibleTags: 'Visible tags'
       }
     },
     navbar: {

@@ -1,12 +1,4 @@
-import {
-  IconDownload,
-  IconKey,
-  IconLogin,
-  IconTags,
-  IconTrees,
-  IconUsers,
-  IconWorldUpload
-} from '@tabler/icons'
+import { IconDownload, IconLogin, IconTags, IconTrees, IconWorldUpload } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
@@ -80,18 +72,6 @@ export const Navigation = () => {
               <span>Download</span>
             </Tuple>
           </Item>
-          <Item onClick={projectUserSettingsFx}>
-            <Tuple first={Scale.CONTENT}>
-              <IconUsers className="icn" stroke={1} />
-              <span>Users</span>
-            </Tuple>
-          </Item>
-          <Item>
-            <Tuple first={Scale.CONTENT}>
-              <IconKey className="icn" stroke={1} />
-              <span>API keys</span>
-            </Tuple>
-          </Item>
           <Item onClick={tagsSettingsFx}>
             <Tuple first={Scale.CONTENT}>
               <IconTags className="icn" stroke={1} />
@@ -104,8 +84,13 @@ export const Navigation = () => {
       <Nav>
         {user != null ? (
           <NavDropdown title={user.name} align="end">
-            <NavDropdown.Item>Profile</NavDropdown.Item>
+            <NavDropdown.Item>Import Json</NavDropdown.Item>
+            <NavDropdown.Item>Api Keys</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => projectUserSettingsFx()}>
+              Project users
+            </NavDropdown.Item>
             <NavDropdown.Divider />
+            <NavDropdown.Item>Profile</NavDropdown.Item>
             <NavDropdown.Item onClick={logout}>{t('navbar.logout')}</NavDropdown.Item>
           </NavDropdown>
         ) : (
