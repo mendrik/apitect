@@ -1,4 +1,4 @@
-import { IconColumns, IconFileImport, IconFolderPlus, IconSettings, IconTrash } from '@tabler/icons'
+import { IconColumns, IconFolderPlus, IconSettings, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
