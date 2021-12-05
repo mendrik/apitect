@@ -2,6 +2,7 @@ import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React from 'react'
+import { useMountedState } from 'react-use'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
 
@@ -16,11 +17,12 @@ import { $selectedNode } from '../../stores/$selectedNode'
 import { $treeStore } from '../../stores/$treeStore'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
-import { VisualNodeTemplate } from './VisualNodeTemplate'
+import { VisualNode } from './VisualNode'
 
 export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
+  const isMounted = useMountedState()
 
   useDefinedEffect(sn => {
     focus(document.getElementById(sn.value.id))
@@ -36,7 +38,9 @@ export const VisualTree = () => {
       if (isNotNilOrEmpty(selectedNode?.children)) {
         ev.stopPropagation()
       }
-      openNodeState([selectedNode, toggle])
+      if (isMounted()) {
+        openNodeState([selectedNode, toggle])
+      }
     }
   }
 
@@ -51,7 +55,7 @@ export const VisualTree = () => {
 
   return (
     <div onKeyDown={keyMap} id="doc-tree">
-      <VisualNodeTemplate node={root} />
+      <VisualNode node={root} />
       <ConfirmModal />
     </div>
   )

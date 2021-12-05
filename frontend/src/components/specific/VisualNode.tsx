@@ -42,7 +42,7 @@ const NodeGrid = styled.div`
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
+export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
   const selectedNode = useStore($selectedNode)
   const openNodes = useStore($openNodes)
   const hasChildren = isNotNilOrEmpty(node.children)
@@ -90,7 +90,7 @@ export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
         <NotEmptyList list={node.children} as={depth === 0 ? RootWrap : ListWrap}>
           {mapIndexed((node, idx) => (
             <li key={idx}>
-              <VisualNodeTemplate node={node} depth={depth + 1} />
+              <VisualNode node={node} depth={depth + 1} />
             </li>
           ))}
         </NotEmptyList>

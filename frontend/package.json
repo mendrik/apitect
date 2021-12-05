@@ -23,7 +23,7 @@
     "dotenv": "10.0.0",
     "effector": "22.1.2",
     "effector-logger": "0.13.1",
-    "effector-react": "22.0.4",
+    "effector-react": "22.0.5",
     "fantasy-land": "5.0.0",
     "framer-motion": "5.3.2",
     "history": "5.1.0",
