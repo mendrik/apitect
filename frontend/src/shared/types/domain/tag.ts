@@ -2,8 +2,10 @@ import { object, Schema } from 'zod'
 
 import { nameCodec } from '../../codecs/nameCodec'
 
+export type TagName = string
+
 export interface Tag {
-  name: string
+  name: TagName
   parent?: string
 }
 

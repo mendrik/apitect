@@ -1,6 +1,6 @@
 import { useList, useStore, useStoreMap } from 'effector-react'
-import { propEq } from 'ramda'
-import React from 'react'
+import { prop, propEq, without } from 'ramda'
+import React, { useMemo } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
@@ -28,7 +28,14 @@ const Values = styled.ol`
 export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   const tagValues = useStoreMap($valuesStore, state => state[tag] ?? [])
   const nodeIds = useStore($visibleNodes)
-  useDeepCompareEffect(() => void valueListFx({ tag, nodeIds }), [tag, nodeIds])
+  const missingNodeIds = useMemo(
+    () => without(tagValues.map(prop('nodeId')), nodeIds),
+    [tagValues, nodeIds]
+  )
+  useDeepCompareEffect(
+    () => void valueListFx({ tag, nodeIds: missingNodeIds }),
+    [tag, missingNodeIds]
+  )
   const list = useList($visibleNodes, (nodeId: string) => (
     <VisualValue
       key={nodeId}
