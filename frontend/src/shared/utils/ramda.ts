@@ -98,5 +98,6 @@ export const isCyclic =
     return isCyclic(pathMap)(pathMap[node], [node, ...visited])
   }
 
-export const byProp = <T>(p: keyof T, arr: T[]): { [k in T[typeof p] & string]: T } =>
+export const byProp = curry(<T>(p: keyof T, arr: T[]): { [k in T[typeof p] & string]: T } =>
   map(head, groupBy(prop(p as string) as any, arr))
+)
