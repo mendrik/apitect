@@ -60,6 +60,11 @@ const getEditor = <T extends NodeType>(nodeType: T, settings?: NodeSettings): Ed
 }
 
 const StyledLi = styled.li`
+  padding-left: 3px;
+  &.editing {
+    padding-left: 0;
+  }
+
   &.invalid > input[type='text'] {
     background-color: ${Palette.error};
   }
@@ -126,7 +131,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
       ref={ref}
       onBlur={handleBlur}
       onFocus={handleFocus}
-      className={clsx({ invalid: error })}
+      className={clsx({ invalid: error, editing: view === Views.Edit })}
     >
       {view === Views.Display
         ? valueToString(value)

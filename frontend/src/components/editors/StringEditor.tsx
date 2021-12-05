@@ -17,7 +17,7 @@ export const StringEditor = ({ node, value }: Jsx<EditorProps>) => {
       autoFocus
       placeholder={node.name}
       onKeyDown={keyMap}
-      value={value?.value}
+      defaultValue={value?.value}
     />
   )
 }

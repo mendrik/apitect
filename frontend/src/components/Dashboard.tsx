@@ -15,6 +15,8 @@ import { VisualValueList } from './specific/VisualValueList'
 
 const Column = styled.div`
   padding: 0.5rem;
+  font-weight: 300;
+  font-family: 'Source Sans Pro';
 `
 
 const Dashboard = () => {
