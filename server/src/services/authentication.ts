@@ -65,6 +65,14 @@ const register = endpoint({ register: body(ZRegister) }, ({ register }) =>
       },
       { session }
     )
+    await collection(Collections.tagsSettings).insertOne(
+      { docId, tags: [{ name: 'Default' }] },
+      { session }
+    )
+    await collection(Collections.userSettings).insertOne(
+      { docId, email: register.email, visibleTags: ['Default'] },
+      { session }
+    )
     return token
   })
 )
