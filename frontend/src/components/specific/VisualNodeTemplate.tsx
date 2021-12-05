@@ -57,7 +57,6 @@ export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
           tabIndex={0}
           onFocus={() => selectNode(node)}
           id={id}
-          key={id}
           className={clsx('gap-1', { selectedNode: selectedNode?.value.id === id })}
         >
           {hasChildren ? (
@@ -87,7 +86,7 @@ export const VisualNodeTemplate = ({ depth = 0, node }: Jsx<OwnProps>) => {
           {nodeType === NodeType.Array && <Icon icon={iconMap[nodeType]} size={14} disabled />}
         </NodeGrid>
       )}
-      {(open || depth === 0) && (
+      {open && (
         <NotEmptyList list={node.children} as={depth === 0 ? RootWrap : ListWrap}>
           {mapIndexed((node, idx) => (
             <li key={idx}>

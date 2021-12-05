@@ -31,7 +31,7 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   useDeepCompareEffect(() => void valueListFx({ tag, nodeIds }), [tag, nodeIds])
   const list = useList($visibleNodes, (nodeId: string) => (
     <VisualValue
-      key={`value-${tag}-${nodeId}`}
+      key={nodeId}
       value={tagValues.find(propEq('nodeId', nodeId))}
       tag={tag}
       nodeId={nodeId}

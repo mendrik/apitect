@@ -1,5 +1,6 @@
 import { useStore } from 'effector-react'
-import { cond, isEmpty, propEq } from 'ramda'
+import { cond, propEq } from 'ramda'
+import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
@@ -32,7 +33,7 @@ export const VisualTree = () => {
 
   const setOpen = (toggle: boolean) => (ev: Event) => {
     if (selectedNode != null) {
-      if (isEmpty(selectedNode.children)) {
+      if (isNotNilOrEmpty(selectedNode?.children)) {
         ev.stopPropagation()
       }
       openNodeState([selectedNode, toggle])
