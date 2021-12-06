@@ -30,6 +30,7 @@ $treeStore.watch(treeCreateNode, (state, result) => {
   const node = state.first(propEq('id', result.nodeId)) ?? null
   selectNode(node)
 })
+
 $treeStore.watch(deleteNodeFx.done, (state, { result }) => {
   const parent = state.first(propEq('id', result.parentNode))
   const node = parent?.children[result.position - 1] ?? parent ?? null

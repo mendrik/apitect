@@ -33,6 +33,7 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
     $valuesStore,
     pipe<Value[], Value[], Record<NodeId, Value>>(filter(propEq('tag', tag)), byProp('nodeId'))
   )
+
   const nodeIds = useStore($visibleNodes)
   const missingNodeIds = useMemo(() => without(keys(values), nodeIds), [values, nodeIds])
   useDeepCompareEffect(
