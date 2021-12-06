@@ -38,7 +38,7 @@ $api.on(
                 method,
                 payload
               })
-              logger.info(`Sent: ${method}`, apiCall.payload)
+              logger.debug(`Sent: ${method}`, apiCall.payload)
               sendJsonMessage(apiCall)
             } catch (e) {
               logger.error('Failed to parse ApiRequest', e)
