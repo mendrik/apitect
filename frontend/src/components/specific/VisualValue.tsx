@@ -76,7 +76,7 @@ const StyledLi = styled.li`
     padding-left: 0;
   }
 
-  &.invalid > input[type='text'] {
+  &.invalid > :first-child {
     background-color: ${Palette.error};
   }
 `
@@ -109,7 +109,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     handleBlur()
   }
 
-  const handleEnter = (ev: KeyboardEvent<HTMLElement>) => {
+  const attemptSaving = (ev: KeyboardEvent<HTMLElement>) => {
     if (view === Views.Display) {
       editView()
     } else {
@@ -137,10 +137,10 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
 
   const keyMap = cond([
     [propEq('code', 'Escape'), pd(handleAbort)],
-    [propEq('code', 'Enter'), pd(handleEnter)],
+    [propEq('code', 'Enter'), pd(attemptSaving)],
     [propEq('code', 'ArrowUp'), grabFocus],
     [propEq('code', 'ArrowDown'), grabFocus],
-    [propEq('code', 'Tab'), pd(handleEnter)]
+    [propEq('code', 'Tab'), pd(attemptSaving)]
   ])
 
   return (
