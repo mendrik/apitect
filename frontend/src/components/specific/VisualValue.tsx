@@ -136,6 +136,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const keyMap = cond([
     [propEq('code', 'Escape'), pd(handleAbort)],
     [propEq('code', 'Enter'), pd(armEditor)],
+    [propEq('code', 'Space'), e => console.log(e)],
     [propEq('code', 'Tab'), pd(armEditor)],
     [propEq('code', 'ArrowUp'), grabFocus],
     [propEq('code', 'ArrowDown'), grabFocus]
