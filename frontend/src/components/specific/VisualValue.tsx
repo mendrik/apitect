@@ -144,7 +144,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const editorProps = { node, settings, value, save }
 
   if (nodeIds.includes(nodeId)) {
-    if (status.is == 'error') return 'failure...'
+    if (status.is == 'error') return <span>failure...</span>
     if (status.is !== 'done') {
       return <Placeholder />
     }
