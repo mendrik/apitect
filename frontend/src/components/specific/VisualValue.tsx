@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
-import React, { FocusEvent, ReactNode, useContext, useRef, useState } from 'react'
+import React, { ReactNode, useContext, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError } from 'zod'
 import { useView } from '~hooks/useView'
@@ -101,7 +101,6 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     setError(undefined)
   }
 
-  const handleFocus = (ev: FocusEvent<HTMLLIElement>) => editView()
   const grabFocus = () => ref.current?.focus()
   const armEditor = view === Views.Display ? editView : undefined
   const handleAbort = () => {
@@ -163,7 +162,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
       tabIndex={0}
       ref={ref}
       onBlur={handleBlur}
-      onFocus={handleFocus}
+      onFocus={editView}
       className={clsx(
         {
           invalid: error,
