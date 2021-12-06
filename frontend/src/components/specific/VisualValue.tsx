@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
-import React, { KeyboardEvent, ReactNode, useRef, useState } from 'react'
+import React, { ReactNode, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { ZodError, ZodType } from 'zod'
+import { ZodError } from 'zod'
 import { useView } from '~hooks/useView'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
@@ -33,16 +33,11 @@ export enum Views {
   Edit
 }
 
-export type EditorProps = {
+export type EditorProps<V extends Value = Value> = {
   node: Node
   settings?: NodeSettings
-  value?: Value
-  tag?: string
-}
-
-type Editor = {
-  component: (e: Jsx<EditorProps>) => JSX.Element | null
-  validator: ZodType<unknown>
+  value?: V
+  save: <V2>(value: V2) => boolean
 }
 
 const valueToString = (node: Node, value?: Value): ReactNode | null => {
@@ -52,10 +47,16 @@ const valueToString = (node: Node, value?: Value): ReactNode | null => {
   return `${value.value}`
 }
 
-const getEditor = <T extends NodeType>(nodeType: T, settings?: NodeSettings): Editor | null => {
+const getEditor = <T extends NodeType, NS extends NodeSettings, E extends Value>(
+  nodeType: T,
+  settings?: NS
+) => {
   switch (nodeType) {
     case NodeType.String:
-      return { component: StringEditor, validator: getStringValidator(settings as StringSettings) }
+      return {
+        component: StringEditor,
+        validator: getStringValidator(settings as StringSettings)
+      }
     case NodeType.Boolean:
       return {
         component: BooleanEditor,
@@ -80,6 +81,7 @@ const StyledLi = styled.li`
 
 export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const { view, displayView, editView } = useView(Views)
+
   const nodeMap = useStore($mappedNodesStore)
   const nodeSettings = useStore($nodeSettings)
   const ref = useRef<HTMLLIElement>(null)
@@ -88,7 +90,6 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const node: Node = nodeMap[nodeId]!
   const settings = nodeSettings[value?.nodeId ?? '']
   const Editor = getEditor(node.nodeType, nodeSettings[nodeId])
-  const editorProps = { node, settings, value, tag }
 
   const handleBlur = () => {
     displayView()
@@ -106,39 +107,46 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     handleBlur()
   }
 
-  const attemptSaving = (ev: KeyboardEvent<HTMLElement>) => {
+  const armEditor = () => {
     if (view === Views.Display) {
       editView()
-    } else {
-      if (Editor != null) {
-        const newValue = (ev.target as HTMLInputElement).value
-        const result = Editor.validator.safeParse(newValue)
-        if (result.success) {
-          grabFocus()
-          if (newValue != value?.value) {
-            updateValueFx({ value: newValue, nodeId, tag, nodeType: node.nodeType as any }).finally(
-              () => {
-                displayView()
-              }
-            ) // todo remove any when all is implemented
-          } else {
+    }
+  }
+
+  const save = <T extends any>(newValue: T): boolean => {
+    if (Editor != null) {
+      const result = Editor.validator.safeParse(newValue)
+      if (result.success) {
+        grabFocus()
+        if (newValue !== value?.value) {
+          updateValueFx({
+            value: newValue as any,
+            nodeId,
+            tag,
+            nodeType: node.nodeType as any
+          }).finally(() => {
             displayView()
-          }
+          }) // todo remove any when all is implemented
         } else {
-          ev.stopPropagation()
-          setError(result.error)
+          displayView()
         }
+      } else {
+        setError(result.error)
+        return false
       }
     }
+    return true
   }
 
   const keyMap = cond([
     [propEq('code', 'Escape'), pd(handleAbort)],
-    [propEq('code', 'Enter'), pd(attemptSaving)],
+    [propEq('code', 'Enter'), pd(armEditor)],
+    [propEq('code', 'Tab'), pd(armEditor)],
     [propEq('code', 'ArrowUp'), grabFocus],
-    [propEq('code', 'ArrowDown'), grabFocus],
-    [propEq('code', 'Tab'), pd(attemptSaving)]
+    [propEq('code', 'ArrowDown'), grabFocus]
   ])
+
+  const editorProps = { node, settings, value, save }
 
   return (
     <StyledLi
@@ -157,7 +165,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     >
       {view === Views.Display && !node.nodeType.includes(NodeType.Boolean)
         ? valueToString(node, value)
-        : Editor && <Editor.component {...editorProps} />}
+        : Editor && <Editor.component {...(editorProps as any)} />}
     </StyledLi>
   )
 }
