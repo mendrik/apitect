@@ -1,7 +1,7 @@
 import { literal, object, union } from 'zod'
 import { TypeOf } from 'zod/lib/types'
+import { regexpCodecAlt } from '~shared/codecs/regexpCodecAlt'
 
-import { regexpCodecAlt } from '../../../codecs/regexpCodecAlt'
 import { NodeType } from '../../domain/nodeType'
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 

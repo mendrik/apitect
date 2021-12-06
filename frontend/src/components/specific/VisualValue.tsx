@@ -1,12 +1,13 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
-import React, { KeyboardEvent, useRef, useState } from 'react'
+import React, { KeyboardEvent, ReactNode, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError, ZodType } from 'zod'
 import { useView } from '~hooks/useView'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
+import { getBooleanValidator } from '~shared/types/domain/values/booleanValue'
 import { getStringValidator } from '~shared/types/domain/values/stringValue'
 import { Value } from '~shared/types/domain/values/value'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
@@ -18,6 +19,7 @@ import { updateValueFx } from '../../events/values'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
 import { $mappedNodesStore } from '../../stores/$treeStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
+import { BooleanEditor } from '../editors/BooleanEditor'
 import { StringEditor } from '../editors/StringEditor'
 
 type OwnProps = {
@@ -43,7 +45,10 @@ type Editor = {
   validator: ZodType<unknown>
 }
 
-const valueToString = (value?: Value): string | null => {
+const valueToString = (node: Node, value?: Value, settings?: NodeSettings): ReactNode | null => {
+  if (node.nodeType === NodeType.Boolean) {
+    return <BooleanEditor node={node} value={value} settings={settings} />
+  }
   if (value == null) {
     return null
   }
@@ -54,6 +59,11 @@ const getEditor = <T extends NodeType>(nodeType: T, settings?: NodeSettings): Ed
   switch (nodeType) {
     case NodeType.String:
       return { component: StringEditor, validator: getStringValidator(settings as StringSettings) }
+    case NodeType.Boolean:
+      return {
+        component: BooleanEditor,
+        validator: getBooleanValidator()
+      }
     default:
       return null // todo throw Error instead when all are implemented
   }
@@ -61,7 +71,8 @@ const getEditor = <T extends NodeType>(nodeType: T, settings?: NodeSettings): Ed
 
 const StyledLi = styled.li`
   padding-left: 3px;
-  &.editing {
+
+  &.editing.string {
     padding-left: 0;
   }
 
@@ -139,10 +150,16 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
       ref={ref}
       onBlur={handleBlur}
       onFocus={handleFocus}
-      className={clsx({ invalid: error, editing: view === Views.Edit })}
+      className={clsx(
+        {
+          invalid: error,
+          editing: view === Views.Edit
+        },
+        node.nodeType.toLowerCase()
+      )}
     >
       {view === Views.Display
-        ? valueToString(value)
+        ? valueToString(node, value, settings)
         : Editor && <Editor.component {...editorProps} />}
     </StyledLi>
   )
