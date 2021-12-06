@@ -45,10 +45,7 @@ type Editor = {
   validator: ZodType<unknown>
 }
 
-const valueToString = (node: Node, value?: Value, settings?: NodeSettings): ReactNode | null => {
-  if (node.nodeType === NodeType.Boolean) {
-    return <BooleanEditor node={node} value={value} settings={settings} />
-  }
+const valueToString = (node: Node, value?: Value): ReactNode | null => {
   if (value == null) {
     return null
   }
@@ -158,8 +155,8 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
         node.nodeType.toLowerCase()
       )}
     >
-      {view === Views.Display
-        ? valueToString(node, value, settings)
+      {view === Views.Display && !node.nodeType.includes(NodeType.Boolean)
+        ? valueToString(node, value)
         : Editor && <Editor.component {...editorProps} />}
     </StyledLi>
   )
