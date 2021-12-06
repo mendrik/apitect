@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
-import React, { ReactNode, useContext, useRef, useState } from 'react'
+import React, { FocusEvent, ReactNode, useContext, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError } from 'zod'
 import { useView } from '~hooks/useView'
@@ -19,6 +19,7 @@ import { updateValueFx } from '../../events/values'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
 import { $mappedNodesStore } from '../../stores/$treeStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
+import { stopPropagation } from '../../utils/stopPropagation'
 import { BooleanEditor } from '../editors/BooleanEditor'
 import { StringEditor } from '../editors/StringEditor'
 import { Placeholder } from '../generic/Placeholder'
@@ -100,7 +101,7 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     setError(undefined)
   }
 
-  const handleFocus = () => editView()
+  const handleFocus = (ev: FocusEvent<HTMLLIElement>) => editView()
   const grabFocus = () => ref.current?.focus()
   const armEditor = view === Views.Display ? editView : undefined
   const handleAbort = () => {
@@ -133,18 +134,23 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     return true
   }
 
+  const informChild = (ev: React.KeyboardEvent<HTMLLIElement>) => {
+    const event = new KeyboardEvent('keydown', ev.nativeEvent)
+    ;(ev.target as HTMLLIElement).querySelector(':first-child')?.dispatchEvent(event)
+  }
+
   const keyMap = cond([
     [propEq('code', 'Escape'), pd(handleAbort)],
     [propEq('code', 'Enter'), pd(armEditor)],
-    [propEq('code', 'Space'), e => console.log(e)],
     [propEq('code', 'Tab'), pd(armEditor)],
     [propEq('code', 'ArrowUp'), grabFocus],
-    [propEq('code', 'ArrowDown'), grabFocus]
+    [propEq('code', 'ArrowDown'), grabFocus],
+    [propEq('code', 'Space'), stopPropagation(informChild)]
   ])
 
   const editorProps = { node, settings, value, save }
 
-  if (nodeIds.includes(nodeId)) {
+  if (nodeIds?.includes(nodeId)) {
     if (status.is == 'error') return <span>failure...</span>
     if (status.is !== 'done') {
       return <Placeholder />
