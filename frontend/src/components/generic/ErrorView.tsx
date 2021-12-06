@@ -1,15 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 import { ReactComponent as ErrorSvg } from '../../assets/error.svg'
 
-export const ErrorView = ({ error }: { error: Error }) => (
+export const ErrorView = ({ error }: { error?: Error }) => (
   <div className="min-vh-100 d-flex flex-column">
     <div className="d-flex justify-content-center align-items-center flex-grow-1">
       <div className="d-flex flex-column align-items-start">
         <h2 className="fw-bold">Oh no, the app has crashed!</h2>
         <p className="figure-caption text-black-50" style={{ maxWidth: 400 }}>
-          {error.message}
+          {error?.message}
         </p>
         <p>
           Try <a href="/">reloading</a> the page or contact our{' '}

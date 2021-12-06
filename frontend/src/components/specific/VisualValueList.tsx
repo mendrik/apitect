@@ -1,11 +1,14 @@
 import { useStore, useStoreMap } from 'effector-react'
 import { filter, keys, pipe, propEq, without } from 'ramda'
-import React, { useMemo } from 'react'
+import React, { createContext, useMemo } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
+import useProgress, { Status } from '~hooks/useProgress'
+import { usePromise } from '~hooks/usePromise'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
+import { ValueList } from '~shared/types/response/valueList'
 import { byProp } from '~shared/utils/ramda'
 
 import { valueListFx } from '../../events/values'
@@ -28,6 +31,13 @@ const Values = styled.ol`
   }
 `
 
+type ValueListContext = {
+  status: Status<ValueList>
+  nodeIds: NodeId[]
+}
+
+export const valueListContext = createContext<ValueListContext>({} as any)
+
 export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   const values = useStoreMap(
     $valuesStore,
@@ -36,16 +46,17 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
 
   const nodeIds = useStore($visibleNodes)
   const missingNodeIds = useMemo(() => without(keys(values), nodeIds), [values, nodeIds])
-  useDeepCompareEffect(
-    () => void valueListFx({ tag, nodeIds: missingNodeIds }),
-    [tag, missingNodeIds]
-  )
+  const [withProgress, status] = useProgress<ValueList>()
+  const trigger = usePromise(() => withProgress(valueListFx({ tag, nodeIds: missingNodeIds })))
+  useDeepCompareEffect(trigger, [tag, missingNodeIds])
 
   return (
-    <Values>
-      {nodeIds.map((nodeId: NodeId) => (
-        <VisualValue key={nodeId} value={values[nodeId]} tag={tag} nodeId={nodeId} />
-      ))}
-    </Values>
+    <valueListContext.Provider value={{ status, nodeIds: missingNodeIds }}>
+      <Values>
+        {nodeIds.map((nodeId: NodeId) => (
+          <VisualValue key={nodeId} value={values[nodeId]} tag={tag} nodeId={nodeId} />
+        ))}
+      </Values>
+    </valueListContext.Provider>
   )
 }

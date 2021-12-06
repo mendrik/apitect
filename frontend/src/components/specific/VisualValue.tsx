@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
-import React, { ReactNode, useRef, useState } from 'react'
+import React, { ReactNode, useContext, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError } from 'zod'
 import { useView } from '~hooks/useView'
@@ -21,6 +21,8 @@ import { $mappedNodesStore } from '../../stores/$treeStore'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { BooleanEditor } from '../editors/BooleanEditor'
 import { StringEditor } from '../editors/StringEditor'
+import { Placeholder } from '../generic/Placeholder'
+import { valueListContext } from './VisualValueList'
 
 type OwnProps = {
   nodeId: NodeId
@@ -82,6 +84,8 @@ const StyledLi = styled.li`
 export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   const { view, displayView, editView } = useView(Views)
 
+  const { status, nodeIds } = useContext(valueListContext)
+
   const nodeMap = useStore($mappedNodesStore)
   const nodeSettings = useStore($nodeSettings)
   const ref = useRef<HTMLLIElement>(null)
@@ -96,21 +100,12 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
     setError(undefined)
   }
 
-  const handleFocus = () => {
-    editView()
-  }
-
+  const handleFocus = () => editView()
   const grabFocus = () => ref.current?.focus()
-
+  const armEditor = view === Views.Display ? editView : undefined
   const handleAbort = () => {
     ref.current?.focus()
     handleBlur()
-  }
-
-  const armEditor = () => {
-    if (view === Views.Display) {
-      editView()
-    }
   }
 
   const save = <T extends any>(newValue: T): boolean => {
@@ -147,6 +142,13 @@ export const VisualValue = ({ nodeId, value, tag }: Jsx<OwnProps>) => {
   ])
 
   const editorProps = { node, settings, value, save }
+
+  if (nodeIds.includes(nodeId)) {
+    if (status.is == 'error') return 'failure...'
+    if (status.is !== 'done') {
+      return <Placeholder />
+    }
+  }
 
   return (
     <StyledLi

@@ -41,6 +41,14 @@ const StyledPlaceholder = styled.div`
 
 const Wrapper = styled.div`
   padding: 4px 0;
+  @keyframes blend-in {
+    to {
+      opacity: 1;
+    }
+  }
+  opacity: 0;
+  animation: blend-in 1s linear forwards;
+  animation-delay: 0.3s;
 `
 
 export const Placeholder = ({ ...props }: Jsx<OwnProps>) => (
