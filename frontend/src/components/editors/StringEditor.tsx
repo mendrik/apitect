@@ -1,7 +1,8 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import { cond, propEq, when } from 'ramda'
-import React, { FocusEvent, useRef, useState } from 'react'
+import { cond, propEq, propSatisfies, when } from 'ramda'
+import { included } from 'ramda-adjunct'
+import React, { FocusEvent, KeyboardEvent, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError } from 'zod'
 import { useView } from '~hooks/useView'
@@ -13,6 +14,7 @@ import { Jsx, Maybe } from '~shared/types/generic'
 import { Palette } from '../../css/colors'
 import { updateValueFx } from '../../events/values'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
+import { stopPropagation } from '../../utils/stopPropagation'
 import { EditorProps } from '../specific/VisualValue'
 
 export enum Views {
@@ -37,11 +39,14 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   const [error, setError] = useState<Maybe<ZodError>>()
   const ref = useRef<HTMLDivElement | null>(null)
   const nodeSettings = useStore($nodeSettings)
+  const nodeSetting = nodeSettings[node.id] as StringSettings
+  const validator = getStringValidator(nodeSetting)
 
   const attemptSave = (e: FocusEvent<HTMLInputElement>) => {
-    const nodeSetting = nodeSettings[node.id] as StringSettings
-    const validator = getStringValidator(nodeSetting)
     const newValue = e.currentTarget.value
+    if (value?.value === newValue) {
+      return displayView()
+    }
     const result = validator.safeParse(newValue)
     if (result.success) {
       void updateValueFx({
@@ -60,7 +65,17 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
 
   const keyMap = cond([
     [propEq('code', 'ArrowRight'), when(isEditView, (e: Event) => e.stopPropagation())],
-    [propEq('code', 'ArrowLeft'), when(isEditView, (e: Event) => e.stopPropagation())]
+    [propEq('code', 'ArrowLeft'), when(isEditView, (e: Event) => e.stopPropagation())],
+    [
+      propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'),
+      (ev: KeyboardEvent<HTMLInputElement>) => {
+        const res = validator.safeParse(ev.currentTarget.value)
+        if (!res.success) {
+          stopPropagation()(ev)
+          setError(res.error)
+        }
+      }
+    ]
   ])
 
   return view === Views.Display ? (
