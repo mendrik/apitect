@@ -83,7 +83,9 @@ export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
           >
             {node.value.name}
           </div>
-          {nodeType === NodeType.Array && <Icon icon={iconMap[nodeType]} size={14} disabled />}
+          {nodeType === NodeType.Array && (
+            <Icon icon={iconMap[nodeType]} size={14} disabled tabIndex={0} />
+          )}
         </NodeGrid>
       )}
       {open && (

@@ -11,9 +11,9 @@ export type OwnProps = {
   size?: number
   iconClasses?: string
   disabled?: boolean
-} & HTMLAttributes<HTMLButtonElement>
+} & HTMLAttributes<HTMLDivElement>
 
-const Button = styled.button`
+const Wrap = styled.div`
   -webkit-appearance: none;
   appearance: none;
   border: none;
@@ -54,22 +54,18 @@ export const Icon = ({
   iconClasses,
   tabIndex = -1,
   ...props
-}: Jsx<OwnProps>) => (
-  <Button
-    type="button"
-    className={clsx('d-block')}
-    {...props}
-    tabIndex={tabIndex}
-    disabled={disabled}
-  >
-    <IconCmp
-      className={clsx('d-block user-select-none', iconClasses)}
-      focusable="false"
-      role="img"
-      width={size}
-      height={size}
-      stroke={1}
-      tabIndex={-1}
-    />
-  </Button>
-)
+}: Jsx<OwnProps>) => {
+  return (
+    <Wrap className={clsx('d-block')} {...props} data-disabled={disabled}>
+      <IconCmp
+        className={clsx('d-block user-select-none', iconClasses)}
+        focusable="false"
+        role="img"
+        width={size}
+        height={size}
+        stroke={1}
+        tabIndex={-1}
+      />
+    </Wrap>
+  )
+}
