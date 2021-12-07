@@ -13,7 +13,7 @@ const StyledPlaceholder = styled.div`
   }
   display: block;
   width: 100%;
-  height: 16px;
+  height: 12px;
   margin-bottom: 0px;
   background-color: #efefef;
   position: relative;
@@ -49,6 +49,7 @@ const Wrapper = styled.div`
   opacity: 0;
   animation: blend-in 1s linear forwards;
   animation-delay: 0.3s;
+  height: 24px;
 `
 
 export const Placeholder = ({ ...props }: Jsx<OwnProps>) => (
