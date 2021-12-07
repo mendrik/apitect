@@ -39,20 +39,20 @@ const emptyToUndefined = (str: string) => (/^\s*$/.test(str) ? undefined : str)
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
   const { view, isEditView, editView, displayView } = useView(Views)
 
+  /*
   useEffect(() => {
     console.log(`${node.name} switching to ${decapitalizeFirst(Views[view])}View`)
   }, [view])
 
+*/
   const [error, setError] = useState<Maybe<ZodError>>()
   const nodeSettings = useStore($nodeSettings)
   const nodeSetting = nodeSettings[node.id] as StringSettings
   const validator = getStringValidator(nodeSetting)
 
   const attemptSave = (e: SyntheticEvent<HTMLInputElement>) => {
-    console.log(`${node.name} save`)
     const newValue = emptyToUndefined(e.currentTarget.value)
     if (value?.value === newValue) {
-      console.log(`${node.name} no value change, display`)
       return displayView()
     }
     const result = validator.safeParse(newValue)
@@ -67,16 +67,8 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
         newValue === undefined
           ? valueDeleteFx(params)
           : valueUpdateFx({ ...params, value: newValue } as StringValue)
-      )
-        .then(() => {
-          console.log(`${node.name} save success display`)
-        })
-        .catch(() => {
-          console.log(`${node.name} save catch display`)
-        })
-        .finally(displayView)
+      ).finally(displayView)
     } else {
-      console.log(`${node.name} save failure`)
       e.preventDefault()
       e.stopPropagation()
       setError(result.error)
