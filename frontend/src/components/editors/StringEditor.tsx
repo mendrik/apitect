@@ -77,8 +77,11 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       (ev: KeyboardEvent<HTMLInputElement>) => {
         const res = validator.safeParse(emptyToUndefined(ev.currentTarget.value))
         if (!res.success) {
+          ev.preventDefault()
           ev.stopPropagation()
           setError(res.error)
+        } else {
+          setError(undefined)
         }
       }
     ]
