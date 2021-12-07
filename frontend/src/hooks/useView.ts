@@ -18,8 +18,8 @@ export const useView = <T extends string, E extends number>(anEnum: {
       reduce(
         (p, v) => ({
           ...p,
-          [`${decapitalizeFirst(v)}View`]: (ev: Event) => {
-            ev?.preventDefault()
+          [`${decapitalizeFirst(v)}View`]: (ev?: Event) => {
+            ev?.preventDefault?.()
             setView(anEnum[v])
           },
           [`is${v}View`]: () => view === anEnum[v]

@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, propEq, propSatisfies, when } from 'ramda'
 import { included } from 'ramda-adjunct'
-import React, { FocusEvent, KeyboardEvent, useRef, useState } from 'react'
+import React, { FocusEvent, KeyboardEvent, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError } from 'zod'
 import { useView } from '~hooks/useView'
@@ -14,7 +14,6 @@ import { Jsx, Maybe } from '~shared/types/generic'
 import { Palette } from '../../css/colors'
 import { deleteValueFx, updateValueFx } from '../../events/values'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
-import { stopPropagation } from '../../utils/stopPropagation'
 import { EditorProps } from '../specific/VisualValue'
 
 export enum Views {
@@ -39,7 +38,6 @@ const emptyToUndefined = (str: string) => (/^\s*$/.test(str) ? undefined : str)
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
   const { view, isEditView, editView, displayView } = useView(Views)
   const [error, setError] = useState<Maybe<ZodError>>()
-  const ref = useRef<HTMLDivElement | null>(null)
   const nodeSettings = useStore($nodeSettings)
   const nodeSetting = nodeSettings[node.id] as StringSettings
   const validator = getStringValidator(nodeSetting)
@@ -56,13 +54,13 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
         nodeId: node.id,
         nodeType: NodeType.String
       }
-      if (newValue === undefined) {
-        void deleteValueFx(params).then(displayView)
-      } else {
-        void updateValueFx({ ...params, value: newValue } as StringValue)
-          .then(() => setError(undefined))
-          .then(displayView)
-      }
+      void (
+        newValue === undefined
+          ? deleteValueFx(params)
+          : updateValueFx({ ...params, value: newValue } as StringValue)
+      )
+        .then(() => setError(undefined))
+        .then(displayView)
     } else {
       e.stopPropagation()
       setError(result.error)
@@ -88,7 +86,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   ])
 
   return view === Views.Display ? (
-    <Text tabIndex={0} onKeyDown={keyMap} ref={ref} onFocus={stopPropagation(editView)}>
+    <Text tabIndex={0} onKeyDown={keyMap} onFocus={editView}>
       {value?.value}
     </Text>
   ) : (
