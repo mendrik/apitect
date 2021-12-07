@@ -1,5 +1,5 @@
 import { keys, reduce } from 'ramda'
-import { useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Fn } from '~shared/types/generic'
 import { decapitalizeFirst } from '~shared/utils/ramda'
 
@@ -14,23 +14,25 @@ export const useView = <T extends string, E extends number>(anEnum: {
 }) => {
   const [view, setView] = useState<E>((anEnum as any)[(anEnum as any)[0]] as any)
 
-  const methods = useRef(
-    reduce(
-      (p, v) => ({
-        ...p,
-        [`${decapitalizeFirst(v)}View`]: (ev: Event) => {
-          ev?.preventDefault()
-          setView(anEnum[v])
-        },
-        [`is${v}View`]: (ev: Event) => view === anEnum[v]
-      }),
-      {} as ViewMethods<T>,
-      keys(anEnum)
-    )
+  const methods = useMemo(
+    () =>
+      reduce(
+        (p, v) => ({
+          ...p,
+          [`${decapitalizeFirst(v)}View`]: (ev: Event) => {
+            ev?.preventDefault()
+            setView(anEnum[v])
+          },
+          [`is${v}View`]: () => view === anEnum[v]
+        }),
+        {} as ViewMethods<T>,
+        keys(anEnum)
+      ),
+    [view]
   )
 
   return {
     view,
-    ...methods.current
+    ...methods
   }
 }
