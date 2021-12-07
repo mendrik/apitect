@@ -34,7 +34,7 @@ const TextInput = styled.input`
   }
 `
 
-const emptyToUndefined = (str: string) => (/\s+/.test(str) ? undefined : str)
+const emptyToUndefined = (str: string) => (/^\s*$/.test(str) ? undefined : str)
 
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
   const { view, isEditView, editView, displayView } = useView(Views)
@@ -56,10 +56,10 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
         nodeId: node.id,
         nodeType: NodeType.String
       }
-      if (newValue == null) {
-        void deleteValueFx(params)
+      if (newValue === undefined) {
+        void deleteValueFx(params).then(displayView)
       } else {
-        void updateValueFx({ ...params, value: newValue } as any)
+        void updateValueFx({ ...params, value: newValue } as StringValue)
           .then(() => setError(undefined))
           .then(displayView)
       }
@@ -77,7 +77,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       (ev: KeyboardEvent<HTMLInputElement>) => {
         const res = validator.safeParse(emptyToUndefined(ev.currentTarget.value))
         if (!res.success) {
-          stopPropagation()(ev)
+          ev.stopPropagation()
           setError(res.error)
         }
       }
@@ -85,7 +85,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   ])
 
   return view === Views.Display ? (
-    <Text tabIndex={0} onKeyDown={keyMap} ref={ref} onFocus={editView}>
+    <Text tabIndex={0} onKeyDown={keyMap} ref={ref} onFocus={stopPropagation(editView)}>
       {value?.value}
     </Text>
   ) : (

@@ -29,5 +29,5 @@ export const ApiSchema = {
   nodeCreate: [TNewNode, TNodeCreated],
   valueList: [ZValueListRequest, ZValueList],
   updateValue: [ZValue, ZValue],
-  deleteValue: [ZValueBase, undef()]
+  deleteValue: [ZValueBase, ZValue]
 } as const
