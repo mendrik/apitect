@@ -23,6 +23,7 @@ export enum Views {
 const Text = styled.div`
   width: 100%;
   height: 24px;
+  padding-left: 3px;
 `
 
 const TextInput = styled.input`
