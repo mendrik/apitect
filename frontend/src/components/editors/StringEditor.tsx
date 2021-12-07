@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import { cond, ifElse, pipe, propEq, when } from 'ramda'
-import React, { KeyboardEvent, useRef, useState } from 'react'
+import { cond, propEq, when } from 'ramda'
+import React, { FocusEvent, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError } from 'zod'
 import { useView } from '~hooks/useView'
@@ -36,14 +36,9 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   const { view, isEditView, editView, displayView } = useView(Views)
   const [error, setError] = useState<Maybe<ZodError>>()
   const ref = useRef<HTMLDivElement | null>(null)
-
   const nodeSettings = useStore($nodeSettings)
 
-  const grabFocus = () => ref.current?.focus()
-
-  const displayViewAndFocus = () => pipe(displayView, grabFocus)
-
-  const attemptSave = (e: KeyboardEvent<HTMLInputElement>) => {
+  const attemptSave = (e: FocusEvent<HTMLInputElement>) => {
     const nodeSetting = nodeSettings[node.id] as StringSettings
     const validator = getStringValidator(nodeSetting)
     const newValue = e.currentTarget.value
@@ -56,7 +51,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
         nodeType: NodeType.String
       })
         .then(() => setError(undefined))
-        .finally(displayViewAndFocus)
+        .then(displayView)
     } else {
       e.stopPropagation()
       setError(result.error)
@@ -64,15 +59,12 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   }
 
   const keyMap = cond([
-    [propEq('code', 'Escape'), when(isEditView, displayViewAndFocus)],
-    [propEq('key', 'Enter'), ifElse(isEditView, attemptSave, editView)],
-    [propEq('key', 'Tab'), when(isEditView, attemptSave)],
     [propEq('code', 'ArrowRight'), when(isEditView, (e: Event) => e.stopPropagation())],
     [propEq('code', 'ArrowLeft'), when(isEditView, (e: Event) => e.stopPropagation())]
   ])
 
   return view === Views.Display ? (
-    <Text tabIndex={0} onKeyDown={keyMap} ref={ref}>
+    <Text tabIndex={0} onKeyDown={keyMap} ref={ref} onFocus={editView}>
       {value?.value}
     </Text>
   ) : (
@@ -82,6 +74,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       autoFocus
       placeholder={node.name}
       onKeyDown={keyMap}
+      onBlur={attemptSave}
       defaultValue={value?.value}
     />
   )

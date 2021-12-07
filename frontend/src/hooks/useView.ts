@@ -1,10 +1,9 @@
 import { keys, reduce } from 'ramda'
 import { useMemo, useState } from 'react'
-import { Fn } from '~shared/types/generic'
 import { decapitalizeFirst } from '~shared/utils/ramda'
 
 export type ViewMethods<T extends string> = {
-  [key in T as `${Uncapitalize<key>}View`]: Fn
+  [key in T as `${Uncapitalize<key>}View`]: () => Promise<void>
 } & {
   [key in T as `is${key}View`]: () => boolean
 }
@@ -22,6 +21,9 @@ export const useView = <T extends string, E extends number>(anEnum: {
           [`${decapitalizeFirst(v)}View`]: (ev: Event) => {
             ev?.preventDefault()
             setView(anEnum[v])
+            return new Promise<void>((resolve, reject) => {
+              resolve()
+            })
           },
           [`is${v}View`]: () => view === anEnum[v]
         }),
