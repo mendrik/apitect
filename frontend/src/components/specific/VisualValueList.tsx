@@ -53,7 +53,7 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   return (
     <valueListContext.Provider value={{ status, nodeIds: missingNodeIds }}>
       <Values>
-        {nodeIds.map((nodeId: NodeId) => (
+        {nodeIds.map(nodeId => (
           <VisualValue key={nodeId} value={values[nodeId]} tag={tag} nodeId={nodeId} />
         ))}
       </Values>

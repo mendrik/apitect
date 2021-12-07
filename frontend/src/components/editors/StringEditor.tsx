@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, propEq, propSatisfies, when } from 'ramda'
 import { included } from 'ramda-adjunct'
-import React, { FocusEvent, KeyboardEvent, useState } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError } from 'zod'
 import { useView } from '~hooks/useView'
@@ -10,6 +10,7 @@ import { NodeType } from '~shared/types/domain/nodeType'
 import { getStringValidator, StringValue } from '~shared/types/domain/values/stringValue'
 import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
 import { Jsx, Maybe } from '~shared/types/generic'
+import { decapitalizeFirst } from '~shared/utils/ramda'
 
 import { Palette } from '../../css/colors'
 import { valueDeleteFx, valueUpdateFx } from '../../events/values'
@@ -37,14 +38,21 @@ const emptyToUndefined = (str: string) => (/^\s*$/.test(str) ? undefined : str)
 
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
   const { view, isEditView, editView, displayView } = useView(Views)
+
+  useEffect(() => {
+    console.log(`${node.name} switching to ${decapitalizeFirst(Views[view])}View`)
+  }, [view])
+
   const [error, setError] = useState<Maybe<ZodError>>()
   const nodeSettings = useStore($nodeSettings)
   const nodeSetting = nodeSettings[node.id] as StringSettings
   const validator = getStringValidator(nodeSetting)
 
-  const attemptSave = (e: FocusEvent<HTMLInputElement>) => {
+  const attemptSave = (e: SyntheticEvent<HTMLInputElement>) => {
+    console.log(`${node.name} save`)
     const newValue = emptyToUndefined(e.currentTarget.value)
     if (value?.value === newValue) {
+      console.log(`${node.name} no value change, display`)
       return displayView()
     }
     const result = validator.safeParse(newValue)
@@ -59,8 +67,17 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
         newValue === undefined
           ? valueDeleteFx(params)
           : valueUpdateFx({ ...params, value: newValue } as StringValue)
-      ).then(displayView)
+      )
+        .then(() => {
+          console.log(`${node.name} save success display`)
+        })
+        .catch(() => {
+          console.log(`${node.name} save catch display`)
+        })
+        .finally(displayView)
     } else {
+      console.log(`${node.name} save failure`)
+      e.preventDefault()
       e.stopPropagation()
       setError(result.error)
     }
@@ -69,19 +86,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   const keyMap = cond([
     [propEq('code', 'ArrowRight'), when(isEditView, (e: Event) => e.stopPropagation())],
     [propEq('code', 'ArrowLeft'), when(isEditView, (e: Event) => e.stopPropagation())],
-    [
-      propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'),
-      (ev: KeyboardEvent<HTMLInputElement>) => {
-        const res = validator.safeParse(emptyToUndefined(ev.currentTarget.value))
-        if (!res.success) {
-          ev.preventDefault()
-          ev.stopPropagation()
-          setError(res.error)
-        } else {
-          setError(undefined)
-        }
-      }
-    ]
+    [propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'), attemptSave]
   ])
 
   return view === Views.Display ? (
