@@ -9,13 +9,15 @@ export type ViewMethods<T extends string> = {
   [key in T as `is${key}View`]: () => boolean
 }
 
-export const useView = <E extends Record<string, number>>(anEnum: E) => {
-  const [view, setView] = useState<number>(0)
+export const useView = <T extends string>(anEnum: {
+  [K in T]: number
+}) => {
+  const [view, setView] = useState(0)
   const isMounted = useMountedState()
   const methods = useMemo(
     () =>
       reduce(
-        (p, v: string) => ({
+        (p, v: T) => ({
           ...p,
           [`${decapitalizeFirst(v)}View`]: (ev?: Event) => {
             ev?.preventDefault?.()
@@ -25,8 +27,8 @@ export const useView = <E extends Record<string, number>>(anEnum: E) => {
           },
           [`is${v}View`]: () => view === anEnum[v]
         }),
-        {} as ViewMethods<keyof E & string>,
-        keys(anEnum) as string[]
+        {} as ViewMethods<T>,
+        keys(anEnum) as T[]
       ),
     [view]
   )
