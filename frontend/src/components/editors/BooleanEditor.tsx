@@ -16,5 +16,5 @@ export const BooleanEditor = ({ value, node, tag }: Jsx<EditorProps<BooleanValue
       nodeType: NodeType.Boolean
     })
 
-  return <Form.Check type="switch" checked={value?.value} onChange={handleChange} />
+  return <Form.Check type="switch" checked={value?.value ?? false} onChange={handleChange} />
 }
