@@ -1,8 +1,8 @@
 import { createStore } from 'effector'
-import { join, juxt, pipe, prop, propOr, uniqBy } from 'ramda'
+import { both, join, juxt, pipe, prop, propEq, propOr, reject, uniqBy } from 'ramda'
 import { Value } from '~shared/types/domain/values/value'
 
-import { updateValueFx, valueListFx } from '../events/values'
+import { deleteValueFx, updateValueFx, valueListFx } from '../events/values'
 
 export const $valuesStore = createStore<Value[]>([])
 
@@ -14,4 +14,8 @@ $valuesStore.on(valueListFx.done, (state, { result }) =>
 
 $valuesStore.on(updateValueFx.done, (state, { result }) =>
   uniqBy(byIdAndTag, [result].concat(state))
+)
+
+$valuesStore.on(deleteValueFx.done, (state, { params }) =>
+  reject(both(propEq('nodeId', params.nodeId), propEq('tag', params.tag)), state)
 )
