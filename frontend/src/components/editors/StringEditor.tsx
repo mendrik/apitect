@@ -76,6 +76,9 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
         if (!res.success) {
           ev.preventDefault()
           ev.stopPropagation()
+          setError(res.error)
+        } else {
+          setError(undefined)
         }
       }
     ]
