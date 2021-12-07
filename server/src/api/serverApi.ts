@@ -1,7 +1,6 @@
 import { ServerApiMethod } from '~shared/apiResponse'
 import { ApiMethod } from '~shared/types/api'
 
-import { deleteValue } from './deleteValue'
 import { nodeCreate } from './nodeCreate'
 import { nodeDelete } from './nodeDelete'
 import { nodeSettings } from './nodeSettings'
@@ -12,12 +11,13 @@ import { updateNodeSettings } from './updateNodeSettings'
 import { updateProjectUsersSettings } from './updateProjectUsersSettings'
 import { updateTagsSettings } from './updateTagsSettings'
 import { updateUserSettings } from './updateUserSettings'
-import { updateValue } from './updateValue'
 import { userSettings } from './userSettings'
+import { valueDelete } from './valueDelete'
 import { valueList } from './valueList'
+import { valueUpdate } from './valueUpdate'
 
 export const apiMapping: { [K in ApiMethod]: ServerApiMethod<K> } = {
-  deleteValue,
+  valueDelete,
   nodeCreate,
   nodeDelete,
   nodeSettings,
@@ -28,7 +28,7 @@ export const apiMapping: { [K in ApiMethod]: ServerApiMethod<K> } = {
   updateProjectUsersSettings,
   updateTagsSettings,
   updateUserSettings,
-  updateValue,
+  valueUpdate,
   userSettings,
   valueList
 }

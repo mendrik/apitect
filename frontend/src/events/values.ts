@@ -6,5 +6,5 @@ import { $api } from '../stores/$apiStore'
 const api = () => sample($api).getState()
 
 export const valueListFx = createEffect<Api['valueList']>(req => api().valueList(req))
-export const updateValueFx = createEffect<Api['updateValue']>(req => api().updateValue(req))
-export const deleteValueFx = createEffect<Api['deleteValue']>(req => api().deleteValue(req))
+export const valueUpdateFx = createEffect<Api['valueUpdate']>(req => api().valueUpdate(req))
+export const valueDeleteFx = createEffect<Api['valueDelete']>(req => api().valueDelete(req))

@@ -16,18 +16,18 @@ import { TNodeDeleted } from './types/response/nodeDeleted'
 import { ZValueList } from './types/response/valueList'
 
 export const ApiSchema = {
-  project: [undef(), ZProject],
-  nodeSettings: [idCodec, ZNodeSettings.nullable()],
-  updateNodeSettings: [ZNodeSettings, ZNode],
-  projectUsersSettings: [undef(), ZProjectUsersSettings.nullable()],
-  updateProjectUsersSettings: [ZProjectUsersSettings, ZProjectUsersSettings],
-  tagsSettings: [undef(), ZTagsSettings.nullable()],
-  updateTagsSettings: [ZTagsSettings, ZTagsSettings],
-  userSettings: [undef(), ZUserSettings.nullable()],
-  updateUserSettings: [ZUserSettings, ZUserSettings],
-  nodeDelete: [idCodec, TNodeDeleted],
   nodeCreate: [TNewNode, TNodeCreated],
+  nodeDelete: [idCodec, TNodeDeleted],
+  nodeSettings: [idCodec, ZNodeSettings.nullable()],
+  project: [undef(), ZProject],
+  projectUsersSettings: [undef(), ZProjectUsersSettings.nullable()],
+  tagsSettings: [undef(), ZTagsSettings.nullable()],
+  updateNodeSettings: [ZNodeSettings, ZNode],
+  updateProjectUsersSettings: [ZProjectUsersSettings, ZProjectUsersSettings],
+  updateTagsSettings: [ZTagsSettings, ZTagsSettings],
+  updateUserSettings: [ZUserSettings, ZUserSettings],
+  userSettings: [undef(), ZUserSettings.nullable()],
+  valueDelete: [ZValueBase, ZValue],
   valueList: [ZValueListRequest, ZValueList],
-  updateValue: [ZValue, ZValue],
-  deleteValue: [ZValueBase, ZValue]
+  valueUpdate: [ZValue, ZValue]
 } as const

@@ -5,7 +5,7 @@ import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from '../services/database'
 
-export const updateValue: ServerApiMethod<'updateValue'> = ({ docId, email, payload: value }) =>
+export const valueUpdate: ServerApiMethod<'valueUpdate'> = ({ docId, email, payload: value }) =>
   collection(Collections.values)
     .findOneAndUpdate(
       { docId, ...pick(['nodeId', 'tag'], value) },

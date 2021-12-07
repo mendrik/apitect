@@ -12,7 +12,7 @@ import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
 import { Jsx, Maybe } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
-import { deleteValueFx, updateValueFx } from '../../events/values'
+import { valueDeleteFx, valueUpdateFx } from '../../events/values'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
 import { EditorProps } from '../specific/VisualValue'
 
@@ -49,6 +49,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
     }
     const result = validator.safeParse(newValue)
     if (result.success) {
+      setError(undefined)
       const params = {
         tag,
         nodeId: node.id,
@@ -56,11 +57,9 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       }
       void (
         newValue === undefined
-          ? deleteValueFx(params)
-          : updateValueFx({ ...params, value: newValue } as StringValue)
-      )
-        .then(() => setError(undefined))
-        .then(displayView)
+          ? valueDeleteFx(params)
+          : valueUpdateFx({ ...params, value: newValue } as StringValue)
+      ).then(displayView)
     } else {
       e.stopPropagation()
       setError(result.error)
@@ -77,9 +76,6 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
         if (!res.success) {
           ev.preventDefault()
           ev.stopPropagation()
-          setError(res.error)
-        } else {
-          setError(undefined)
         }
       }
     ]
