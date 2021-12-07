@@ -24,6 +24,7 @@ const ZRegexp = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.String),
     validationType: literal(StringValidationType.Regexp),
+    required: boolean().default(false),
     regexp: regexpCodecAlt
   })
 )
@@ -39,6 +40,7 @@ const ZEmail = ZNodeSettingsBase.merge(
 const ZPassword = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.String),
+    required: boolean().default(false),
     validationType: literal(StringValidationType.Password)
   })
 )

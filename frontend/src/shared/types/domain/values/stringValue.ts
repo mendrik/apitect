@@ -17,7 +17,7 @@ export const ZStringValue = ZValueBase.merge(
 
 export type StringValue = TypeOf<typeof ZStringValue>
 
-export const getStringValidator = (settings?: StringSettings) => {
+const $getStringValidator = (settings?: StringSettings) => {
   switch (settings?.validationType) {
     case StringValidationType.Regexp:
       return regexpCodec(regexpFromString(settings.regexp))
@@ -28,4 +28,9 @@ export const getStringValidator = (settings?: StringSettings) => {
     default:
       return string().nonempty()
   }
+}
+
+export const getStringValidator = (settings?: StringSettings) => {
+  const base = $getStringValidator(settings)
+  return settings?.required === true ? base : base.optional()
 }
