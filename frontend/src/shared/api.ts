@@ -1,5 +1,6 @@
 import { undefined as undef } from 'zod'
 import { ZValue } from '~shared/types/domain/values/value'
+import { ZValueBase } from '~shared/types/domain/values/valueBase'
 
 import { idCodec } from './codecs/idCodec'
 import { ZNode } from './types/domain/node'
@@ -27,5 +28,6 @@ export const ApiSchema = {
   nodeDelete: [idCodec, TNodeDeleted],
   nodeCreate: [TNewNode, TNodeCreated],
   valueList: [ZValueListRequest, ZValueList],
-  updateValue: [ZValue, ZValue]
+  updateValue: [ZValue, ZValue],
+  deleteValue: [ZValueBase, undef()]
 } as const

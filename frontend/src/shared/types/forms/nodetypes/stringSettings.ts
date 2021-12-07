@@ -1,4 +1,4 @@
-import { literal, object, union } from 'zod'
+import { boolean, literal, object, union } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 import { regexpCodecAlt } from '~shared/codecs/regexpCodecAlt'
 
@@ -15,6 +15,7 @@ export enum StringValidationType {
 const ZNone = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.String),
+    required: boolean().default(false),
     validationType: literal(StringValidationType.None).default(StringValidationType.None)
   })
 )
@@ -30,6 +31,7 @@ const ZRegexp = ZNodeSettingsBase.merge(
 const ZEmail = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.String),
+    required: boolean().default(false),
     validationType: literal(StringValidationType.Email)
   })
 )

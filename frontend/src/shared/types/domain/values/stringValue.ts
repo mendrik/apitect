@@ -26,6 +26,6 @@ export const getStringValidator = (settings?: StringSettings) => {
     case StringValidationType.Password:
       return passwordString
     default:
-      return string()
+      return string().nonempty()
   }
 }

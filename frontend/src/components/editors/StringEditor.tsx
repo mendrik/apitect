@@ -12,7 +12,7 @@ import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
 import { Jsx, Maybe } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
-import { updateValueFx } from '../../events/values'
+import { deleteValueFx, updateValueFx } from '../../events/values'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { EditorProps } from '../specific/VisualValue'
@@ -34,6 +34,8 @@ const TextInput = styled.input`
   }
 `
 
+const emptyToUndefined = (str: string) => (/\s+/.test(str) ? undefined : str)
+
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
   const { view, isEditView, editView, displayView } = useView(Views)
   const [error, setError] = useState<Maybe<ZodError>>()
@@ -43,20 +45,24 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   const validator = getStringValidator(nodeSetting)
 
   const attemptSave = (e: FocusEvent<HTMLInputElement>) => {
-    const newValue = e.currentTarget.value
+    const newValue = emptyToUndefined(e.currentTarget.value)
     if (value?.value === newValue) {
       return displayView()
     }
     const result = validator.safeParse(newValue)
     if (result.success) {
-      void updateValueFx({
-        value: newValue,
-        nodeId: node.id,
+      const params = {
         tag,
+        nodeId: node.id,
         nodeType: NodeType.String
-      })
-        .then(() => setError(undefined))
-        .then(displayView)
+      }
+      if (newValue == null) {
+        void deleteValueFx(params)
+      } else {
+        void updateValueFx({ ...params, value: newValue } as any)
+          .then(() => setError(undefined))
+          .then(displayView)
+      }
     } else {
       e.stopPropagation()
       setError(result.error)
@@ -69,7 +75,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
     [
       propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'),
       (ev: KeyboardEvent<HTMLInputElement>) => {
-        const res = validator.safeParse(ev.currentTarget.value)
+        const res = validator.safeParse(emptyToUndefined(ev.currentTarget.value))
         if (!res.success) {
           stopPropagation()(ev)
           setError(res.error)
