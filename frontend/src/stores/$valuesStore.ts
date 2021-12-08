@@ -8,11 +8,11 @@ export const $valuesStore = createStore<Value[]>([])
 
 const byIdAndTag = pipe(juxt([prop('nodeId'), propOr('', 'tag')]), join('-'))
 
-$valuesStore.on(valueListFx.done, (state, { result }) =>
+$valuesStore.on(valueListFx.doneData, (state, result) =>
   uniqBy(byIdAndTag, result.values.concat(state))
 )
 
-$valuesStore.on(valueUpdateFx.done, (state, { result }) =>
+$valuesStore.on(valueUpdateFx.doneData, (state, result) =>
   uniqBy(byIdAndTag, [result].concat(state))
 )
 

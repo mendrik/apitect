@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector'
+import { createEvent, createStore, sample } from 'effector'
 import { isNil, prop, propEq, unless } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { ApiResult } from '~shared/types/api'
@@ -19,31 +19,36 @@ const $rawTree = createStore<Node>({
   children: [],
   name: 'root'
 })
-  .on(projectFx.done, (state, { result }) => result.document.tree)
-  .on(deleteNodeFx.done, (state, { result }) => result.tree)
+  .on(projectFx.doneData, (state, result) => result.document.tree)
+  .on(deleteNodeFx.doneData, (state, result) => result.tree)
   .on(rawTreeCreateNode, (state, result) => result.tree)
-  .on(updateNodeSettingsFx.done, (state, { result }) => result)
+  .on(updateNodeSettingsFx.doneData, (state, result) => result)
+  .reset(resetProject)
 
 export const $treeStore = $rawTree.map(unless(isNil, TreeNode.from<Node, 'children'>('children')))
-
-$treeStore.watch(treeCreateNode, (state, result) => {
-  const node = state.first(propEq('id', result.nodeId)) ?? null
-  selectNode(node)
-})
-
-$treeStore.watch(deleteNodeFx.done, (state, { result }) => {
-  const parent = state.first(propEq('id', result.parentNode))
-  const node = parent?.children[result.position - 1] ?? parent ?? null
-  selectNode(node)
-})
-
-createNodeFx.done.watch(({ result }) => {
-  rawTreeCreateNode(result)
-  treeCreateNode(result)
-})
 
 export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
   byProp<Node, 'id'>('id')(root.flatten().map(prop('value')))
 )
 
-$rawTree.reset(resetProject)
+sample({
+  source: $treeStore,
+  clock: treeCreateNode,
+  fn: (state, result) => state.first(propEq('id', result.nodeId)) ?? null,
+  target: selectNode
+})
+
+sample({
+  source: $treeStore,
+  clock: deleteNodeFx.doneData,
+  fn: (state, result) => {
+    const parent = state.first(propEq('id', result.parentNode))
+    return parent?.children[result.position - 1] ?? parent ?? null
+  },
+  target: selectNode
+})
+
+sample({
+  clock: createNodeFx.doneData,
+  target: [rawTreeCreateNode, treeCreateNode]
+})

@@ -7,7 +7,7 @@ import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
 
 const $rawNodeSettings = createStore<NodeSettings[]>([])
-  .on(projectFx.done, (state, { result }) => result.nodeSettings)
+  .on(projectFx.doneData, (state, result) => result.nodeSettings)
   .reset(resetProject)
 
 export const $nodeSettings = $rawNodeSettings.map<Record<NodeId, NodeSettings>>(byProp('nodeId'))
