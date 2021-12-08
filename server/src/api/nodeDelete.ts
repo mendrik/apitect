@@ -16,4 +16,9 @@ export const nodeDelete: ServerApiMethod<'nodeDelete'> = ({ docId, payload: id }
       parentNode: op.parent.id,
       tree: op.self.extract()
     }))
-    .then(tap(() => collection(Collections.values).deleteMany({ docId, nodeId: id })))
+    .then(
+      tap(() => {
+        void collection(Collections.values).deleteMany({ docId, nodeId: id })
+        void collection(Collections.nodeSettings).deleteOne({ docId, nodeId: id })
+      })
+    )
