@@ -6,7 +6,6 @@ import { ZodError, ZodSchema } from 'zod'
 import { useView } from '~hooks/useView'
 import { Node } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
-import { StringValue } from '~shared/types/domain/values/stringValue'
 import { Value } from '~shared/types/domain/values/value'
 import { Maybe } from '~shared/types/generic'
 
@@ -17,7 +16,8 @@ const lastExecution = {
   time: Date.now()
 }
 
-const emptyToUndefined = (str: string) => (/^\s*$/.test(str) ? undefined : str)
+const emptyToUndefined = <T extends Value['value']>(str: T): T | undefined =>
+  typeof str === 'string' && /^\s*$/.test(str) ? undefined : (str as T)
 
 export enum Views {
   Display,
@@ -46,7 +46,10 @@ export const useEditorTools = (
   const views = useView(Views)
   const [error, setError] = useState<Maybe<ZodError>>()
 
-  const saveFn = (e: SyntheticEvent<HTMLInputElement>) => {
+  const saveValue = <T extends Value['value']>(
+    formValue: T,
+    e?: SyntheticEvent<HTMLInputElement>
+  ) => {
     const now = Date.now()
     // make sure that onBlur and onKeyDown don't run this twice
     if (now - lastExecution.time < 20) {
@@ -55,7 +58,7 @@ export const useEditorTools = (
       lastExecution.time = now
     }
     setError(undefined)
-    const newValue = emptyToUndefined(e.currentTarget.value)
+    const newValue = emptyToUndefined(formValue)
     const result = validator.safeParse(newValue)
     if (value?.value === newValue && result.success) {
       return views.displayView()
@@ -68,24 +71,27 @@ export const useEditorTools = (
       }
       void (
         newValue !== undefined
-          ? valueUpdateFx({ ...params, value: newValue } as StringValue)
+          ? valueUpdateFx({ ...params, value: newValue } as Value)
           : valueDeleteFx(params)
       ).then(views.displayView)
     } else {
-      e.preventDefault()
-      e.stopPropagation()
+      e?.preventDefault()
+      e?.stopPropagation()
       setError(result.error)
     }
   }
 
+  const saveFromEvent = (e: SyntheticEvent<HTMLInputElement>) => saveValue(e.currentTarget.value, e)
+
   const keyMap = cond([
     [propEq('code', 'ArrowRight'), when(views.isEditView, (e: Event) => e.stopPropagation())],
     [propEq('code', 'ArrowLeft'), when(views.isEditView, (e: Event) => e.stopPropagation())],
-    [propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'), saveFn]
+    [propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'), saveFromEvent]
   ])
 
   return {
-    saveFn,
+    saveValue,
+    saveFromEvent,
     keyMap,
     error,
     views

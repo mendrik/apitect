@@ -12,7 +12,7 @@ import { EditorProps } from '../specific/VisualValue'
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
   const nodeSettings = useStore($nodeSettings)
   const validator = getStringValidator(nodeSettings[node.id] as StringSettings)
-  const { saveFn, error, keyMap, views } = useEditorTools(node, value, tag, validator)
+  const { saveFromEvent, error, keyMap, views } = useEditorTools(node, value, tag, validator)
 
   return views.isDisplayView() ? (
     <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
@@ -25,7 +25,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       autoFocus
       placeholder={node.name}
       onKeyDown={keyMap}
-      onBlur={saveFn}
+      onBlur={saveFromEvent}
       defaultValue={value?.value}
     />
   )

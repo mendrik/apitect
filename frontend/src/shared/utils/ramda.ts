@@ -33,7 +33,7 @@ import {
 } from 'ramda'
 import { findOr } from 'ramda-adjunct'
 
-import { AFn, Fn, Maybe } from '../types/generic'
+import { ArgFn, Fn, Maybe } from '../types/generic'
 
 export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]), toLower)
 
@@ -85,7 +85,7 @@ export const spaceOrEnter = either(propEq<any>('code', 'Space'), propEq<any>('ke
 
 export const decapitalizeFirst = unless(isNil, replace(/^./, toLower))
 
-export const updateArrayBy = curry(<T>(pred: Pred, updateFn: AFn<T, T>, arr: T[]) => {
+export const updateArrayBy = curry(<T>(pred: Pred, updateFn: ArgFn<T, T>, arr: T[]) => {
   const index = findIndex(pred, arr)
   return update(index, updateFn(arr[index]), arr)
 })

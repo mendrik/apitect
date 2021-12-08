@@ -6,11 +6,10 @@ import { propEq, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ButtonRow } from '~forms/ButtonRow'
-import { Jsx } from '~shared/types/generic'
+import { ArgFn, Jsx } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { Scrollable } from '../generic/Scrollable'
@@ -18,6 +17,8 @@ import { Month } from './Month'
 
 type OwnProps = {
   name: string
+  onDateSelected: ArgFn<Date>
+  currentDate: Date
 }
 
 const Layout = styled.div`
@@ -94,10 +95,14 @@ const CalendarButton = styled.div`
   cursor: pointer;
 `
 
-export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
+export const Datepicker = ({
+  name,
+  currentDate: $current,
+  children,
+  onDateSelected,
+  ...props
+}: Jsx<OwnProps>) => {
   const { t } = useTranslation()
-  const { watch, setValue } = useFormContext<{ [K in typeof name]: Date }>()
-  const $current = watch(name)
   const currentDate: Date = isValid($current) ? $current : new Date()
   const [selected, setSelected] = useState<Date>(currentDate)
   const [open, setOpen] = useState(false)
@@ -197,7 +202,7 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
                 <Button
                   variant="primary"
                   onClick={() => {
-                    setValue(name, format(selected, 'yyyy-MM-dd') as any)
+                    onDateSelected(selected)
                     setOpen(false)
                   }}
                 >

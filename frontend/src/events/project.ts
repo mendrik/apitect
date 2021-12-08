@@ -2,7 +2,7 @@ import { createEffect, sample } from 'effector'
 import { find, isNil, propEq, propOr, tap } from 'ramda'
 import { Api } from '~shared/types/api'
 import { Tag } from '~shared/types/domain/tag'
-import { AFn } from '~shared/types/generic'
+import { ArgFn } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 import { failOn } from '~shared/utils/failOn'
 
@@ -12,7 +12,7 @@ import { openModal } from './modals'
 const api = () => sample($api).getState()
 
 export const projectFx = createEffect<Api['project']>(() => api().project())
-export const dateLocaleFx = createEffect<AFn<string, Promise<Locale>>>(
+export const dateLocaleFx = createEffect<ArgFn<string, Promise<Locale>>>(
   locale => import(`/node_modules/date-fns/locale/${locale}`)
 )
 
@@ -38,7 +38,7 @@ export const updateTagsSettingsFx = createEffect<Api['updateTagsSettings']>(tags
     .then(tap(() => projectFx()))
 )
 
-export const tagSettingsFx = createEffect<AFn<string>>(name =>
+export const tagSettingsFx = createEffect<ArgFn<string>>(name =>
   api()
     .tagsSettings()
     .then<any[]>(propOr([], 'tags'))
