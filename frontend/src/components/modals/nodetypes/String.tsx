@@ -20,7 +20,6 @@ const String = () => {
         <TextInput
           name="regexp"
           label="modals.nodeSettings.string.regexp"
-          type="text"
           onFocus={() => setValue('validationType', StringValidationType.Regexp)}
           options={{ required: false }}
         />

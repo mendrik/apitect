@@ -64,6 +64,11 @@ const en = {
         object: {
           apiEndpoint: 'Accessible via REST api'
         },
+        date: {
+          localized: 'Localized',
+          custom: 'Custom format',
+          humanReadable: 'Human readable'
+        },
         number: {
           min: 'Minimum',
           max: 'Maximum',
@@ -115,7 +120,8 @@ const en = {
         regexp: 'Regular Expression',
         number: 'Number',
         search: 'Search',
-        parentTag: 'Extends from'
+        parentTag: 'Extends from',
+        format: 'Custom format'
       },
       validation: {
         sherlock: 'Unable not understand this expression',
@@ -127,7 +133,9 @@ const en = {
           "$t(form.fields.{{ field }}) mustn't contain special characters or spaces",
         noSpecialCharacters: "$t(form.fields.{{ field }}) mustn't contain special characters",
         password:
-          '$t(form.fields.{{ field }}) must be at least 6 characters long, 1 digit and 1 uppercase letter'
+          '$t(form.fields.{{ field }}) must be at least 6 characters long, 1 digit and 1 uppercase letter',
+        dateformat:
+          '$t(form.fields.{{ field }}) must be a correct <a href="https://date-fns.org/v2.27.0/docs/format" target="_blank" class="link-primary text-decoration-none">date-format</a'
       },
       dropDown: {
         noValue: 'Select...'

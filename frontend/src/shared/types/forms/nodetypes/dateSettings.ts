@@ -1,17 +1,22 @@
-import { boolean, literal, object } from 'zod'
+import { boolean, literal, nativeEnum, object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
+import { dateFormatCodec } from '~shared/codecs/dateFormatCodec'
 
 import { NodeType } from '../../domain/nodeType'
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 
+export enum DateDisplay {
+  Localized = 'localized',
+  Custom = 'custom',
+  HumanReadable = 'humanReadable'
+}
+
 export const ZDateSettings = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.Date),
-    validation: object({}),
     required: boolean().default(false),
-    display: object({
-      humanReadable: boolean()
-    })
+    display: nativeEnum(DateDisplay).default(DateDisplay.Localized),
+    format: dateFormatCodec.default('dd/MM/yyyy')
   })
 )
 

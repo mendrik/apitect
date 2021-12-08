@@ -22,6 +22,7 @@ enum Views {
 }
 
 const Text = styled.div`
+  white-space: pre;
   width: 100%;
   height: 24px;
   padding-left: 3px;
