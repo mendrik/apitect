@@ -41,7 +41,7 @@ const render = (): void =>
     document.getElementById('root')
   )
 
-const start = async () => initLocales().then(whoAmIFx).then(render)
+const start = () => initLocales().then(whoAmIFx).then(render)
 
 void start()
 

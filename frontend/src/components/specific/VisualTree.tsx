@@ -2,7 +2,6 @@ import { useStore } from 'effector-react'
 import { cond, propEq } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React from 'react'
-import { useMountedState } from 'react-use'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
 

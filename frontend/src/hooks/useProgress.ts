@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { useMountedState } from 'react-use'
+import { usePromise as useMounted } from 'react-use'
 
 export type Status<T> =
   | { is: 'idle' }
@@ -10,26 +10,24 @@ export type Status<T> =
 export type UseProgress = <T>() => [(promise: Promise<T>) => Promise<T>, Status<T>]
 
 const useProgress: UseProgress = <T>() => {
-  const isMounted = useMountedState()
+  const isMounted = useMounted()
   const [status, setStatus] = useState<Status<T>>({ is: 'idle' })
   return [
     useCallback((promise: Promise<T>) => {
       setStatus({ is: 'running' })
-      return new Promise<T>((resolve, reject) => {
-        const onValue = (result: T) => {
-          if (isMounted()) {
+      return isMounted(
+        new Promise<T>((resolve, reject) => {
+          const onValue = (result: T) => {
             setStatus({ is: 'done', result })
             resolve(result)
           }
-        }
-        const onError = (result: Error) => {
-          if (isMounted()) {
+          const onError = (result: Error) => {
             setStatus({ is: 'error', result })
             reject(result)
           }
-        }
-        promise.then(onValue, onError)
-      })
+          promise.then(onValue, onError)
+        })
+      )
     }, []),
     status
   ]

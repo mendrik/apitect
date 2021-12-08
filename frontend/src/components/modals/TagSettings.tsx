@@ -32,7 +32,7 @@ const TagSettings: ModalFC = ({ close }) => {
   return (
     <SocketForm
       form={form}
-      onValid={async data =>
+      onValid={data =>
         updateTagsSettingsFx({ tags: updateArrayBy(propEq('name', tag.name), always(data), tags) })
       }
       close={close}
