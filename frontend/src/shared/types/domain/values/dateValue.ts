@@ -18,7 +18,7 @@ const $getDateValidator = (settings?: DateSettings) => {
   return date()
 }
 
-export const getStringValidator = (settings?: DateSettings) => {
+export const getDateValidator = (settings?: DateSettings) => {
   const base = $getDateValidator(settings)
   return settings?.required === true ? base : base.optional()
 }

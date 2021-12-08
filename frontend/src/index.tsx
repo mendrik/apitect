@@ -8,6 +8,7 @@ import App from './components/App'
 import { Modals } from './components/Modals'
 import { ErrorView } from './components/generic/ErrorView'
 import { Loader } from './components/generic/Loader'
+import { dateLocaleFx } from './events/project'
 import { whoAmIFx } from './events/user'
 import './index.scss'
 import { initLocales } from './locales/locales'
@@ -41,7 +42,11 @@ const render = (): void =>
     document.getElementById('root')
   )
 
-const start = () => initLocales().then(whoAmIFx).then(render)
+const start = () =>
+  initLocales()
+    .then(() => void dateLocaleFx(navigator.language))
+    .then(whoAmIFx)
+    .then(render)
 
 void start()
 

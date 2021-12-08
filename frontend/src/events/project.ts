@@ -12,6 +12,9 @@ import { openModal } from './modals'
 const api = () => sample($api).getState()
 
 export const projectFx = createEffect<Api['project']>(() => api().project())
+export const dateLocaleFx = createEffect<AFn<string, Promise<Locale>>>(
+  locale => import(`date-fns/locale/${locale}`)
+)
 
 export const projectUserSettingsFx = createEffect(() =>
   api()
