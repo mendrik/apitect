@@ -4,10 +4,10 @@ import { DateDisplay, DateSettings } from '~shared/types/forms/nodetypes/dateSet
 
 import { $dateLocale } from '../stores/$dateLocale'
 
-export const useDateFormat =
-  (settings: DateSettings) =>
-  (date?: Date): string => {
-    const locale = useStore($dateLocale)
+export const useDateFormat = (settings: DateSettings) => {
+  const locale = useStore($dateLocale)
+
+  return (date?: Date): string => {
     if (date == null || !isValid(date)) {
       return ''
     }
@@ -20,3 +20,4 @@ export const useDateFormat =
         return 'todo'
     }
   }
+}

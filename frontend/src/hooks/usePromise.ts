@@ -1,10 +1,11 @@
 import { F } from 'ramda'
 import { useContext, useEffect, useState } from 'react'
 import { usePromise as useMounted } from 'react-use'
+import { Fn } from '~shared/types/generic'
 
 import { errorContext } from '../components/generic/ErrorContext'
 
-type Trigger = () => void
+type Trigger = Fn
 
 export const usePromise = <ARG, T = void>(
   fn: (...args: ARG[]) => Promise<T>,

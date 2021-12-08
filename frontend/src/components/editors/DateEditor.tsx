@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import React from 'react'
-import InputMask from 'react-input-mask'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { useDateFormat } from '~hooks/useDateFormat'
@@ -15,7 +14,16 @@ import { Datepicker } from '../datepicker/Datepicker'
 import { Scale, Tuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
 
-export const DateInput = styled(InputMask)`
+export const DateInput = styled.input`
+  padding-left: 3px;
+  border: none;
+  outline: none;
+  ::-webkit-inner-spin-button,
+  ::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+
   &.invalid {
     background-color: ${Palette.error};
   }
@@ -24,27 +32,22 @@ export const DateInput = styled(InputMask)`
 export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) => {
   const nodeSettings = useStore($nodeSettings)
   const nodeSetting = nodeSettings[node.id] as DateSettings
-  const validator = getDateValidator(nodeSetting)
   const format = useDateFormat(nodeSetting)
-  const { saveFromEvent, saveValue, error, keyMap, views } = useEditorTools(
-    node,
-    value,
-    tag,
-    validator
-  )
+
+  const validator = getDateValidator(nodeSetting)
+  const { saveValue, error, keyMap, views } = useEditorTools(node, value, tag, validator)
 
   return views.isDisplayView() ? (
     <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
       <span>{format(value?.value)}</span>
     </Text>
   ) : (
-    <Tuple first={Scale.MAX} second={Scale.CONTENT} style={{ position: 'relative', maxWidth: 200 }}>
-      <InputMask
-        mask="99.99.9999"
+    <Tuple first={Scale.MAX} second={Scale.CONTENT} style={{ position: 'relative', maxWidth: 112 }}>
+      <DateInput
+        type="date"
         className={clsx('editor', { invalid: error != null })}
         autoFocus
         onKeyDown={keyMap}
-        onBlur={saveFromEvent}
       />
       <Datepicker name="date" onDateSelected={saveValue} currentDate={value?.value ?? new Date()} />
     </Tuple>
