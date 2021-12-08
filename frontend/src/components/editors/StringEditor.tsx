@@ -1,54 +1,21 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import { cond, propEq, propSatisfies, when } from 'ramda'
-import { included } from 'ramda-adjunct'
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { ZodError } from 'zod'
-import { useView } from '~hooks/useView'
+import React from 'react'
+import { useEditorTools, Text, TextInput } from '~hooks/specific/useEditorTools'
 import { getStringValidator, StringValue } from '~shared/types/domain/values/stringValue'
 import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
-import { Jsx, Maybe } from '~shared/types/generic'
+import { Jsx } from '~shared/types/generic'
 
-import { Palette } from '../../css/colors'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
 import { EditorProps } from '../specific/VisualValue'
-import { useSafeAttempt } from './safeFunction'
-
-enum Views {
-  Display,
-  Edit
-}
-
-const Text = styled.div`
-  white-space: pre;
-  width: 100%;
-  height: 24px;
-  padding-left: 3px;
-`
-
-const TextInput = styled.input`
-  &.invalid {
-    background-color: ${Palette.error};
-  }
-`
 
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
-  const { isEditView, editView, displayView, isDisplayView } = useView(Views)
-
-  const [error] = useState<Maybe<ZodError>>()
   const nodeSettings = useStore($nodeSettings)
   const validator = getStringValidator(nodeSettings[node.id] as StringSettings)
-  const attemptSave = useSafeAttempt(node, value, tag, validator, displayView)
+  const { saveFn, error, keyMap, views } = useEditorTools(node, value, tag, validator)
 
-  const keyMap = cond([
-    [propEq('code', 'ArrowRight'), when(isEditView, (e: Event) => e.stopPropagation())],
-    [propEq('code', 'ArrowLeft'), when(isEditView, (e: Event) => e.stopPropagation())],
-    [propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'), attemptSave]
-  ])
-
-  return isDisplayView() ? (
-    <Text tabIndex={0} onKeyDown={keyMap} onFocus={editView}>
+  return views.isDisplayView() ? (
+    <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
       <span>{value?.value ?? ' '}</span>
     </Text>
   ) : (
@@ -58,7 +25,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       autoFocus
       placeholder={node.name}
       onKeyDown={keyMap}
-      onBlur={attemptSave}
+      onBlur={saveFn}
       defaultValue={value?.value}
     />
   )

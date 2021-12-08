@@ -85,11 +85,6 @@ const GridButtonRow = styled(ButtonRow)`
 `
 
 const CalendarButton = styled.div`
-  position: absolute;
-  width: 58px;
-  height: 100%;
-  top: 0;
-  right: 0;
   padding: 1px;
   box-shadow: none !important;
   color: #999;
@@ -108,11 +103,14 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
+    const doc = document.documentElement
     if (open) {
-      document.body.classList.add('datepicker-open')
+      if (doc.scrollHeight > doc.clientHeight) {
+        doc.classList.add('datepicker-open')
+      }
       setSelected(currentDate)
     } else {
-      document.body.classList.remove('datepicker-open')
+      doc.classList.remove('datepicker-open')
     }
   }, [open])
 
@@ -154,7 +152,7 @@ export const Datepicker = ({ name, children, ...props }: Jsx<OwnProps>) => {
 
   return (
     <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>
-      <IconCalendar className="w-4 h-4" stroke={1} />
+      <IconCalendar className="w-4 h-4" size={20} stroke={1} />
       <AnimatePresence>
         {open && (
           <motion.div {...fullscreenScale} role="dialog">

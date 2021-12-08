@@ -5,6 +5,7 @@ import { BooleanValue } from '~shared/types/domain/values/booleanValue'
 import { Jsx } from '~shared/types/generic'
 
 import { valueUpdateFx } from '../../events/values'
+import { Placeholder } from '../generic/Placeholder'
 import { EditorProps } from '../specific/VisualValue'
 
 export const BooleanEditor = ({ value, node, tag, loading }: Jsx<EditorProps<BooleanValue>>) => {
@@ -16,7 +17,9 @@ export const BooleanEditor = ({ value, node, tag, loading }: Jsx<EditorProps<Boo
       nodeType: NodeType.Boolean
     })
 
-  return (
-    !loading && <Form.Check type="switch" checked={value?.value ?? false} onChange={handleChange} />
+  return loading ? (
+    <Placeholder.Value nodeId={node.id} />
+  ) : (
+    <Form.Check type="switch" checked={value?.value ?? false} onChange={handleChange} />
   )
 }

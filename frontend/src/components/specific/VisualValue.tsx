@@ -9,6 +9,7 @@ import { Jsx } from '~shared/types/generic'
 
 import { $mappedNodesStore } from '../../stores/$treeStore'
 import { BooleanEditor } from '../editors/BooleanEditor'
+import { DateEditor } from '../editors/DateEditor'
 import { StringEditor } from '../editors/StringEditor'
 
 type OwnProps = {
@@ -33,6 +34,8 @@ const getEditor = <T extends NodeType>(
       return StringEditor
     case NodeType.Boolean:
       return BooleanEditor
+    case NodeType.Date:
+      return DateEditor
     default:
       return null // todo throw Error instead when all are implemented
   }

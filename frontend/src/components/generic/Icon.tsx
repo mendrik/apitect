@@ -56,7 +56,11 @@ export const Icon = ({
   ...props
 }: Jsx<OwnProps>) => {
   return (
-    <Wrap className={clsx('d-block')} {...props} data-disabled={disabled}>
+    <Wrap
+      className={clsx('d-block', { 'cursor-pointer': !!props.onClick })}
+      {...props}
+      data-disabled={disabled}
+    >
       <IconCmp
         className={clsx('d-block user-select-none', iconClasses)}
         focusable="false"

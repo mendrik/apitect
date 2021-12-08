@@ -1,53 +1,52 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import { cond, propEq, propSatisfies, when } from 'ramda'
-import { included } from 'ramda-adjunct'
-import React, { useState } from 'react'
-import { ZodError } from 'zod'
-import { TextInput } from '~forms/TextInput'
-import { useView } from '~hooks/useView'
+import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { Text, TextInput, useEditorTools } from '~hooks/specific/useEditorTools'
+import { useDateFormat } from '~hooks/useDateFormat'
+import { useDatepicker } from '~hooks/useDatepicker'
 import { DateValue, getDateValidator } from '~shared/types/domain/values/dateValue'
-import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
-import { Jsx, Maybe } from '~shared/types/generic'
+import { DateDisplay, DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
+import { Jsx } from '~shared/types/generic'
 
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
+import { Scale, Tuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
-import { useSafeAttempt } from './safeFunction'
-import { format } from 'prettier'
 
-enum Views {
-  Display,
-  Edit
-}
-
-export const DateEditor = ({ value, node, tag, loading }: Jsx<EditorProps<DateValue>>) => {
-  const { isEditView, editView, displayView, isDisplayView } = useView(Views)
-
-  const [error] = useState<Maybe<ZodError>>()
+export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) => {
   const nodeSettings = useStore($nodeSettings)
   const nodeSetting = nodeSettings[node.id] as DateSettings
   const validator = getDateValidator(nodeSetting)
-  const attemptSave = useSafeAttempt(node, value, tag, validator, displayView)
+  const format = useDateFormat(nodeSetting)
+  const CalendarIcon = useDatepicker(`date-${tag}-${node.id}`)
+  const formatStr = nodeSetting?.display === DateDisplay.Custom ? nodeSetting.format : 'dd.MM.yyyy'
 
-  const keyMap = cond([
-    [propEq('code', 'ArrowRight'), when(isEditView, (e: Event) => e.stopPropagation())],
-    [propEq('code', 'ArrowLeft'), when(isEditView, (e: Event) => e.stopPropagation())],
-    [propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'), attemptSave]
-  ])
+  const { saveFn, error, keyMap, views } = useEditorTools(node, value, tag, validator)
 
-  return isDisplayView() ? (
-    <Text tabIndex={0} onKeyDown={keyMap} onFocus={editView}>
-      {value?.value ? <span>{format(value?.value, nodeSetting.}</span>
+  const form = useForm()
+
+  return views.isDisplayView() ? (
+    <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
+      <span>{format(value?.value)}</span>
     </Text>
   ) : (
-    <TextInput
-      type="text"
-      className={clsx('editor', { invalid: error != null })}
-      autoFocus
-      placeholder={node.name}
-      onKeyDown={keyMap}
-      onBlur={attemptSave}
-      defaultValue={value?.value}
-    />
+    <FormProvider {...form}>
+      <Tuple
+        first={Scale.MAX}
+        second={Scale.CONTENT}
+        style={{ position: 'relative', maxWidth: 200 }}
+      >
+        <TextInput
+          type="text"
+          className={clsx('editor', { invalid: error != null })}
+          autoFocus
+          placeholder={formatStr}
+          onKeyDown={keyMap}
+          onBlur={saveFn}
+          defaultValue={format(value?.value)}
+        />
+        {CalendarIcon}
+      </Tuple>
+    </FormProvider>
   )
 }
