@@ -10,7 +10,6 @@ import {
   setDay
 } from 'date-fns'
 import { range, reduce, take } from 'ramda'
-import { mapIndexed } from 'ramda-adjunct'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useOnActivate } from '~hooks/useOnActivate'
@@ -101,13 +100,10 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) => {
   return (
     <Wrap>
       <MonthHead>{format(month, 'LLLL')}</MonthHead>
-      {mapIndexed(
-        d => (
-          <Week key={format(d, 'e')}>{format(d, 'eeeeee')}</Week>
-        ),
-        take(7, days)
-      )}
-      {mapIndexed(
+      {take(7, days).map(d => (
+        <Week key={format(d, 'e')}>{format(d, 'eeeeee')}</Week>
+      ))}
+      {days.map(
         d => (
           <Day
             key={format(d, 'd.M')}

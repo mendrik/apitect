@@ -4,7 +4,7 @@ import { addYears, format, isSameYear, isValid, setDate, setMonth } from 'date-f
 import { AnimatePresence, motion } from 'framer-motion'
 import { propEq, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -142,16 +142,13 @@ export const Datepicker = ({
       ?.querySelector<HTMLDivElement>('.currentYear')
       ?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
 
-  useLayoutEffect(() => {
-    if (open) {
-      setTimeout(() => {
-        scrollYear()
-        const m = ref.current?.querySelector<HTMLDivElement>('.selected')
-        m?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
-        m?.focus()
-      }, 0)
-    }
-  }, [open])
+  const afterOpen = () =>
+    setTimeout(() => {
+      scrollYear()
+      const m = ref.current?.querySelector<HTMLDivElement>('.selected')
+      m?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
+      m?.focus()
+    }, 1)
 
   const onEscape = when(propEq('code', 'Escape'), () => setOpen(false))
 
@@ -160,7 +157,7 @@ export const Datepicker = ({
       <IconCalendar className="w-4 h-4" size={20} stroke={1} />
       <AnimatePresence>
         {open && (
-          <motion.div {...fullscreenScale} role="dialog">
+          <motion.div {...fullscreenScale} role="dialog" onAnimationStart={afterOpen}>
             <Layout>
               <Scrollable fade>
                 <Years>

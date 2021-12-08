@@ -1,3 +1,4 @@
+
 ### Apitect
 
 # Run the project
@@ -20,6 +21,7 @@
 - CRUD endpoints
 - Array needs ID field for CRUD operations
 - Value column head has extends/copy dropdown
+- publish only possible when doc is valid, otherwise API gives 404
 
 # Todo
 
@@ -31,7 +33,8 @@
 - MultiTagInput
 - ListInput
 - TreeInput: arrow keys, remember open state, open selected
-- wait for user loading state missing
+- toasts for validation errors in dashboard
+- element for editing existing, new and delete form items
 
 # Type expansion
 
