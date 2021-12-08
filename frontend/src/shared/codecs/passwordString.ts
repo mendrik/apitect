@@ -1,4 +1,5 @@
 import { string } from 'zod'
+import { nonEmptyString } from '~shared/codecs/nonEmptyString'
 
 /**
  ^                  Start anchor
@@ -7,7 +8,7 @@ import { string } from 'zod'
  .{6,}               Ensure string is of length 6.
  $                  End anchor.
  */
-export const passwordString = string().regex(
+export const passwordString = nonEmptyString.regex(
   /^(?=.*[A-Z])(?=.*[0-9]).{6,}$/,
   'form.validation.password'
 )

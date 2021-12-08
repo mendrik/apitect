@@ -55,13 +55,13 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
     } else {
       lastExecution.time = now
     }
+    setError(undefined)
     const newValue = emptyToUndefined(e.currentTarget.value)
-    if (value?.value === newValue) {
+    const result = validator.safeParse(newValue)
+    if (value?.value === newValue && result.success) {
       return displayView()
     }
-    const result = validator.safeParse(newValue)
     if (result.success) {
-      setError(undefined)
       const params = {
         tag,
         nodeId: node.id,
@@ -74,6 +74,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       ).then(displayView)
     } else {
       e.preventDefault()
+      e.stopPropagation()
       setError(result.error)
     }
   }
