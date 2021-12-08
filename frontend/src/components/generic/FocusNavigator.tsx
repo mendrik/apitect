@@ -40,20 +40,19 @@ export const FocusNavigator = ({
 
         if (dir === Direction.Right) {
           const startIndex = currentIndex - (currentIndex % rowCount)
-          next(equals(current))(focusables.slice(startIndex, startIndex + rowCount))?.focus()
+          const focusableSlice = focusables.slice(startIndex, startIndex + rowCount)
+          next(equals(current))(focusableSlice)?.focus()
         } else if (dir === Direction.Left) {
           const startIndex = currentIndex - (currentIndex % rowCount)
-          prev(equals(current))(focusables.slice(startIndex, startIndex + rowCount))?.focus()
+          const focusableSlice = focusables.slice(startIndex, startIndex + rowCount)
+          prev(equals(current))(focusableSlice)?.focus()
         } else if (dir === Direction.Up) {
-          next(
-            equals(
-              focusables[(currentIndex - rowCount - 1 + focusables.length) % focusables.length]
-            )
-          )(focusables)?.focus()
+          const focusable =
+            focusables[(currentIndex - rowCount - 1 + focusables.length) % focusables.length]
+          next(equals(focusable))(focusables)?.focus()
         } else if (dir === Direction.Down) {
-          prev(equals(focusables[(currentIndex + rowCount + 1) % focusables.length]))(
-            focusables
-          )?.focus()
+          const focusable = focusables[(currentIndex + rowCount + 1) % focusables.length]
+          prev(equals(focusable))(focusables)?.focus()
         }
       }
     })

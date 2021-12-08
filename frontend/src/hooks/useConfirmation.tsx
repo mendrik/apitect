@@ -19,14 +19,15 @@ export const useConfirmation = (
 ): [Fn<JSX.Element | null>, Fn] => {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
+  const close = () => setOpen(false)
+
   const refOk = useOnActivate<HTMLButtonElement>(() => {
-    setOpen(false)
+    close()
     onConfirm()
   })
   const refCancel = useOnActivate<HTMLButtonElement>(() => {
-    setOpen(false)
+    close()
   })
-  const close = () => setOpen(false)
 
   useEffect(() => {
     if (refOk.current) {
@@ -35,7 +36,7 @@ export const useConfirmation = (
   }, [open])
 
   const keyMap = cond([
-    [propEq('code', 'Escape'), sp(() => setOpen(false))],
+    [propEq('code', 'Escape'), sp(close)],
     [propNotEq('code', 'Tab'), sp]
   ])
 
@@ -61,10 +62,5 @@ export const useConfirmation = (
     ) : null
   }, [open])
 
-  return [
-    Confirm,
-    () => {
-      setOpen(true)
-    }
-  ]
+  return [Confirm, () => setOpen(true)]
 }

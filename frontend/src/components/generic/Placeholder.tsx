@@ -1,6 +1,7 @@
 import { range } from 'ramda'
 import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
+import { NodeId } from '~shared/types/domain/node'
 import { Jsx } from '~shared/types/generic'
 
 type OwnProps = HTMLAttributes<HTMLDivElement>
@@ -77,4 +78,15 @@ Placeholder.List = ({ lines }: { lines: number }) => (
       <Placeholder key={n} />
     ))}
   </StyledPlaceholderList>
+)
+
+Placeholder.Value = ({ nodeId }: { nodeId: NodeId }) => (
+  <Placeholder
+    key={nodeId}
+    tabIndex={0}
+    style={{
+      width: `${30 + (parseInt(nodeId.replace(/[^\d]/g, ''), 10) % 50)}%`,
+      borderRadius: 6
+    }}
+  />
 )

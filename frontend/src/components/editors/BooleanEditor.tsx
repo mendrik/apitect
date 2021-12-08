@@ -7,7 +7,7 @@ import { Jsx } from '~shared/types/generic'
 import { valueUpdateFx } from '../../events/values'
 import { EditorProps } from '../specific/VisualValue'
 
-export const BooleanEditor = ({ value, node, tag }: Jsx<EditorProps<BooleanValue>>) => {
+export const BooleanEditor = ({ value, node, tag, loading }: Jsx<EditorProps<BooleanValue>>) => {
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) =>
     valueUpdateFx({
       value: ev.target.checked,
@@ -16,5 +16,7 @@ export const BooleanEditor = ({ value, node, tag }: Jsx<EditorProps<BooleanValue
       nodeType: NodeType.Boolean
     })
 
-  return <Form.Check type="switch" checked={value?.value ?? false} onChange={handleChange} />
+  return (
+    !loading && <Form.Check type="switch" checked={value?.value ?? false} onChange={handleChange} />
+  )
 }

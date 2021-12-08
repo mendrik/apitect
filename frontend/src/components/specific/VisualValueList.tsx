@@ -1,9 +1,9 @@
 import { useStore, useStoreMap } from 'effector-react'
 import { filter, keys, pipe, propEq, without } from 'ramda'
-import React, { createContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
-import useProgress, { Status } from '~hooks/useProgress'
+import useProgress from '~hooks/useProgress'
 import { usePromise } from '~hooks/usePromise'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
@@ -31,13 +31,6 @@ const Values = styled.ol`
   }
 `
 
-type ValueListContext = {
-  status: Status<ValueList>
-  nodeIds: NodeId[]
-}
-
-export const valueListContext = createContext<ValueListContext>({} as any)
-
 export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   const values = useStoreMap(
     $valuesStore,
@@ -51,12 +44,19 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   useDeepCompareEffect(trigger, [tag, missingNodeIds])
 
   return (
-    <valueListContext.Provider value={{ status, nodeIds: missingNodeIds }}>
-      <Values>
-        {nodeIds.map(nodeId => (
-          <VisualValue key={nodeId} value={values[nodeId]} tag={tag} nodeId={nodeId} />
-        ))}
-      </Values>
-    </valueListContext.Provider>
+    <Values>
+      {nodeIds.map(nodeId => {
+        const loading = status.is === 'running' && missingNodeIds.includes(nodeId)
+        return (
+          <VisualValue
+            key={nodeId}
+            value={values[nodeId]}
+            tag={tag}
+            nodeId={nodeId}
+            loading={loading}
+          />
+        )
+      })}
+    </Values>
   )
 }

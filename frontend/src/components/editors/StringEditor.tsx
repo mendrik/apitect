@@ -16,7 +16,7 @@ import { valueDeleteFx, valueUpdateFx } from '../../events/values'
 import { $nodeSettings } from '../../stores/$nodeSettingsStore'
 import { EditorProps } from '../specific/VisualValue'
 
-export enum Views {
+enum Views {
   Display,
   Edit
 }
@@ -35,8 +35,12 @@ const TextInput = styled.input`
 
 const emptyToUndefined = (str: string) => (/^\s*$/.test(str) ? undefined : str)
 
+const lastExecution = {
+  time: Date.now()
+}
+
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
-  const { view, isEditView, editView, displayView } = useView(Views)
+  const { isEditView, editView, displayView, isDisplayView } = useView(Views)
 
   const [error, setError] = useState<Maybe<ZodError>>()
   const nodeSettings = useStore($nodeSettings)
@@ -44,6 +48,13 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   const validator = getStringValidator(nodeSetting)
 
   const attemptSave = (e: SyntheticEvent<HTMLInputElement>) => {
+    const now = Date.now()
+    // make sure that onBlur and onKeyDown don't run this twice
+    if (now - lastExecution.time < 20) {
+      return
+    } else {
+      lastExecution.time = now
+    }
     const newValue = emptyToUndefined(e.currentTarget.value)
     if (value?.value === newValue) {
       return displayView()
@@ -57,13 +68,12 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
         nodeType: NodeType.String
       }
       void (
-        newValue === undefined
-          ? valueDeleteFx(params)
-          : valueUpdateFx({ ...params, value: newValue } as StringValue)
+        newValue !== undefined
+          ? valueUpdateFx({ ...params, value: newValue } as StringValue)
+          : valueDeleteFx(params)
       ).then(displayView)
     } else {
       e.preventDefault()
-      e.stopPropagation()
       setError(result.error)
     }
   }
@@ -74,7 +84,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
     [propSatisfies(included(['ArrowUp', 'ArrowDown', 'Tab']), 'code'), attemptSave]
   ])
 
-  return view === Views.Display ? (
+  return isDisplayView() ? (
     <Text tabIndex={0} onKeyDown={keyMap} onFocus={editView}>
       <span>{value?.value ?? ' '}</span>
     </Text>

@@ -1,4 +1,4 @@
-import { createStore } from 'effector'
+import { createStore, sample } from 'effector'
 import { v4 as uuid } from 'uuid'
 import { ApiSchema } from '~shared/api'
 import { ApiError, ApiResponse } from '~shared/apiResponse'
@@ -19,7 +19,10 @@ apiResponse.watch(data => {
   }
 })
 
-socketEstablished.watch(() => projectFx())
+sample({
+  clock: socketEstablished,
+  target: projectFx
+})
 
 const isError = (res: ApiResponse | ApiError): res is ApiError =>
   'error' in res && res.error === 'error'
