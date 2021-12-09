@@ -1,9 +1,11 @@
 import { string } from 'zod'
+import { nonEmptyString } from '~shared/codecs/nonEmptyString'
 
 export const nameCodec = string()
   .nonempty('form.validation.required')
   .regex(/^[a-zA-Z0-9-$]+$/i, 'form.validation.noSpecialCharactersOrSpace')
 
-export const nameCodecWithSpaces = string()
-  .nonempty('form.validation.required')
-  .regex(/^[a-zA-Z0-9-$ ]+$/i, 'form.validation.noSpecialCharacters')
+export const nameCodecWithSpaces = nonEmptyString.regex(
+  /^[a-zA-Z0-9-$ ]+$/i,
+  'form.validation.noSpecialCharacters'
+)

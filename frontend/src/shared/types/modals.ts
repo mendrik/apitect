@@ -6,5 +6,6 @@ export enum ModalNames {
   TAGS_SETTINGS = 'tags-settings',
   TAG_SETTINGS = 'tag-settings',
   PROJECT_USER_SETTINGS = 'project-user-settings',
-  USER_SETTINGS = 'user-settings'
+  USER_SETTINGS = 'user-settings',
+  ENUMS_SETTINGS = 'enums-settings'
 }

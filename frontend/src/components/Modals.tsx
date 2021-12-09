@@ -69,6 +69,11 @@ export const Modals = () => {
         name={ModalNames.TAG_SETTINGS}
       />
       <ModalStub
+        title={`modals.enumsSettings.title`}
+        from={() => import('./modals/EnumsSettings')}
+        name={ModalNames.ENUMS_SETTINGS}
+      />
+      <ModalStub
         title={`modals.userSettings.title`}
         from={() => import('./modals/UserSettings')}
         name={ModalNames.USER_SETTINGS}

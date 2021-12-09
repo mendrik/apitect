@@ -6,7 +6,7 @@ import {
 } from 'mongodb'
 import { keys, pluck } from 'ramda'
 import { Document } from '~shared/types/domain/document'
-import { Enum } from '~shared/types/domain/enum'
+import { Enums } from '~shared/types/domain/enums'
 import { User } from '~shared/types/domain/user'
 import { Value } from '~shared/types/domain/values/value'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
@@ -39,7 +39,7 @@ export type CollectionMap = {
   nodeSettings: NodeSettings
   projectUsersSettings: ProjectUsersSettings
   values: Value
-  enums: Enum
+  enums: Enums
 }
 
 export const connect = async (): Promise<MongoClient> => {

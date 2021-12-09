@@ -13,7 +13,7 @@ const api = () => sample($api).getState()
 
 export const projectFx = createEffect<Api['project']>(() => api().project())
 export const dateLocaleFx = createEffect<ArgFn<string, Promise<Locale>>>(
-  locale => import(`/node_modules/date-fns/locale/${locale}`)
+  locale => import(`../../node_modules/date-fns/locale/${locale}.js`)
 )
 
 export const projectUserSettingsFx = createEffect(() =>
@@ -45,4 +45,10 @@ export const tagSettingsFx = createEffect<ArgFn<string>>(name =>
     .then(find(propEq('name', name)))
     .then(failOn<Tag>(isNil, 'No Tag found'))
     .then(params => openModal({ name: ModalNames.TAG_SETTINGS, params }))
+)
+
+export const enumsFx = createEffect(() =>
+  api()
+    .enums()
+    .then(tap(params => openModal({ name: ModalNames.ENUMS_SETTINGS, params })))
 )

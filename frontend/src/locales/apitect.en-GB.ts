@@ -92,6 +92,10 @@ const en = {
         title: 'Tags',
         info: 'Tags represent copies of your project data. Furthermore tags can extend each other so that missing values can be resolved by looking up parent tags.'
       },
+      enumsSettings: {
+        title: 'Enumerations',
+        info: 'Enumerations represent sets of labels which can be used in nodes of the type Enum'
+      },
       tagSettings: {
         title: 'Tag {{ name }}'
       },

@@ -1,4 +1,5 @@
 import { undefined as undef } from 'zod'
+import { ZEnums } from '~shared/types/domain/enums'
 import { ZValue } from '~shared/types/domain/values/value'
 import { ZValueBase } from '~shared/types/domain/values/valueBase'
 
@@ -29,5 +30,7 @@ export const ApiSchema = {
   userSettings: [undef(), ZUserSettings.nullable()],
   valueDelete: [ZValueBase, ZValue],
   valueList: [ZValueListRequest, ZValueList],
-  valueUpdate: [ZValue, ZValue]
+  valueUpdate: [ZValue, ZValue],
+  enums: [undef(), ZEnums.nullable()],
+  updateEnums: [ZEnums, ZEnums]
 } as const

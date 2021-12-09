@@ -9,7 +9,7 @@ import { useLogout } from '~hooks/useLogout'
 import { addParams } from '~shared/utils/url'
 
 import { Palette } from '../css/colors'
-import { projectUserSettingsFx, tagsSettingsFx } from '../events/project'
+import { enumsFx, projectUserSettingsFx, tagsSettingsFx } from '../events/project'
 import { $user } from '../stores/$userStore'
 import { Scale, Tuple } from './generic/Tuple'
 
@@ -89,6 +89,7 @@ export const Navigation = () => {
             <NavDropdown.Item onClick={() => projectUserSettingsFx()}>
               Project users
             </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => enumsFx()}>Enumerations</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item>Profile</NavDropdown.Item>
             <NavDropdown.Item onClick={logout}>{t('navbar.logout')}</NavDropdown.Item>
