@@ -1,7 +1,7 @@
 import clsx from 'clsx'
-import { cond, pathEq, pathOr, pipe, propEq, unless, when } from 'ramda'
-import { mapIndexed } from 'ramda-adjunct'
+import { append, cond, pathEq, pathOr, pipe, propEq, unless, when, without } from 'ramda'
 import React, { HTMLAttributes, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
@@ -10,15 +10,10 @@ import { preventDefault } from '../../utils/preventDefault'
 import { DeleteIcon } from '../generic/DeleteIcon'
 import { ErrorInfo } from './ErrorInfo'
 
-type Tag = Record<'name', string>
-
-type OwnProps<T extends Tag> = {
+type OwnProps = {
   name: string
-  tags: T[]
   label: TFuncKey
-  onAdd: (name: string) => void
-  onRemove: (tag: T) => void
-  containerClasses: string
+  containerClasses?: string
 } & HTMLAttributes<HTMLInputElement>
 
 const StyledTagInput = styled.div`
@@ -45,19 +40,16 @@ const Input = styled.input`
   width: 30px;
 `
 
-export const TagInput = <T extends Tag>({
-  name,
-  tags,
-  label,
-  onAdd,
-  onRemove,
-  children,
-  containerClasses,
-  ...props
-}: Jsx<OwnProps<T>>) => {
+export const TagInput = ({ name, label, containerClasses, ...props }: Jsx<OwnProps>) => {
+  const { watch, setValue } = useForm<Record<typeof name, string[]>>()
   const [currentName, setCurrentName] = useState<string>('')
   const inpRef = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
+
+  const tags = watch(name) ?? []
+
+  const onRemove = (tag: string) => setValue(name, without([tag], tags))
+  const onAdd = (tag: string) => setValue(name, append(tag, tags))
 
   const keyMap = cond([
     [
@@ -81,12 +73,9 @@ export const TagInput = <T extends Tag>({
       className={clsx('form-floating form-control focus-within', containerClasses)}
       onClick={() => inpRef.current?.focus()}
     >
-      {mapIndexed(
-        (tag, idx) => (
-          <TagInput.Tag key={idx} tag={tag} onRemove={() => onRemove(tag)} />
-        ),
-        tags
-      )}
+      {tags.map((tag, idx) => (
+        <TagInput.Tag key={idx} tag={tag} onRemove={() => onRemove(tag)} />
+      ))}
 
       <Input
         ref={inpRef}
@@ -103,8 +92,8 @@ export const TagInput = <T extends Tag>({
   )
 }
 
-type TagProps<T extends Tag> = {
-  tag: T
+type TagProps = {
+  tag: string
   onRemove: () => void
 }
 
@@ -133,7 +122,7 @@ const Tag = styled.div`
   }
 `
 
-TagInput.Tag = <T extends Record<'name', string>>({ tag, onRemove }: Jsx<TagProps<T>>) => {
+TagInput.Tag = ({ tag, onRemove }: Jsx<TagProps>) => {
   return (
     <Tag
       onClick={preventDefault(ev => {
@@ -144,7 +133,7 @@ TagInput.Tag = <T extends Record<'name', string>>({ tag, onRemove }: Jsx<TagProp
       tabIndex={0}
       onKeyDown={when(propEq('key', 'Delete'), onRemove)}
     >
-      <span className="label">{tag.name}</span>
+      <span className="label">{tag}</span>
       <DeleteIcon onClick={onRemove} />
     </Tag>
   )

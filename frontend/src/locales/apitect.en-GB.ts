@@ -94,7 +94,10 @@ const en = {
       },
       enumsSettings: {
         title: 'Enumerations',
-        info: 'Enumerations represent sets of labels which can be used in nodes of the type Enum'
+        info: 'Enumerations represent sets of labels which can be used in nodes of the type Enum',
+        enumName: 'Enumeration',
+        values: 'Values',
+        newEnum: 'Add a new enumeration'
       },
       tagSettings: {
         title: 'Tag {{ name }}'
