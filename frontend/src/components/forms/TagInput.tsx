@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { append, cond, pathEq, pathOr, pipe, propEq, unless, when, without } from 'ramda'
+import { append, cond, pathEq, pathOr, pipe, propEq, unless, when } from 'ramda'
 import React, { HTMLAttributes, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
@@ -10,10 +10,12 @@ import { preventDefault } from '../../utils/preventDefault'
 import { DeleteIcon } from '../generic/DeleteIcon'
 import { ErrorInfo } from './ErrorInfo'
 
-type OwnProps = {
+type OwnProps<T> = {
   name: string
   label: TFuncKey
   containerClasses?: string
+  apply: (name: string) => T
+  unapply: (tag: T) => string
 } & HTMLAttributes<HTMLInputElement>
 
 const StyledTagInput = styled.div`
@@ -40,21 +42,28 @@ const Input = styled.input`
   width: 30px;
 `
 
-export const TagInput = ({ name, label, containerClasses, ...props }: Jsx<OwnProps>) => {
-  const { watch, setValue } = useForm<Record<typeof name, string[]>>()
+export const TagInput = <T extends any>({
+  name,
+  label,
+  containerClasses,
+  apply,
+  unapply,
+  ...props
+}: Jsx<OwnProps<T>>) => {
+  const { watch, setValue } = useForm<Record<typeof name, T[]>>()
   const [currentName, setCurrentName] = useState<string>('')
   const inpRef = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
 
   const tags = watch(name) ?? []
 
-  const onRemove = (tag: string) => setValue(name, without([tag], tags))
-  const onAdd = (tag: string) => setValue(name, append(tag, tags))
+  const onRemove = (index: number) => setValue(name, tags.splice(index, 1) as any)
+  const onAdd = (tag: string) => setValue(name, append(apply(tag), tags) as any)
 
   const keyMap = cond([
     [
       propEq('key', 'Backspace'),
-      when(pathEq(['target', 'value'], ''), () => onRemove(tags[tags.length - 1]))
+      when(pathEq(['target', 'value'], ''), () => onRemove(tags.length - 1))
     ],
     [
       propEq('key', 'Enter'),
@@ -74,9 +83,8 @@ export const TagInput = ({ name, label, containerClasses, ...props }: Jsx<OwnPro
       onClick={() => inpRef.current?.focus()}
     >
       {tags.map((tag, idx) => (
-        <TagInput.Tag key={idx} tag={tag} onRemove={() => onRemove(tag)} />
+        <TagInput.Tag key={idx} tag={unapply(tag)} onRemove={() => onRemove(idx)} />
       ))}
-
       <Input
         ref={inpRef}
         autoComplete="off"

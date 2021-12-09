@@ -7,6 +7,7 @@ import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
 import { useLocation } from '~hooks/useLocation'
 import { TagsSettings as Settings, ZTagsSettings } from '~shared/types/forms/tagsSettings'
+import { field } from '~shared/utils/ramda'
 
 import { updateTagsSettingsFx } from '../../events/project'
 import { ModalFC } from '../ModalStub'
@@ -25,7 +26,13 @@ const TagsSettings: ModalFC = ({ close }) => {
       <Alert variant="info" className="mb-3">
         {t('modals.tagsSettings.info')}
       </Alert>
-      <TagInput label="form.fields.tags" name="tags" containerClasses="mb-3" />
+      <TagInput
+        label="form.fields.tags"
+        name="tags"
+        containerClasses="mb-3"
+        apply={name => ({ name })}
+        unapply={field('name')}
+      />
     </SocketForm>
   )
 }
