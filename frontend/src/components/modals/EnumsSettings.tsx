@@ -44,6 +44,8 @@ const EnumsSettings: ModalFC = ({ close }) => {
     </Button>
   )
 
+  console.log(form.formState.errors)
+
   return (
     <SocketForm
       form={form}
@@ -63,7 +65,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
       >
         {(field, idx) =>
           selection === idx && (
-            <div className="d-grid gap-2" key={field.id}>
+            <EditableObjectList.Item key={field.id}>
               <TextInput
                 name={`enums.${idx}.name`}
                 label="modals.enumsSettings.enumName"
@@ -75,7 +77,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
                 apply={name => ({ name, values: [] as any })}
                 unapply={prop('name')}
               />
-            </div>
+            </EditableObjectList.Item>
           )
         }
       </EditableObjectList>

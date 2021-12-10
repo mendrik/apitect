@@ -143,7 +143,8 @@ const en = {
           '$t(form.fields.{{ field }}) must be at least 6 characters long, 1 digit and 1 uppercase letter',
         dateformat:
           '$t(form.fields.{{ field }}) must be a correct <a href="https://date-fns.org/v2.27.0/docs/format" target="_blank" class="link-primary text-decoration-none">date-format</a',
-        mustChoose: 'You must select one of the options.'
+        mustChoose: 'You must select one of the options.',
+        uniqueElements: 'Elements must be unique'
       },
       dropDown: {
         noValue: 'Select...'
