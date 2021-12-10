@@ -95,7 +95,7 @@ const en = {
       enumsSettings: {
         title: 'Enumerations',
         info: 'Enumerations represent sets of labels which can be used in nodes of the type Enum',
-        enumName: 'Enumeration',
+        enumName: 'Name',
         values: 'Values',
         newEnum: 'Add a new enumeration'
       },
