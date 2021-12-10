@@ -9,7 +9,7 @@ import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
 import { TextInput } from '~forms/TextInput'
 import { useLocation } from '~hooks/useLocation'
-import { objectList } from '~shared/codecs/objectList'
+import { lastItemOptional } from '~shared/codecs/lastItemOptional'
 import { Enums, EnumValue, ZEnum } from '~shared/types/domain/enums'
 import { asNumber } from '~shared/utils/ramda'
 
@@ -17,7 +17,7 @@ import { updateEnumsFx } from '../../events/project'
 import { ModalFC } from '../ModalStub'
 import { EditableObjectList } from '../generic/EditableObjectList'
 
-export const ZEnumsSettings = objectList(
+export const ZEnumsSettings = lastItemOptional(
   object({
     enums: array(ZEnum),
     selection: string().nullish()
