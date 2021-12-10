@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { append, prop } from 'ramda'
-import React from 'react'
+import React, { useRef } from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -25,6 +25,7 @@ export const ZEnumsSettings = ZEnums.merge(
 const EnumsSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Enums>()
   const { t } = useTranslation()
+  const deleteButtonRef = useRef<HTMLButtonElement>(null)
 
   const defaultEnums = append({ name: '', values: [] as any }, state?.enums ?? [])
 
@@ -38,8 +39,8 @@ const EnumsSettings: ModalFC = ({ close }) => {
 
   const deleteButton = (
     <Button
+      ref={deleteButtonRef}
       variant="outline-danger"
-      onClick={close}
       disabled={isNaN(selection) || selection == enums.length - 1}
     >
       {t('common.delete')}
@@ -61,6 +62,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
         form={form}
         selectedName="selection"
         name="enums"
+        deleteButtonRef={deleteButtonRef}
         title={(f, idx) => <span>{enums[idx].name || t('modals.enumsSettings.newEnum')}</span>}
       >
         {(field, idx) =>

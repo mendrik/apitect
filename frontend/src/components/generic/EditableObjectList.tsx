@@ -1,6 +1,6 @@
 import { IconAlertCircle } from '@tabler/icons'
 import { map, path, range } from 'ramda'
-import React, { ReactNode } from 'react'
+import React, { MutableRefObject, ReactNode, useCallback } from 'react'
 import {
   ArrayPath,
   FieldArrayWithId,
@@ -9,6 +9,7 @@ import {
   UseFormReturn
 } from 'react-hook-form'
 import { FormOptions } from '~forms/FormOptions'
+import { useEvent } from '~hooks/useEvent'
 import { Jsx } from '~shared/types/generic'
 import { asNumber } from '~shared/utils/ramda'
 
@@ -19,6 +20,7 @@ type OwnProps<T extends FieldValues> = {
   name: ArrayPath<T>
   form: UseFormReturn<any>
   selectedName: string
+  deleteButtonRef?: MutableRefObject<HTMLElement>
   children: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => ReactNode
 }
 
@@ -27,12 +29,16 @@ export const EditableObjectList = <T extends FieldValues>({
   name,
   selectedName,
   form,
+  deleteButtonRef,
   children
 }: Jsx<OwnProps<T>>) => {
-  const { fields } = useFieldArray<T>({ name, control: form.control })
+  const { fields, remove } = useFieldArray<T>({ name, control: form.control })
 
   const errors: any[] | undefined = path(name.split('.'), form.formState.errors)
   const selected = asNumber(form.watch(selectedName))
+  const onDelete = useCallback(() => remove(selected), [selected])
+
+  useEvent('click', onDelete, deleteButtonRef)
 
   return (
     <FormOptions name={selectedName} values={map(String, range(0, fields.length))} className="mb-3">
