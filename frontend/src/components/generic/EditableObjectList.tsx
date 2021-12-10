@@ -20,7 +20,7 @@ type OwnProps<T extends FieldValues> = {
   name: ArrayPath<T>
   form: UseFormReturn<any>
   selectedName: string
-  deleteButtonRef?: MutableRefObject<HTMLElement>
+  deleteButtonRef?: MutableRefObject<HTMLElement | null>
   children: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => ReactNode
 }
 
@@ -36,7 +36,10 @@ export const EditableObjectList = <T extends FieldValues>({
 
   const errors: any[] | undefined = path(name.split('.'), form.formState.errors)
   const selected = asNumber(form.watch(selectedName))
-  const onDelete = useCallback(() => remove(selected), [selected])
+  const onDelete = useCallback(() => {
+    form.setValue(selectedName, undefined)
+    remove(selected)
+  }, [selected])
 
   useEvent('click', onDelete, deleteButtonRef)
 
