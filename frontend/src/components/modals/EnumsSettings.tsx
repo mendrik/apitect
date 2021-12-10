@@ -12,19 +12,21 @@ import { useLocation } from '~hooks/useLocation'
 import { Enums, EnumValue, ZEnums } from '~shared/types/domain/enums'
 import { asNumber } from '~shared/utils/ramda'
 
+import { updateEnumsFx } from '../../events/project'
 import { ModalFC } from '../ModalStub'
 import { EditableObjectList } from '../generic/EditableObjectList'
 
-export const ZEnumsSettings = object({
-  enums: ZEnums,
-  selection: string({ invalid_type_error: 'form.validation.mustChoose' })
-})
+export const ZEnumsSettings = ZEnums.merge(
+  object({
+    selection: string({ invalid_type_error: 'form.validation.mustChoose' })
+  })
+)
 
 const EnumsSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Enums>()
   const { t } = useTranslation()
 
-  const defaultEnums = append({ name: '', values: [] as any }, state ?? [])
+  const defaultEnums = append({ name: '', values: [] as any }, state?.enums ?? [])
 
   const form = useForm<TypeOf<typeof ZEnumsSettings>>({
     resolver: zodResolver(ZEnumsSettings),
@@ -47,7 +49,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
   return (
     <SocketForm
       form={form}
-      onValid={async () => 0}
+      onValid={updateEnumsFx}
       close={close}
       submitButton="common.save"
       buttonRowExtras={deleteButton}

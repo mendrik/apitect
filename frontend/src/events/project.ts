@@ -47,8 +47,10 @@ export const tagSettingsFx = createEffect<ArgFn<string>>(name =>
     .then(params => openModal({ name: ModalNames.TAG_SETTINGS, params }))
 )
 
-export const enumsFx = createEffect(() =>
+export const enumsFx = createEffect<Api['enums']>(() =>
   api()
     .enums()
     .then(tap(params => openModal({ name: ModalNames.ENUMS_SETTINGS, params })))
 )
+
+export const updateEnumsFx = createEffect<Api['updateEnums']>(req => api().updateEnums(req))

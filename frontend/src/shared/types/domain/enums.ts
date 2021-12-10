@@ -17,7 +17,9 @@ export const ZEnum = object({
     .superRefine(uniqueArray(prop('value')))
 })
 
-export const ZEnums = array(ZEnum)
+export const ZEnums = object({
+  enums: array(ZEnum)
+})
 
 export type Enums = TypeOf<typeof ZEnums>
 export type Enum = TypeOf<typeof ZEnum>
