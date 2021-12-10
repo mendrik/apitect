@@ -16,10 +16,14 @@ type OwnProps = {
 } & HTMLAttributes<HTMLDivElement>
 
 const ListGroupSx = styled(ListGroup)`
-  &.invalid {
-    > * {
-      border: 1px solid ${Palette.errorBorder};
-    }
+  position: relative;
+  &.invalid:after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid ${Palette.errorBorder};
+    border-radius: 4px;
+    pointer-events: none;
   }
 `
 
@@ -40,7 +44,7 @@ export const FormOptions = ({ name, values, children, ...props }: Jsx<OwnProps>)
               <Tuple first={Scale.CONTENT} second={Scale.MAX} gap={3}>
                 <Form.Check
                   type="radio"
-                  {...register(name)}
+                  {...register(name, { required: true })}
                   value={values[idx]}
                   id={`${name}-${values[idx]}`}
                 />
