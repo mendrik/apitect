@@ -4,7 +4,7 @@ import { addYears, format, isSameYear, isValid, setDate, setMonth } from 'date-f
 import { AnimatePresence, motion } from 'framer-motion'
 import { propEq, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { HTMLAttributes, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -16,10 +16,11 @@ import { Scrollable } from '../generic/Scrollable'
 import { Month } from './Month'
 
 type OwnProps = {
-  name: string
   onDateSelected: ArgFn<Date>
   currentDate: Date
-}
+  iconSize?: number
+  stroke?: number
+} & HTMLAttributes<HTMLDivElement>
 
 const Layout = styled.div`
   display: grid;
@@ -96,10 +97,11 @@ const CalendarButton = styled.div`
 `
 
 export const Datepicker = ({
-  name,
   currentDate: $current,
   children,
   onDateSelected,
+  iconSize = 20,
+  stroke = 1,
   ...props
 }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
@@ -154,7 +156,7 @@ export const Datepicker = ({
 
   return (
     <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>
-      <IconCalendar className="w-4 h-4" size={20} stroke={1} />
+      <IconCalendar className="w-4 h-4" size={iconSize} stroke={stroke} />
       <AnimatePresence>
         {open && (
           <motion.div {...fullscreenScale} role="dialog" onAnimationStart={afterOpen}>

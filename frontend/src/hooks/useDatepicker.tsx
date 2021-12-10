@@ -1,19 +1,30 @@
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import React, { ReactNode } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
 import { Datepicker } from '../components/datepicker/Datepicker'
 
 export const useDatepicker = (name: string): ReactNode => {
-  const { watch, setValue } = useFormContext<{ [K in typeof name]: Date }>()
-  const $current = watch(name)
+  const { control } = useFormContext<{ [K in typeof name]: string }>()
   return (
-    <Datepicker
+    <Controller
       name={name}
-      currentDate={$current}
-      onDateSelected={selected => {
-        setValue(name, format(selected, 'yyyy-MM-dd') as any)
-      }}
+      control={control}
+      render={({ field }) => (
+        <Datepicker
+          currentDate={parse(field.value, 'yyyy-MM-dd', new Date())}
+          onDateSelected={selected => {
+            field.onChange(format(selected, 'yyyy-MM-dd'))
+          }}
+          className="position-absolute"
+          style={{
+            right: 10,
+            top: 13,
+            width: 40
+          }}
+          iconSize={28}
+        />
+      )}
     />
   )
 }

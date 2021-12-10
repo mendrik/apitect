@@ -3,6 +3,7 @@ import React from 'react'
 import { Alert } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { DateInput } from '~forms/DateInput'
 import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
 import { useLocation } from '~hooks/useLocation'
@@ -33,6 +34,7 @@ const TagsSettings: ModalFC = ({ close }) => {
         apply={toObj('name')}
         unapply={field('name')}
       />
+      <DateInput label="form.fields.tags" name="date" />
     </SocketForm>
   )
 }

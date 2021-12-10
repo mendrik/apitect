@@ -48,7 +48,6 @@ export const DateInput = ({
   } = useFormContext<{ [K in typeof name]: Date | undefined }>()
 
   const inpId = useId()
-
   useAutoFocus(name, autoFocus)
 
   const CalendarIcon = useDatepicker(name)
@@ -66,9 +65,6 @@ export const DateInput = ({
         readOnly={props.readOnly}
         required={!!options?.required}
         type={type}
-        onBlur={ev => {
-          setValue(name, (ev.target as HTMLInputElement).value as any)
-        }}
         {...props}
       />
       {CalendarIcon}
