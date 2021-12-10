@@ -1,7 +1,8 @@
 import clsx from 'clsx'
-import { append, cond, pathEq, pathOr, pipe, propEq, unless, when } from 'ramda'
+import { append, cond, pathEq, pathOr, pipe, propEq, remove, unless, when } from 'ramda'
+import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React, { HTMLAttributes, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
@@ -14,7 +15,7 @@ type OwnProps<T> = {
   name: string
   label: TFuncKey
   containerClasses?: string
-  apply: (name: string) => T
+  apply: (value: string) => T
   unapply: (tag: T) => string
 } & HTMLAttributes<HTMLInputElement>
 
@@ -28,7 +29,8 @@ const StyledTagInput = styled.div`
   position: relative;
 
   &:focus-within > label,
-  .tag ~ label {
+  .tag ~ label,
+  input:not(:invalid) ~ label {
     opacity: 0.65;
     transform: scale(0.85) translateY(-0.75rem) translateX(-0.15rem);
   }
@@ -42,7 +44,7 @@ const Input = styled.input`
   width: 30px;
 `
 
-export const TagInput = <T extends any>({
+export const TagInput = <T extends object>({
   name,
   label,
   containerClasses,
@@ -50,55 +52,68 @@ export const TagInput = <T extends any>({
   unapply,
   ...props
 }: Jsx<OwnProps<T>>) => {
-  const { getValues, setValue } = useForm<Record<typeof name, T[]>>()
   const [currentName, setCurrentName] = useState<string>('')
   const inpRef = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
 
-  const tags = getValues(name) ?? []
-
-  console.log(tags)
-
-  const onRemove = (index: number) => setValue(name, tags.splice(index, 1) as any)
-  const onAdd = (tag: string) => setValue(name, append(apply(tag), tags) as any)
-
-  const keyMap = cond([
-    [
-      propEq('key', 'Backspace'),
-      when(pathEq(['target', 'value'], ''), () => onRemove(tags.length - 1))
-    ],
-    [
-      propEq('key', 'Enter'),
-      unless(
-        pathEq(['target', 'value'], ''),
-        preventDefault(() => {
-          onAdd(currentName)
-          setCurrentName('')
-        })
-      )
-    ]
-  ])
-
   return (
-    <StyledTagInput
-      className={clsx('form-floating form-control focus-within', containerClasses)}
-      onClick={() => inpRef.current?.focus()}
-    >
-      {tags.map((tag, idx) => (
-        <TagInput.Tag key={idx} tag={unapply(tag)} onRemove={() => onRemove(idx)} />
-      ))}
-      <Input
-        ref={inpRef}
-        autoComplete="off"
-        value={currentName}
-        type="text"
-        onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
-        onKeyDown={keyMap}
-        {...props}
-      />
-      <label>{t(label)}</label>
-      <ErrorInfo name={name} />
-    </StyledTagInput>
+    <Controller
+      name={name}
+      render={({ field }) => {
+        const onRemove = (index: number) => {
+          field.onChange(remove(index, 1, field.value))
+        }
+        const onAdd = (tag: string) => {
+          if (isNotNilOrEmpty(tag)) {
+            field.onChange(append(apply(tag), field.value))
+          }
+        }
+
+        const keyMap = cond([
+          [
+            propEq('key', 'Backspace'),
+            when(pathEq(['target', 'value'], ''), () => onRemove(field.value.length - 1))
+          ],
+          [
+            propEq('key', 'Enter'),
+            unless(
+              pathEq(['target', 'value'], ''),
+              preventDefault(() => {
+                onAdd(currentName)
+                setCurrentName('')
+              })
+            )
+          ]
+        ])
+
+        return (
+          <StyledTagInput
+            className={clsx('form-floating form-control focus-within', containerClasses)}
+            onClick={() => inpRef.current?.focus()}
+          >
+            {field.value.map((tag: T, idx: number) => (
+              <TagInput.Tag key={idx} tag={unapply(tag)} onRemove={() => onRemove(idx)} />
+            ))}
+            <Input
+              ref={inpRef}
+              autoComplete="off"
+              value={currentName}
+              type="text"
+              required
+              onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
+              onKeyDown={keyMap}
+              onBlur={() => {
+                onAdd(currentName)
+                setCurrentName('')
+              }}
+              {...props}
+            />
+            <label>{t(label)}</label>
+            <ErrorInfo name={name} />
+          </StyledTagInput>
+        )
+      }}
+    />
   )
 }
 

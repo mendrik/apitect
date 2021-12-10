@@ -53,6 +53,11 @@ export const field =
   (obj: T) =>
     prop(p, obj)
 
+export const toObj =
+  <T extends object>(prop: keyof T) =>
+  (value: string): T =>
+    ({ [prop]: value } as T)
+
 export const ensure = <T extends NonNullable<any>>(obj: Maybe<T>): T => {
   if (obj == null) {
     throw Error('object must not be null')
