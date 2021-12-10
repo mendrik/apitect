@@ -10,7 +10,7 @@ export const ZEnumValue = object({
 
 export const ZEnum = object({
   name: nameCodec,
-  values: array(ZEnumValue)
+  values: array(ZEnumValue).nonempty()
 })
 
 export const ZEnums = array(ZEnum)

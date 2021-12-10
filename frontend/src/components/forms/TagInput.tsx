@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { append, cond, pathEq, pathOr, pipe, propEq, remove, unless, when } from 'ramda'
+import { append, cond, path, pathEq, pathOr, pipe, propEq, remove, unless, when } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React, { HTMLAttributes, useRef, useState } from 'react'
 import { Controller } from 'react-hook-form'
@@ -7,6 +7,7 @@ import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 
+import { Palette } from '../../css/colors'
 import { preventDefault } from '../../utils/preventDefault'
 import { DeleteIcon } from '../generic/DeleteIcon'
 import { ErrorInfo } from './ErrorInfo'
@@ -34,6 +35,13 @@ const StyledTagInput = styled.div`
     opacity: 0.65;
     transform: scale(0.85) translateY(-0.75rem) translateX(-0.15rem);
   }
+
+  &.invalid {
+    border: 1px solid ${Palette.errorBorder};
+    &:focus-within {
+      box-shadow: 0 0 0 0.25rem rgb(244 126 96 / 25%) !important;
+    }
+  }
 `
 
 const Input = styled.input`
@@ -59,7 +67,7 @@ export const TagInput = <T extends object>({
   return (
     <Controller
       name={name}
-      render={({ field }) => {
+      render={({ field, formState }) => {
         const onRemove = (index: number) => {
           field.onChange(remove(index, 1, field.value))
         }
@@ -86,31 +94,35 @@ export const TagInput = <T extends object>({
           ]
         ])
 
+        const error = path(name.split('.'), formState.errors)
+
         return (
-          <StyledTagInput
-            className={clsx('form-floating form-control focus-within', containerClasses)}
-            onClick={() => inpRef.current?.focus()}
-          >
-            {field.value.map((tag: T, idx: number) => (
-              <TagInput.Tag key={idx} tag={unapply(tag)} onRemove={() => onRemove(idx)} />
-            ))}
-            <Input
-              ref={inpRef}
-              autoComplete="off"
-              value={currentName}
-              type="text"
-              required
-              onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
-              onKeyDown={keyMap}
-              onBlur={() => {
-                onAdd(currentName)
-                setCurrentName('')
-              }}
-              {...props}
-            />
-            <label>{t(label)}</label>
+          <div className={containerClasses}>
+            <StyledTagInput
+              className={clsx('form-floating form-control focus-within', { invalid: error })}
+              onClick={() => inpRef.current?.focus()}
+            >
+              {field.value.map((tag: T, idx: number) => (
+                <TagInput.Tag key={idx} tag={unapply(tag)} onRemove={() => onRemove(idx)} />
+              ))}
+              <Input
+                ref={inpRef}
+                autoComplete="off"
+                value={currentName}
+                type="text"
+                required
+                onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
+                onKeyDown={keyMap}
+                onBlur={() => {
+                  onAdd(currentName)
+                  setCurrentName('')
+                }}
+                {...props}
+              />
+              <label>{t(label)}</label>
+            </StyledTagInput>
             <ErrorInfo name={name} />
-          </StyledTagInput>
+          </div>
         )
       }}
     />

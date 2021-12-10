@@ -24,7 +24,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Enums>()
   const { t } = useTranslation()
 
-  const defaultEnums = append({ name: '', values: [] }, state ?? [])
+  const defaultEnums = append({ name: '', values: [] as any }, state ?? [])
 
   const form = useForm<TypeOf<typeof ZEnumsSettings>>({
     resolver: zodResolver(ZEnumsSettings),
@@ -33,8 +33,6 @@ const EnumsSettings: ModalFC = ({ close }) => {
 
   const selection = asNumber(form.watch('selection'))
   const enums = form.watch('enums')
-
-  console.log(form.formState.errors)
 
   const deleteButton = (
     <Button
@@ -74,7 +72,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
               <TagInput<Enum>
                 name={`enums.${idx}.values`}
                 label="modals.enumsSettings.values"
-                apply={name => ({ name, values: [] })}
+                apply={name => ({ name, values: [] as any })}
                 unapply={prop('name')}
               />
             </div>
