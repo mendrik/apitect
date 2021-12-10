@@ -1,9 +1,14 @@
 import { converge, equals, identity, Pred, uniqBy } from 'ramda'
-import { array, ParseParams } from 'zod'
-import { ZodTypeAny } from 'zod/lib/types'
+import { Refinement, RefinementCtx, ZodIssueCode } from 'zod'
 
-export const uniqueArray = <T extends ZodTypeAny>(pred: Pred, schema: T, params?: ParseParams) =>
-  array(schema, params).refine(
-    arr => converge(equals, [identity, uniqBy(pred)])(arr),
-    'form.validation.uniqueElements'
-  )
+export const uniqueArray =
+  <T extends any[]>(pred: Pred): Refinement<T> =>
+  (arr, ctx: RefinementCtx) => {
+    const unique = converge(equals, [identity, uniqBy(pred)])(arr)
+    if (!unique) {
+      ctx.addIssue({
+        code: ZodIssueCode.custom,
+        message: 'form.validation.uniqueElements'
+      })
+    }
+  }

@@ -9,7 +9,7 @@ import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
 import { TextInput } from '~forms/TextInput'
 import { useLocation } from '~hooks/useLocation'
-import { Enum, Enums, ZEnums } from '~shared/types/domain/enums'
+import { Enums, EnumValue, ZEnums } from '~shared/types/domain/enums'
 import { asNumber } from '~shared/utils/ramda'
 
 import { ModalFC } from '../ModalStub'
@@ -44,8 +44,6 @@ const EnumsSettings: ModalFC = ({ close }) => {
     </Button>
   )
 
-  console.log(form.formState.errors)
-
   return (
     <SocketForm
       form={form}
@@ -71,11 +69,11 @@ const EnumsSettings: ModalFC = ({ close }) => {
                 label="modals.enumsSettings.enumName"
                 required
               />
-              <TagInput<Enum>
+              <TagInput<EnumValue>
                 name={`enums.${idx}.values`}
                 label="modals.enumsSettings.values"
-                apply={name => ({ name, values: [] as any })}
-                unapply={prop('name')}
+                apply={value => ({ value, inUse: false })}
+                unapply={prop('value')}
               />
             </EditableObjectList.Item>
           )

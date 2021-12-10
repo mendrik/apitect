@@ -144,7 +144,8 @@ const en = {
         dateformat:
           '$t(form.fields.{{ field }}) must be a correct <a href="https://date-fns.org/v2.27.0/docs/format" target="_blank" class="link-primary text-decoration-none">date-format</a',
         mustChoose: 'You must select one of the options.',
-        uniqueElements: 'Elements must be unique'
+        uniqueElements: 'Elements must be unique',
+        notEmpty: 'At least one item is required'
       },
       dropDown: {
         noValue: 'Select...'
