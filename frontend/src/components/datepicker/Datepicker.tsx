@@ -9,9 +9,10 @@ import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ButtonRow } from '~forms/ButtonRow'
-import { ArgFn, Jsx } from '~shared/types/generic'
+import { ArgFn, Fn, Jsx } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
+import { stopPropagation } from '../../utils/stopPropagation'
 import { Scrollable } from '../generic/Scrollable'
 import { Month } from './Month'
 
@@ -152,7 +153,7 @@ export const Datepicker = ({
       m?.focus()
     }, 1)
 
-  const onEscape = when(propEq('code', 'Escape'), () => setOpen(false))
+  const onEscape = when(propEq('code', 'Escape'), stopPropagation(() => setOpen(false)) as any)
 
   return (
     <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>

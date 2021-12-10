@@ -2,7 +2,7 @@ import type { SyntheticEvent } from 'react'
 
 export const stopPropagation =
   (fn: (...arg: any[]) => void = () => 0) =>
-  (e: Event | SyntheticEvent) => {
+  <T extends Event | SyntheticEvent>(e: T) => {
     e.preventDefault()
     e.stopPropagation()
     fn(e)
