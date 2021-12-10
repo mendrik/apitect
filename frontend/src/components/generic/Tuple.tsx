@@ -48,18 +48,20 @@ export const Tuple = ({
   second = Scale.AUTO,
   gap = 0,
   children,
+  className = 'align-items-center',
   ...props
 }: Jsx<OwnProps>) => (
   <StyledTuple
     className={clsx(
-      `d-flex justify-content-between gap-${gap} align-items-center`,
+      `d-flex justify-content-between gap-${gap}`,
       {
         'flex-row': orientation === Orientation.Horizontal,
         'flex-col': orientation === Orientation.Vertical,
         'w-100': orientation === Orientation.Horizontal,
         'h-100': orientation === Orientation.Vertical
       },
-      `first-${first} second-${second}`
+      `first-${first} second-${second}`,
+      className
     )}
     {...props}
   >

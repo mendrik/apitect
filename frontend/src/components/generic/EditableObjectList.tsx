@@ -41,5 +41,5 @@ export const EditableObjectList = <T extends FieldValues>({
 type ItemProps = {}
 
 EditableObjectList.Item = ({ children }: Jsx<ItemProps>) => (
-  <div className="d-grid gap-2">{children}</div>
+  <div className="d-grid gap-2 mb-2">{children}</div>
 )

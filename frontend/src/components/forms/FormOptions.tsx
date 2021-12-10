@@ -15,6 +15,14 @@ type OwnProps = {
   values: string[]
 } & HTMLAttributes<HTMLDivElement>
 
+const ListGroupItemSx = styled(ListGroupItem)`
+  background-color: #eeeeee;
+
+  &.open {
+    background-color: white;
+  }
+`
+
 const ListGroupSx = styled(ListGroup)`
   position: relative;
   &.invalid:after {
@@ -40,8 +48,8 @@ export const FormOptions = ({ name, values, children, ...props }: Jsx<OwnProps>)
       <ListGroupSx className={clsx({ invalid: error })}>
         {Children.map(children, (child, idx) => {
           return (
-            <ListGroupItem variant={values[idx] === val ? 'info' : 'light'}>
-              <Tuple first={Scale.CONTENT} second={Scale.MAX} gap={3}>
+            <ListGroupItemSx className={clsx({ open: values[idx] === val })}>
+              <Tuple first={Scale.CONTENT} second={Scale.MAX} gap={3} className="align-items-start">
                 <Form.Check
                   type="radio"
                   {...register(name, { required: true })}
@@ -50,7 +58,7 @@ export const FormOptions = ({ name, values, children, ...props }: Jsx<OwnProps>)
                 />
                 {child}
               </Tuple>
-            </ListGroupItem>
+            </ListGroupItemSx>
           )
         })}
       </ListGroupSx>
