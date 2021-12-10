@@ -58,6 +58,8 @@ export const toObj =
   (value: string): T =>
     ({ [prop]: value } as T)
 
+export const asNumber = (val?: string) => (val ? parseInt(val, 10) : NaN)
+
 export const ensure = <T extends NonNullable<any>>(obj: Maybe<T>): T => {
   if (obj == null) {
     throw Error('object must not be null')

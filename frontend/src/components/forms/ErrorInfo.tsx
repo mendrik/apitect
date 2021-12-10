@@ -16,6 +16,10 @@ export const ErrorInfo = ({ name }: Jsx<OwnProps>) => {
   const path = name.split('.')
   const error: FieldError = pathOr<any>(undefined, path, errors)
   return error ? (
-    <Html localeKey={error.message as TFuncKey} options={{ field: last(path) }} />
+    <Html
+      localeKey={error.message as TFuncKey}
+      options={{ field: last(path) }}
+      className="error-info"
+    />
   ) : null
 }

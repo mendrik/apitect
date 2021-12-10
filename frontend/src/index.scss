@@ -236,5 +236,13 @@ input[required] + label:after {
   }
 }
 
+.error-info {
+  font-size: 13px;
+}
+
+label {
+  cursor: pointer;
+}
+
 @import "node_modules/bootstrap/scss/bootstrap";
 @import "./css/tooltip";

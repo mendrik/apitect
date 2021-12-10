@@ -24,5 +24,6 @@ export enum Palette {
   textDisabled = Colors.color9,
   iconBorder = Colors.color9,
   iconText = Colors.color11,
-  error = Colors.color13
+  error = Colors.color13,
+  errorBorder = Colors.color2
 }

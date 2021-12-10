@@ -1,5 +1,5 @@
 import { map, range } from 'ramda'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import {
   ArrayPath,
   FieldArrayWithId,
@@ -11,11 +11,11 @@ import { FormOptions } from '~forms/FormOptions'
 import { Jsx } from '~shared/types/generic'
 
 type OwnProps<T extends FieldValues> = {
-  title: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => JSX.Element
+  title: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => ReactNode
   name: ArrayPath<T>
   form: UseFormReturn<any>
   selectedName: string
-  children: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => JSX.Element
+  children: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => ReactNode
 }
 
 export const EditableObjectList = <T extends FieldValues>({
@@ -31,7 +31,7 @@ export const EditableObjectList = <T extends FieldValues>({
       {fields.map((field, idx) => (
         <div className={'d-grid gap-2'} key={field.id}>
           <label htmlFor={`${selectedName}-${idx}`}>{title(field, idx)}</label>
-          <div>{children(field, idx)}</div>
+          {children(field, idx)}
         </div>
       ))}
     </FormOptions>

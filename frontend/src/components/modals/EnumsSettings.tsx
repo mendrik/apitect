@@ -4,14 +4,21 @@ import React from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { object, string, TypeOf } from 'zod'
 import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
 import { TextInput } from '~forms/TextInput'
 import { useLocation } from '~hooks/useLocation'
 import { Enum, Enums, ZEnums } from '~shared/types/domain/enums'
+import { asNumber } from '~shared/utils/ramda'
 
 import { ModalFC } from '../ModalStub'
 import { EditableObjectList } from '../generic/EditableObjectList'
+
+export const ZEnumsSettings = object({
+  enums: ZEnums,
+  selection: string({ invalid_type_error: 'form.validation.mustChoose' })
+})
 
 const EnumsSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Enums>()
@@ -19,19 +26,21 @@ const EnumsSettings: ModalFC = ({ close }) => {
 
   const defaultEnums = append({ name: '', values: [] }, state ?? [])
 
-  const form = useForm<{ enums: Enums; selection: string }>({
-    resolver: zodResolver(ZEnums),
+  const form = useForm<TypeOf<typeof ZEnumsSettings>>({
+    resolver: zodResolver(ZEnumsSettings),
     defaultValues: { enums: defaultEnums }
   })
 
-  const selection = parseInt(form.watch('selection'), 10)
+  const selection = asNumber(form.watch('selection'))
   const enums = form.watch('enums')
+
+  console.log(form.formState.errors)
 
   const deleteButton = (
     <Button
       variant="outline-danger"
       onClick={close}
-      disabled={!selection || selection == enums.length - 1}
+      disabled={isNaN(selection) || selection == enums.length - 1}
     >
       {t('common.delete')}
     </Button>
@@ -54,17 +63,23 @@ const EnumsSettings: ModalFC = ({ close }) => {
         name="enums"
         title={(f, idx) => <span>{enums[idx].name || t('modals.enumsSettings.newEnum')}</span>}
       >
-        {(field, idx) => (
-          <div className="d-grid gap-2" key={field.id}>
-            <TextInput name={`enums.${idx}.name`} label="modals.enumsSettings.enumName" required />
-            <TagInput<Enum>
-              name={`enums.${idx}.values`}
-              label="modals.enumsSettings.values"
-              apply={name => ({ name, values: [] })}
-              unapply={prop('name')}
-            />
-          </div>
-        )}
+        {(field, idx) =>
+          selection === idx && (
+            <div className="d-grid gap-2" key={field.id}>
+              <TextInput
+                name={`enums.${idx}.name`}
+                label="modals.enumsSettings.enumName"
+                required
+              />
+              <TagInput<Enum>
+                name={`enums.${idx}.values`}
+                label="modals.enumsSettings.values"
+                apply={name => ({ name, values: [] })}
+                unapply={prop('name')}
+              />
+            </div>
+          )
+        }
       </EditableObjectList>
     </SocketForm>
   )
