@@ -36,9 +36,6 @@ const EnumsSettings: ModalFC = ({ close }) => {
   const selection = asNumber(form.watch('selection'))
   const enums = form.watch('enums')
 
-  console.log(form.formState.errors)
-  console.log(form.getValues())
-
   const deleteButton = (
     <Button
       variant="outline-danger"
