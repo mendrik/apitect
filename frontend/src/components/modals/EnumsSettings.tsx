@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { append } from 'ramda'
+import { append, prop } from 'ramda'
 import React from 'react'
 import { Alert } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
@@ -8,7 +8,7 @@ import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
 import { TextInput } from '~forms/TextInput'
 import { useLocation } from '~hooks/useLocation'
-import { Enums, ZEnums } from '~shared/types/domain/enums'
+import { Enum, Enums, ZEnums } from '~shared/types/domain/enums'
 
 import { ModalFC } from '../ModalStub'
 import { EditableObjectList } from '../generic/EditableObjectList'
@@ -37,7 +37,12 @@ const EnumsSettings: ModalFC = ({ close }) => {
         {(field, idx) => (
           <div className="d-grid gap-2" key={field.id}>
             <TextInput name={`enums.${idx}.name`} label="modals.enumsSettings.enumName" />
-            <TagInput name={`enums.${idx}.values`} label="modals.enumsSettings.values" />
+            <TagInput<Enum>
+              name={`enums.${idx}.values`}
+              label="modals.enumsSettings.values"
+              apply={name => ({ name, values: [] })}
+              unapply={prop('name')}
+            />
           </div>
         )}
       </EditableObjectList>

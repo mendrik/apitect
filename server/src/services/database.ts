@@ -20,6 +20,8 @@ import { serverState } from './serverState'
 
 const dbName = `${config.MONGO_INITDB_DATABASE}`
 
+type WithDocId<T> = T & { docId: string }
+
 export enum Collections {
   users = 'users',
   documents = 'documents',
@@ -34,12 +36,12 @@ export enum Collections {
 export type CollectionMap = {
   users: User
   documents: Document
-  tagsSettings: TagsSettings
-  userSettings: UserSettings
-  nodeSettings: NodeSettings
-  projectUsersSettings: ProjectUsersSettings
-  values: Value
-  enums: Enums
+  tagsSettings: WithDocId<TagsSettings>
+  userSettings: WithDocId<UserSettings>
+  nodeSettings: WithDocId<NodeSettings>
+  projectUsersSettings: WithDocId<ProjectUsersSettings>
+  values: WithDocId<Value>
+  enums: WithDocId<Enums>
 }
 
 export const connect = async (): Promise<MongoClient> => {

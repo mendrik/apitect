@@ -50,12 +50,14 @@ export const TagInput = <T extends any>({
   unapply,
   ...props
 }: Jsx<OwnProps<T>>) => {
-  const { watch, setValue } = useForm<Record<typeof name, T[]>>()
+  const { getValues, setValue } = useForm<Record<typeof name, T[]>>()
   const [currentName, setCurrentName] = useState<string>('')
   const inpRef = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
 
-  const tags = watch(name) ?? []
+  const tags = getValues(name) ?? []
+
+  console.log(tags)
 
   const onRemove = (index: number) => setValue(name, tags.splice(index, 1) as any)
   const onAdd = (tag: string) => setValue(name, append(apply(tag), tags) as any)

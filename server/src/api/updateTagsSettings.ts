@@ -8,7 +8,7 @@ import { resolvePromised } from '~shared/utils/promise'
 import { collection, Collections } from '../services/database'
 import { renameTag } from '../services/tags'
 
-const renameMap: Fn<Record<string, string>> = pipe<any, any, any, any, any>(
+const renameMap: Fn<Record<string, string>> = pipe<any, any, any, any, any, Record<string, string>>(
   zip as any,
   map(map(prop('name'))),
   fromPairs,
