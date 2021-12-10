@@ -20,6 +20,7 @@ const ListGroupItemSx = styled(ListGroupItem)`
 
   &.open {
     background-color: white;
+    box-shadow: 3px 0 0px 0px ${Palette.primary} inset;
   }
 `
 

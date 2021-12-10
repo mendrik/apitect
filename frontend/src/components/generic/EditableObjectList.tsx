@@ -10,6 +10,7 @@ import {
 } from 'react-hook-form'
 import { FormOptions } from '~forms/FormOptions'
 import { Jsx } from '~shared/types/generic'
+import { asNumber } from '~shared/utils/ramda'
 
 import { Scale, Tuple } from './Tuple'
 
@@ -31,6 +32,7 @@ export const EditableObjectList = <T extends FieldValues>({
   const { fields } = useFieldArray<T>({ name, control: form.control })
 
   const errors: any[] | undefined = path(name.split('.'), form.formState.errors)
+  const selected = asNumber(form.watch(selectedName))
 
   return (
     <FormOptions name={selectedName} values={map(String, range(0, fields.length))} className="mb-3">
@@ -39,7 +41,11 @@ export const EditableObjectList = <T extends FieldValues>({
           <label htmlFor={`${selectedName}-${idx}`}>
             <Tuple first={Scale.MAX}>
               <span>{title(field, idx)}</span>
-              {errors?.[idx] ? <IconAlertCircle size={18} stroke={1.5} /> : <div />}
+              {errors?.[idx] && selected !== idx ? (
+                <IconAlertCircle size={18} stroke={1.5} />
+              ) : (
+                <div />
+              )}
             </Tuple>
           </label>
           {children(field, idx)}

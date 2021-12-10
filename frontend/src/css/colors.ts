@@ -11,7 +11,8 @@ enum Colors {
   color10 = '#666',
   color11 = '#333',
   color12 = '#e5e9ee',
-  color13 = '#fff1e9'
+  color13 = '#fff1e9',
+  primary = '#0d6efd'
 }
 
 export enum Palette {
@@ -25,5 +26,6 @@ export enum Palette {
   iconBorder = Colors.color9,
   iconText = Colors.color11,
   error = Colors.color13,
-  errorBorder = Colors.color2
+  errorBorder = Colors.color2,
+  primary = Colors.primary
 }
