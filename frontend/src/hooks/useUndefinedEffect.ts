@@ -6,5 +6,5 @@ export const useUndefinedEffect = <T>(fn: Fn, dep: T): void => {
     if (dep == null) {
       return fn()
     }
-  }, [dep])
+  }, [dep, fn])
 }

@@ -44,7 +44,7 @@ const ModalStub = ({
     if (status.is === 'idle' && modalMatch) {
       trigger()
     }
-  }, [status, modalMatch])
+  }, [trigger, status, modalMatch])
 
   const close = () => {
     navigate(removeParams(['modal']), { replace: true })

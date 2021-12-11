@@ -34,7 +34,8 @@ export const usePromise = <ARG, T = void>(
     throw promise
   }
 
-  useEffect(instant ? trigger : F, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(instant ? trigger : F, [instant, trigger])
 
   return trigger
 }

@@ -8,5 +8,5 @@ export const useAutoFocus = (name: string, autoFocus: boolean = false) => {
     if (autoFocus) {
       setFocus(name)
     }
-  }, [autoFocus, name])
+  }, [setFocus, autoFocus, name])
 }

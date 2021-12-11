@@ -23,7 +23,7 @@ export const Modals = () => {
       openSub()
       closeSub()
     }
-  }, [selectedNode])
+  }, [navigate, selectedNode])
 
   return (
     <Suspense fallback={<Loader className="d-fixed inset-0 min-vh-100" />}>

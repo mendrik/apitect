@@ -13,22 +13,25 @@ const useProgress: UseProgress = <T>() => {
   const isMounted = useMounted()
   const [status, setStatus] = useState<Status<T>>({ is: 'idle' })
   return [
-    useCallback((promise: Promise<T>) => {
-      setStatus({ is: 'running' })
-      return isMounted(
-        new Promise<T>((resolve, reject) => {
-          const onValue = (result: T) => {
-            setStatus({ is: 'done', result })
-            resolve(result)
-          }
-          const onError = (result: Error) => {
-            setStatus({ is: 'error', result })
-            reject(result)
-          }
-          promise.then(onValue, onError)
-        })
-      )
-    }, []),
+    useCallback(
+      (promise: Promise<T>) => {
+        setStatus({ is: 'running' })
+        return isMounted(
+          new Promise<T>((resolve, reject) => {
+            const onValue = (result: T) => {
+              setStatus({ is: 'done', result })
+              resolve(result)
+            }
+            const onError = (result: Error) => {
+              setStatus({ is: 'error', result })
+              reject(result)
+            }
+            promise.then(onValue, onError)
+          })
+        )
+      },
+      [isMounted]
+    ),
     status
   ]
 }

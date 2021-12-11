@@ -16,7 +16,7 @@ export const WithSocket = ({ children }: Jsx) => {
     if (readyState === ReadyState.OPEN) {
       void socketEstablished(sendJsonMessage)
     }
-  }, [readyState])
+  }, [readyState, sendJsonMessage])
 
   useEffect(() => {
     if (lastMessage?.data) {

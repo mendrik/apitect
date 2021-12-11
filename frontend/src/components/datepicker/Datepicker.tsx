@@ -106,7 +106,7 @@ export const Datepicker = ({
   ...props
 }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
-  const currentDate: Date = isValid($current) ? $current : new Date()
+  const currentDate: Date = useMemo(() => (isValid($current) ? $current : new Date()), [$current])
   const [selected, setSelected] = useState<Date>(currentDate)
   const [open, setOpen] = useState(false)
 
@@ -120,13 +120,10 @@ export const Datepicker = ({
     } else {
       doc.classList.remove('datepicker-open')
     }
-  }, [open])
+  }, [open, currentDate])
 
-  const months = useMemo(
-    () => range(0, 12).map(m => setDate(setMonth(selected, m), 1)),
-    [open, selected]
-  )
-  const years = useMemo(() => range(-60, 20).map(y => addYears(selected, y)), [open, selected])
+  const months = useMemo(() => range(0, 12).map(m => setDate(setMonth(selected, m), 1)), [selected])
+  const years = useMemo(() => range(-60, 20).map(y => addYears(selected, y)), [selected])
   const ref = useRef<HTMLDivElement>(null)
 
   const openPicker = () => {

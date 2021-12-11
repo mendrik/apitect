@@ -23,8 +23,8 @@ const Dashboard = () => {
   const { visibleTags } = useStore($tagStore)
 
   const columns: JSX.Element[] = [
-    <ProjectTreeHeader />,
-    ...visibleTags.map(tag => <ColumnHeader name={tag.name} tag={tag} />)
+    <ProjectTreeHeader key="project-header" />,
+    ...visibleTags.map(tag => <ColumnHeader key={tag.name} name={tag.name} tag={tag} />)
   ]
 
   return (

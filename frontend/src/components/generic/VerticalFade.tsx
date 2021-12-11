@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useCallback } from 'react'
+import React, { EventHandler, HTMLAttributes, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { useEvent } from '~hooks/useEvent'
 import { Jsx } from '~shared/types/generic'
@@ -38,15 +38,21 @@ const VerticalFadeStyled = styled.div`
 `
 
 export const VerticalFade = ({ children, ...props }: Jsx<HTMLAttributes<HTMLDivElement>>) => {
-  const handler = useCallback((ev: Event) => {
-    const target = ev.target as HTMLElement
-    const opacityTop = 1 - Math.max(50 - target.scrollTop, 0) / 50
-    const opacityBottom =
-      Math.min(target.scrollHeight - target.scrollTop - target.offsetHeight, 50) / 50
-    ref.current?.style.setProperty('--scrollOpacityTop', `${opacityTop}`)
-    ref.current?.style.setProperty('--scrollOpacityBottom', `${opacityBottom}`)
-  }, [])
-  const ref = useEvent<HTMLDivElement>('scroll', handler, undefined, {
+  const ref = useRef<HTMLDivElement>(null)
+
+  const handler = useCallback<EventHandler<any>>(
+    (ev: Event) => {
+      const target = ev.target as HTMLElement
+      const opacityTop = 1 - Math.max(50 - target.scrollTop, 0) / 50
+      const opacityBottom =
+        Math.min(target.scrollHeight - target.scrollTop - target.offsetHeight, 50) / 50
+      ref.current?.style.setProperty('--scrollOpacityTop', `${opacityTop}`)
+      ref.current?.style.setProperty('--scrollOpacityBottom', `${opacityBottom}`)
+    },
+    [ref]
+  )
+
+  useEvent<HTMLDivElement>('scroll', handler, ref, {
     passive: true,
     capture: true
   })

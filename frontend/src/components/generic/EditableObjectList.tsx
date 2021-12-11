@@ -39,7 +39,7 @@ export const EditableObjectList = <T extends FieldValues>({
   const onDelete = useCallback(() => {
     form.setValue(selectedName, undefined)
     remove(selected)
-  }, [selected])
+  }, [selected, form, remove, selectedName])
 
   useEvent('click', onDelete, deleteButtonRef)
 

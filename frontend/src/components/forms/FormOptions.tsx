@@ -41,7 +41,7 @@ export const FormOptions = ({ name, values, children, ...props }: Jsx<OwnProps>)
     useFormContext<{ [K in typeof name]: string }>()
   const val = watch(name)
 
-  useEffect(clearErrors, [val])
+  useEffect(clearErrors, [val, clearErrors])
   const error = path(name.split('.'), formState.errors)
 
   return (

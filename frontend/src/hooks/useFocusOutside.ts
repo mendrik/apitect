@@ -15,5 +15,5 @@ export const useFocusOutside = <T extends HTMLElement>(ref: RefObject<T>, handle
       document.removeEventListener('focusin', $handler)
       document.removeEventListener('click', $handler)
     }
-  }, [ref])
+  }, [ref, handler])
 }

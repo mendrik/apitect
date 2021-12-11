@@ -30,7 +30,7 @@ export const useView = <T extends string>(anEnum: {
         {} as ViewMethods<T>,
         keys(anEnum) as T[]
       ),
-    [view]
+    [view, anEnum, isMounted]
   )
 
   return {

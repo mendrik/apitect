@@ -1,7 +1,12 @@
 {
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["prettier", "effector"],
-  "extends": ["prettier", "plugin:effector/recommended"],
+  "plugins": ["prettier", "effector", "react", "react-hooks"],
+  "extends": ["prettier", "plugin:effector/recommended", "plugin:react/recommended", "plugin:react/jsx-runtime"],
   "parserOptions": {
     "sourceType": "module"
   },
@@ -16,6 +21,9 @@
     "import/no-cycle": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/display-name": "off",
+    "react/prop-types": "off",
     "no-console": [
       "off",
       {
