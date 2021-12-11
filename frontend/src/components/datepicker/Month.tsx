@@ -1,4 +1,4 @@
-import { addDays, format, getDay, isAfter, lastDayOfMonth, setDay } from 'date-fns'
+import { addDays, format, getDay, isAfter, isSameMonth, lastDayOfMonth, setDay } from 'date-fns'
 import { range, reduce, take } from 'ramda'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
@@ -43,12 +43,12 @@ const Week = styled.div`
 }
 `
 
-export const Month = ({ month, selected }: Jsx<OwnProps>) => {
-  const days = useMemo(() => {
+export const Month = ({ month, selected }: Jsx<OwnProps>) =>
+  useMemo(() => {
     const firstDate = setDay(month, 1)
     const $lastDate = lastDayOfMonth(month)
     const lastDate = getDay($lastDate) === 0 ? setDay($lastDate, 1) : setDay($lastDate, 8)
-    return reduce(
+    const days = reduce(
       (acc, i) => {
         const d = addDays(firstDate, i)
         return isAfter(d, lastDate) ? acc : [...acc, d]
@@ -56,20 +56,19 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) => {
       [] as Date[],
       range(0, 42)
     )
-  }, [month])
-
-  return (
-    <Wrap>
-      <MonthHead>{format(month, 'LLLL')}</MonthHead>
-      {take(7, days).map(d => (
-        <Week key={format(d, 'e')}>{format(d, 'eeeeee')}</Week>
-      ))}
-      {days.map(
-        d => (
-          <Day key={format(d, 'd.M')} day={d} month={month} selected={selected} />
-        ),
-        days
-      )}
-    </Wrap>
-  )
-}
+    return (
+      <Wrap>
+        <MonthHead>{format(month, 'LLLL')}</MonthHead>
+        {take(7, days).map(d => (
+          <Week key={format(d, 'e')}>{format(d, 'eeeeee')}</Week>
+        ))}
+        {days.map(
+          d => (
+            <Day key={format(d, 'd.M')} day={d} month={month} selected={selected} />
+          ),
+          days
+        )}
+      </Wrap>
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSameMonth(month, selected[0])])

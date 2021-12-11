@@ -5,6 +5,7 @@ import { Tag } from '~shared/types/domain/tag'
 import { ArgFn } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 import { failOn } from '~shared/utils/failOn'
+import { field } from '~shared/utils/ramda'
 
 import { $api } from '../stores/$apiStore'
 import { openModal } from './modals'
@@ -12,8 +13,8 @@ import { openModal } from './modals'
 const api = () => sample($api).getState()
 
 export const projectFx = createEffect<Api['project']>(() => api().project())
-export const dateLocaleFx = createEffect<ArgFn<string, Promise<Locale>>>(
-  locale => import(/* @vite-ignore */ `../../node_modules/date-fns/locale/${locale}`)
+export const dateLocaleFx = createEffect<ArgFn<string, Promise<Locale>>>(locale =>
+  import(/* @vite-ignore */ `../../node_modules/date-fns/locale/${locale}`).then(field('default'))
 )
 
 export const projectUserSettingsFx = createEffect(() =>
