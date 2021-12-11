@@ -20,7 +20,7 @@ type OwnProps<T extends FieldValues> = {
   name: ArrayPath<T>
   form: UseFormReturn<any>
   selectedName: string
-  deleteButtonRef?: MutableRefObject<HTMLElement | null>
+  deleteButtonRef: MutableRefObject<HTMLElement | null>
   children: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => ReactNode
 }
 

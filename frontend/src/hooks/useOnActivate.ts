@@ -1,14 +1,14 @@
 import { either, propEq, when } from 'ramda'
-import { RefObject, useRef } from 'react'
+import { MutableRefObject, useRef } from 'react'
 import { Fn } from '~shared/types/generic'
 
 import { stopPropagation } from '../utils/stopPropagation'
 import { useEvent } from './useEvent'
 
 export const useOnActivate = <T extends HTMLElement>(
-  onActivate: Fn,
-  ref = useRef<T>(null)
-): RefObject<T> => {
+  onActivate: Fn
+): MutableRefObject<T | null> => {
+  const ref = useRef<T | null>(null)
   useEvent<T>(
     'keydown',
     when<Event, void>(

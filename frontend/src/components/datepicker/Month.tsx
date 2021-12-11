@@ -1,21 +1,10 @@
-import clsx from 'clsx'
-import {
-  addDays,
-  format,
-  getDay,
-  isAfter,
-  isSameDay,
-  isToday,
-  lastDayOfMonth,
-  setDay
-} from 'date-fns'
+import { addDays, format, getDay, isAfter, lastDayOfMonth, setDay } from 'date-fns'
 import { range, reduce, take } from 'ramda'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { useOnActivate } from '~hooks/useOnActivate'
 import { Jsx, UseState } from '~shared/types/generic'
 
-import { Palette } from '../../css/colors'
+import { Day } from './Day'
 
 type OwnProps = {
   selected: UseState<Date>
@@ -52,35 +41,9 @@ const Week = styled.div`
   border-bottom: 0.5pt solid #cecece;
   margin-bottom: 1px;
 }
-
-`
-const Day = styled.div`
-  aspect-ratio: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 300;
-  max-width: 40px;
-
-  &.off {
-    color: transparent;
-    pointer-events: none;
-    cursor: default;
-  }
-  &.today {
-    color: #aa0000;
-    font-weight: 600;
-  }
-  &.selected:not(.off) {
-    background-color: ${Palette.selected};
-    font-weight: 600;
-    border-radius: 4px;
-  }
 `
 
 export const Month = ({ month, selected }: Jsx<OwnProps>) => {
-  const [sel, setSelected] = selected
-
   const days = useMemo(() => {
     const firstDate = setDay(month, 1)
     const $lastDate = lastDayOfMonth(month)
@@ -95,8 +58,6 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) => {
     )
   }, [month])
 
-  const onActivate = (d: Date) => useOnActivate<HTMLDivElement>(() => setSelected(d))
-
   return (
     <Wrap>
       <MonthHead>{format(month, 'LLLL')}</MonthHead>
@@ -105,18 +66,7 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) => {
       ))}
       {days.map(
         d => (
-          <Day
-            key={format(d, 'd.M')}
-            tabIndex={d.getMonth() === month.getMonth() ? 0 : -1}
-            className={clsx({
-              today: isToday(d),
-              selected: isSameDay(sel, d),
-              off: d.getMonth() !== month.getMonth()
-            })}
-            ref={onActivate(d)}
-          >
-            {format(d, 'd')}
-          </Day>
+          <Day key={format(d, 'd.M')} day={d} month={month} selected={selected} />
         ),
         days
       )}

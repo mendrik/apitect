@@ -37,6 +37,7 @@
 - toasts for validation errors in dashboard
 + element for editing existing, new and delete form items
 - App-wide keyboard shortcuts for navi dropdown 
+- find out why EnumsSettings restores name after deleting it from text input
 
 # Type expansion
 
