@@ -58,7 +58,11 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
         <span>{userFormat(value?.value)}</span>
       </Text>
       {value?.value && (
-        <Datepicker onDateSelected={saveValue} currentDate={value?.value ?? new Date()} />
+        <Datepicker
+          onDateSelected={saveValue}
+          stroke={1}
+          currentDate={value?.value ?? new Date()}
+        />
       )}
     </div>
   ) : (
@@ -71,7 +75,7 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
         onBlur={saveAsDate}
         defaultValue={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
       />
-      <Datepicker onDateSelected={saveValue} currentDate={value?.value ?? new Date()} />
+      <Datepicker onDateSelected={saveValue} stroke={1} currentDate={value?.value ?? new Date()} />
     </Tuple>
   )
 }
