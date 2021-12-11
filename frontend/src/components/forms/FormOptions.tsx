@@ -47,21 +47,19 @@ export const FormOptions = ({ name, values, children, ...props }: Jsx<OwnProps>)
   return (
     <div {...props}>
       <ListGroupSx className={clsx({ invalid: error })}>
-        {Children.map(children, (child, idx) => {
-          return (
-            <ListGroupItemSx className={clsx({ open: values[idx] === val })}>
-              <Tuple first={Scale.CONTENT} second={Scale.MAX} gap={3} className="align-items-start">
-                <Form.Check
-                  type="radio"
-                  {...register(name, { required: true })}
-                  value={values[idx]}
-                  id={`${name}-${values[idx]}`}
-                />
-                {child}
-              </Tuple>
-            </ListGroupItemSx>
-          )
-        })}
+        {Children.map(children, (child, idx) => (
+          <ListGroupItemSx className={clsx({ open: values[idx] === val })}>
+            <Tuple first={Scale.CONTENT} second={Scale.MAX} gap={3} className="align-items-start">
+              <Form.Check
+                type="radio"
+                {...register(name, { required: true })}
+                value={values[idx]}
+                id={`${name}-${values[idx]}`}
+              />
+              {child}
+            </Tuple>
+          </ListGroupItemSx>
+        ))}
       </ListGroupSx>
       <ErrorInfo name={name} />
     </div>

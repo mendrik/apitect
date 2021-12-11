@@ -159,19 +159,17 @@ const Tag = styled.div`
   }
 `
 
-TagInput.Tag = ({ tag, onRemove }: Jsx<TagProps>) => {
-  return (
-    <Tag
-      onClick={preventDefault(ev => {
-        ev.stopPropagation()
-        ev.target.focus()
-      })}
-      className="tag"
-      tabIndex={0}
-      onKeyDown={when(propEq('key', 'Delete'), onRemove)}
-    >
-      <span className="label">{tag}</span>
-      <DeleteIcon onClick={onRemove} />
-    </Tag>
-  )
-}
+TagInput.Tag = ({ tag, onRemove }: Jsx<TagProps>) => (
+  <Tag
+    onClick={preventDefault(ev => {
+      ev.stopPropagation()
+      ev.target.focus()
+    })}
+    className="tag"
+    tabIndex={0}
+    onKeyDown={when(propEq('key', 'Delete'), onRemove)}
+  >
+    <span className="label">{tag}</span>
+    <DeleteIcon onClick={onRemove} />
+  </Tag>
+)

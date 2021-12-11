@@ -54,22 +54,20 @@ export const Icon = ({
   iconClasses,
   tabIndex = -1,
   ...props
-}: Jsx<OwnProps>) => {
-  return (
-    <Wrap
-      className={clsx('d-block', { 'cursor-pointer': !!props.onClick })}
-      {...props}
-      data-disabled={disabled}
-    >
-      <IconCmp
-        className={clsx('d-block user-select-none', iconClasses)}
-        focusable="false"
-        role="img"
-        width={size}
-        height={size}
-        stroke={1}
-        tabIndex={-1}
-      />
-    </Wrap>
-  )
-}
+}: Jsx<OwnProps>) => (
+  <Wrap
+    className={clsx('d-block', { 'cursor-pointer': !!props.onClick })}
+    {...props}
+    data-disabled={disabled}
+  >
+    <IconCmp
+      className={clsx('d-block user-select-none', iconClasses)}
+      focusable="false"
+      role="img"
+      width={size}
+      height={size}
+      stroke={1}
+      tabIndex={-1}
+    />
+  </Wrap>
+)

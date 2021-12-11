@@ -6,6 +6,4 @@ export type OwnProps = {
   title: TFuncKey
 }
 
-export const Tab = ({ children }: Jsx<OwnProps>) => {
-  return <div className="">{children}</div>
-}
+export const Tab = ({ children }: Jsx<OwnProps>) => <div className="">{children}</div>

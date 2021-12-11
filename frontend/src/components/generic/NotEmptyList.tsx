@@ -14,12 +14,11 @@ export const NotEmptyList = <T extends any>({
   list,
   children,
   as: Tag
-}: OwnProps<T>): ReactElement | null => {
-  return isNotEmptyArray<T>(list) ? (
+}: OwnProps<T>): ReactElement | null =>
+  isNotEmptyArray<T>(list) ? (
     Tag ? (
       <Tag>{children(list)}</Tag>
     ) : (
       <React.Fragment>{children(list)}</React.Fragment>
     )
   ) : null
-}

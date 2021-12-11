@@ -8,15 +8,13 @@ import { ReactComponent as LoadingSvg } from '../../assets/loader.svg'
 
 type OwnProps = { delay?: boolean } & HTMLAttributes<HTMLDivElement>
 
-export const Loader = ({ className, delay = false, ...props }: Jsx<OwnProps>) => {
-  return (
-    <div
-      className={clsx('d-flex w-100 justify-content-center align-items-center', className)}
-      {...props}
-    >
-      <motion.div {...(delay ? delayedBlendIn : {})} style={{ width: 50, height: 50 }}>
-        <LoadingSvg />
-      </motion.div>
-    </div>
-  )
-}
+export const Loader = ({ className, delay = false, ...props }: Jsx<OwnProps>) => (
+  <div
+    className={clsx('d-flex w-100 justify-content-center align-items-center', className)}
+    {...props}
+  >
+    <motion.div {...(delay ? delayedBlendIn : {})} style={{ width: 50, height: 50 }}>
+      <LoadingSvg />
+    </motion.div>
+  </div>
+)

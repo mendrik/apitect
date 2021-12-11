@@ -3,12 +3,15 @@
   "plugins": ["prettier", "effector"],
   "extends": ["prettier", "plugin:effector/recommended"],
   "parserOptions": {
+    "sourceType": "module"
   },
   "rules": {
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-shadow": "off",
+    "no-useless-return": "warn",
+    "arrow-body-style": ["error", "as-needed"],
     "import/extensions": "off",
     "import/no-cycle": "off",
     "import/no-unresolved": "off",

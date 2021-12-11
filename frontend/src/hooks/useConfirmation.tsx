@@ -40,27 +40,29 @@ export const useConfirmation = (
     [propNotEq('code', 'Tab'), sp]
   ])
 
-  const Confirm = useCallback(() => {
-    return open ? (
-      <Modal show={open} onHide={close} centered enforceFocus onKeyDown={keyMap}>
-        <Modal.Header closeButton>
-          <Modal.Title>{t('common.confirmation')}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <QuestionView body={question}>
-            <ButtonRow>
-              <Button ref={refCancel} variant="outline-primary" type="button">
-                {t(cancelButton)}
-              </Button>
-              <Button ref={refOk} type="button" variant="primary">
-                {t(confirmButton)}
-              </Button>
-            </ButtonRow>
-          </QuestionView>
-        </Modal.Body>
-      </Modal>
-    ) : null
-  }, [open])
+  const Confirm = useCallback(
+    () =>
+      open ? (
+        <Modal show={open} onHide={close} centered enforceFocus onKeyDown={keyMap}>
+          <Modal.Header closeButton>
+            <Modal.Title>{t('common.confirmation')}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <QuestionView body={question}>
+              <ButtonRow>
+                <Button ref={refCancel} variant="outline-primary" type="button">
+                  {t(cancelButton)}
+                </Button>
+                <Button ref={refOk} type="button" variant="primary">
+                  {t(confirmButton)}
+                </Button>
+              </ButtonRow>
+            </QuestionView>
+          </Modal.Body>
+        </Modal>
+      ) : null,
+    [open]
+  )
 
   return [Confirm, () => setOpen(true)]
 }
