@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import { ZodError, ZodSchema } from 'zod'
 import { useView } from '~hooks/useView'
 import { Node } from '~shared/types/domain/node'
-import { NodeType } from '~shared/types/domain/nodeType'
 import { Value } from '~shared/types/domain/values/value'
 import { Maybe } from '~shared/types/generic'
 
@@ -59,6 +58,7 @@ export const useEditorTools = (
     }
     setError(undefined)
     const newValue = emptyToUndefined(formValue)
+
     const result = validator.safeParse(newValue)
     if (value?.value === newValue && result.success) {
       return views.displayView()
@@ -67,7 +67,7 @@ export const useEditorTools = (
       const params = {
         tag,
         nodeId: node.id,
-        nodeType: NodeType.String
+        nodeType: node.nodeType
       }
       void (
         newValue !== undefined

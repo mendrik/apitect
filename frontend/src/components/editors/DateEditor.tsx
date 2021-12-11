@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { format } from 'date-fns'
 import { useStore } from 'effector-react'
 import React from 'react'
 import styled from 'styled-components'
@@ -33,14 +34,14 @@ export const DateInput = styled.input`
 export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) => {
   const nodeSettings = useStore($nodeSettings)
   const nodeSetting = nodeSettings[node.id] as DateSettings
-  const format = useDateFormat(nodeSetting)
+  const userFormat = useDateFormat(nodeSetting)
 
   const validator = getDateValidator(nodeSetting)
   const { saveValue, error, keyMap, views } = useEditorTools(node, value, tag, validator)
 
   return views.isDisplayView() ? (
     <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
-      <span>{format(value?.value)}</span>
+      <span>{userFormat(value?.value)}</span>
     </Text>
   ) : (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} style={{ position: 'relative', maxWidth: 112 }}>
@@ -49,6 +50,7 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
         className={clsx('editor', { invalid: error != null })}
         autoFocus
         onKeyDown={keyMap}
+        value={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
       />
       <Datepicker onDateSelected={saveValue} currentDate={value?.value ?? new Date()} />
     </Tuple>

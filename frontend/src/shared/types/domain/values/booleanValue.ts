@@ -12,5 +12,3 @@ export const ZBooleanValue = ZValueBase.merge(
 )
 
 export type BooleanValue = TypeOf<typeof ZBooleanValue>
-
-export const getBooleanValidator = () => boolean()

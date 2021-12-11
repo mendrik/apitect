@@ -45,7 +45,8 @@ $api.on(
               logger.debug(`Sent: ${method}`, apiCall.payload)
               sendJsonMessage(apiCall)
             } catch (e) {
-              logger.error('Failed to parse ApiRequest', e)
+              logger.error('Failed to parse ApiRequest', payload)
+              throw e
             }
             return new Promise((resolve, reject) => {
               const unsubscribe = apiResponse.watch(res => {
