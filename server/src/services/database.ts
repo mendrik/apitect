@@ -15,8 +15,8 @@ import { TagsSettings } from '~shared/types/forms/tagsSettings'
 import { UserSettings } from '~shared/types/forms/userSettings'
 import { ensure } from '~shared/utils/ramda'
 
+import { $serverState } from './$serverState'
 import { config } from './config'
-import { serverState } from './serverState'
 
 const dbName = `${config.MONGO_INITDB_DATABASE}`
 
@@ -75,7 +75,7 @@ export const connect = async (): Promise<MongoClient> => {
 export const collection: (
   name: keyof CollectionMap & string
 ) => CollectionType<CollectionMap[typeof name]> = name => {
-  const client = ensure(serverState.getState().database)
+  const client = ensure($serverState.getState().database)
   return client.db(dbName).collection(name)
 }
 
@@ -83,7 +83,7 @@ export const withTransaction = async <T>(
   fn: (session: ClientSession) => Promise<T>,
   opt?: TransactionOptions
 ) => {
-  const client = ensure(serverState.getState().database)
+  const client = ensure($serverState.getState().database)
   const session = client.startSession()
   try {
     session.startTransaction(opt)

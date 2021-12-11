@@ -10,8 +10,7 @@
     "test": "jest",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "format": "prettier --write src/**/*.{ts,tsx}",
-    "lint": "eslint --fix src/**/*.{ts,tsx}",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "eslint --fix src/**/*.{ts,tsx}"
   },
   "dependencies": {
     "@dnd-kit/core": "4.0.3",

@@ -14,6 +14,8 @@
     "import/no-cycle": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
+    "no-useless-return": "warn",
+    "arrow-body-style": ["error", "as-needed"],
     "sort-imports": "off",
     "no-console": ["off", { "allowAsStatement": true }],
     "no-debugger": "warn",

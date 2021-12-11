@@ -2,12 +2,11 @@ import { useStore } from 'effector-react'
 import React, { Suspense, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ModalNames } from '~shared/types/modals'
-import { addParams, removeParams } from '~shared/utils/url'
 
 import { closeModal, openModal } from '../events/modals'
 import { $selectedNode } from '../stores/$selectedNode'
+import { addParams, removeParams } from '../utils/url'
 import { ModalStub } from './ModalStub'
-import { ErrorContext } from './generic/ErrorContext'
 import { Loader } from './generic/Loader'
 
 export const Modals = () => {

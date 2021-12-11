@@ -25,8 +25,6 @@ export const withTree =
         .then(always(res))
     })
 
-export const validateTree = <T extends Node>(ops: ChildOperation<T>): ChildOperation<T> => {
-  return ops
-}
+export const validateTree = <T extends Node>(ops: ChildOperation<T>): ChildOperation<T> => ops
 
 export const toTreeNode = (node: Node) => TreeNode.from<Node, 'children'>('children')(node)

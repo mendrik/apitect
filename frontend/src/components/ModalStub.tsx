@@ -9,8 +9,8 @@ import { usePromise } from '~hooks/usePromise'
 import { useQueryParams } from '~hooks/useQueryParams'
 import { Fn, Jsx } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
-import { removeParams } from '~shared/utils/url'
 
+import { removeParams } from '../utils/url'
 import { ErrorContext } from './generic/ErrorContext'
 import { Loader } from './generic/Loader'
 

@@ -6,9 +6,9 @@
     "database": "docker-compose up",
     "start": "tsnd --respawn -r tsconfig-paths/register src/server.ts",
     "test": "jest",
+    "validate": "tsc --noEmit --skipLibCheck",
     "format": "prettier --write src/**/*.{ts,tsx}",
-    "lint": "eslint \"src/**/*.ts\" \"../shared/src/*.ts\"",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "eslint --fix src/**/*.{ts,tsx}"
   },
   "dependencies": {
     "ansicolor": "1.1.95",

@@ -10,11 +10,10 @@ import { collection, Collections } from '../services/database'
 import { tagsSettings } from './tagsSettings'
 import { userSettings } from './userSettings'
 
-export const project: ServerApiMethod<'project'> = ({ docId, email }) => {
-  return resolvePromised<Project>({
+export const project: ServerApiMethod<'project'> = ({ docId, email }) =>
+  resolvePromised<Project>({
     document: getLastDocument(docId),
     tags: tagsSettings({ docId, email }).then<Tag[]>(propOr([], 'tags')),
     visibleTags: userSettings({ docId, email }).then<string[]>(propOr([], 'visibleTags')),
     nodeSettings: collection(Collections.nodeSettings).find<NodeSettings>({ docId }).toArray()
   })
-}

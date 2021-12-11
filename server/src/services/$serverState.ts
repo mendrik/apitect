@@ -9,11 +9,10 @@ type ServerState = {
   database: Maybe<MongoClient>
 }
 
-export const serverState = createStore<ServerState>({
+export const $serverState = createStore<ServerState>({
   database: null
 })
 
-export const apiCall = createEvent<ApiRequest>()
-export const initDatabase = createEffect(() => connect())
+export const initDatabaseFx = createEffect(() => connect())
 
-serverState.on(initDatabase.doneData, (state, database) => ({ ...state, database }))
+$serverState.on(initDatabaseFx.doneData, (state, database) => ({ ...state, database }))
