@@ -1,7 +1,7 @@
 import { createStore, sample } from 'effector'
 import { v4 as uuid } from 'uuid'
 import { ApiSchema } from '~shared/api'
-import { ApiError, ApiResponse } from '~shared/apiResponse'
+import { ApiError, ApiResponse, ZApiResponse } from '~shared/apiResponse'
 import { Api, ApiMethod } from '~shared/types/api'
 import { ZApiRequest } from '~shared/types/apiRequest'
 import { logger } from '~shared/utils/logger'
@@ -16,7 +16,7 @@ apiResponse.watch(data => {
   if (isError(data)) {
     logger.error(`Res[${data.status}]: ${data.message}`)
   } else {
-    logger.debug(`Res[${data.method}]:`, data.payload)
+    console.debug(`Res[${data.method}]:`, data.payload)
   }
 })
 
@@ -42,7 +42,7 @@ $api.on(
                 method,
                 payload
               })
-              logger.debug(`Sent: ${method}`, apiCall.payload)
+              console.debug(`Sent: ${method}`, apiCall.payload)
               sendJsonMessage(apiCall)
             } catch (e) {
               logger.error('Failed to parse ApiRequest', payload)
@@ -55,7 +55,12 @@ $api.on(
                   if (isError(res)) {
                     reject(res)
                   } else {
-                    resolve(res.payload)
+                    try {
+                      const parsed = ZApiResponse.parse(res)
+                      resolve(parsed.payload)
+                    } catch (e) {
+                      reject(e)
+                    }
                   }
                 }
               })

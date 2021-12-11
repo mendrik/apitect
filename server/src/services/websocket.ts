@@ -39,12 +39,8 @@ const openWebsocket = (connection: SocketStream) => {
         method,
         payload
       }
-      try {
-        const validMessage = ZApiResponse.parse(res)
-        connection.socket.send(JSON.stringify(validMessage))
-      } catch (e) {
-        logger.error('Failed to validate or send out response', { ...res, error: e })
-      }
+      const response = ZApiResponse.parse(res)
+      connection.socket.send(JSON.stringify(response))
       return payload
     }
   try {
@@ -53,8 +49,9 @@ const openWebsocket = (connection: SocketStream) => {
     )
 
     connection.socket.on('message', (buffer: Buffer) => {
+      const content = buffer.toString('utf-8')
+      const data = JSON.parse(content)
       try {
-        const data = JSON.parse(buffer.toString('utf-8'))
         const apiRequest = ZApiRequest.parse(data)
         logger.info(`${name} [${email}]/${apiRequest.method}`, data)
         const apiCall = apiMapping[apiRequest.method]
@@ -67,6 +64,7 @@ const openWebsocket = (connection: SocketStream) => {
           .then(send(apiRequest.id, apiRequest.method))
           .catch(socketErrorHandler(connection.socket.send.bind(connection.socket), apiRequest.id))
       } catch (e: any) {
+        logger.info(`${name} [${email}]/failed`, data)
         logger.error(e.message, getStack(e))
       }
     })

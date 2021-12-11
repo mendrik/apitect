@@ -15,7 +15,7 @@ const lastExecution = {
   time: Date.now()
 }
 
-const emptyToUndefined = <T extends Value['value']>(str: T): T | undefined =>
+const emptyToUndefined = <T extends Value['value'] | undefined>(str: T): T | undefined =>
   typeof str === 'string' && /^\s*$/.test(str) ? undefined : (str as T)
 
 export enum Views {
@@ -46,7 +46,7 @@ export const useEditorTools = (
   const [error, setError] = useState<Maybe<ZodError>>()
 
   const saveValue = <T extends Value['value']>(
-    formValue: T,
+    formValue: T | undefined,
     e?: SyntheticEvent<HTMLInputElement>
   ) => {
     const now = Date.now()

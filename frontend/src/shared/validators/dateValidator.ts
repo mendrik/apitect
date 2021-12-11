@@ -1,7 +1,7 @@
-import { date } from 'zod'
+import { dateCodec } from '~shared/codecs/dateCodec'
 import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
 
-const $getDateValidator = (settings?: DateSettings) => date()
+const $getDateValidator = (settings?: DateSettings) => dateCodec
 
 export const getDateValidator = (settings?: DateSettings) => {
   const base = $getDateValidator(settings)

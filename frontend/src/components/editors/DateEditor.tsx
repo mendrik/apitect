@@ -1,10 +1,13 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import { useStore } from 'effector-react'
+import { cond, pathOr, pipe, propEq, propSatisfies, when } from 'ramda'
+import { included } from 'ramda-adjunct'
 import React from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { useDateFormat } from '~hooks/useDateFormat'
+import { dateCodec } from '~shared/codecs/dateCodec'
 import { DateValue } from '~shared/types/domain/values/dateValue'
 import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
 import { Jsx } from '~shared/types/generic'
@@ -35,14 +38,29 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   const nodeSettings = useStore($nodeSettings)
   const nodeSetting = nodeSettings[node.id] as DateSettings
   const userFormat = useDateFormat(nodeSetting)
-
   const validator = getDateValidator(nodeSetting)
-  const { saveValue, error, keyMap, views } = useEditorTools(node, value, tag, validator)
+
+  const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
+
+  const saveAsDate = pipe(pathOr('', ['target', 'value']), saveValue)
+
+  const keyMap = cond([
+    [propEq('code', 'ArrowRight'), when(views.isEditView, (e: Event) => e.stopPropagation())],
+    [propEq('code', 'ArrowLeft'), when(views.isEditView, (e: Event) => e.stopPropagation())],
+    [propSatisfies(included(['ArrowUp', 'ArrowDown']), 'code'), (e: Event) => e.stopPropagation()],
+    [propSatisfies(included(['Tab', 'Enter']), 'code'), saveAsDate],
+    [propSatisfies(included(['Escape']), 'code'), views.displayView]
+  ])
 
   return views.isDisplayView() ? (
-    <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
-      <span>{userFormat(value?.value)}</span>
-    </Text>
+    <div className="d-inline-flex align-items-center gap-2">
+      <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
+        <span>{userFormat(value?.value)}</span>
+      </Text>
+      {value?.value && (
+        <Datepicker onDateSelected={saveValue} currentDate={value?.value ?? new Date()} />
+      )}
+    </div>
   ) : (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} style={{ position: 'relative', maxWidth: 112 }}>
       <DateInput
@@ -50,7 +68,8 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
         className={clsx('editor', { invalid: error != null })}
         autoFocus
         onKeyDown={keyMap}
-        value={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
+        onBlur={saveAsDate}
+        defaultValue={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
       />
       <Datepicker onDateSelected={saveValue} currentDate={value?.value ?? new Date()} />
     </Tuple>

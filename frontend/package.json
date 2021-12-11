@@ -109,6 +109,9 @@
       "^.+\\.(t|j)sx?$": [
         "@swc/jest"
       ]
+    },
+    "moduleNameMapper": {
+      "~shared/(.*)": "<rootDir>/src/shared/$1"
     }
   }
 }
