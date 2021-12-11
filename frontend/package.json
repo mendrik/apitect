@@ -6,6 +6,7 @@
     "start": "vite",
     "build": "tsc --skipLibCheck && vite build",
     "serve": "vite preview",
+    "validate": "tsc --noEmit --skipLibCheck",
     "test": "jest",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "format": "prettier --write src/**/*.{ts,tsx}",

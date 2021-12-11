@@ -50,7 +50,7 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
         autoFocus
         onKeyDown={keyMap}
       />
-      <Datepicker name="date" onDateSelected={saveValue} currentDate={value?.value ?? new Date()} />
+      <Datepicker onDateSelected={saveValue} currentDate={value?.value ?? new Date()} />
     </Tuple>
   )
 }

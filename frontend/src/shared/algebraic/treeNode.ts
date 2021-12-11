@@ -69,14 +69,14 @@ export class TreeNode<T> {
       childrenProp: CP,
       valueProp?: VP
     ) =>
-    (obj: O) => {
+    <O2 extends O>(obj: O2): VP extends undefined ? TreeNode<O> : TreeNode<O[NonNullable<VP>]> => {
       const value = valueProp != null ? obj[valueProp!] : omit([childrenProp as string], obj)
-      const children: TreeNode<O[NonNullable<VP>] | Omit<O, string>>[] = pipe(
+      const children = pipe(
         propOr([], childrenProp as string),
         unless(isArray, defaultTo([])),
         map(TreeNode.from<O, CP, VP>(childrenProp, valueProp))
       )(obj)
-      return TreeNode.of(value, children)
+      return TreeNode.of(value, children as TreeNode<any>[]) as any
     }
 
   flatten = (strategy: Strategy = Strategy.Breadth): TreeNode<T>[] => {

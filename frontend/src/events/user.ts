@@ -11,9 +11,7 @@ import { projectFx } from './project'
 
 const api = () => sample($api).getState()
 
-export const whoAmIFx = createEffect<(...a: any[]) => Promise<User | null>>(() =>
-  whoAmI().catch(() => null)
-)
+export const whoAmIFx = createEffect<() => Promise<User | null>>(() => whoAmI().catch(() => null))
 
 export const userSettingsFx = createEffect<Api['userSettings']>(() =>
   api()

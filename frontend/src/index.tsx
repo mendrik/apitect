@@ -45,7 +45,7 @@ const render = (): void =>
 const start = () =>
   initLocales()
     .then(() => dateLocaleFx(navigator.language))
-    .then(whoAmIFx)
+    .then(() => whoAmIFx())
     .then(render)
 
 void start()
