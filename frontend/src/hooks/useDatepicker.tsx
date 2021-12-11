@@ -5,7 +5,8 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { Datepicker } from '../components/datepicker/Datepicker'
 
 export const useDatepicker = (name: string): ReactNode => {
-  const { control } = useFormContext<{ [K in typeof name]: string }>()
+  const { control, setValue } = useFormContext<{ [K in typeof name]: string }>()
+
   return (
     <Controller
       name={name}
@@ -13,9 +14,7 @@ export const useDatepicker = (name: string): ReactNode => {
       render={({ field }) => (
         <Datepicker
           currentDate={parse(field.value, 'yyyy-MM-dd', new Date())}
-          onDateSelected={selected => {
-            field.onChange(format(selected, 'yyyy-MM-dd'))
-          }}
+          onDateSelected={selected => setValue(name, format(selected, 'yyyy-MM-dd'))}
           className="position-absolute"
           style={{
             right: 10,

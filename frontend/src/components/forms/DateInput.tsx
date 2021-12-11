@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { parse } from 'date-fns'
 import { path } from 'ramda'
 import React, { InputHTMLAttributes } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
@@ -34,7 +35,6 @@ export const DateInput = ({
   name,
   label,
   options,
-  type = 'date',
   className,
   containerClassNames,
   autoFocus,
@@ -43,7 +43,7 @@ export const DateInput = ({
   const { t } = useTranslation()
   const {
     register,
-    setValue,
+    watch,
     formState: { errors }
   } = useFormContext<{ [K in typeof name]: Date | undefined }>()
 
@@ -55,16 +55,12 @@ export const DateInput = ({
   return (
     <div className={clsx('form-floating has-validation position-relative', containerClassNames)}>
       <Input
-        {...register(name, {
-          valueAsDate: true,
-          ...options
-        })}
+        {...register(name, { ...options, setValueAs: val => parse(val, 'yyyy-MM-dd', new Date()) })}
         className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}
         id={inpId}
         autoComplete="off"
-        readOnly={props.readOnly}
         required={!!options?.required}
-        type={type}
+        type="date"
         {...props}
       />
       {CalendarIcon}

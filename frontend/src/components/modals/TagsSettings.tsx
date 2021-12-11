@@ -34,7 +34,6 @@ const TagsSettings: ModalFC = ({ close }) => {
         apply={toObj('name')}
         unapply={field('name')}
       />
-      <DateInput label="form.fields.tags" name="date" />
     </SocketForm>
   )
 }

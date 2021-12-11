@@ -1,4 +1,4 @@
-import { array, object, string } from 'zod'
+import { array, object } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { ZTag } from '../domain/tag'
