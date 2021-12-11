@@ -51,7 +51,7 @@ export const TextInput = ({
         id={inpId}
         autoComplete="off"
         {...register(name, {
-          setValueAs: (u: any) => (isEmptyString(u) ? undefined : u),
+          setValueAs: <T,>(u: T) => (isEmptyString(u) ? undefined : u),
           ...options
         })}
         readOnly={props.readOnly}

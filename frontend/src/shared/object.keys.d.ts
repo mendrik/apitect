@@ -5,7 +5,7 @@ type ObjectKeys<T> = T extends {}
   ? UnionToTuple<keyof T>
   : T extends number
     ? []
-    : T extends Array<any> | string
+    : T extends Array<unknown> | string
       ? string[]
       : never
 

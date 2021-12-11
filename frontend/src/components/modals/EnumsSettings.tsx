@@ -30,7 +30,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
   const { t } = useTranslation()
   const deleteButtonRef = useRef<HTMLButtonElement>(null)
 
-  const defaultEnums = append({ name: '', values: [] as any }, state?.enums ?? [])
+  const defaultEnums = append({ name: '', values: new Array<EnumValue>() }, state?.enums ?? [])
 
   const form = useForm<EnumsSettings>({
     resolver: zodResolver(ZEnumsSettings),
@@ -66,7 +66,13 @@ const EnumsSettings: ModalFC = ({ close }) => {
         selectedName="selection"
         name="enums"
         deleteButtonRef={deleteButtonRef}
-        title={(f, idx) => <span>{enums[idx].name || t('modals.enumsSettings.newEnum')}</span>}
+        title={(f, idx) => (
+          <span>
+            {idx < enums.length - 1
+              ? enums[idx].name ?? t('modals.enumsSettings.missingName')
+              : t('modals.enumsSettings.newEnum')}
+          </span>
+        )}
       >
         {(field, idx) =>
           selection === idx && (

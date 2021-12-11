@@ -8,8 +8,9 @@ import { logger } from '~shared/utils/logger'
 
 import { apiResponse, socketEstablished } from '../events/messages'
 import { projectFx } from '../events/project'
+import { uninitialized } from '../utils/uninitialized'
 
-export const $api = createStore<Api>({} as any)
+export const $api = createStore<Api>(uninitialized())
 
 apiResponse.watch(data => {
   if (isError(data)) {

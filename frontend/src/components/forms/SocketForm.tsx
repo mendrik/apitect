@@ -14,7 +14,7 @@ import { GenericError } from './GenericError'
 import { SubmitButton } from './SubmitButton'
 
 type OwnProps<M extends FormApiMethod> = {
-  form: UseFormReturn<any>
+  form: UseFormReturn<any> // todo try to remove any
   onValid: Fn<Promise<any>> // EffectByHandler<Api[M], Error>
   close: Fn
   submitButton: TFuncKey

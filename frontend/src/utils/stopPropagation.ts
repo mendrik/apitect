@@ -1,7 +1,8 @@
 import type { SyntheticEvent } from 'react'
+import { Fn } from '~shared/types/generic'
 
 export const stopPropagation =
-  (fn: (...arg: any[]) => void = () => 0) =>
+  (fn: Fn = () => 0) =>
   <T extends Event | SyntheticEvent>(e: T) => {
     e.preventDefault()
     e.stopPropagation()

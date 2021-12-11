@@ -13,13 +13,19 @@ export const usePromise = <ARG, T = void>(
   throwSuspense: boolean = false
 ): Trigger => {
   const [promise, setPromise] = useState<Promise<any>>()
-  const { setError } = useContext(errorContext)
+  const errCtx = useContext(errorContext)
   const isMounted = useMounted()
 
   const trigger = (...args: ARG[]) => {
     const promiseFn = () =>
       isMounted(fn(...args))
-        .catch(setError)
+        .catch(e => {
+          if (errCtx?.setError) {
+            errCtx?.setError(e)
+          } else {
+            throw e
+          }
+        })
         .finally(() => setPromise(undefined))
     setPromise(promiseFn())
   }

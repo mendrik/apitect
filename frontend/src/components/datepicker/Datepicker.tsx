@@ -4,12 +4,12 @@ import { addYears, format, isSameYear, isValid, setDate, setMonth } from 'date-f
 import { AnimatePresence, motion } from 'framer-motion'
 import { propEq, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { HTMLAttributes, useEffect, useMemo, useRef, useState } from 'react'
+import React, { HTMLAttributes, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ButtonRow } from '~forms/ButtonRow'
-import { ArgFn, Fn, Jsx } from '~shared/types/generic'
+import { ArgFn, Jsx } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { stopPropagation } from '../../utils/stopPropagation'
@@ -153,7 +153,10 @@ export const Datepicker = ({
       m?.focus()
     }, 1)
 
-  const onEscape = when(propEq('code', 'Escape'), stopPropagation(() => setOpen(false)) as any)
+  const onEscape = when<KeyboardEvent<HTMLDivElement>, void>(
+    propEq('code', 'Escape'),
+    stopPropagation(() => setOpen(false))
+  )
 
   return (
     <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>

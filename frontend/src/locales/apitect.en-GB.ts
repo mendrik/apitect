@@ -97,7 +97,8 @@ const en = {
         info: 'Enumerations represent sets of labels which can be used in nodes of the type Enum',
         enumName: 'Name',
         values: 'Values',
-        newEnum: 'Add a new enumeration'
+        newEnum: 'Add a new enumeration',
+        missingName: 'Name missing'
       },
       tagSettings: {
         title: 'Tag {{ name }}'

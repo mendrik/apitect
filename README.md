@@ -30,11 +30,13 @@
 - ColorInput
 - RichtextInput
 - SelectInput
-- MultiTagInput
++ MultiTagInput
 - ListInput
-- TreeInput: arrow keys, remember open state, open selected
+- DateInput
+- TreeInput: ~arrow keys~, remember open state, open selected
 - toasts for validation errors in dashboard
-- element for editing existing, new and delete form items
++ element for editing existing, new and delete form items
+- App-wide keyboard shortcuts for navi dropdown 
 
 # Type expansion
 

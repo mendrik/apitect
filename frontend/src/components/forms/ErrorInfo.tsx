@@ -14,7 +14,7 @@ export const ErrorInfo = ({ name }: Jsx<OwnProps>) => {
     formState: { errors }
   } = useFormContext()
   const path = name.split('.')
-  const error: FieldError = pathOr<any>(undefined, path, errors)
+  const error = pathOr<FieldError | undefined>(undefined, path, errors)
   return error ? (
     <Html
       localeKey={error.message as TFuncKey}

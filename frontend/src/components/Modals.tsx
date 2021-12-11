@@ -7,6 +7,7 @@ import { addParams, removeParams } from '~shared/utils/url'
 import { closeModal, openModal } from '../events/modals'
 import { $selectedNode } from '../stores/$selectedNode'
 import { ModalStub } from './ModalStub'
+import { ErrorContext } from './generic/ErrorContext'
 import { Loader } from './generic/Loader'
 
 export const Modals = () => {

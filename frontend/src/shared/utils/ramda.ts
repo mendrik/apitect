@@ -42,7 +42,7 @@ export const assocBy =
   <U>(obj: U): U & Record<K, R> =>
     converge(assoc(field), [func, identity])(obj)
 
-export const safeParseJson = <T>(data: any): T | undefined =>
+export const safeParseJson = <T>(data: unknown): T | undefined =>
   tryCatch(d => JSON.parse(`${d}`), always(undefined))(data)
 
 export const satiated = <T>(data: Record<string, T>): Record<string, NonNullable<T>> =>
@@ -60,7 +60,7 @@ export const toObj =
 
 export const asNumber = (val: Maybe<string>) => (val != null ? parseInt(val, 10) : NaN)
 
-export const ensure = <T extends NonNullable<any>>(obj: Maybe<T>): T => {
+export const ensure = <T extends NonNullable<unknown>>(obj: Maybe<T>): T => {
   if (obj == null) {
     throw Error('object must not be null')
   }

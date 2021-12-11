@@ -9,10 +9,10 @@ export const useOnActivate = <T extends HTMLElement>(
   onActivate: Fn,
   ref = useRef<T>(null)
 ): RefObject<T> => {
-  useEvent(
+  useEvent<T>(
     'keydown',
-    when<any, void>(
-      either(propEq<any>('key', 'Enter'), propEq<any>('code', 'Space')),
+    when<Event, void>(
+      either(propEq('key', 'Enter'), propEq('code', 'Space')),
       stopPropagation(onActivate)
     ),
     ref

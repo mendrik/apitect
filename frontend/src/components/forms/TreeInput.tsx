@@ -32,6 +32,7 @@ import {
 } from '../../css/TreeInput.css'
 import { offset, sameWidth } from '../../utils/sameWidthMod'
 import { stopPropagation as sp } from '../../utils/stopPropagation'
+import { uninitialized } from '../../utils/uninitialized'
 import { DeleteIcon } from '../generic/DeleteIcon'
 import { Scale, Tuple } from '../generic/Tuple'
 import { ErrorInfo } from './ErrorInfo'
@@ -50,14 +51,13 @@ type OwnProps<T extends WithId> = {
   containerClasses: string
 } & TreeSelectConfig<T>
 
-const TreeInputContext = createContext<
-  TreeSelectConfig<any> & {
-    setSelected: Dispatch<SetStateAction<any>>
-    focusedNodeState: UseState<Maybe<TreeNode<any>>>
-    openStateActions: Actions<TreeNode<any>>
-    close: Fn
-  }
->({} as any)
+type TreeInputContextType = TreeSelectConfig<any> & {
+  setSelected: Dispatch<SetStateAction<any>>
+  focusedNodeState: UseState<Maybe<TreeNode<any>>>
+  openStateActions: Actions<TreeNode<any>>
+  close: Fn
+}
+const TreeInputContext = createContext<TreeInputContextType>(uninitialized())
 
 export const TreeInput = <T extends WithId>({
   tree,

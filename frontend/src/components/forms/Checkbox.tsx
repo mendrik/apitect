@@ -9,8 +9,8 @@ import { Jsx } from '~shared/types/generic'
 type OwnProps = {
   label: TFuncKey
   name: string
-  valueOn?: any
-  valueOff?: any
+  valueOn?: unknown
+  valueOff?: unknown
 } & HTMLAttributes<HTMLDivElement>
 
 export const Checkbox = ({
