@@ -31,7 +31,7 @@ export const FocusNavigator = ({
       if (ref.current != null && ref.current.matches(':focus-within') && current != null) {
         const focusables = Array.from<HTMLElement>(
           ref.current.querySelectorAll(
-            '[tabindex]:not([tabindex^="-"]),button:not([disabled]):not([tabindex^="-"]),input:not([disabled]):not([tabindex^="-"])'
+            '[tabindex]:not([tabindex^="-"]),button:not([disabled]):not([tabindex^="-"]),input:not([disabled]):not([tabindex^="-"]),select:not([disabled]):not([tabindex^="-"])'
           )
         )
 

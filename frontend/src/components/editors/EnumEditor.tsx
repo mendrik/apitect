@@ -18,6 +18,7 @@ import { Palette } from '../../css/colors'
 import { EditorProps } from '../specific/VisualValue'
 
 const SelectSx = styled.select`
+  margin-left: -2px;
   &.invalid {
     background-color: ${Palette.error};
   }
