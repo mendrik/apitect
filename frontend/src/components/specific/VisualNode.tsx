@@ -9,10 +9,10 @@ import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
 import { iconMap, NodeType } from '~shared/types/domain/nodeType'
 import { Jsx } from '~shared/types/generic'
+import { $openNodes } from '~stores/$openNodesStore'
+import { $selectedNode } from '~stores/$selectedNode'
 
 import { openNodeState, selectNode } from '../../events/tree'
-import { $openNodes } from '../../stores/$openNodesStore'
-import { $selectedNode } from '../../stores/$selectedNode'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 

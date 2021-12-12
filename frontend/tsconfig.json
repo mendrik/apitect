@@ -23,6 +23,7 @@
       "~shared/*": ["shared/*"],
       "~forms/*": ["components/forms/*"],
       "~hooks/*": ["hooks/*"],
+      "~stores/*": ["stores/*"],
     }
   },
   "include": [

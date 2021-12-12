@@ -75,6 +75,9 @@ const en = {
           step: 'Step',
           unit: 'Unit',
           precision: 'Precision'
+        },
+        enums: {
+          enumeration: 'Enumeration'
         }
       },
       projectUserSettings: {

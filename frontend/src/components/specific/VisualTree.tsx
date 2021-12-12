@@ -4,6 +4,8 @@ import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
+import { $selectedNode } from '~stores/$selectedNode'
+import { $treeStore } from '~stores/$treeStore'
 
 import {
   deleteNodeFx,
@@ -12,8 +14,6 @@ import {
   openNodeState,
   selectNode
 } from '../../events/tree'
-import { $selectedNode } from '../../stores/$selectedNode'
-import { $treeStore } from '../../stores/$treeStore'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNode } from './VisualNode'

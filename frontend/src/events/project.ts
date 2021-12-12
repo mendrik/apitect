@@ -54,4 +54,8 @@ export const enumsFx = createEffect<Api['enums']>(() =>
     .then(tap(params => openModal({ name: ModalNames.ENUMS_SETTINGS, params })))
 )
 
-export const updateEnumsFx = createEffect<Api['updateEnums']>(req => api().updateEnums(req))
+export const updateEnumsFx = createEffect<Api['updateEnums']>(req =>
+  api()
+    .updateEnums(req)
+    .then(tap(() => projectFx()))
+)

@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLogout } from '~hooks/useLogout'
+import { $user } from '~stores/$userStore'
 
 import { Palette } from '../css/colors'
 import { enumsFx, projectUserSettingsFx, tagsSettingsFx } from '../events/project'
-import { $user } from '../stores/$userStore'
 import { addParams } from '../utils/url'
 import { Scale, Tuple } from './generic/Tuple'
 

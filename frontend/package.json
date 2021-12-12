@@ -111,7 +111,8 @@
       ]
     },
     "moduleNameMapper": {
-      "~shared/(.*)": "<rootDir>/src/shared/$1"
+      "~shared/(.*)": "<rootDir>/src/shared/$1",
+      "~stores/(.*)": "<rootDir>/src/stores/$1"
     }
   }
 }

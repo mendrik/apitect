@@ -4,8 +4,8 @@ import { mapIndexed } from 'ramda-adjunct'
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
+import { $tagStore } from '~stores/$tagStore'
 
-import { $tagStore } from '../../stores/$tagStore'
 import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {

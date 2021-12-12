@@ -1,10 +1,17 @@
+import { useStore } from 'effector-react'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+import { SelectInput } from '~forms/SelectInput'
+import { $enumsStore } from '~stores/$enumsStore'
 
 const Enum = () => {
-  const { t } = useTranslation()
+  const enums = useStore($enumsStore)
+  console.log(enums)
 
-  return <div>Enumeration</div>
+  return (
+    <SelectInput label="modals.nodeSettings.enums.enumeration" name="enumeration">
+      bls
+    </SelectInput>
+  )
 }
 
 export default Enum

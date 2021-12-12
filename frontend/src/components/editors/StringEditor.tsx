@@ -6,8 +6,8 @@ import { StringValue } from '~shared/types/domain/values/stringValue'
 import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
 import { Jsx } from '~shared/types/generic'
 import { getStringValidator } from '~shared/validators/stringValidator'
+import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
-import { $nodeSettings } from '../../stores/$nodeSettingsStore'
 import { EditorProps } from '../specific/VisualValue'
 
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {

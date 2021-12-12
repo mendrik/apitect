@@ -7,9 +7,9 @@ import { FieldSet } from '~forms/FieldSet'
 import { SocketForm } from '~forms/SocketForm'
 import { useLocation } from '~hooks/useLocation'
 import { UserSettings as Settings, ZUserSettings } from '~shared/types/forms/userSettings'
+import { $tagStore } from '~stores/$tagStore'
 
 import { updateUserSettingsFx } from '../../events/user'
-import { $tagStore } from '../../stores/$tagStore'
 import { ModalFC } from '../ModalStub'
 
 const UserSettings: ModalFC = ({ close }) => {

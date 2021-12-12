@@ -9,9 +9,9 @@ import { TextInput } from '~forms/TextInput'
 import { useLocation } from '~hooks/useLocation'
 import { Tag, ZTag } from '~shared/types/domain/tag'
 import { isCyclic, updateArrayBy } from '~shared/utils/ramda'
+import { $tagStore } from '~stores/$tagStore'
 
 import { updateTagsSettingsFx } from '../../events/project'
-import { $tagStore } from '../../stores/$tagStore'
 import { ModalFC } from '../ModalStub'
 
 const TagSettings: ModalFC = ({ close }) => {

@@ -2,11 +2,11 @@ import { IconColumns, IconFolderPlus, IconSettings, IconTrash } from '@tabler/ic
 import { useStore } from 'effector-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { $documentStore } from '~stores/$documentStore'
+import { $selectedNode } from '~stores/$selectedNode'
 
 import { deleteNodeFx, newNodeFx, nodeSettingsFx } from '../../events/tree'
 import { userSettingsFx } from '../../events/user'
-import { $documentStore } from '../../stores/$documentStore'
-import { $selectedNode } from '../../stores/$selectedNode'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'

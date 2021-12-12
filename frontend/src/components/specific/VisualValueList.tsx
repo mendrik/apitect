@@ -10,10 +10,10 @@ import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
 import { ValueList } from '~shared/types/response/valueList'
 import { byProp } from '~shared/utils/ramda'
+import { $valuesStore } from '~stores/$valuesStore'
+import { $visibleNodes } from '~stores/$visibileNodes'
 
 import { valueListFx } from '../../events/values'
-import { $valuesStore } from '../../stores/$valuesStore'
-import { $visibleNodes } from '../../stores/$visibileNodes'
 import { VisualValue } from './VisualValue'
 
 type OwnProps = {

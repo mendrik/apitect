@@ -10,9 +10,9 @@ import {
   ProjectUsersSettings as Settings,
   ZProjectUsersSettings
 } from '~shared/types/forms/projectUsersSettings'
+import { $treeStore } from '~stores/$treeStore'
 
 import { updateProjectUserSettingsFx } from '../../events/project'
-import { $treeStore } from '../../stores/$treeStore'
 import { ModalFC } from '../ModalStub'
 
 const ProjectUsersSettings: ModalFC = ({ close }) => {
