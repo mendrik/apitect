@@ -43,7 +43,7 @@ export const SelectInput = ({
     <div className={clsx('form-floating has-validation', containerClassNames)}>
       <select
         className={clsx(
-          'form-control ',
+          'form-control form-select',
           { 'is-invalid': path(name.split('.'), errors) },
           className
         )}

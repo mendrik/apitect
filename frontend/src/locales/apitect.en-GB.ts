@@ -17,6 +17,7 @@ const en = {
       confirm: 'Confirm',
       save: 'Save',
       delete: 'Delete',
+      select: 'Select...',
       yesImSure: 'I am sure!',
       unexpectedError: 'Oops! An unexpected error',
       confirmation: 'Confirmation required',
@@ -132,7 +133,8 @@ const en = {
         number: 'Number',
         search: 'Search',
         parentTag: 'Extends from',
-        format: 'Custom format'
+        format: 'Custom format',
+        enumeration: 'Enumeration'
       },
       validation: {
         sherlock: 'Unable not understand this expression',
