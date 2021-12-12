@@ -1,5 +1,5 @@
 import React from 'react'
 
-const Boolean = () => <div>boolean</div>
+const Boolean = () => <div />
 
 export default Boolean

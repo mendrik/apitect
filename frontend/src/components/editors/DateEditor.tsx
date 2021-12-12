@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
-import { useStore } from 'effector-react'
+import { useStoreMap } from 'effector-react'
 import { cond, pathOr, pipe, propEq, propSatisfies, when } from 'ramda'
 import { included } from 'ramda-adjunct'
 import React from 'react'
@@ -34,10 +34,9 @@ export const DateInput = styled.input`
 `
 
 export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) => {
-  const nodeSettings = useStore($nodeSettings)
-  const nodeSetting = nodeSettings[node.id] as DateSettings
-  const userFormat = useDateFormat(nodeSetting)
-  const validator = getDateValidator(nodeSetting)
+  const dateSettings = useStoreMap($nodeSettings, s => s[node.id] as DateSettings)
+  const userFormat = useDateFormat(dateSettings)
+  const validator = getDateValidator(dateSettings)
 
   const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
 

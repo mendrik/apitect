@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { useStore } from 'effector-react'
+import { useStoreMap } from 'effector-react'
 import React from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
@@ -19,8 +19,8 @@ export const TextInput = styled.input`
 `
 
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
-  const nodeSettings = useStore($nodeSettings)
-  const validator = getStringValidator(nodeSettings[node.id] as StringSettings)
+  const stringSettings = useStoreMap($nodeSettings, s => s[node.id] as StringSettings)
+  const validator = getStringValidator(stringSettings)
   const { saveFromEvent, error, keyMap, views } = useEditorTools(node, value, tag, validator)
 
   return views.isDisplayView() ? (

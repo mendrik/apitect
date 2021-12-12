@@ -142,7 +142,7 @@ const NodeSettings: ModalFC = ({ close }) => {
         label="form.fields.nodeName"
         type="text"
         autoFocus
-        containerClassNames="mb-3"
+        containerClassNames="mb-4"
         options={{ required: true }}
       />
       <Content />

@@ -5,7 +5,7 @@ import { ZValueBase } from '~shared/types/domain/values/valueBase'
 
 export const ZEnumValue = ZValueBase.merge(
   object({
-    nodeType: literal(NodeType.String),
+    nodeType: literal(NodeType.Enum),
     value: string()
   })
 )

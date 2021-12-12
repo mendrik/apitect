@@ -1,7 +1,8 @@
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
-import { find, propEq } from 'ramda'
-import React from 'react'
+import { cond, find, propEq, propSatisfies } from 'ramda'
+import { included } from 'ramda-adjunct'
+import React, { KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
@@ -23,22 +24,31 @@ const SelectSx = styled.select`
 `
 
 export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) => {
+  const { t } = useTranslation()
   const enumSettings = useStoreMap($nodeSettings, s => s[node.id] as EnumSettings)
   const e = useStoreMap($enumsStore, find<Enum>(propEq('name', enumSettings.enumeration)))!
   const validator = getEnumValidator(e, enumSettings)
   const { saveFromEvent, error, keyMap, views } = useEditorTools(node, value, tag, validator)
-  const { t } = useTranslation()
+
+  const selKeyMap = cond([
+    [propSatisfies(included(['Escape']), 'code'), views.displayView],
+    [
+      propSatisfies(included(['ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape']), 'code'),
+      (e: KeyboardEvent<HTMLSelectElement>) => e.stopPropagation()
+    ]
+  ])
+
   return views.isDisplayView() ? (
-    <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
+    <Text tabIndex={0} onFocus={views.editView} onKeyDown={keyMap}>
       <span>{value?.value ?? ' '}</span>
     </Text>
   ) : (
     <SelectSx
       className={clsx('editor', { invalid: error != null })}
       autoFocus
-      placeholder={node.name}
       defaultValue={value?.value}
-      onChange={saveFromEvent}
+      onBlur={saveFromEvent}
+      onKeyDown={selKeyMap}
     >
       {!enumSettings.required && <option>{t('common.select')}</option>}
       {e.values.map(v => (
