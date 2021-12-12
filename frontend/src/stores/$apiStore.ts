@@ -59,6 +59,7 @@ $api.on(
                       const parsed = ZApiResponse.parse(res)
                       resolve(parsed.payload)
                     } catch (e) {
+                      console.log(e)
                       reject(e)
                     }
                   }

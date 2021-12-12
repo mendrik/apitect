@@ -1,6 +1,7 @@
 import { useStore } from 'effector-react'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { $enumsStore } from '~stores/$enumsStore'
 import { $user } from '~stores/$userStore'
 
 import Dashboard from './Dashboard'

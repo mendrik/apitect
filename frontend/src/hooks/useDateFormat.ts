@@ -1,8 +1,7 @@
 import { format, formatDistanceToNow, isValid } from 'date-fns'
 import { useStore } from 'effector-react'
 import { DateDisplay, DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
-
-import { $dateLocale } from '../stores/$dateLocale'
+import { $dateLocale } from '~stores/$dateLocale'
 
 export const useDateFormat = (settings: DateSettings) => {
   const locale = useStore($dateLocale)

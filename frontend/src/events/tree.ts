@@ -4,8 +4,8 @@ import { TreeNode } from '~shared/algebraic/treeNode'
 import { Api } from '~shared/types/api'
 import { Node } from '~shared/types/domain/node'
 import { ModalNames } from '~shared/types/modals'
+import { $api } from '~stores/$apiStore'
 
-import { $api } from '../stores/$apiStore'
 import { openModal } from './modals'
 import { projectFx } from './project'
 

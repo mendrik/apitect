@@ -6,8 +6,8 @@ import { ArgFn } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 import { failOn } from '~shared/utils/failOn'
 import { field } from '~shared/utils/ramda'
+import { $api } from '~stores/$apiStore'
 
-import { $api } from '../stores/$apiStore'
 import { openModal } from './modals'
 
 const api = () => sample($api).getState()
