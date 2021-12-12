@@ -1,10 +1,18 @@
 import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
-import { addYears, format, isSameYear, isValid, setDate, setMonth } from 'date-fns'
+import { addYears, format, isSameYear, isValid, parse, setDate, setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
-import { propEq, range, when } from 'ramda'
+import { cond, propEq, propOr, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { HTMLAttributes, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  HTMLAttributes,
+  KeyboardEvent,
+  MouseEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -12,9 +20,12 @@ import { ButtonRow } from '~forms/ButtonRow'
 import { ArgFn, Jsx } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
+import { Palette } from '../../css/colors'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { Scrollable } from '../generic/Scrollable'
 import { Month } from './Month'
+
+const FMT = 'dd-MM-yyyy'
 
 type OwnProps = {
   onDateSelected: ArgFn<Date>
@@ -79,6 +90,17 @@ const FullYear = styled.ol`
     align-items: flex-start;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: repeat(3, 1fr);
+  }
+
+  .day[data-date='${propOr('', 'data-selected')}'] {
+    background-color: ${Palette.selected};
+    font-weight: 600;
+    border-radius: 4px;
+  }
+
+  .day[data-date='${propOr('', 'data-today')}'] {
+    color: #aa0000;
+    font-weight: 600;
   }
 `
 
@@ -145,7 +167,9 @@ export const Datepicker = ({
   const afterOpen = () =>
     setTimeout(() => {
       scrollYear()
-      const m = ref.current?.querySelector<HTMLDivElement>('.selected')
+      const m = ref.current?.querySelector<HTMLDivElement>(
+        `.day[data-date='${format(selected, FMT)}']`
+      )
       m?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
       m?.focus()
     }, 1)
@@ -154,6 +178,16 @@ export const Datepicker = ({
     propEq('code', 'Escape'),
     stopPropagation(() => setOpen(false))
   )
+
+  const click = (ev: MouseEvent<HTMLOListElement>): void => {
+    const target = ev.target as HTMLElement
+    if (target.matches('.day')) {
+      const dateStr = target.dataset.date!
+      setSelected(parse(dateStr, FMT, new Date()))
+    }
+  }
+
+  const keyMap = cond([[propEq('code', 'Space'), click]])
 
   return (
     <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>
@@ -182,14 +216,15 @@ export const Datepicker = ({
                 </Years>
               </Scrollable>
               <Scrollable fade>
-                <FullYear>
+                <FullYear
+                  onClick={click}
+                  onKeyDown={keyMap}
+                  data-selected={format(selected, FMT)}
+                  data-today={format(Date.now(), FMT)}
+                >
                   {mapIndexed(
                     m => (
-                      <Month
-                        month={m}
-                        key={format(m, 'dd.MM.yyyy')}
-                        selected={[selected, setSelected]}
-                      />
+                      <Month month={m} key={format(m, 'MM-yyyy')} />
                     ),
                     months
                   )}

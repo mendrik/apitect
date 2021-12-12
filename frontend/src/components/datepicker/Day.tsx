@@ -1,16 +1,12 @@
 import clsx from 'clsx'
-import { format, isSameDay, isToday } from 'date-fns'
+import { format, getDayOfYear } from 'date-fns'
 import React from 'react'
 import styled from 'styled-components'
-import { useOnActivate } from '~hooks/useOnActivate'
-import { Jsx, UseState } from '~shared/types/generic'
-
-import { Palette } from '../../css/colors'
+import { Jsx } from '~shared/types/generic'
 
 type OwnProps = {
   day: Date
   month: Date
-  selected: UseState<Date>
 }
 
 const DaySx = styled.div`
@@ -26,34 +22,21 @@ const DaySx = styled.div`
     pointer-events: none;
     cursor: default;
   }
-  &.today {
-    color: #aa0000;
-    font-weight: 600;
-  }
-  &.selected:not(.off) {
-    background-color: ${Palette.selected};
-    font-weight: 600;
-    border-radius: 4px;
-  }
 `
 
-export const Day = ({ day, month, selected }: Jsx<OwnProps>) => {
-  const [sel, setSelected] = selected
-
-  const onActivateRef = useOnActivate<HTMLDivElement>(() => setSelected(day))
-
+export const Day = ({ day, month }: Jsx<OwnProps>) => {
+  const key = format(day, 'dd-MM-yyyy')
+  const dayNumber = day.getDate()
+  const off = day.getMonth() !== month.getMonth()
   return (
     <DaySx
-      key={format(day, 'd.M')}
-      tabIndex={day.getMonth() === month.getMonth() ? 0 : -1}
-      className={clsx({
-        today: isToday(day),
-        selected: isSameDay(sel, day),
-        off: day.getMonth() !== month.getMonth()
+      tabIndex={day.getMonth() === month.getMonth() ? getDayOfYear(day) : -1}
+      className={clsx('day', {
+        off: off
       })}
-      ref={onActivateRef}
+      data-date={off ? undefined : key}
     >
-      {format(day, 'd')}
+      {dayNumber}
     </DaySx>
   )
 }

@@ -1,13 +1,12 @@
-import { addDays, format, getDay, isAfter, isSameMonth, lastDayOfMonth, setDay } from 'date-fns'
+import { addDays, format, getDay, isAfter, lastDayOfMonth, setDay } from 'date-fns'
 import { range, reduce, take } from 'ramda'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Jsx, UseState } from '~shared/types/generic'
+import { Jsx } from '~shared/types/generic'
 
 import { Day } from './Day'
 
 type OwnProps = {
-  selected: UseState<Date>
   month: Date
 }
 
@@ -43,7 +42,7 @@ const Week = styled.div`
 }
 `
 
-export const Month = ({ month, selected }: Jsx<OwnProps>) =>
+export const Month = ({ month }: Jsx<OwnProps>) =>
   useMemo(() => {
     const firstDate = setDay(month, 1)
     const $lastDate = lastDayOfMonth(month)
@@ -64,11 +63,10 @@ export const Month = ({ month, selected }: Jsx<OwnProps>) =>
         ))}
         {days.map(
           d => (
-            <Day key={format(d, 'd.M')} day={d} month={month} selected={selected} />
+            <Day key={format(d, 'd.M.yyyy')} day={d} month={month} />
           ),
           days
         )}
       </Wrap>
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSameMonth(month, selected[0])])
+  }, [format(month, 'MM-yyyy')])

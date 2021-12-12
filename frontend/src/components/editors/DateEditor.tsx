@@ -7,7 +7,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { useDateFormat } from '~hooks/useDateFormat'
-import { dateCodec } from '~shared/codecs/dateCodec'
 import { DateValue } from '~shared/types/domain/values/dateValue'
 import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
 import { Jsx } from '~shared/types/generic'
@@ -54,7 +53,7 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
 
   return views.isDisplayView() ? (
     <div className="d-inline-flex align-items-center gap-2">
-      <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
+      <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView} style={{ minWidth: 76 }}>
         <span>{userFormat(value?.value)}</span>
       </Text>
       {value?.value && (
@@ -66,7 +65,7 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
       )}
     </div>
   ) : (
-    <Tuple first={Scale.MAX} second={Scale.CONTENT} style={{ position: 'relative', maxWidth: 112 }}>
+    <Tuple first={Scale.MAX} second={Scale.CONTENT} style={{ position: 'relative', maxWidth: 106 }}>
       <DateInput
         type="date"
         className={clsx('editor', { invalid: error != null })}
