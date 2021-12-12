@@ -13,7 +13,7 @@ const Date = () => {
   const { setValue } = useFormContext()
   return (
     <FieldSet title="modals.nodeSettings.appearance">
-      <FormOptions name="display" values={values(DateDisplay)} className="mb-3">
+      <FormOptions name="display" values={values(DateDisplay)}>
         <label htmlFor={`display-${DateDisplay.Localized}`}>
           {t('modals.nodeSettings.date.localized')}
         </label>
@@ -27,7 +27,7 @@ const Date = () => {
           {t('modals.nodeSettings.date.humanReadable')}
         </label>
       </FormOptions>
-      <Checkbox name="required" label={'modals.nodeSettings.required'} className={'mb-3'} />
+      <Checkbox name="required" label={'modals.nodeSettings.required'} />
     </FieldSet>
   )
 }

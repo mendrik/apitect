@@ -5,14 +5,14 @@ import { uniqueArray } from '~shared/codecs/uniqueArray'
 
 import { nameCodec } from '../../codecs/nameCodec'
 
-export const ZEnumValue = object({
+export const ZEnumItem = object({
   value: nameCodec,
   inUse: boolean()
 })
 
 export const ZEnum = object({
   name: nameCodec,
-  values: array(ZEnumValue)
+  values: array(ZEnumItem)
     .nonempty('form.validation.notEmpty')
     .superRefine(uniqueArray(prop('value')))
 })
@@ -23,4 +23,4 @@ export const ZEnums = object({
 
 export type Enums = TypeOf<typeof ZEnums>
 export type Enum = TypeOf<typeof ZEnum>
-export type EnumValue = TypeOf<typeof ZEnumValue>
+export type EnumItem = TypeOf<typeof ZEnumItem>

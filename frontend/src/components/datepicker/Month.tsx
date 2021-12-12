@@ -42,7 +42,7 @@ const Week = styled.div`
 }
 `
 
-export const Month = ({ month }: Jsx<OwnProps>) =>
+export const Month = ({ month }: Jsx<OwnProps>, monthStr = format(month, 'MM-yyyy')) =>
   useMemo(() => {
     const firstDate = setDay(month, 1)
     const $lastDate = lastDayOfMonth(month)
@@ -69,4 +69,5 @@ export const Month = ({ month }: Jsx<OwnProps>) =>
         )}
       </Wrap>
     )
-  }, [format(month, 'MM-yyyy')])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [monthStr])

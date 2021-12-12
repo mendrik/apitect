@@ -10,6 +10,7 @@ import { $mappedNodesStore } from '~stores/$treeStore'
 
 import { BooleanEditor } from '../editors/BooleanEditor'
 import { DateEditor } from '../editors/DateEditor'
+import { EnumEditor } from '../editors/EnumEditor'
 import { StringEditor } from '../editors/StringEditor'
 
 type OwnProps = {
@@ -36,6 +37,8 @@ const getEditor = <T extends NodeType>(
       return BooleanEditor
     case NodeType.Date:
       return DateEditor
+    case NodeType.Enum:
+      return EnumEditor
     default:
       return null // todo throw Error instead when all are implemented
   }

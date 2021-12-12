@@ -8,7 +8,6 @@ import { Node } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { Maybe } from '~shared/types/generic'
 
-import { Palette } from '../../css/colors'
 import { valueDeleteFx, valueUpdateFx } from '../../events/values'
 
 const lastExecution = {
@@ -30,12 +29,6 @@ export const Text = styled.div`
   padding-left: 3px;
 `
 
-export const TextInput = styled.input`
-  &.invalid {
-    background-color: ${Palette.error};
-  }
-`
-
 export const useEditorTools = (
   node: Node,
   value: Value | undefined,
@@ -47,7 +40,7 @@ export const useEditorTools = (
 
   const saveValue = <T extends Value['value']>(
     formValue: T | undefined,
-    e?: SyntheticEvent<HTMLInputElement>
+    e?: SyntheticEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const now = Date.now()
     // make sure that onBlur and onKeyDown don't run this twice
@@ -81,7 +74,8 @@ export const useEditorTools = (
     }
   }
 
-  const saveFromEvent = (e: SyntheticEvent<HTMLInputElement>) => saveValue(e.currentTarget.value, e)
+  const saveFromEvent = (e: SyntheticEvent<HTMLInputElement | HTMLSelectElement>) =>
+    saveValue(e.currentTarget.value, e)
 
   const keyMap = cond([
     [propEq('code', 'ArrowRight'), when(views.isEditView, (e: Event) => e.stopPropagation())],

@@ -10,7 +10,7 @@ import { TagInput } from '~forms/TagInput'
 import { TextInput } from '~forms/TextInput'
 import { useLocation } from '~hooks/useLocation'
 import { lastItemOptional } from '~shared/codecs/lastItemOptional'
-import { Enums, EnumValue, ZEnum } from '~shared/types/domain/enums'
+import { Enums, EnumItem, ZEnum } from '~shared/types/domain/enums'
 import { asNumber } from '~shared/utils/ramda'
 
 import { updateEnumsFx } from '../../events/project'
@@ -30,7 +30,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
   const { t } = useTranslation()
   const deleteButtonRef = useRef<HTMLButtonElement | null>(null)
 
-  const defaultEnums = append({ name: '', values: new Array<EnumValue>() }, state?.enums ?? [])
+  const defaultEnums = append({ name: '', values: new Array<EnumItem>() }, state?.enums ?? [])
 
   const form = useForm<EnumsSettings>({
     resolver: zodResolver(ZEnumsSettings),
@@ -82,7 +82,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
                 label="modals.enumsSettings.enumName"
                 required
               />
-              <TagInput<EnumValue>
+              <TagInput<EnumItem>
                 name={`enums.${idx}.values`}
                 label="modals.enumsSettings.values"
                 apply={value => ({ value, inUse: false })}

@@ -13,7 +13,7 @@ const String = () => {
   const { setValue } = useFormContext()
   return (
     <FieldSet title="modals.nodeSettings.validation">
-      <FormOptions name="validationType" values={values(StringValidationType)} className="mb-3">
+      <FormOptions name="validationType" values={values(StringValidationType)}>
         <label htmlFor={`validationType-${StringValidationType.None}`}>
           {t('modals.nodeSettings.string.none')}
         </label>
@@ -30,7 +30,7 @@ const String = () => {
           {t('modals.nodeSettings.string.password')}
         </label>
       </FormOptions>
-      <Checkbox name="required" label={'modals.nodeSettings.required'} className={'mb-3'} />
+      <Checkbox name="required" label={'modals.nodeSettings.required'} />
     </FieldSet>
   )
 }
