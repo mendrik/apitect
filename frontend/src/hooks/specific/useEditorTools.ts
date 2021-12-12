@@ -88,6 +88,7 @@ export const useEditorTools = (
     saveFromEvent,
     keyMap,
     error,
+    setError,
     views
   }
 }

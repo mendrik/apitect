@@ -27,10 +27,14 @@ const SelectSx = styled.select`
 export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) => {
   const { t } = useTranslation()
   const enumSettings = useStoreMap($nodeSettings, s => s[node.id] as EnumSettings)
-  const e = useStoreMap($enumsStore, find<Enum>(propEq('name', enumSettings.enumeration)))!
+  const e = useStoreMap($enumsStore, find<Enum>(propEq('name', enumSettings?.enumeration)))
   const validator = getEnumValidator(e, enumSettings)
-  const { saveFromEvent, error, keyMap, views } = useEditorTools(node, value, tag, validator)
-
+  const { saveFromEvent, error, keyMap, views, setError } = useEditorTools(
+    node,
+    value,
+    tag,
+    validator
+  )
   const selKeyMap = cond([
     [propSatisfies(included(['Escape']), 'code'), views.displayView],
     [
@@ -39,7 +43,7 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
     ]
   ])
 
-  return views.isDisplayView() ? (
+  return !e || views.isDisplayView() ? (
     <Text tabIndex={0} onFocus={views.editView} onKeyDown={keyMap}>
       <span>{value?.value ?? ' '}</span>
     </Text>
@@ -50,6 +54,7 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
       defaultValue={value?.value}
       onBlur={saveFromEvent}
       onKeyDown={selKeyMap}
+      onChange={() => setError(undefined)}
     >
       {!enumSettings.required && <option>{t('common.select')}</option>}
       {e.values.map(v => (
