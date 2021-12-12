@@ -4,6 +4,7 @@ import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
+import '~stores/$enumsStore'
 import { $selectedNode } from '~stores/$selectedNode'
 import { $treeStore } from '~stores/$treeStore'
 

@@ -42,7 +42,7 @@ export const updateTagsSettingsFx = createEffect<Api['updateTagsSettings']>(tags
 export const tagSettingsFx = createEffect<ArgFn<string>>(name =>
   api()
     .tagsSettings()
-    .then<any[]>(propOr([], 'tags'))
+    .then<Tag[]>(propOr([], 'tags'))
     .then(find(propEq('name', name)))
     .then(failOn<Tag>(isNil, 'No Tag found'))
     .then(params => openModal({ name: ModalNames.TAG_SETTINGS, params }))
