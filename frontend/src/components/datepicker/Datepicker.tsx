@@ -2,8 +2,8 @@ import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
 import { addYears, format, isSameYear, isValid, parse, setDate, setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
-import { cond, propEq, propOr, range, when } from 'ramda'
-import { mapIndexed } from 'ramda-adjunct'
+import { cond, propEq, propOr, propSatisfies, range, when } from 'ramda'
+import { included, mapIndexed } from 'ramda-adjunct'
 import React, {
   HTMLAttributes,
   KeyboardEvent,
@@ -15,6 +15,7 @@ import React, {
 } from 'react'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import { useUpdateEffect } from 'react-use'
 import styled from 'styled-components'
 import { ButtonRow } from '~forms/ButtonRow'
 import { ArgFn, Jsx } from '~shared/types/generic'
@@ -187,7 +188,16 @@ export const Datepicker = ({
     }
   }
 
-  const keyMap = cond([[propEq('code', 'Space'), click]])
+  const keyMap = cond([
+    [propEq('code', 'Space'), click],
+    [
+      propSatisfies(
+        included(['Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']),
+        'code'
+      ),
+      e => e.stopPropagation()
+    ]
+  ])
 
   return (
     <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>

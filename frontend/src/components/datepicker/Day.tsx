@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { format, getDayOfYear } from 'date-fns'
+import { format } from 'date-fns'
 import React from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
@@ -30,7 +30,7 @@ export const Day = ({ day, month }: Jsx<OwnProps>) => {
   const off = day.getMonth() !== month.getMonth()
   return (
     <DaySx
-      tabIndex={day.getMonth() === month.getMonth() ? getDayOfYear(day) : -1}
+      tabIndex={off ? -1 : 0}
       className={clsx('day', {
         off: off
       })}
