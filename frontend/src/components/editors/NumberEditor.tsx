@@ -15,6 +15,7 @@ import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
+import { Autogrow } from '../generic/Autogrow'
 import { HGrid } from '../generic/HGrid'
 import { SimpleIcon } from '../generic/SimpleIcon'
 import { EditorProps } from '../specific/VisualValue'
@@ -55,7 +56,7 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
 
   const asStepper = (children: JSX.Element) =>
     numberSettings?.display.step != null && value?.value != null ? (
-      <HGrid className="w-min-c align-items-center">
+      <HGrid className="w-min-c align-items-center gap-2">
         <SimpleIcon icon={IconSquareMinus} />
         {children}
         <SimpleIcon icon={IconSquarePlus} />
@@ -66,24 +67,20 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
 
   return asStepper(
     views.isDisplayView() ? (
-      <NumberText
-        tabIndex={0}
-        onKeyDown={keyMap}
-        onFocus={views.editView}
-        className="text-center px-2"
-      >
+      <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView} className="text-center">
         {numberFormat(value?.value)}
       </NumberText>
     ) : (
-      <NumberInput
-        type="number"
-        className={clsx('editor', { invalid: error != null })}
-        style={{ minWidth: 100 }}
-        autoFocus
-        onKeyDown={keyMap}
-        onBlur={saveAsNumber}
-        defaultValue={value?.value}
-      />
+      <Autogrow initial={value?.value}>
+        <NumberInput
+          type="number"
+          className={clsx('editor', { invalid: error != null })}
+          autoFocus
+          onKeyDown={keyMap}
+          onBlur={saveAsNumber}
+          defaultValue={value?.value}
+        />
+      </Autogrow>
     )
   )
 }

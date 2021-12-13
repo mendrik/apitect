@@ -86,6 +86,10 @@ code {
   width: min-content;
 }
 
+.w-max-c {
+  max-width: min-content;
+}
+
 input[required] + label:after {
   content: '*';
   color: $color1;
