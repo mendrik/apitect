@@ -43,11 +43,7 @@ export const TextInput = ({
     <div className={clsx('form-floating has-validation', containerClassNames)}>
       <input
         type={type}
-        className={clsx(
-          'form-control ',
-          { 'is-invalid': path(name.split('.'), errors) },
-          className
-        )}
+        className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}
         id={inpId}
         autoComplete="off"
         {...register(name, {

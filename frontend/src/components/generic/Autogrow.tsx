@@ -14,6 +14,9 @@ const MeasureSx = styled.div`
   pointer-events: none;
   opacity: 0;
   height: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  width: min-content;
 
   ~ input {
     padding: initial;

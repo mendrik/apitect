@@ -1,4 +1,5 @@
 import React from 'react'
+import { Checkbox } from '~forms/Checkbox'
 import { FieldSet } from '~forms/FieldSet'
 import { NumberInput } from '~forms/NumberInput'
 import { TextInput } from '~forms/TextInput'
@@ -12,6 +13,7 @@ const Number = () => (
         <NumberInput label="modals.nodeSettings.number.min" name="min" />
         <NumberInput label="modals.nodeSettings.number.max" name="max" />
       </HGrid>
+      <Checkbox name="required" label={'modals.nodeSettings.required'} />
     </FieldSet>
     <FieldSet title="modals.nodeSettings.appearance">
       <HGrid className="gap-2">
