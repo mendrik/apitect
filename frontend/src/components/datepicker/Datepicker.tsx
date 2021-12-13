@@ -15,7 +15,6 @@ import React, {
 } from 'react'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { useUpdateEffect } from 'react-use'
 import styled from 'styled-components'
 import { ButtonRow } from '~forms/ButtonRow'
 import { ArgFn, Jsx } from '~shared/types/generic'
@@ -200,7 +199,13 @@ export const Datepicker = ({
   ])
 
   return (
-    <CalendarButton onClick={openPicker} onKeyDown={onEscape} ref={ref} {...props}>
+    <CalendarButton
+      onClick={openPicker}
+      onKeyDown={onEscape}
+      ref={ref}
+      {...props}
+      className="calendar-icon"
+    >
       <IconCalendar className="w-4 h-4" size={iconSize} stroke={stroke} />
       <AnimatePresence>
         {open && (

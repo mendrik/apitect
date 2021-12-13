@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { HTMLAttributes } from 'react'
+import React, { forwardRef, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 
@@ -21,7 +21,7 @@ type OwnProps = {
   gap?: number
 } & HTMLAttributes<HTMLDivElement>
 
-const StyledTuple = styled.div`
+export const StyledTuple = styled.div`
   &.first-auto > :first-child {
     flex-basis: auto;
   }

@@ -3,7 +3,8 @@ import { format } from 'date-fns'
 import { useStoreMap } from 'effector-react'
 import { cond, pathOr, pipe, propEq, propSatisfies, when } from 'ramda'
 import { included } from 'ramda-adjunct'
-import React from 'react'
+import React, { useRef } from 'react'
+import { useClickAway } from 'react-use'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { useDateFormat } from '~hooks/useDateFormat'
@@ -15,7 +16,7 @@ import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
 import { Datepicker } from '../datepicker/Datepicker'
-import { Scale, Tuple } from '../generic/Tuple'
+import { StyledTuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
 
 export const DateInput = styled.input`
@@ -37,10 +38,14 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   const dateSettings = useStoreMap($nodeSettings, s => s[node.id] as DateSettings)
   const userFormat = useDateFormat(dateSettings)
   const validator = getDateValidator(dateSettings)
-
+  const ref = useRef<HTMLDivElement | null>(null)
   const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
 
   const saveAsDate = pipe(pathOr('', ['target', 'value']), saveValue)
+  useClickAway(ref, e => {
+    const input = ref.current?.firstElementChild as HTMLInputElement | null
+    saveValue(input?.value)
+  })
 
   const keyMap = cond([
     [propEq('code', 'ArrowRight'), when(views.isEditView, (e: Event) => e.stopPropagation())],
@@ -64,16 +69,19 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
       )}
     </div>
   ) : (
-    <Tuple first={Scale.MAX} second={Scale.CONTENT} style={{ position: 'relative', maxWidth: 112 }}>
+    <StyledTuple
+      ref={ref}
+      className="first-max second-content d-inline-flex justify-content-between gap-1 flex-row"
+      style={{ position: 'relative', maxWidth: 112 }}
+    >
       <DateInput
         type="date"
         className={clsx('editor', { invalid: error != null })}
         autoFocus
         onKeyDown={keyMap}
-        onBlur={saveAsDate}
         defaultValue={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
       />
       <Datepicker onDateSelected={saveValue} stroke={1} currentDate={value?.value ?? new Date()} />
-    </Tuple>
+    </StyledTuple>
   )
 }
