@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import React from 'react'
 import styled from 'styled-components'
@@ -11,6 +10,7 @@ import { $mappedNodesStore } from '~stores/$treeStore'
 import { BooleanEditor } from '../editors/BooleanEditor'
 import { DateEditor } from '../editors/DateEditor'
 import { EnumEditor } from '../editors/EnumEditor'
+import { NumberEditor } from '../editors/NumberEditor'
 import { StringEditor } from '../editors/StringEditor'
 
 type OwnProps = {
@@ -39,6 +39,8 @@ const getEditor = <T extends NodeType>(
       return DateEditor
     case NodeType.Enum:
       return EnumEditor
+    case NodeType.Number:
+      return NumberEditor
     default:
       return null // todo throw Error instead when all are implemented
   }
@@ -55,7 +57,7 @@ export const VisualValue = ({ nodeId, value, tag, loading }: Jsx<OwnProps>) => {
   const Editor = getEditor(node.nodeType)
 
   return (
-    <li className={clsx(node.nodeType.toLowerCase())}>
+    <li>
       {Editor ? (
         <Editor value={value} node={node} tag={tag} loading={loading} />
       ) : (

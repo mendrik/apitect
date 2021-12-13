@@ -1,30 +1,27 @@
 import clsx from 'clsx'
-import { format } from 'date-fns'
 import { useStoreMap } from 'effector-react'
 import { cond, pathOr, pipe, propEq, propSatisfies, when } from 'ramda'
 import { included } from 'ramda-adjunct'
 import React, { useRef } from 'react'
-import { useClickAway } from 'react-use'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
-import { useDateFormat } from '~hooks/useDateFormat'
-import { DateValue } from '~shared/types/domain/values/dateValue'
-import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
+import { useNumberFormat } from '~hooks/useNumberFormat'
+import { NumberValue } from '~shared/types/domain/values/numberValue'
+import { NumberSettings } from '~shared/types/forms/nodetypes/numberSettings'
 import { Jsx } from '~shared/types/generic'
-import { getDateValidator } from '~shared/validators/dateValidator'
+import { asNumber } from '~shared/utils/ramda'
+import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { Datepicker } from '../datepicker/Datepicker'
 import { StyledTuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
 
-export const DateInput = styled.input`
+export const NumberInput = styled.input`
   padding-left: 3px;
   border: none;
   outline: none;
-  ::-webkit-inner-spin-button,
-  ::-webkit-calendar-picker-indicator {
+  ::-webkit-inner-spin-button {
     display: none;
     -webkit-appearance: none;
   }
@@ -34,37 +31,28 @@ export const DateInput = styled.input`
   }
 `
 
-export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) => {
-  const dateSettings = useStoreMap($nodeSettings, s => s[node.id] as DateSettings)
-  const userFormat = useDateFormat(dateSettings)
-  const validator = getDateValidator(dateSettings)
+export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>) => {
+  const numberSettings = useStoreMap($nodeSettings, s => s[node.id] as NumberSettings)
+  const numberFormat = useNumberFormat(numberSettings)
+  const validator = getNumberValidator(numberSettings)
   const ref = useRef<HTMLDivElement | null>(null)
   const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
 
-  const saveAsDate = pipe(pathOr('', ['target', 'value']), saveValue)
-  useClickAway(ref, e => {
-    const input = ref.current?.firstElementChild as HTMLInputElement | null
-    saveValue(input?.value)
-  })
+  const saveAsNumber = pipe(pathOr('', ['target', 'value']), asNumber, saveValue)
 
   const keyMap = cond([
     [propEq('code', 'ArrowRight'), when(views.isEditView, (e: Event) => e.stopPropagation())],
     [propEq('code', 'ArrowLeft'), when(views.isEditView, (e: Event) => e.stopPropagation())],
-    [propSatisfies(included(['ArrowUp', 'ArrowDown']), 'code'), (e: Event) => e.stopPropagation()],
-    [propSatisfies(included(['Tab', 'Enter']), 'code'), saveAsDate],
+    [propSatisfies(included(['Tab', 'Enter']), 'code'), saveAsNumber],
     [propSatisfies(included(['Escape']), 'code'), views.displayView]
   ])
-
-  const datepicker = (
-    <Datepicker onDateSelected={saveValue} stroke={1} currentDate={value?.value ?? new Date()} />
-  )
 
   return views.isDisplayView() ? (
     <div className="d-inline-flex align-items-center gap-2">
       <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView} style={{ minWidth: 82 }}>
-        {userFormat(value?.value)}
+        {numberFormat(value?.value)}
       </Text>
-      {value?.value && datepicker}
+      {value?.value && 'Up / Down'}
     </div>
   ) : (
     <StyledTuple
@@ -72,14 +60,14 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
       className="first-max second-content d-inline-flex justify-content-between gap-1 flex-row"
       style={{ position: 'relative', maxWidth: 112 }}
     >
-      <DateInput
-        type="date"
+      <NumberInput
+        type="number"
         className={clsx('editor', { invalid: error != null })}
         autoFocus
         onKeyDown={keyMap}
-        defaultValue={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
+        defaultValue={value?.value}
       />
-      {datepicker}
+      {value?.value && 'Up / Down'}
     </StyledTuple>
   )
 }

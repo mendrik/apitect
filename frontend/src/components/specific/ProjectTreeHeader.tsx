@@ -1,4 +1,4 @@
-import { IconColumns, IconFolderPlus, IconSettings, IconTrash } from '@tabler/icons'
+import { IconCirclePlus, IconColumns, IconSettings, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -28,7 +28,7 @@ export const ProjectTreeHeader = () => {
           />
         </WithTooltip>
         <WithTooltip tooltipText={t('tooltips.createNode')} shortcut="N">
-          <Icon icon={IconFolderPlus} onClick={() => newNodeFx(selectedNode?.value)} />
+          <Icon icon={IconCirclePlus} onClick={() => newNodeFx(selectedNode?.value)} />
         </WithTooltip>
         <WithTooltip tooltipText={t('tooltips.nodeSettings')} shortcut="Enter">
           <Icon

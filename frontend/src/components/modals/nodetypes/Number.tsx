@@ -19,7 +19,7 @@ const Number = () => (
           label="modals.nodeSettings.number.precision"
           name="precision"
           min={0}
-          max={4}
+          max={6}
           step={1}
         />
         <TextInput label="modals.nodeSettings.number.unit" name="unit" />

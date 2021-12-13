@@ -24,16 +24,15 @@ const ZInteger = ZNodeSettingsBase.merge(
 const ZFloat = ZNodeSettingsBase.merge(
   object({
     nodeType: literal(NodeType.Number),
-    integer: boolean(),
     required: boolean().default(false),
     validation: object({
       min: number().optional(),
-      max: number().optional(),
-      step: number().default(1)
+      max: number().optional()
     }),
     display: object({
+      step: number().default(1),
       unit: string().optional(),
-      precision: number().optional()
+      precision: number().default(0)
     })
   })
 )

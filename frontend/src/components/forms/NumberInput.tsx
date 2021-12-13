@@ -19,7 +19,6 @@ type OwnProps = {
   min?: number
   max?: number
   step?: number
-  unit?: string
   precision?: number
 } & InputHTMLAttributes<HTMLInputElement>
 
@@ -59,7 +58,6 @@ export const NumberInput = ({
   name,
   label,
   options,
-  type = 'number',
   className,
   placeholder,
   containerClassNames,
@@ -89,9 +87,8 @@ export const NumberInput = ({
         className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}
         id={inpId}
         autoComplete="off"
-        readOnly={props.readOnly}
         required={!!options?.required}
-        type={type}
+        type="number"
         placeholder={placeholder ?? ' '}
         {...props}
       />
