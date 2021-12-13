@@ -1,9 +1,9 @@
-import { IconCircleMinus, IconCirclePlus } from '@tabler/icons'
+import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
 import { cond, pathOr, pipe, propEq, propSatisfies, when } from 'ramda'
 import { included } from 'ramda-adjunct'
-import React, { useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { useEditorTools } from '~hooks/specific/useEditorTools'
 import { useNumberFormat } from '~hooks/useNumberFormat'
@@ -17,7 +17,6 @@ import { $nodeSettings } from '~stores/$nodeSettingsStore'
 import { Palette } from '../../css/colors'
 import { HGrid } from '../generic/HGrid'
 import { SimpleIcon } from '../generic/SimpleIcon'
-import { StyledTuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
 
 export const NumberInput = styled.input`
@@ -43,7 +42,6 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
   const numberSettings = useStoreMap($nodeSettings, s => s[node.id] as NumberSettings)
   const numberFormat = useNumberFormat(numberSettings)
   const validator = getNumberValidator(numberSettings)
-  const ref = useRef<HTMLDivElement | null>(null)
   const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
 
   const saveAsNumber = pipe(pathOr('', ['target', 'value']), asNumber, saveValue)
@@ -56,18 +54,18 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
   ])
 
   const asStepper = (children: JSX.Element) =>
-    numberSettings?.display.step != null ? (
+    numberSettings?.display.step != null && value?.value != null ? (
       <HGrid className="w-min-c align-items-center">
-        <SimpleIcon icon={IconCircleMinus} />
+        <SimpleIcon icon={IconSquareMinus} />
         {children}
-        <SimpleIcon icon={IconCirclePlus} />
+        <SimpleIcon icon={IconSquarePlus} />
       </HGrid>
     ) : (
       children
     )
 
-  return views.isDisplayView() ? (
-    asStepper(
+  return asStepper(
+    views.isDisplayView() ? (
       <NumberText
         tabIndex={0}
         onKeyDown={keyMap}
@@ -76,22 +74,16 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
       >
         {numberFormat(value?.value)}
       </NumberText>
+    ) : (
+      <NumberInput
+        type="number"
+        className={clsx('editor', { invalid: error != null })}
+        style={{ minWidth: 100 }}
+        autoFocus
+        onKeyDown={keyMap}
+        onBlur={saveAsNumber}
+        defaultValue={value?.value}
+      />
     )
-  ) : (
-    <StyledTuple
-      ref={ref}
-      className="first-max second-content d-inline-flex justify-content-between gap-1 flex-row"
-    >
-      {asStepper(
-        <NumberInput
-          type="number"
-          className={clsx('editor', { invalid: error != null })}
-          autoFocus
-          onKeyDown={keyMap}
-          onBlur={saveAsNumber}
-          defaultValue={value?.value}
-        />
-      )}
-    </StyledTuple>
   )
 }

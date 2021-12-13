@@ -56,7 +56,12 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   ])
 
   const datepicker = (
-    <Datepicker onDateSelected={saveValue} stroke={1} currentDate={value?.value ?? new Date()} />
+    <Datepicker
+      onDateSelected={saveValue}
+      stroke={0.5}
+      color={Palette.iconBorder.toString()}
+      currentDate={value?.value ?? new Date()}
+    />
   )
 
   return views.isDisplayView() ? (

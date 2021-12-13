@@ -24,6 +24,10 @@ const SelectSx = styled.select`
   }
 `
 
+const OptionSx = styled.option`
+  font-weight: 300;
+`
+
 export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) => {
   const { t } = useTranslation()
   const enumSettings = useStoreMap($nodeSettings, s => s[node.id] as EnumSettings)
@@ -61,9 +65,9 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
     >
       {!enumSettings.required && <option value="">{t('common.select')}</option>}
       {e.values.map(v => (
-        <option key={v.value} value={v.value}>
+        <OptionSx key={v.value} value={v.value}>
           {v.value}
-        </option>
+        </OptionSx>
       ))}
     </SelectSx>
   )

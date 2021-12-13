@@ -123,6 +123,7 @@ export const Datepicker = ({
   currentDate: $current,
   children,
   onDateSelected,
+  color,
   iconSize = 20,
   stroke = 1,
   ...props
@@ -206,7 +207,7 @@ export const Datepicker = ({
       {...props}
       className="calendar-icon"
     >
-      <IconCalendar className="w-4 h-4" size={iconSize} stroke={stroke} />
+      <IconCalendar className="w-4 h-4" size={iconSize} stroke={stroke} color={color} />
       <AnimatePresence>
         {open && (
           <motion.div {...fullscreenScale} role="dialog" onAnimationStart={afterOpen}>

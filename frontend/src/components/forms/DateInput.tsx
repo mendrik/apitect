@@ -43,7 +43,6 @@ export const DateInput = ({
   const { t } = useTranslation()
   const {
     register,
-    watch,
     formState: { errors }
   } = useFormContext<{ [K in typeof name]: Date | undefined }>()
 
