@@ -35,6 +35,7 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
     tag,
     validator
   )
+
   const selKeyMap = cond([
     [propSatisfies(included(['Escape']), 'code'), views.displayView],
     [
@@ -56,7 +57,7 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
       onKeyDown={selKeyMap}
       onChange={() => setError(undefined)}
     >
-      {!enumSettings.required && <option>{t('common.select')}</option>}
+      {!enumSettings.required && <option value="">{t('common.select')}</option>}
       {e.values.map(v => (
         <option key={v.value} value={v.value}>
           {v.value}
