@@ -1,10 +1,11 @@
+import { IconCircleMinus, IconCirclePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
 import { cond, pathOr, pipe, propEq, propSatisfies, when } from 'ramda'
 import { included } from 'ramda-adjunct'
 import React, { useRef } from 'react'
 import styled from 'styled-components'
-import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
+import { useEditorTools } from '~hooks/specific/useEditorTools'
 import { useNumberFormat } from '~hooks/useNumberFormat'
 import { NumberValue } from '~shared/types/domain/values/numberValue'
 import { NumberSettings } from '~shared/types/forms/nodetypes/numberSettings'
@@ -14,11 +15,12 @@ import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
+import { HGrid } from '../generic/HGrid'
+import { SimpleIcon } from '../generic/SimpleIcon'
 import { StyledTuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
 
 export const NumberInput = styled.input`
-  padding-left: 3px;
   border: none;
   outline: none;
   ::-webkit-inner-spin-button {
@@ -29,6 +31,12 @@ export const NumberInput = styled.input`
   &.invalid {
     background-color: ${Palette.error};
   }
+`
+
+export const NumberText = styled.div`
+  white-space: pre;
+  width: 100%;
+  height: 24px;
 `
 
 export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>) => {
@@ -47,27 +55,43 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
     [propSatisfies(included(['Escape']), 'code'), views.displayView]
   ])
 
+  const asStepper = (children: JSX.Element) =>
+    numberSettings?.display.step != null ? (
+      <HGrid className="w-min-c align-items-center">
+        <SimpleIcon icon={IconCircleMinus} />
+        {children}
+        <SimpleIcon icon={IconCirclePlus} />
+      </HGrid>
+    ) : (
+      children
+    )
+
   return views.isDisplayView() ? (
-    <div className="d-inline-flex align-items-center gap-2">
-      <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView} style={{ minWidth: 82 }}>
+    asStepper(
+      <NumberText
+        tabIndex={0}
+        onKeyDown={keyMap}
+        onFocus={views.editView}
+        className="text-center px-2"
+      >
         {numberFormat(value?.value)}
-      </Text>
-      {value?.value && 'Up / Down'}
-    </div>
+      </NumberText>
+    )
   ) : (
     <StyledTuple
       ref={ref}
       className="first-max second-content d-inline-flex justify-content-between gap-1 flex-row"
-      style={{ position: 'relative', maxWidth: 112 }}
     >
-      <NumberInput
-        type="number"
-        className={clsx('editor', { invalid: error != null })}
-        autoFocus
-        onKeyDown={keyMap}
-        defaultValue={value?.value}
-      />
-      {value?.value && 'Up / Down'}
+      {asStepper(
+        <NumberInput
+          type="number"
+          className={clsx('editor', { invalid: error != null })}
+          autoFocus
+          onKeyDown={keyMap}
+          onBlur={saveAsNumber}
+          defaultValue={value?.value}
+        />
+      )}
     </StyledTuple>
   )
 }

@@ -82,6 +82,10 @@ code {
   width: fit-content;
 }
 
+.w-min-c {
+  width: min-content;
+}
+
 input[required] + label:after {
   content: '*';
   color: $color1;
