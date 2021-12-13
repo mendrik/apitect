@@ -2,8 +2,8 @@ import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
 import { addYears, format, isSameYear, isValid, parse, setDate, setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
-import { cond, propEq, propOr, propSatisfies, range, when } from 'ramda'
-import { included, mapIndexed } from 'ramda-adjunct'
+import { cond, propOr, range, when } from 'ramda'
+import { mapIndexed } from 'ramda-adjunct'
 import React, {
   HTMLAttributes,
   KeyboardEvent,
@@ -21,6 +21,7 @@ import { ArgFn, Jsx } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { Palette } from '../../css/colors'
+import { codeIs } from '../../utils/eventUtils'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { Scrollable } from '../generic/Scrollable'
 import { Month } from './Month'
@@ -176,7 +177,7 @@ export const Datepicker = ({
     }, 1)
 
   const onEscape = when<KeyboardEvent<HTMLDivElement>, void>(
-    propEq('code', 'Escape'),
+    codeIs('Escape'),
     stopPropagation(() => setOpen(false))
   )
 
@@ -189,14 +190,8 @@ export const Datepicker = ({
   }
 
   const keyMap = cond([
-    [propEq('code', 'Space'), click],
-    [
-      propSatisfies(
-        included(['Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']),
-        'code'
-      ),
-      e => e.stopPropagation()
-    ]
+    [codeIs('Space'), click],
+    [codeIs('Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'), stopPropagation]
   ])
 
   return (

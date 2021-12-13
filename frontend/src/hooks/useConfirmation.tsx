@@ -1,5 +1,4 @@
-import { cond, propEq } from 'ramda'
-import { propNotEq } from 'ramda-adjunct'
+import { complement, cond } from 'ramda'
 import React, { useEffect, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
@@ -7,6 +6,7 @@ import { ButtonRow } from '~forms/ButtonRow'
 import { Fn } from '~shared/types/generic'
 
 import { QuestionView } from '../components/QuestionView'
+import { codeIs } from '../utils/eventUtils'
 import { focus } from '../utils/focus'
 import { stopPropagation as sp } from '../utils/stopPropagation'
 import { useOnActivate } from './useOnActivate'
@@ -36,8 +36,8 @@ export const useConfirmation = (
   }, [open, refOk])
 
   const keyMap = cond([
-    [propEq('code', 'Escape'), sp(close)],
-    [propNotEq('code', 'Tab'), sp]
+    [codeIs('Escape'), sp(close)],
+    [complement(codeIs('Tab')), sp]
   ])
 
   const Confirm = () =>

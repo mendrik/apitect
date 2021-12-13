@@ -19,7 +19,6 @@ import {
   pipe,
   Pred,
   prop,
-  propEq,
   reduce,
   replace,
   reverse,
@@ -33,6 +32,7 @@ import {
 } from 'ramda'
 import { findOr } from 'ramda-adjunct'
 
+import { codeIs, keyIs } from '../../utils/eventUtils'
 import { ArgFn, Fn, Maybe } from '../types/generic'
 
 export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]), toLower)
@@ -87,8 +87,6 @@ export const prev =
     $next(pred)(reverse(list))
 
 export const isNumeric: Pred = (str: string) => !isNaN(Number(str))
-
-export const spaceOrEnter = either(propEq<any>('code', 'Space'), propEq<any>('key', 'Enter'))
 
 export const decapitalizeFirst = unless(isNil, replace(/^./, toLower))
 

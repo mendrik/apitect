@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { append, cond, path, pathEq, pathOr, pipe, propEq, remove, unless, when } from 'ramda'
+import { append, cond, path, pathOr, pipe, propEq, remove, unless, when } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React, { HTMLAttributes, useRef, useState } from 'react'
 import { Controller } from 'react-hook-form'
@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
+import { eventValueIs, keyIs } from '../../utils/eventUtils'
 import { preventDefault } from '../../utils/preventDefault'
 import { DeleteIcon } from '../generic/DeleteIcon'
 import { ErrorInfo } from './ErrorInfo'
@@ -78,14 +79,11 @@ export const TagInput = <T extends object>({
         }
 
         const keyMap = cond([
+          [keyIs('Backspace'), when(eventValueIs(''), () => onRemove(field.value.length - 1))],
           [
-            propEq('key', 'Backspace'),
-            when(pathEq(['target', 'value'], ''), () => onRemove(field.value.length - 1))
-          ],
-          [
-            propEq('key', 'Enter'),
+            keyIs('Enter'),
             unless(
-              pathEq(['target', 'value'], ''),
+              eventValueIs(''),
               preventDefault(() => {
                 onAdd(currentName)
                 setCurrentName('')

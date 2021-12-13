@@ -1,9 +1,10 @@
-import { allPass, always, cond, equals, propEq } from 'ramda'
+import { allPass, always, cond, equals } from 'ramda'
 import React, { HTMLAttributes, useRef } from 'react'
 import { Jsx, Maybe } from '~shared/types/generic'
 import { next, prev } from '~shared/utils/ramda'
 
-import { stopPropagation } from '../../utils/stopPropagation'
+import { codeIs, withShift } from '../../utils/eventUtils'
+import { stopEvent } from '../../utils/stopPropagation'
 
 type OwnProps = {
   columns?: number
@@ -26,7 +27,7 @@ export const FocusNavigator = ({
   const ref = useRef<HTMLDivElement>(null)
 
   const moveFocus = (dir: Direction) =>
-    stopPropagation(() => {
+    stopEvent(() => {
       const current = document.activeElement as Maybe<HTMLElement>
       if (ref.current != null && ref.current.matches(':focus-within') && current != null) {
         const focusables = Array.from<HTMLElement>(
@@ -58,15 +59,12 @@ export const FocusNavigator = ({
     })
 
   const keyMap = cond([
-    [propEq('key', 'ArrowLeft'), moveFocus(rotated ? Direction.Up : Direction.Left)],
-    [propEq('key', 'ArrowRight'), moveFocus(rotated ? Direction.Down : Direction.Right)],
-    [propEq('key', 'ArrowUp'), moveFocus(rotated ? Direction.Left : Direction.Up)],
-    [propEq('key', 'ArrowDown'), moveFocus(rotated ? Direction.Right : Direction.Down)],
-    [
-      allPass([always(rotated), propEq('shiftKey', true), propEq('key', 'Tab')]),
-      moveFocus(Direction.Up)
-    ],
-    [allPass([always(rotated), propEq('key', 'Tab')]), moveFocus(Direction.Down)]
+    [codeIs('ArrowLeft'), moveFocus(rotated ? Direction.Up : Direction.Left)],
+    [codeIs('ArrowRight'), moveFocus(rotated ? Direction.Down : Direction.Right)],
+    [codeIs('ArrowUp'), moveFocus(rotated ? Direction.Left : Direction.Up)],
+    [codeIs('ArrowDown'), moveFocus(rotated ? Direction.Right : Direction.Down)],
+    [allPass([always(rotated), withShift, codeIs('Tab')]), moveFocus(Direction.Up)],
+    [allPass([always(rotated), codeIs('Tab')]), moveFocus(Direction.Down)]
   ])
 
   return (

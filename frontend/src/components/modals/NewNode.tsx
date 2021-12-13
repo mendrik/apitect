@@ -11,10 +11,11 @@ import { Node } from '~shared/types/domain/node'
 import { iconMap, NodeType } from '~shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '~shared/types/forms/newNode'
 import { Maybe } from '~shared/types/generic'
-import { capitalize, spaceOrEnter } from '~shared/utils/ramda'
+import { capitalize } from '~shared/utils/ramda'
 
 import { Palette } from '../../css/colors'
 import { createNodeFx } from '../../events/tree'
+import { spaceOrEnter } from '../../utils/eventUtils'
 import { ModalFC } from '../ModalStub'
 import { FocusNavigator } from '../generic/FocusNavigator'
 
