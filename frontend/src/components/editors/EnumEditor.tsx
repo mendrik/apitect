@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { useStoreMap } from 'effector-react'
+import { useStore, useStoreMap } from 'effector-react'
 import { cond, find, propEq, propSatisfies } from 'ramda'
 import { included } from 'ramda-adjunct'
 import React, { KeyboardEvent } from 'react'
@@ -27,7 +27,9 @@ const SelectSx = styled.select`
 export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) => {
   const { t } = useTranslation()
   const enumSettings = useStoreMap($nodeSettings, s => s[node.id] as EnumSettings)
-  const e = useStoreMap($enumsStore, find<Enum>(propEq('name', enumSettings?.enumeration)))
+  const enums = useStore($enumsStore)
+  const e = find<Enum>(propEq('name', enumSettings?.enumeration), enums)
+
   const validator = getEnumValidator(e, enumSettings)
   const { saveFromEvent, error, keyMap, views, setError } = useEditorTools(
     node,
