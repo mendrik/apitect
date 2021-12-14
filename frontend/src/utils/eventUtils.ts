@@ -38,6 +38,9 @@ export const target = {
   hasSelection: pipe(path(['target', 'selectionEnd']), isTruthy)
 }
 
+/**
+ * Util function that predicts what the target.value will be after keyUp but during keyDown
+ */
 export const futureValue: (ev: KeyboardEvent<HTMLInputElement>) => string = cond([
   [
     pathEq(['key', 'length'], 1),
