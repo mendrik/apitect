@@ -6,7 +6,6 @@ import {
   compose,
   converge,
   curry,
-  either,
   findIndex,
   groupBy,
   head,
@@ -32,15 +31,14 @@ import {
 } from 'ramda'
 import { findOr } from 'ramda-adjunct'
 
-import { codeIs, keyIs } from '../../utils/eventUtils'
 import { ArgFn, Fn, Maybe } from '../types/generic'
 
 export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail]), toLower)
 
 export const assocBy =
   <K extends string, R>(field: K, func: Fn<R>) =>
-  <U>(obj: U): U & Record<K, R> =>
-    converge(assoc(field), [func, identity])(obj)
+  <U extends object>(obj: U) =>
+    converge(assoc(field) as any, [func, identity])(obj)
 
 export const safeParseJson = <T>(data: unknown): T | undefined =>
   tryCatch(d => JSON.parse(`${d}`), always(undefined))(data)
@@ -69,8 +67,8 @@ export const ensure = <T extends NonNullable<unknown>>(obj: Maybe<T>): T => {
 
 // prettier-ignore
 const $next: (p:Pred) => <T>(l: T[]) => Maybe<T> = (pred: Pred) =>
-  pipe<any, any, any, any,any>(
-    converge(append, [head, identity]),
+  pipe<any, any, any, any, any>(
+    converge(append as any, [head, identity]),
     aperture(2),
     findOr([], pipe(head, pred)),
     last
