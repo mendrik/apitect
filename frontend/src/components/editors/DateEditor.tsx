@@ -1,8 +1,7 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import { useStoreMap } from 'effector-react'
-import { cond, pathOr, pipe, propEq, propSatisfies, when } from 'ramda'
-import { included } from 'ramda-adjunct'
+import { cond, pathOr, pipe, when } from 'ramda'
 import React, { useRef } from 'react'
 import { useClickAway } from 'react-use'
 import styled from 'styled-components'
@@ -15,6 +14,8 @@ import { getDateValidator } from '~shared/validators/dateValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
+import { codeIs } from '../../utils/eventUtils'
+import { stopPropagation } from '../../utils/stopPropagation'
 import { Datepicker } from '../datepicker/Datepicker'
 import { StyledTuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
@@ -48,12 +49,11 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   })
 
   const keyMap = cond([
-    [propEq('code', 'ArrowRight'), when(views.isEditView, (e: Event) => e.stopPropagation())],
-    [propEq('code', 'ArrowLeft'), when(views.isEditView, (e: Event) => e.stopPropagation())],
-    [propSatisfies(included(['ArrowUp', 'ArrowDown']), 'code'), (e: Event) => e.stopPropagation()],
-    [propSatisfies(included(['Tab', 'Enter']), 'code'), saveAsDate],
-    [propSatisfies(included(['Escape']), 'code'), views.displayView]
-  ])
+    [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
+    [codeIs('ArrowUp', 'ArrowDown'), stopPropagation()],
+    [codeIs('Tab', 'Enter'), saveAsDate],
+    [codeIs('Escape'), views.displayView]
+  ]) as any
 
   const datepicker = (
     <Datepicker

@@ -6,7 +6,6 @@ import {
   compose,
   converge,
   curry,
-  either,
   findIndex,
   groupBy,
   head,
@@ -19,7 +18,6 @@ import {
   pipe,
   Pred,
   prop,
-  propEq,
   reduce,
   replace,
   reverse,
@@ -39,8 +37,8 @@ export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail])
 
 export const assocBy =
   <K extends string, R>(field: K, func: Fn<R>) =>
-  <U>(obj: U): U & Record<K, R> =>
-    converge(assoc(field), [func, identity])(obj)
+  <U extends object>(obj: U) =>
+    converge(assoc(field) as any, [func, identity])(obj)
 
 export const safeParseJson = <T>(data: unknown): T | undefined =>
   tryCatch(d => JSON.parse(`${d}`), always(undefined))(data)
@@ -69,8 +67,8 @@ export const ensure = <T extends NonNullable<unknown>>(obj: Maybe<T>): T => {
 
 // prettier-ignore
 const $next: (p:Pred) => <T>(l: T[]) => Maybe<T> = (pred: Pred) =>
-  pipe<any, any, any, any,any>(
-    converge(append, [head, identity]),
+  pipe<any, any, any, any, any>(
+    converge(append as any, [head, identity]),
     aperture(2),
     findOr([], pipe(head, pred)),
     last
@@ -87,8 +85,6 @@ export const prev =
     $next(pred)(reverse(list))
 
 export const isNumeric: Pred = (str: string) => !isNaN(Number(str))
-
-export const spaceOrEnter = either(propEq<any>('code', 'Space'), propEq<any>('key', 'Enter'))
 
 export const decapitalizeFirst = unless(isNil, replace(/^./, toLower))
 

@@ -1,7 +1,7 @@
 import { useStore } from 'effector-react'
-import { cond, propEq } from 'ramda'
+import { cond } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
 import '~stores/$enumsStore'
@@ -15,6 +15,7 @@ import {
   openNodeState,
   selectNode
 } from '../../events/tree'
+import { codeIs, keyIs } from '../../utils/eventUtils'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNode } from './VisualNode'
@@ -32,7 +33,7 @@ export const VisualTree = () => {
     () => selectedNode && deleteNodeFx(selectedNode.value.id)
   )
 
-  const setOpen = (toggle: boolean) => (ev: Event) => {
+  const setOpen = (toggle: boolean) => (ev: SyntheticEvent) => {
     if (selectedNode != null) {
       if (isNotNilOrEmpty(selectedNode?.children)) {
         ev.stopPropagation()
@@ -42,12 +43,12 @@ export const VisualTree = () => {
   }
 
   const keyMap = cond([
-    [propEq('key', 'ArrowRight'), setOpen(true)],
-    [propEq('key', 'ArrowLeft'), setOpen(false)],
-    [propEq('key', 'Delete'), confirmDelete],
-    [propEq('key', 'n'), pd(() => newNodeFx(selectedNode?.value))],
-    [propEq('key', 'Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],
-    [propEq('code', 'Escape'), pd(() => selectNode(null))]
+    [keyIs('ArrowRight'), setOpen(true)],
+    [keyIs('ArrowLeft'), setOpen(false)],
+    [keyIs('Delete'), confirmDelete],
+    [keyIs('n'), pd(() => newNodeFx(selectedNode?.value))],
+    [keyIs('Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],
+    [codeIs('Escape'), pd(() => selectNode(null))]
   ])
 
   return (

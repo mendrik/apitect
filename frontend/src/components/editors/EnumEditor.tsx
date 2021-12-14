@@ -1,8 +1,7 @@
 import clsx from 'clsx'
 import { useStore, useStoreMap } from 'effector-react'
-import { cond, find, propEq, propSatisfies } from 'ramda'
-import { included } from 'ramda-adjunct'
-import React, { KeyboardEvent } from 'react'
+import { cond, find, propEq } from 'ramda'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
@@ -15,6 +14,8 @@ import { $enumsStore } from '~stores/$enumsStore'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
+import { codeIs } from '../../utils/eventUtils'
+import { stopPropagation } from '../../utils/stopPropagation'
 import { EditorProps } from '../specific/VisualValue'
 
 const SelectSx = styled.select`
@@ -43,15 +44,12 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
   )
 
   const selKeyMap = cond([
-    [propSatisfies(included(['Escape']), 'code'), views.displayView],
-    [
-      propSatisfies(included(['ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape']), 'code'),
-      (e: KeyboardEvent<HTMLSelectElement>) => e.stopPropagation()
-    ]
+    [codeIs('Escape'), views.displayView],
+    [codeIs('ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape'), stopPropagation()]
   ])
 
   return !e || views.isDisplayView() ? (
-    <Text tabIndex={0} onFocus={views.editView} onKeyDown={keyMap}>
+    <Text tabIndex={0} onFocus={views.editView}>
       <span>{value?.value ?? ' '}</span>
     </Text>
   ) : (
