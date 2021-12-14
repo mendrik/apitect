@@ -9,6 +9,7 @@ import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useId } from '~hooks/useId'
 import { Jsx } from '~shared/types/generic'
 
+import { onlyNumbers } from '../../utils/eventUtils'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {
@@ -90,6 +91,7 @@ export const NumberInput = ({
         required={!!options?.required}
         type="number"
         placeholder={placeholder ?? ' '}
+        onKeyDown={onlyNumbers}
         {...props}
       />
       <Buttons>

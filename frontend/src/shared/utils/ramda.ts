@@ -112,6 +112,10 @@ export const insertStr = curry((index: number, text: string, input: string) =>
   insert(index, text, input.split('')).join('')
 )
 
+export const removeSlice = curry((index: number, end: number, input: string): string =>
+  remove(index, end - index + 1, input.split('')).join('')
+)
+
 export const removeCharAt = curry((index: number, input: string): string =>
   remove(index, 1, input.split('')).join('')
 )
