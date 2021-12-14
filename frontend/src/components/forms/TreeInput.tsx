@@ -30,7 +30,7 @@ import {
   Selected,
   StyledTreeInput
 } from '../../css/TreeInput.css'
-import { codeIs, keyIs } from '../../utils/eventUtils'
+import { codeIn, keyIn } from '../../utils/eventUtils'
 import { offset, sameWidth } from '../../utils/sameWidthMod'
 import { stopPropagation as sp } from '../../utils/stopPropagation'
 import { uninitialized } from '../../utils/uninitialized'
@@ -96,9 +96,9 @@ export const TreeInput = <T extends WithId>({
   })
 
   const keyMap = cond([
-    [codeIs('Enter'), sp(() => setShow(not))],
-    [codeIs('Space'), sp(() => setShow(not))],
-    [codeIs('Escape'), close]
+    [codeIn('Enter'), sp(() => setShow(not))],
+    [codeIn('Space'), sp(() => setShow(not))],
+    [codeIn('Escape'), close]
   ])
 
   useFocusOutside(parent, () => setShow(false))
@@ -198,12 +198,12 @@ TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
     })
 
   const keyMap = cond([
-    [codeIs('ArrowDown'), focus('next')],
-    [codeIs('ArrowUp'), focus('prev')],
-    [codeIs('ArrowLeft'), sp(() => remove(node))],
-    [codeIs('ArrowRight'), sp(() => add(node))],
-    [keyIs('Enter'), sp(activate)],
-    [codeIs('Space'), sp(activate)]
+    [codeIn('ArrowDown'), focus('next')],
+    [codeIn('ArrowUp'), focus('prev')],
+    [codeIn('ArrowLeft'), sp(() => remove(node))],
+    [codeIn('ArrowRight'), sp(() => add(node))],
+    [keyIn('Enter'), sp(activate)],
+    [codeIn('Space'), sp(activate)]
   ])
 
   return (

@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
-import { eventValueIs, keyIs } from '../../utils/eventUtils'
+import { keyIn, target } from '../../utils/eventUtils'
 import { preventDefault } from '../../utils/preventDefault'
 import { DeleteIcon } from '../generic/DeleteIcon'
 import { ErrorInfo } from './ErrorInfo'
@@ -79,11 +79,11 @@ export const TagInput = <T extends object>({
         }
 
         const keyMap = cond([
-          [keyIs('Backspace'), when(eventValueIs(''), () => onRemove(field.value.length - 1))],
+          [keyIn('Backspace'), when(target.valueIs(''), () => onRemove(field.value.length - 1))],
           [
-            keyIs('Enter'),
+            keyIn('Enter'),
             unless(
-              eventValueIs(''),
+              target.valueIs(''),
               preventDefault(() => {
                 onAdd(currentName)
                 setCurrentName('')

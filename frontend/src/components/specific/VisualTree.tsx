@@ -15,7 +15,7 @@ import {
   openNodeState,
   selectNode
 } from '../../events/tree'
-import { codeIs, keyIs } from '../../utils/eventUtils'
+import { codeIn, keyIn } from '../../utils/eventUtils'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNode } from './VisualNode'
@@ -43,12 +43,12 @@ export const VisualTree = () => {
   }
 
   const keyMap = cond([
-    [keyIs('ArrowRight'), setOpen(true)],
-    [keyIs('ArrowLeft'), setOpen(false)],
-    [keyIs('Delete'), confirmDelete],
-    [keyIs('n'), pd(() => newNodeFx(selectedNode?.value))],
-    [keyIs('Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],
-    [codeIs('Escape'), pd(() => selectNode(null))]
+    [keyIn('ArrowRight'), setOpen(true)],
+    [keyIn('ArrowLeft'), setOpen(false)],
+    [keyIn('Delete'), confirmDelete],
+    [keyIn('n'), pd(() => newNodeFx(selectedNode?.value))],
+    [keyIn('Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],
+    [codeIn('Escape'), pd(() => selectNode(null))]
   ])
 
   return (

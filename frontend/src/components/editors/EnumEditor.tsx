@@ -14,7 +14,7 @@ import { $enumsStore } from '~stores/$enumsStore'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIs, withShift } from '../../utils/eventUtils'
+import { codeIn, withShift } from '../../utils/eventUtils'
 import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { EditorProps } from '../specific/VisualValue'
@@ -40,9 +40,9 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
   const { saveFromEvent, error, views, setError } = useEditorTools(node, value, tag, validator)
 
   const selKeyMap = cond([
-    [both(withShift, codeIs('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
-    [codeIs('ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape'), stopPropagation()],
-    [codeIs('Escape'), views.displayView]
+    [both(withShift, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
+    [codeIn('ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape'), stopPropagation()],
+    [codeIn('Escape'), views.displayView]
   ])
 
   return !e || views.isDisplayView() ? (

@@ -6,7 +6,7 @@ import { ButtonRow } from '~forms/ButtonRow'
 import { Fn } from '~shared/types/generic'
 
 import { QuestionView } from '../components/QuestionView'
-import { codeIs } from '../utils/eventUtils'
+import { codeIn } from '../utils/eventUtils'
 import { focus } from '../utils/focus'
 import { stopPropagation as sp } from '../utils/stopPropagation'
 import { useOnActivate } from './useOnActivate'
@@ -36,8 +36,8 @@ export const useConfirmation = (
   }, [open, refOk])
 
   const keyMap = cond([
-    [codeIs('Escape'), sp(close)],
-    [complement(codeIs('Tab')), sp]
+    [codeIn('Escape'), sp(close)],
+    [complement(codeIn('Tab')), sp]
   ])
 
   const Confirm = () =>

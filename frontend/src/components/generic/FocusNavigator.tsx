@@ -3,7 +3,7 @@ import React, { EventHandler, HTMLAttributes, useRef } from 'react'
 import { Jsx, Maybe } from '~shared/types/generic'
 import { next, prev } from '~shared/utils/ramda'
 
-import { codeIs, withShift } from '../../utils/eventUtils'
+import { codeIn, withShift } from '../../utils/eventUtils'
 import { stopEvent } from '../../utils/stopPropagation'
 
 type OwnProps = {
@@ -59,12 +59,12 @@ export const FocusNavigator = ({
     })
 
   const keyMap = cond([
-    [codeIs('ArrowLeft'), moveFocus(rotated ? Direction.Up : Direction.Left)],
-    [codeIs('ArrowRight'), moveFocus(rotated ? Direction.Down : Direction.Right)],
-    [codeIs('ArrowUp'), moveFocus(rotated ? Direction.Left : Direction.Up)],
-    [codeIs('ArrowDown'), moveFocus(rotated ? Direction.Right : Direction.Down)],
-    [allPass([always(rotated), withShift, codeIs('Tab')]), moveFocus(Direction.Up)],
-    [allPass([always(rotated), codeIs('Tab')]), moveFocus(Direction.Down)]
+    [codeIn('ArrowLeft'), moveFocus(rotated ? Direction.Up : Direction.Left)],
+    [codeIn('ArrowRight'), moveFocus(rotated ? Direction.Down : Direction.Right)],
+    [codeIn('ArrowUp'), moveFocus(rotated ? Direction.Left : Direction.Up)],
+    [codeIn('ArrowDown'), moveFocus(rotated ? Direction.Right : Direction.Down)],
+    [allPass([always(rotated), withShift, codeIn('Tab')]), moveFocus(Direction.Up)],
+    [allPass([always(rotated), codeIn('Tab')]), moveFocus(Direction.Down)]
   ])
 
   return (

@@ -14,7 +14,7 @@ import { getDateValidator } from '~shared/validators/dateValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIs, withShift } from '../../utils/eventUtils'
+import { codeIn, withShift } from '../../utils/eventUtils'
 import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { Datepicker } from '../datepicker/Datepicker'
@@ -50,11 +50,11 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   })
 
   const keyMap = cond([
-    [both(withShift, codeIs('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
-    [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
-    [codeIs('ArrowUp', 'ArrowDown'), stopPropagation()],
-    [codeIs('Tab', 'Enter'), saveAsDate],
-    [codeIs('Escape'), views.displayView]
+    [both(withShift, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
+    [codeIn('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
+    [codeIn('ArrowUp', 'ArrowDown'), stopPropagation()],
+    [codeIn('Tab', 'Enter'), saveAsDate],
+    [codeIn('Escape'), views.displayView]
   ])
 
   const datepicker = (

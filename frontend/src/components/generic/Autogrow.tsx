@@ -1,10 +1,10 @@
 import clsx from 'clsx'
-import { concat, cond, converge, pathEq, pipe, prop } from 'ramda'
+import { concat, cond, converge, isEmpty, pathEq, pipe, propOr, unless } from 'ramda'
 import React, { HTMLAttributes, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 
-import { eventValue } from '../../utils/eventUtils'
+import { target } from '../../utils/eventUtils'
 
 type OwnProps = {
   className?: string
@@ -17,36 +17,40 @@ const MeasureSx = styled.div`
   white-space: nowrap;
   overflow: hidden;
   width: min-content;
-  max-width: 150px;
+  padding: 0px 3px;
 
-  ~ input {
+  ~ div > input {
     padding: initial;
-    overflow: hidden;
-    width: 100%;
+    overflow: visible;
+    width: calc(100% + 2px);
+    border: 1px solid black;
+    padding: 3px;
   }
 `
 
 export const Autogrow = ({ className, initial, children, ...props }: Jsx<OwnProps>) => {
-  const [value, setValue] = useState<ReactNode>(initial)
+  const [value, $setValue] = useState<ReactNode>(initial)
+
+  const setValue = unless(isEmpty, $setValue)
 
   const measureDown = cond([
     [
       pathEq(['key', 'length'], 1),
-      pipe(converge(concat as any, [eventValue, prop('key')]), setValue)
+      pipe(converge(concat, [target.value, propOr('key')] as any), setValue)
     ]
   ])
 
-  const measureUp = pipe<any, any, any>(eventValue, setValue)
+  const measureUp = pipe<any, any, any>(target.value, setValue)
 
   return (
     <div
-      onKeyDown={measureDown}
+      onKeyDown={e => console.log(target.value(e))}
       onKeyUp={measureUp}
       className={clsx('d-grid', className)}
       {...props}
     >
       <MeasureSx>{value}</MeasureSx>
-      {children}
+      <div>{children}</div>
     </div>
   )
 }

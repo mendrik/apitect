@@ -1,10 +1,19 @@
-import { either, path, pathEq, propEq, propSatisfies } from 'ramda'
+import { complement, cond, either, pathEq, pathOr, pipe, propEq, propSatisfies, test } from 'ramda'
 import { included } from 'ramda-adjunct'
 import { Fn } from '~shared/types/generic'
 
-export const codeIs = (...keys: string[]) => propSatisfies(included(keys), 'code')
+import { stopEvent } from './stopPropagation'
+
+const validNumber = test(/^-?[1-9]\d*[,.]?\d*$/)
+
+export const codeIn = (...keys: string[]) => propSatisfies(included(keys), 'code')
+export const keyIn = (...keys: string[]) => propSatisfies(included(keys), 'key')
 export const withShift: Fn<boolean> = propEq('shiftKey', true)
-export const keyIs = (...keys: string[]) => propSatisfies(included(keys), 'key')
-export const eventValue = path(['target', 'value'])
-export const eventValueIs = <T>(val: T) => pathEq(['target', 'value'], val)
-export const spaceOrEnter = either(codeIs('Space'), keyIs('Enter'))
+export const spaceOrEnter = either(codeIn('Space'), keyIn('Enter'))
+
+export const target = {
+  value: pathOr('', ['target', 'value']),
+  valueIs: <T>(val: T) => pathEq(['target', 'value'], val)
+}
+
+export const onlyNumbers = cond([[pipe(target.value, complement(validNumber)), stopEvent()]])

@@ -21,7 +21,7 @@ import { ArgFn, Jsx } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { Palette } from '../../css/colors'
-import { codeIs } from '../../utils/eventUtils'
+import { codeIn } from '../../utils/eventUtils'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { Scrollable } from '../generic/Scrollable'
 import { Month } from './Month'
@@ -177,7 +177,7 @@ export const Datepicker = ({
     }, 1)
 
   const onEscape = when<KeyboardEvent<HTMLDivElement>, void>(
-    codeIs('Escape'),
+    codeIn('Escape'),
     stopPropagation(() => setOpen(false))
   )
 
@@ -190,8 +190,8 @@ export const Datepicker = ({
   }
 
   const keyMap = cond([
-    [codeIs('Space'), click],
-    [codeIs('Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'), stopPropagation()]
+    [codeIn('Space'), click],
+    [codeIn('Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'), stopPropagation()]
   ])
 
   return (
