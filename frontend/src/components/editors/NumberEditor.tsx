@@ -1,7 +1,7 @@
 import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
-import { complement, cond, pathOr, pipe, test, when } from 'ramda'
+import { both, complement, cond, pathOr, pipe, test, when } from 'ramda'
 import React from 'react'
 import styled from 'styled-components'
 import { useEditorTools } from '~hooks/specific/useEditorTools'
@@ -14,7 +14,8 @@ import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIs, eventValueIs } from '../../utils/eventUtils'
+import { codeIs, eventValueIs, withShift } from '../../utils/eventUtils'
+import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { Autogrow } from '../generic/Autogrow'
 import { HGrid } from '../generic/HGrid'
@@ -51,6 +52,7 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
   const saveAsNumber = pipe(pathOr('', ['target', 'value']), asNumber, saveValue)
 
   const keyMap = cond([
+    [both(withShift, codeIs('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
     [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIs('Tab', 'Enter'), saveAsNumber],
     [codeIs('Escape'), views.displayView],

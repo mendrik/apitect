@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import { useStoreMap } from 'effector-react'
-import { cond, pathOr, pipe, when } from 'ramda'
+import { both, cond, pathOr, pipe, when } from 'ramda'
 import React, { useRef } from 'react'
 import { useClickAway } from 'react-use'
 import styled from 'styled-components'
@@ -14,7 +14,8 @@ import { getDateValidator } from '~shared/validators/dateValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIs } from '../../utils/eventUtils'
+import { codeIs, withShift } from '../../utils/eventUtils'
+import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { Datepicker } from '../datepicker/Datepicker'
 import { StyledTuple } from '../generic/Tuple'
@@ -43,17 +44,18 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
 
   const saveAsDate = pipe(pathOr('', ['target', 'value']), saveValue)
-  useClickAway(ref, e => {
+  useClickAway(ref, () => {
     const input = ref.current?.firstElementChild as HTMLInputElement | null
     saveValue(input?.value)
   })
 
   const keyMap = cond([
+    [both(withShift, codeIs('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
     [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIs('ArrowUp', 'ArrowDown'), stopPropagation()],
     [codeIs('Tab', 'Enter'), saveAsDate],
     [codeIs('Escape'), views.displayView]
-  ]) as any
+  ])
 
   const datepicker = (
     <Datepicker

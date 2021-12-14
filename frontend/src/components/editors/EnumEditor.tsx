@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { useStore, useStoreMap } from 'effector-react'
-import { cond, find, propEq } from 'ramda'
+import { both, cond, find, propEq } from 'ramda'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -14,7 +14,8 @@ import { $enumsStore } from '~stores/$enumsStore'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIs } from '../../utils/eventUtils'
+import { codeIs, withShift } from '../../utils/eventUtils'
+import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { EditorProps } from '../specific/VisualValue'
 
@@ -36,16 +37,12 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
   const e = find<Enum>(propEq('name', enumSettings?.enumeration), enums)
 
   const validator = getEnumValidator(e, enumSettings)
-  const { saveFromEvent, error, keyMap, views, setError } = useEditorTools(
-    node,
-    value,
-    tag,
-    validator
-  )
+  const { saveFromEvent, error, views, setError } = useEditorTools(node, value, tag, validator)
 
   const selKeyMap = cond([
-    [codeIs('Escape'), views.displayView],
-    [codeIs('ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape'), stopPropagation()]
+    [both(withShift, codeIs('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
+    [codeIs('ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape'), stopPropagation()],
+    [codeIs('Escape'), views.displayView]
   ])
 
   return !e || views.isDisplayView() ? (

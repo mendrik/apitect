@@ -1,4 +1,4 @@
-import { cond, when } from 'ramda'
+import { both, cond, when } from 'ramda'
 import { SyntheticEvent, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError, ZodSchema } from 'zod'
@@ -8,7 +8,8 @@ import { Value } from '~shared/types/domain/values/value'
 import { Maybe } from '~shared/types/generic'
 
 import { valueDeleteFx, valueUpdateFx } from '../../events/values'
-import { codeIs } from '../../utils/eventUtils'
+import { codeIs, withShift } from '../../utils/eventUtils'
+import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
 
 const lastExecution = {
@@ -79,6 +80,7 @@ export const useEditorTools = (
     saveValue(e.currentTarget.value, e)
 
   const keyMap = cond([
+    [both(withShift, codeIs('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
     [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIs('ArrowUp', 'ArrowDown', 'Tab'), saveFromEvent]
   ])
