@@ -10,6 +10,7 @@ import {
   groupBy,
   head,
   identity,
+  insert,
   isNil,
   join,
   juxt,
@@ -19,6 +20,7 @@ import {
   Pred,
   prop,
   reduce,
+  remove,
   replace,
   reverse,
   tail,
@@ -105,3 +107,15 @@ export const byProp =
   <T, K extends keyof T & string>(p: K) =>
   (arr: T[]): Record<K, T> =>
     map(head, groupBy(prop<K, T>(p) as any, arr))
+
+export const insertStr = curry((index: number, text: string, input: string) =>
+  insert(index, text, input.split('')).join('')
+)
+
+export const removeCharAt = curry((index: number, input: string): string =>
+  remove(index, 1, input.split('')).join('')
+)
+
+export const removeCharBefore = curry((index: number, input: string): string =>
+  remove(index - 1, 1, input.split('')).join('')
+)

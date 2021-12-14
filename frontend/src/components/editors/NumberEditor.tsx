@@ -1,7 +1,7 @@
 import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
-import { both, cond, pathOr, pipe, when } from 'ramda'
+import { both, cond, pathOr, pipe, when, T } from 'ramda'
 import React from 'react'
 import styled from 'styled-components'
 import { useEditorTools } from '~hooks/specific/useEditorTools'
@@ -52,7 +52,8 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
     [both(withShift, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
     [codeIn('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIn('Tab', 'Enter'), saveAsNumber],
-    [codeIn('Escape'), views.displayView]
+    [codeIn('Escape'), views.displayView],
+    [T, onlyNumbers]
   ])
 
   const asStepper = (children: JSX.Element) =>
