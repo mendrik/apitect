@@ -81,7 +81,7 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
           onPaste={onlyNumbersPaste}
           lang={navigator.language}
           onKeyDown={keyMap}
-          // onBlur={saveAsNumber}
+          onBlur={saveAsNumber}
           defaultValue={value?.value}
         />
       </Autogrow>
