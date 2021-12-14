@@ -17,12 +17,12 @@ const MeasureSx = styled.div`
   white-space: nowrap;
   overflow: hidden;
   width: min-content;
+  max-width: 150px;
 
   ~ input {
     padding: initial;
     overflow: hidden;
     width: 100%;
-    max-width: 150px;
   }
 `
 
@@ -30,7 +30,10 @@ export const Autogrow = ({ className, initial, children, ...props }: Jsx<OwnProp
   const [value, setValue] = useState<ReactNode>(initial)
 
   const measureDown = cond([
-    [pathEq(['key', 'length'], 1), pipe(converge(concat, [eventValue, prop('key')]), setValue)]
+    [
+      pathEq(['key', 'length'], 1),
+      pipe(converge(concat as any, [eventValue, prop('key')]), setValue)
+    ]
   ])
 
   const measureUp = pipe<any, any, any>(eventValue, setValue)

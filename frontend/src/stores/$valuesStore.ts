@@ -17,5 +17,5 @@ $valuesStore.on(valueUpdateFx.doneData, (state, result) =>
 )
 
 $valuesStore.on(valueDeleteFx.done, (state, { params }) =>
-  reject(both(propEq('nodeId', params.nodeId), propEq('tag', params.tag)), state)
+  reject(both(propEq('nodeId', params.nodeId), propEq('tag', params.tag) as any), state)
 )

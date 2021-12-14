@@ -37,14 +37,14 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
           tree={root}
           name="emailId"
           containerClasses="mb-3"
-          nodeRender={prop('name')}
+          nodeRender={prop<string>('name')}
         />
         <TreeInput
           label="form.fields.passwordId"
           tree={root}
           name="passwordId"
           containerClasses="mb-3"
-          nodeRender={prop('name')}
+          nodeRender={prop<string>('name')}
         />
       </SocketForm>
     )

@@ -1,5 +1,5 @@
 import { allPass, always, cond, equals } from 'ramda'
-import React, { HTMLAttributes, useRef } from 'react'
+import React, { EventHandler, HTMLAttributes, useRef } from 'react'
 import { Jsx, Maybe } from '~shared/types/generic'
 import { next, prev } from '~shared/utils/ramda'
 
@@ -26,7 +26,7 @@ export const FocusNavigator = ({
 }: Jsx<OwnProps>) => {
   const ref = useRef<HTMLDivElement>(null)
 
-  const moveFocus = (dir: Direction) =>
+  const moveFocus = (dir: Direction): EventHandler<any> =>
     stopEvent(() => {
       const current = document.activeElement as Maybe<HTMLElement>
       if (ref.current != null && ref.current.matches(':focus-within') && current != null) {

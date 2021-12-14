@@ -7,7 +7,7 @@ import { mapIndexed } from 'ramda-adjunct'
 import React, {
   HTMLAttributes,
   KeyboardEvent,
-  MouseEvent,
+  SyntheticEvent,
   useEffect,
   useMemo,
   useRef,
@@ -181,7 +181,7 @@ export const Datepicker = ({
     stopPropagation(() => setOpen(false))
   )
 
-  const click = (ev: MouseEvent<HTMLOListElement>): void => {
+  const click = (ev: SyntheticEvent<HTMLOListElement>): void => {
     const target = ev.target as HTMLElement
     if (target.matches('.day')) {
       const dateStr = target.dataset.date!

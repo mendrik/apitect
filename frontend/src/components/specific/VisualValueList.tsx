@@ -32,9 +32,9 @@ const Values = styled.ol`
 `
 
 export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
-  const values = useStoreMap(
+  const values: Record<NodeId, Value> = useStoreMap(
     $valuesStore,
-    pipe<Value[], Value[], Record<NodeId, Value>>(filter(propEq('tag', tag)), byProp('nodeId'))
+    pipe(filter(propEq('tag', tag)), byProp('nodeId'))
   )
 
   const nodeIds = useStore($visibleNodes)

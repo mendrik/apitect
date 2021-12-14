@@ -24,7 +24,7 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
   const { saveFromEvent, error, keyMap, views } = useEditorTools(node, value, tag, validator)
 
   return views.isDisplayView() ? (
-    <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
+    <Text tabIndex={0} onFocus={views.editView}>
       <span>{value?.value ?? ' '}</span>
     </Text>
   ) : (
