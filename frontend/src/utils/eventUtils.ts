@@ -6,7 +6,6 @@ import {
   converge,
   either,
   isEmpty,
-  path,
   pathEq,
   pathOr,
   pipe,
@@ -15,7 +14,7 @@ import {
   propSatisfies,
   test
 } from 'ramda'
-import { included, isTruthy } from 'ramda-adjunct'
+import { included, notEqual } from 'ramda-adjunct'
 import { KeyboardEvent } from 'react'
 import { Fn } from '~shared/types/generic'
 import { insertStr, removeCharAt, removeCharBefore, removeSlice } from '~shared/utils/ramda'
@@ -35,7 +34,10 @@ export const target = {
   valueIs: <T>(val: T) => pathEq(['target', 'value'], val),
   caretPosition: pathOr(0, ['target', 'selectionStart']),
   selectionEnd: pathOr(0, ['target', 'selectionEnd']),
-  hasSelection: pipe(path(['target', 'selectionEnd']), isTruthy)
+  hasSelection: converge<any, boolean, number, number>(notEqual as any, [
+    pathOr(0, ['target', 'selectionStart']),
+    pathOr(0, ['target', 'selectionEnd'])
+  ])
 }
 
 /**
@@ -55,7 +57,7 @@ export const futureValue: (ev: KeyboardEvent<HTMLInputElement>) => string = cond
   [codeIn('Delete'), converge(removeCharAt as any, [target.caretPosition, target.value])]
 ])
 
-const noOp = (e: KeyboardEvent<HTMLInputElement>) => void 0
+const noOp = (_e: KeyboardEvent<HTMLInputElement>) => void 0
 
 export const onlyNumbers = cond([
   [either(withShift, withCtrl), noOp],
