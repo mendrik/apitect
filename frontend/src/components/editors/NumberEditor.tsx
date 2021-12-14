@@ -1,7 +1,7 @@
 import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
-import { both, complement, cond, pathOr, pipe, test, when } from 'ramda'
+import { complement, cond, pathOr, pipe, test, when } from 'ramda'
 import React from 'react'
 import styled from 'styled-components'
 import { useEditorTools } from '~hooks/specific/useEditorTools'
@@ -51,7 +51,7 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
   const saveAsNumber = pipe(pathOr('', ['target', 'value']), asNumber, saveValue)
 
   const keyMap = cond([
-    [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation)],
+    [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIs('Tab', 'Enter'), saveAsNumber],
     [codeIs('Escape'), views.displayView],
     [complement(eventValueIs(validNumber)), e => console.log(e)]

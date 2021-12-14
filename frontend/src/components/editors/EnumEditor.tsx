@@ -45,11 +45,11 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
 
   const selKeyMap = cond([
     [codeIs('Escape'), views.displayView],
-    [codeIs('ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape'), stopPropagation]
+    [codeIs('ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape'), stopPropagation()]
   ])
 
   return !e || views.isDisplayView() ? (
-    <Text tabIndex={0} onFocus={views.editView} onKeyDown={keyMap}>
+    <Text tabIndex={0} onFocus={views.editView}>
       <span>{value?.value ?? ' '}</span>
     </Text>
   ) : (

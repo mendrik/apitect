@@ -49,11 +49,11 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   })
 
   const keyMap = cond([
-    [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation)],
-    [codeIs('ArrowUp', 'ArrowDown'), stopPropagation],
+    [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
+    [codeIs('ArrowUp', 'ArrowDown'), stopPropagation()],
     [codeIs('Tab', 'Enter'), saveAsDate],
     [codeIs('Escape'), views.displayView]
-  ])
+  ]) as any
 
   const datepicker = (
     <Datepicker

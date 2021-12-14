@@ -39,9 +39,9 @@ export const useEditorTools = (
   const views = useView(Views)
   const [error, setError] = useState<Maybe<ZodError>>()
 
-  const saveValue = <T extends Value['value']>(
+  const saveValue = <T extends Value['value'], E extends HTMLElement>(
     formValue: T | undefined,
-    e?: SyntheticEvent<HTMLInputElement | HTMLSelectElement>
+    e?: SyntheticEvent<E>
   ) => {
     const now = Date.now()
     // make sure that onBlur and onKeyDown don't run this twice
@@ -79,7 +79,7 @@ export const useEditorTools = (
     saveValue(e.currentTarget.value, e)
 
   const keyMap = cond([
-    [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation)],
+    [codeIs('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIs('ArrowUp', 'ArrowDown', 'Tab'), saveFromEvent]
   ])
 

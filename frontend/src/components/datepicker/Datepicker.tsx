@@ -191,7 +191,7 @@ export const Datepicker = ({
 
   const keyMap = cond([
     [codeIs('Space'), click],
-    [codeIs('Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'), stopPropagation]
+    [codeIs('Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'), stopPropagation()]
   ])
 
   return (
