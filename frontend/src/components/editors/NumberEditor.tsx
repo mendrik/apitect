@@ -14,16 +14,16 @@ import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIn, onlyNumbers, withShift } from '../../utils/eventUtils'
+import { codeIn, onlyNumbers, onlyNumbersPaste, withShift } from '../../utils/eventUtils'
 import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
+import { Autogrow } from '../generic/Autogrow'
 import { HGrid } from '../generic/HGrid'
 import { SimpleIcon } from '../generic/SimpleIcon'
 import { EditorProps } from '../specific/VisualValue'
 
 export const NumberInput = styled.input`
-  border: none;
-  outline: none;
+  padding: 0 3px;
   ::-webkit-inner-spin-button {
     display: none;
     -webkit-appearance: none;
@@ -73,16 +73,18 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
         {numberFormat(value?.value)}
       </NumberText>
     ) : (
-      <NumberInput
-        type="text"
-        className={clsx('editor', { invalid: error != null })}
-        style={{ width: 100 }}
-        autoFocus
-        lang={navigator.language}
-        onKeyDown={keyMap}
-        onBlur={saveAsNumber}
-        defaultValue={value?.value}
-      />
+      <Autogrow initial={value?.value}>
+        <NumberInput
+          type="text"
+          className={clsx('editor', { invalid: error != null })}
+          autoFocus
+          onPaste={onlyNumbersPaste}
+          lang={navigator.language}
+          onKeyDown={keyMap}
+          // onBlur={saveAsNumber}
+          defaultValue={value?.value}
+        />
+      </Autogrow>
     )
   )
 }

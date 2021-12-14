@@ -1,10 +1,11 @@
 import clsx from 'clsx'
-import { concat, cond, converge, isEmpty, pathEq, pipe, propOr, unless } from 'ramda'
+import { pipe } from 'ramda'
 import React, { HTMLAttributes, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 
-import { target } from '../../utils/eventUtils'
+import { Palette } from '../../css/colors'
+import { futureValue } from '../../utils/eventUtils'
 
 type OwnProps = {
   className?: string
@@ -12,45 +13,31 @@ type OwnProps = {
 } & HTMLAttributes<HTMLDivElement>
 
 const MeasureSx = styled.div`
-  position: relative;
   pointer-events: none;
   white-space: nowrap;
-  overflow: hidden;
-  width: min-content;
+  height: 0px;
   padding: 0px 3px;
+  width: min-content;
+  min-width: 30px;
 
-  ~ div > input {
-    padding: initial;
-    overflow: visible;
+  ~ input {
     width: calc(100% + 2px);
-    border: 1px solid black;
-    padding: 3px;
+    padding: initial 3px;
+    border: 1px solid transparent;
+
+    &:focus {
+      border: 1px dotted ${Palette.iconBorder};
+    }
   }
 `
 
 export const Autogrow = ({ className, initial, children, ...props }: Jsx<OwnProps>) => {
-  const [value, $setValue] = useState<ReactNode>(initial)
-
-  const setValue = unless(isEmpty, $setValue)
-
-  const measureDown = cond([
-    [
-      pathEq(['key', 'length'], 1),
-      pipe(converge(concat, [target.value, propOr('key')] as any), setValue)
-    ]
-  ])
-
-  const measureUp = pipe<any, any, any>(target.value, setValue)
+  const [value, setValue] = useState<ReactNode>(initial)
 
   return (
-    <div
-      onKeyDown={e => console.log(target.value(e))}
-      onKeyUp={measureUp}
-      className={clsx('d-grid', className)}
-      {...props}
-    >
+    <div onKeyDown={pipe(futureValue, setValue)} className={clsx('d-grid', className)} {...props}>
       <MeasureSx>{value}</MeasureSx>
-      <div>{children}</div>
+      {children}
     </div>
   )
 }

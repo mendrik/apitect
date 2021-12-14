@@ -1,5 +1,6 @@
 import {
   always,
+  anyPass,
   both,
   complement,
   cond,
@@ -12,14 +13,15 @@ import {
   propEq,
   propOr,
   propSatisfies,
+  T,
   test
 } from 'ramda'
 import { included, notEqual } from 'ramda-adjunct'
-import { KeyboardEvent } from 'react'
+import { ClipboardEvent, KeyboardEvent } from 'react'
 import { Fn } from '~shared/types/generic'
 import { insertStr, removeCharAt, removeCharBefore, removeSlice } from '~shared/utils/ramda'
 
-import { stopEvent } from './stopPropagation'
+import { stopEvent, stopPropagation } from './stopPropagation'
 
 const validNumber = test(/^-?[1-9]\d*[,.]?\d*$/)
 
@@ -54,13 +56,21 @@ export const futureValue: (ev: KeyboardEvent<HTMLInputElement>) => string = cond
     converge(removeSlice as any, [target.caretPosition, target.selectionEnd, target.value])
   ],
   [codeIn('Backspace'), converge(removeCharBefore as any, [target.caretPosition, target.value])],
-  [codeIn('Delete'), converge(removeCharAt as any, [target.caretPosition, target.value])]
+  [codeIn('Delete'), converge(removeCharAt as any, [target.caretPosition, target.value])],
+  [T, target.value]
 ])
 
 const noOp = (_e: KeyboardEvent<HTMLInputElement>) => void 0
 
 export const onlyNumbers = cond([
-  [either(withShift, withCtrl), noOp],
+  [anyPass([withShift, withCtrl, codeIn('ArrowLeft', 'ArrowRight')]), stopPropagation()],
   [pipe<any, any, any>(futureValue, isEmpty), noOp],
   [pipe<any, any, any>(futureValue, complement(validNumber)), stopEvent()]
 ])
+
+export const onlyNumbersPaste = (e: ClipboardEvent<HTMLInputElement>) => {
+  const data = e.clipboardData?.getData('Text')
+  if (data && !validNumber(data)) {
+    e.preventDefault()
+  }
+}
