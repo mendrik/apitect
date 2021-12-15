@@ -79,20 +79,17 @@ export const onlyNumbers = cond([
 
 const clipboard = (e: ClipboardEvent<HTMLInputElement>) => e.clipboardData?.getData('Text')
 
-export const futurePasteResult: (ev: ClipboardEvent<HTMLInputElement>) => string = pipe(
-  cond([
-    [
-      both(target.hasSelection, pipe<any, any, boolean>(clipboard, isNotNil)),
-      converge(replaceSlice as any, [
-        target.caretPosition,
-        target.selectionEnd,
-        clipboard,
-        target.value
-      ])
-    ],
-    [T, converge(insertStr as any, [target.caretPosition, clipboard, target.value])]
-  ]),
-  tap(console.log)
-)
+export const futurePasteResult: (ev: ClipboardEvent<HTMLInputElement>) => string = cond([
+  [
+    both(target.hasSelection, pipe<any, any, boolean>(clipboard, isNotNil)),
+    converge(replaceSlice as any, [
+      target.caretPosition,
+      target.selectionEnd,
+      clipboard,
+      target.value
+    ])
+  ],
+  [T, converge(insertStr as any, [target.caretPosition, clipboard, target.value])]
+])
 
 export const onlyNumbersPaste = unless(pipe(futurePasteResult, validNumber), stopEvent())
