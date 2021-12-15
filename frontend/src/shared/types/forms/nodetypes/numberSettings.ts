@@ -13,7 +13,7 @@ export const ZNumberSettings = ZNodeSettingsBase.merge(
       max: number().optional()
     }),
     display: object({
-      step: number().min(0.001).default(1),
+      step: number().min(0.001).optional(),
       unit: string().optional(),
       precision: number().min(0).default(0)
     })
