@@ -1,4 +1,4 @@
-import { boolean, literal, number, object, string, union } from 'zod'
+import { boolean, literal, number, object, string } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { NodeType } from '../../domain/nodeType'
@@ -13,9 +13,9 @@ export const ZNumberSettings = ZNodeSettingsBase.merge(
       max: number().optional()
     }),
     display: object({
-      step: number().default(1),
+      step: number().min(0.001).default(1),
       unit: string().optional(),
-      precision: number().optional()
+      precision: number().min(0).default(0)
     })
   })
 )

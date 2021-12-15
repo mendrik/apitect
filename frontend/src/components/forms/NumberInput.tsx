@@ -1,15 +1,15 @@
 import { IconChevronDown, IconChevronUp } from '@tabler/icons'
 import clsx from 'clsx'
-import { path } from 'ramda'
+import { clamp, path } from 'ramda'
 import React, { InputHTMLAttributes } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useId } from '~hooks/useId'
-import { Jsx } from '~shared/types/generic'
+import { Jsx, Maybe } from '~shared/types/generic'
 
-import { onlyNumbers, onlyNumbersPaste } from '../../utils/eventUtils'
+import { onlyNumbers, onlyNumbersPaste, validNumber } from '../../utils/eventUtils'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {
@@ -37,7 +37,7 @@ const Buttons = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 40px;
+  width: 38px;
   height: 100%;
   top: 0;
   right: 0;
@@ -63,23 +63,31 @@ export const NumberInput = ({
   placeholder,
   containerClassNames,
   autoFocus,
+  step = 1,
+  min,
+  max,
   ...props
 }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const {
     register,
+    setValue,
+    watch,
     formState: { errors }
   } = useFormContext<{ [K in typeof name]: number | undefined }>()
 
   const inpId = useId()
 
   useAutoFocus(name, autoFocus)
+  const current = watch(name)
+  const box = clamp(min ?? Number.MIN_SAFE_INTEGER, max ?? Number.MAX_SAFE_INTEGER)
 
   return (
     <div className={clsx('form-floating has-validation appearance-none', containerClassNames)}>
       <Input
         {...register(name, {
-          valueAsNumber: true,
+          setValueAs: (value: Maybe<string>) =>
+            value == null || !validNumber(value) ? undefined : parseFloat(value),
           ...options
         })}
         style={{
@@ -89,17 +97,27 @@ export const NumberInput = ({
         id={inpId}
         autoComplete="off"
         required={!!options?.required}
-        type="number"
+        type="text"
         placeholder={placeholder ?? ' '}
         onKeyDown={onlyNumbers}
         onPaste={onlyNumbersPaste}
         {...props}
       />
       <Buttons>
-        <button type="button" className="btn p-0" tabIndex={-1}>
+        <button
+          type="button"
+          className="btn p-0"
+          tabIndex={-1}
+          onClick={() => setValue(name, box((current ?? 0) + step))}
+        >
           <IconChevronUp className="w-4 h-4" stroke={1} />
         </button>
-        <button type="button" className="btn p-0" tabIndex={-1}>
+        <button
+          type="button"
+          className="btn p-0"
+          tabIndex={-1}
+          onClick={() => setValue(name, box((current ?? 0) - step))}
+        >
           <IconChevronDown className="w-4 h-4" stroke={1} />
         </button>
       </Buttons>

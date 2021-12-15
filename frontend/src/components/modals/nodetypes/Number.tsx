@@ -10,8 +10,8 @@ const Number = () => (
   <>
     <FieldSet title="modals.nodeSettings.validation">
       <HGrid className="gap-2">
-        <NumberInput label="modals.nodeSettings.number.min" name="min" />
-        <NumberInput label="modals.nodeSettings.number.max" name="max" />
+        <NumberInput label="modals.nodeSettings.number.min" name="validation.min" />
+        <NumberInput label="modals.nodeSettings.number.max" name="validation.max" />
       </HGrid>
       <Checkbox name="required" label={'modals.nodeSettings.required'} />
     </FieldSet>
@@ -19,13 +19,13 @@ const Number = () => (
       <HGrid className="gap-2">
         <NumberInput
           label="modals.nodeSettings.number.precision"
-          name="precision"
+          name="display.precision"
           min={0}
           max={6}
           step={1}
         />
-        <TextInput label="modals.nodeSettings.number.unit" name="unit" />
-        <NumberInput label="modals.nodeSettings.number.step" name="step" />
+        <TextInput label="modals.nodeSettings.number.unit" name="display.unit" />
+        <NumberInput label="modals.nodeSettings.number.step" name="display.step" min={0} />
       </HGrid>
     </FieldSet>
   </>

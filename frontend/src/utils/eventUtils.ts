@@ -1,6 +1,6 @@
 import {
+  allPass,
   always,
-  anyPass,
   both,
   complement,
   cond,
@@ -30,7 +30,7 @@ import {
 
 import { stopEvent, stopPropagation } from './stopPropagation'
 
-const validNumber = test(/^-?[1-9]\d*[,.]?\d*$/)
+export const validNumber = test(/^-?[0-9]\d*[,.]?\d*$/)
 
 export const codeIn = (...keys: string[]) => propSatisfies(included(keys), 'code')
 export const keyIn = (...keys: string[]) => propSatisfies(included(keys), 'key')
@@ -74,7 +74,7 @@ export const futureValue: (ev: KeyboardEvent<HTMLInputElement>) => string = cond
 const noOp = (_e: KeyboardEvent<HTMLInputElement>) => void 0
 
 export const onlyNumbers = cond([
-  [anyPass([withShift, withCtrl, codeIn('ArrowLeft', 'ArrowRight')]), stopPropagation()],
+  [allPass([withShift, withCtrl, codeIn('ArrowLeft', 'ArrowRight')]), stopPropagation()],
   [pipe<any, any, any>(futureValue, isEmpty), noOp],
   [pipe<any, any, any>(futureValue, complement(validNumber)), stopEvent()]
 ])
