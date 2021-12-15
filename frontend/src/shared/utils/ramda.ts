@@ -31,7 +31,7 @@ import {
   unless,
   update
 } from 'ramda'
-import { findOr } from 'ramda-adjunct'
+import { findOr, sliceFrom, sliceTo } from 'ramda-adjunct'
 
 import { ArgFn, Fn, Maybe } from '../types/generic'
 
@@ -114,7 +114,12 @@ export const insertStr = curry((index: number, text: string, input: string) =>
 )
 
 export const removeSlice = curry((index: number, end: number, input: string): string =>
-  remove(index, end - index, input.split('')).join('')
+  remove(index, Math.abs(end - index), input.split('')).join('')
+)
+
+export const replaceSlice = curry(
+  (index: number, end: number, replacement: string, input: string): string =>
+    pipe(juxt([sliceTo(index), always(replacement), sliceFrom(end)]), join(''))(input)
 )
 
 export const removeCharAt = curry((index: number, input: string): string =>

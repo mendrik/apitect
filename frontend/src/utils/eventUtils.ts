@@ -14,12 +14,20 @@ import {
   propOr,
   propSatisfies,
   T,
-  test
+  tap,
+  test,
+  unless
 } from 'ramda'
-import { included, notEqual } from 'ramda-adjunct'
+import { included, isNotNil, notEqual } from 'ramda-adjunct'
 import { ClipboardEvent, KeyboardEvent } from 'react'
 import { Fn } from '~shared/types/generic'
-import { insertStr, removeCharAt, removeCharBefore, removeSlice } from '~shared/utils/ramda'
+import {
+  insertStr,
+  removeCharAt,
+  removeCharBefore,
+  removeSlice,
+  replaceSlice
+} from '~shared/utils/ramda'
 
 import { stopEvent, stopPropagation } from './stopPropagation'
 
@@ -47,14 +55,15 @@ export const target = {
  */
 export const futureValue: (ev: KeyboardEvent<HTMLInputElement>) => string = cond([
   [
+    both(target.hasSelection, codeIn('Delete', 'Backspace')),
+    converge(removeSlice as any, [target.caretPosition, target.selectionEnd, target.value])
+  ],
+  [target.hasSelection, target.value],
+  [
     pathEq(['key', 'length'], 1),
     converge(insertStr as any, [target.caretPosition, propOr('', 'key'), target.value])
   ],
   [both(withCtrl, codeIn('Delete', 'Backspace')), always('')],
-  [
-    target.hasSelection,
-    converge(removeSlice as any, [target.caretPosition, target.selectionEnd, target.value])
-  ],
   [codeIn('Backspace'), converge(removeCharBefore as any, [target.caretPosition, target.value])],
   [codeIn('Delete'), converge(removeCharAt as any, [target.caretPosition, target.value])],
   [T, target.value]
@@ -68,9 +77,22 @@ export const onlyNumbers = cond([
   [pipe<any, any, any>(futureValue, complement(validNumber)), stopEvent()]
 ])
 
-export const onlyNumbersPaste = (e: ClipboardEvent<HTMLInputElement>) => {
-  const data = e.clipboardData?.getData('Text')
-  if (data && !validNumber(data)) {
-    e.preventDefault()
-  }
-}
+const clipboard = (e: ClipboardEvent<HTMLInputElement>) => e.clipboardData?.getData('Text')
+
+export const futurePasteResult: (ev: ClipboardEvent<HTMLInputElement>) => string = pipe(
+  cond([
+    [
+      both(target.hasSelection, pipe<any, any, boolean>(clipboard, isNotNil)),
+      converge(replaceSlice as any, [
+        target.caretPosition,
+        target.selectionEnd,
+        clipboard,
+        target.value
+      ])
+    ],
+    [T, converge(insertStr as any, [target.caretPosition, clipboard, target.value])]
+  ]),
+  tap(console.log)
+)
+
+export const onlyNumbersPaste = unless(pipe(futurePasteResult, validNumber), stopEvent())

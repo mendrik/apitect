@@ -1,7 +1,7 @@
 import { equals } from 'ramda'
 
 import { TreeNode } from '../algebraic/treeNode'
-import { next, prev } from './ramda'
+import { next, prev, replaceSlice } from './ramda'
 
 describe('ramda', () => {
   it('next(pred)(arr) works', () => {
@@ -32,5 +32,10 @@ describe('ramda', () => {
     ])
 
     expect(start.pathToRoot()).toStrictEqual([6, 3, 1])
+  })
+
+  it('replaceSlice', () => {
+    const res = replaceSlice(2, 4, 'abc', '1234567')
+    expect(res).toBe('12abc567')
   })
 })

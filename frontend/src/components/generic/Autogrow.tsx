@@ -1,11 +1,12 @@
 import clsx from 'clsx'
-import { pipe } from 'ramda'
-import React, { HTMLAttributes, ReactNode, useState } from 'react'
+import { converge, pipe } from 'ramda'
+import React, { ClipboardEvent, HTMLAttributes, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
+import { removeSlice } from '~shared/utils/ramda'
 
 import { Palette } from '../../css/colors'
-import { futureValue } from '../../utils/eventUtils'
+import { futurePasteResult, futureValue, target } from '../../utils/eventUtils'
 
 type OwnProps = {
   className?: string
@@ -34,8 +35,20 @@ const MeasureSx = styled.div`
 export const Autogrow = ({ className, initial, children, ...props }: Jsx<OwnProps>) => {
   const [value, setValue] = useState<ReactNode>(initial)
 
+  const onCut: (e: ClipboardEvent<HTMLInputElement>) => string = converge(removeSlice as any, [
+    target.caretPosition,
+    target.selectionEnd,
+    target.value
+  ])
+
   return (
-    <div onKeyDown={pipe(futureValue, setValue)} className={clsx('d-grid', className)} {...props}>
+    <div
+      onKeyDown={pipe(futureValue, setValue)}
+      onPaste={pipe(futurePasteResult, setValue)}
+      onCut={pipe(onCut, setValue)}
+      className={clsx('d-grid', className)}
+      {...props}
+    >
       <MeasureSx>{value}</MeasureSx>
       {children}
     </div>
