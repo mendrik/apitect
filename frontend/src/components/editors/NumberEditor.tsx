@@ -40,6 +40,13 @@ export const NumberText = styled.div`
   height: 24px;
 `
 
+const UnitSx = styled.span`
+  color: ${Palette.darkBorder};
+  &:before {
+    content: '\u202F';
+  }
+`
+
 export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>) => {
   const numberSettings = useStoreMap($nodeSettings, s => s[node.id] as NumberSettings)
   const numberFormat = useNumberFormat(numberSettings)
@@ -71,6 +78,7 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
     views.isDisplayView() ? (
       <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView} className="text-center">
         {numberFormat(value?.value)}
+        {numberSettings.display.unit && <UnitSx>{numberSettings.display.unit}</UnitSx>}
       </NumberText>
     ) : (
       <Autogrow initial={value?.value}>
