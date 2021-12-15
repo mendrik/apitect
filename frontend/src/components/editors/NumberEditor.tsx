@@ -1,7 +1,7 @@
 import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
-import { both, cond, pathOr, pipe, when, T } from 'ramda'
+import { both, cond, pathOr, pipe, T, when } from 'ramda'
 import React from 'react'
 import styled from 'styled-components'
 import { useEditorTools } from '~hooks/specific/useEditorTools'
@@ -14,7 +14,7 @@ import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIn, onlyNumbers, onlyNumbersPaste, withShift } from '../../utils/eventUtils'
+import { codeIn, onlyNumbers, onlyNumbersPaste, withCtrl } from '../../utils/eventUtils'
 import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { Autogrow } from '../generic/Autogrow'
@@ -49,7 +49,7 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
   const saveAsNumber = pipe(pathOr('', ['target', 'value']), asNumber, saveValue)
 
   const keyMap = cond([
-    [both(withShift, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
+    [both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
     [codeIn('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIn('Tab', 'Enter'), saveAsNumber],
     [codeIn('Escape'), views.displayView],

@@ -14,7 +14,6 @@ import {
   propOr,
   propSatisfies,
   T,
-  tap,
   test,
   unless
 } from 'ramda'
@@ -36,7 +35,10 @@ const validNumber = test(/^-?[1-9]\d*[,.]?\d*$/)
 export const codeIn = (...keys: string[]) => propSatisfies(included(keys), 'code')
 export const keyIn = (...keys: string[]) => propSatisfies(included(keys), 'key')
 export const withShift: Fn<boolean> = propEq('shiftKey', true)
-export const withCtrl: Fn<boolean> = propEq('ctrlKey', true)
+export const withCtrl: Fn<boolean> = both(
+  propEq<string>('ctrlKey', true),
+  propEq<string>('shiftKey', false)
+)
 export const spaceOrEnter = either(codeIn('Space'), keyIn('Enter'))
 
 export const target = {

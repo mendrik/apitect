@@ -8,7 +8,7 @@ import { Value } from '~shared/types/domain/values/value'
 import { Maybe } from '~shared/types/generic'
 
 import { valueDeleteFx, valueUpdateFx } from '../../events/values'
-import { codeIn, withShift } from '../../utils/eventUtils'
+import { codeIn, withCtrl } from '../../utils/eventUtils'
 import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
 
@@ -80,7 +80,7 @@ export const useEditorTools = (
     saveValue(e.currentTarget.value, e)
 
   const keyMap = cond([
-    [both(withShift, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
+    [both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
     [codeIn('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIn('ArrowUp', 'ArrowDown', 'Tab'), saveFromEvent]
   ])
