@@ -1,6 +1,5 @@
 import { useStoreMap } from 'effector-react'
 import React from 'react'
-import { Badge } from 'react-bootstrap'
 import styled from 'styled-components'
 import { ArrayValue } from '~shared/types/domain/values/arrayValue'
 import { ArraySettings } from '~shared/types/forms/nodetypes/arraySettings'
