@@ -77,7 +77,7 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
     <StyledTuple
       ref={ref}
       className="first-max second-content d-inline-flex justify-content-between gap-1 flex-row"
-      style={{ position: 'relative', maxWidth: 112 }}
+      style={{ position: 'relative', maxWidth: 115 }}
     >
       <DateInput
         type="date"

@@ -7,6 +7,7 @@ import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
 import { $mappedNodesStore } from '~stores/$treeStore'
 
+import { ArrayEditor } from '../editors/ArrayEditor'
 import { BooleanEditor } from '../editors/BooleanEditor'
 import { DateEditor } from '../editors/DateEditor'
 import { EnumEditor } from '../editors/EnumEditor'
@@ -41,6 +42,8 @@ const getEditor = <T extends NodeType>(
       return EnumEditor
     case NodeType.Number:
       return NumberEditor
+    case NodeType.Array:
+      return ArrayEditor
     default:
       return null // todo throw Error instead when all are implemented
   }
