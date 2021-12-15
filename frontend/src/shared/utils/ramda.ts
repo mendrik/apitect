@@ -58,7 +58,7 @@ export const toObj =
   (value: string): T =>
     ({ [prop]: value } as T)
 
-export const asNumber = (val: Maybe<string>) =>
+export const asNumber = (val: Maybe<string>): number =>
   val != null ? parseFloat(val.replace(/,/, '.')) : NaN
 
 export const ensure = <T extends NonNullable<unknown>>(obj: Maybe<T>): T => {

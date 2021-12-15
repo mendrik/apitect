@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useId } from '~hooks/useId'
 import { Jsx, Maybe } from '~shared/types/generic'
+import { asNumber } from '~shared/utils/ramda'
 
 import { onlyNumbers, onlyNumbersPaste, validNumber } from '../../utils/eventUtils'
 import { ErrorInfo } from './ErrorInfo'
@@ -87,7 +88,7 @@ export const NumberInput = ({
       <Input
         {...register(name, {
           setValueAs: (value: Maybe<string>) =>
-            value == null || !validNumber(value) ? undefined : parseFloat(value),
+            value == null || !validNumber(value) ? undefined : asNumber(value),
           ...options
         })}
         style={{
