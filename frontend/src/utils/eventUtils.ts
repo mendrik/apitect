@@ -76,6 +76,7 @@ const noOp = (_e: KeyboardEvent<HTMLInputElement>) => void 0
 export const onlyNumbers = cond([
   [allPass([withShift, withCtrl, codeIn('ArrowLeft', 'ArrowRight')]), stopPropagation()],
   [pipe<any, any, any>(futureValue, isEmpty), noOp],
+  [either(withCtrl, withShift), noOp],
   [pipe<any, any, any>(futureValue, complement(validNumber)), stopEvent()]
 ])
 

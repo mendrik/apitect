@@ -63,12 +63,13 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
     [T, onlyNumbers]
   ])
 
+  const step = numberSettings?.display.step ?? 1
   const asStepper = (children: JSX.Element) =>
     numberSettings?.display.step != null && value?.value != null ? (
       <HGrid className="w-min-c align-items-center gap-2">
-        <SimpleIcon icon={IconSquareMinus} />
+        <SimpleIcon icon={IconSquareMinus} onClick={() => saveValue((value?.value ?? 0) - step)} />
         {children}
-        <SimpleIcon icon={IconSquarePlus} />
+        <SimpleIcon icon={IconSquarePlus} onClick={() => saveValue((value?.value ?? 0) + step)} />
       </HGrid>
     ) : (
       children

@@ -1,4 +1,4 @@
-import { IconCircleMinus, TablerIcon as IconProp } from '@tabler/icons'
+import { TablerIcon as IconProp } from '@tabler/icons'
 import React, { HTMLAttributes } from 'react'
 import { Jsx } from '~shared/types/generic'
 
@@ -15,7 +15,7 @@ export const SimpleIcon = ({ icon: IconCmp, ...props }: Jsx<OwnProps>) => (
     tabIndex={-1}
     focusable="false"
     color={Palette.iconBorder.toString()}
-    className="cursor-pointer"
+    className="cursor-pointer user-select-none"
     {...props}
   />
 )
