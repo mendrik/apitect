@@ -23,7 +23,7 @@ import { SimpleIcon } from '../generic/SimpleIcon'
 import { EditorProps } from '../specific/VisualValue'
 
 export const NumberInput = styled.input`
-  padding: 0 3px;
+  margin-left: -3px;
   ::-webkit-inner-spin-button {
     display: none;
     -webkit-appearance: none;
@@ -47,6 +47,10 @@ const UnitSx = styled.span`
   }
 `
 
+const Wrap = styled.div`
+  padding-left: 3px;
+`
+
 export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>) => {
   const numberSettings = useStoreMap($nodeSettings, s => s[node.id] as NumberSettings)
   const numberFormat = useNumberFormat(numberSettings)
@@ -66,20 +70,21 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
   const step = numberSettings?.display.step ?? 1
   const asStepper = (children: JSX.Element) =>
     numberSettings?.display.step != null && value?.value != null ? (
-      <HGrid className="w-min-c align-items-center gap-2">
+      <HGrid className="w-min-c align-items-center gap-2 text-center">
         <SimpleIcon icon={IconSquareMinus} onClick={() => saveValue((value?.value ?? 0) - step)} />
         {children}
         <SimpleIcon icon={IconSquarePlus} onClick={() => saveValue((value?.value ?? 0) + step)} />
       </HGrid>
     ) : (
-      children
+      <Wrap>{children}</Wrap>
     )
 
+  const unit = numberSettings?.display.unit
   return asStepper(
     views.isDisplayView() ? (
-      <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView} className="text-center">
+      <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
         {numberFormat(value?.value)}
-        {numberSettings.display.unit && <UnitSx>{numberSettings.display.unit}</UnitSx>}
+        {unit && <UnitSx>{unit}</UnitSx>}
       </NumberText>
     ) : (
       <Autogrow initial={value?.value}>
