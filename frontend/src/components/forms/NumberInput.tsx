@@ -1,14 +1,15 @@
 import { IconChevronDown, IconChevronUp } from '@tabler/icons'
 import clsx from 'clsx'
-import { clamp, path } from 'ramda'
+import { both, clamp, complement, cond, identity, path, T } from 'ramda'
+import { isNaN, isNumber, isString } from 'ramda-adjunct'
 import React, { InputHTMLAttributes } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useId } from '~hooks/useId'
-import { Jsx, Maybe } from '~shared/types/generic'
-import { asNumber } from '~shared/utils/ramda'
+import { Fn, Jsx } from '~shared/types/generic'
+import { asNumber, undef } from '~shared/utils/ramda'
 
 import { onlyNumbers, onlyNumbersPaste, validNumber } from '../../utils/eventUtils'
 import { ErrorInfo } from './ErrorInfo'
@@ -87,8 +88,13 @@ export const NumberInput = ({
     <div className={clsx('form-floating has-validation appearance-none', containerClassNames)}>
       <Input
         {...register(name, {
-          setValueAs: (value: Maybe<string>) =>
-            value == null || !validNumber(value) ? undefined : asNumber(value),
+          setValueAs: cond([
+            [both(isString, complement(validNumber)), undef],
+            [both(isNumber, isNaN), undef],
+            [isString, asNumber],
+            [isNumber, identity as Fn<number>],
+            [T, undef]
+          ]),
           ...options
         })}
         style={{

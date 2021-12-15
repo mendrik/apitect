@@ -58,8 +58,10 @@ export const toObj =
   (value: string): T =>
     ({ [prop]: value } as T)
 
-export const asNumber = (val: Maybe<string>): number =>
-  val != null ? parseFloat(val.replace(/,/, '.')) : NaN
+export const asNumber = (val: Maybe<string>): number => {
+  console.log(val, typeof val)
+  return val != null ? parseFloat(val.replace(/,/, '.')) : NaN
+}
 
 export const ensure = <T extends NonNullable<unknown>>(obj: Maybe<T>): T => {
   if (obj == null) {
@@ -129,3 +131,5 @@ export const removeCharAt = curry((index: number, input: string): string =>
 export const removeCharBefore = curry((index: number, input: string): string =>
   remove(index - 1, 1, input.split('')).join('')
 )
+
+export const undef = always(undefined)

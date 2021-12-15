@@ -46,8 +46,8 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
   ])
 
   return !e || views.isDisplayView() ? (
-    <Text tabIndex={0} onFocus={views.editView}>
-      <span>{value?.value ?? ' '}</span>
+    <Text tabIndex={0} onFocus={views.editView} style={{ paddingLeft: 3 }}>
+      {value?.value ?? ' '}
     </Text>
   ) : (
     <SelectSx
