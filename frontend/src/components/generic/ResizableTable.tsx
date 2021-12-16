@@ -23,8 +23,11 @@ const StyledGrid = styled.div<{ columns: any[]; defaultWidths?: number[] }>`
   overflow: hidden;
 `
 
-const StyledHeader = styled.div`
-  position: relative;
+const Sticky = styled.div`
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
 `
 
 type HeaderProps = {
@@ -51,10 +54,10 @@ const Header = ({ index, last, children }: Jsx<HeaderProps>) => {
   })
 
   return (
-    <StyledHeader className="px-2 py-1 bevel-bottom" ref={setNodeRef}>
+    <div className="px-2 py-1 bevel-bottom" ref={setNodeRef}>
       <div>{children}</div>
       {!last && <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} />}
-    </StyledHeader>
+    </div>
   )
 }
 
@@ -126,11 +129,11 @@ export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProp
       className="custom-scrollbars"
     >
       {columns.map((column, col) => (
-        <div key={col}>
+        <Sticky key={col}>
           <Header index={col} last={col === columns.length - 1}>
             {column}
           </Header>
-        </div>
+        </Sticky>
       ))}
       {children}
     </StyledGrid>

@@ -13,6 +13,12 @@ import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
 import { VisualTree } from './specific/VisualTree'
 import { VisualValueList } from './specific/VisualValueList'
 
+const AppFrame = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+`
+
 const Column = styled.div`
   padding: 0.5rem;
   font-weight: 300;
@@ -28,23 +34,29 @@ const Dashboard = () => {
   ]
 
   return (
-    <DndContext>
-      <Navigation />
-      <ArraySidePanel>
-        <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
-          <FocusNavigator columns={visibleTags.length + 1} rotated style={{ display: 'contents' }}>
-            <Column>
-              <VisualTree />
-            </Column>
-            {visibleTags.map(tag => (
-              <Column key={tag.name}>
-                <VisualValueList tag={tag.name} />
+    <AppFrame>
+      <DndContext>
+        <Navigation />
+        <ArraySidePanel>
+          <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
+            <FocusNavigator
+              columns={visibleTags.length + 1}
+              rotated
+              style={{ display: 'contents' }}
+            >
+              <Column>
+                <VisualTree />
               </Column>
-            ))}
-          </FocusNavigator>
-        </ResizableTable>
-      </ArraySidePanel>
-    </DndContext>
+              {visibleTags.map(tag => (
+                <Column key={tag.name}>
+                  <VisualValueList tag={tag.name} />
+                </Column>
+              ))}
+            </FocusNavigator>
+          </ResizableTable>
+        </ArraySidePanel>
+      </DndContext>
+    </AppFrame>
   )
 }
 

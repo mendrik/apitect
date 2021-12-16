@@ -11,18 +11,17 @@ import { Palette } from '../../css/colors'
 import { ArrayPanelHeader } from './ArrayPanelHeader'
 
 const WrapperSx = styled(motion.div)`
-  min-height: calc(100vh - 57px);
+  height: calc(100vh - 57px);
   width: calc(100% + ${arrayPanelSize}px);
   display: flex;
   flex-direction: row;
 
   > * {
-    flex: auto 1 1;
+    overflow-y: auto;
   }
 `
 
 const SidePanelSx = styled.div`
-  overflow-x: hidden;
   border-left: 1px solid ${Palette.border};
   min-width: ${arrayPanelSize}px;
 `
