@@ -13,6 +13,7 @@ type OwnProps = {
 
 const StyledGrid = styled.div<{ columns: any[]; defaultWidths?: number[] }>`
   display: grid;
+  width: 100%;
   grid-template-columns: ${({ columns, defaultWidths }) =>
     mapIndexed((_, i) => `minmax(auto, var(--col-width-${i}, ${defaultWidths?.[i] ?? 1}fr)) `)(
       columns
