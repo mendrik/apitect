@@ -8,6 +8,7 @@ import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { FocusNavigator } from './generic/FocusNavigator'
 import { ResizableTable } from './generic/ResizableTable'
+import { ArraySidePanel } from './specific/ArraySidePanel'
 import { ColumnHeader } from './specific/ColumnHeader'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
 import { VisualTree } from './specific/VisualTree'
@@ -31,18 +32,24 @@ const Dashboard = () => {
     <AppFrame>
       <Navigation />
       <DndContext>
-        <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
-          <FocusNavigator columns={visibleTags.length + 1} rotated style={{ display: 'contents' }}>
-            <Column>
-              <VisualTree />
-            </Column>
-            {visibleTags.map(tag => (
-              <Column key={tag.name}>
-                <VisualValueList tag={tag.name} />
+        <ArraySidePanel>
+          <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
+            <FocusNavigator
+              columns={visibleTags.length + 1}
+              rotated
+              style={{ display: 'contents' }}
+            >
+              <Column>
+                <VisualTree />
               </Column>
-            ))}
-          </FocusNavigator>
-        </ResizableTable>
+              {visibleTags.map(tag => (
+                <Column key={tag.name}>
+                  <VisualValueList tag={tag.name} />
+                </Column>
+              ))}
+            </FocusNavigator>
+          </ResizableTable>
+        </ArraySidePanel>
       </DndContext>
     </AppFrame>
   )

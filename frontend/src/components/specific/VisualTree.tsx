@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react'
-import { cond } from 'ramda'
+import { both, cond } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React, { SyntheticEvent } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
@@ -15,7 +15,7 @@ import {
   openNodeState,
   selectNode
 } from '../../events/tree'
-import { codeIn, keyIn } from '../../utils/eventUtils'
+import { codeIn, keyIn, withCtrl, withoutModkey } from '../../utils/eventUtils'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNode } from './VisualNode'
@@ -43,8 +43,8 @@ export const VisualTree = () => {
   }
 
   const keyMap = cond([
-    [keyIn('ArrowRight'), setOpen(true)],
-    [keyIn('ArrowLeft'), setOpen(false)],
+    [both(keyIn('ArrowRight'), withoutModkey), setOpen(true)],
+    [both(keyIn('ArrowLeft'), withoutModkey), setOpen(false)],
     [keyIn('Delete'), confirmDelete],
     [keyIn('n'), pd(() => newNodeFx(selectedNode?.value))],
     [keyIn('Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],

@@ -1,10 +1,8 @@
 import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
-import { useStore } from 'effector-react'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
-import { $tagStore } from '~stores/$tagStore'
 
 import { Draggable, Draggables } from '../../utils/draggables'
 
@@ -87,17 +85,6 @@ const bodyStyle = document.body.style
 export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
   const style = grid.current?.style
-
-  const { visibleTags } = useStore($tagStore)
-
-  /*
-  useUpdateEffect(() => {
-    const width = grid.current?.offsetWidth ?? 0
-    Array.from(columns).forEach((_, idx) =>
-      style?.setProperty(`--col-width-${idx}`, `${(width / columns.length).toFixed(2)}px`)
-    )
-  }, [columns, visibleTags])
-*/
 
   useDndMonitor({
     onDragStart(event) {

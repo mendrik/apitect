@@ -84,7 +84,7 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
     views.isDisplayView() ? (
       <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
         {numberFormat(value?.value)}
-        {unit && <UnitSx>{unit}</UnitSx>}
+        {value?.value && unit && <UnitSx>{unit}</UnitSx>}
       </NumberText>
     ) : (
       <Autogrow initial={value?.value}>

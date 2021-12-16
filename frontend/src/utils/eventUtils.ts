@@ -39,6 +39,10 @@ export const withCtrl: Fn<boolean> = both(
   propEq<string>('ctrlKey', true),
   propEq<string>('shiftKey', false)
 )
+export const withoutModkey: Fn<boolean> = both(
+  propEq<string>('ctrlKey', false),
+  propEq<string>('shiftKey', false)
+)
 export const spaceOrEnter = either(codeIn('Space'), keyIn('Enter'))
 
 export const target = {
