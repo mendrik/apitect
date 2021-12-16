@@ -1,8 +1,10 @@
 import { IconCheckbox, IconCirclePlus, IconCopy, IconDeviceFloppy, IconTrash } from '@tabler/icons'
+import { useStore } from 'effector-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
+import { $selectedArrayNode, $selectedNode } from '~stores/$selectedNode'
 
 import { Palette } from '../../css/colors'
 import { Icon } from '../generic/Icon'
@@ -19,12 +21,13 @@ const HeaderSx = styled.div`
 
 export const ArrayPanelHeader = ({}: Jsx<OwnProps>) => {
   const { t } = useTranslation()
+  const selectedNode = useStore($selectedArrayNode)
   return (
     <HeaderSx className="d-grid gap-1">
       <WithTooltip tooltipText={t('app.validation')}>
         <Icon icon={IconCheckbox} />
       </WithTooltip>
-      <div className="text-truncate">Search...</div>
+      <div className="text-truncate">{selectedNode?.value.name}</div>
       <WithTooltip tooltipText={t('app.validation')}>
         <Icon icon={IconCirclePlus} />
       </WithTooltip>

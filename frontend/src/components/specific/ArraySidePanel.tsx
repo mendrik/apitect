@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
-import { $arrayDrawer } from '~stores/$arrayDrawer'
+import { $arrayDrawerOpen } from '~stores/$arrayDrawerOpen'
 
 import { stretchIn } from '../../animations/stretchIn'
 import { arrayPanelSize } from '../../constants'
@@ -27,7 +27,7 @@ const SidePanelSx = styled.div`
 `
 
 export const ArraySidePanel = ({ children }: Jsx) => {
-  const open = useStore($arrayDrawer)
+  const open = useStore($arrayDrawerOpen)
   return (
     <WrapperSx variants={stretchIn} animate={open ? 'open' : 'hidden'}>
       {children}
