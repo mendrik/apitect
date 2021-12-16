@@ -22,7 +22,7 @@ export const ArrayEditor = ({ value, node, tag }: Jsx<EditorProps<ArrayValue>>) 
   const arraySettings = useStoreMap($nodeSettings, s => s[node.id] as ArraySettings)
   return (
     <Tuple first={Scale.CONTENT} second={Scale.MAX} style={{ height: 24, paddingLeft: 3 }}>
-      <BadgeSx tabIndex={0}>2837</BadgeSx>
+      <BadgeSx tabIndex={0}>{value?.value ?? '-'}</BadgeSx>
       <div />
     </Tuple>
   )

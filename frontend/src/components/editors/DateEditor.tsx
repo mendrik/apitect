@@ -84,6 +84,7 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
         className={clsx('editor', { invalid: error != null })}
         autoFocus
         onKeyDown={keyMap}
+        onBlur={saveAsDate}
         defaultValue={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
       />
       {datepicker}
