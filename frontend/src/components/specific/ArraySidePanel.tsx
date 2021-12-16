@@ -7,18 +7,22 @@ import { $arrayDrawer } from '~stores/$arrayDrawer'
 
 import { stretchIn } from '../../animations/stretchIn'
 import { Palette } from '../../css/colors'
+import { ArrayPanelHeader } from './ArrayPanelHeader'
 
 const WrapperSx = styled.div`
   max-width: 100vw;
   width: 100%;
   display: flex;
   flex-direction: row;
+
+  > * {
+    flex: auto 1 1;
+  }
 `
 
 const SidePanelSx = styled(motion.div)`
   overflow-x: hidden;
   border-left: 1px solid ${Palette.border};
-  width: 0;
 `
 
 export const ArraySidePanel = ({ children }: Jsx) => {
@@ -29,7 +33,7 @@ export const ArraySidePanel = ({ children }: Jsx) => {
       <AnimatePresence>
         {open && (
           <SidePanelSx id="panel" {...stretchIn}>
-            array
+            <ArrayPanelHeader />
           </SidePanelSx>
         )}
       </AnimatePresence>
