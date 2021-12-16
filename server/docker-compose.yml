@@ -6,7 +6,20 @@ services:
     env_file:
       - ./.server-env
     ports:
-      - 27017:27017
+      - "27017:27017"
     command: ["--replSet", "rs0", "--bind_ip_all"]
     volumes:
       - ../database/init.js:/docker-entrypoint-initdb.d/init.js:ro
+
+  titanic:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: titanic
+      MYSQL_ROOT_PASSWORD: whocares
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: demo123
+    volumes:
+      - ../database/demo.sql:/docker-entrypoint-initdb.d/demo.sql:ro
