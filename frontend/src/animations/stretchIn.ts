@@ -1,16 +1,12 @@
-import { MotionProps } from 'framer-motion/types/motion/types'
+import { Variants } from 'framer-motion'
 
-export const stretchIn: MotionProps = {
-  initial: {
-    width: 0
+import { arrayPanelSize } from '../constants'
+
+export const stretchIn: Variants = {
+  open: {
+    width: '100%'
   },
-  transition: {
-    type: 'tween'
-  },
-  animate: {
-    width: 300
-  },
-  exit: {
-    width: 0
+  close: {
+    width: `calc(100% + ${arrayPanelSize}px)`
   }
 }
