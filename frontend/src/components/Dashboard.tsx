@@ -4,7 +4,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { $tagStore } from '~stores/$tagStore'
 
-import { AppFrame } from './AppFrame'
 import { Navigation } from './Navigation'
 import { FocusNavigator } from './generic/FocusNavigator'
 import { ResizableTable } from './generic/ResizableTable'
@@ -29,29 +28,23 @@ const Dashboard = () => {
   ]
 
   return (
-    <AppFrame>
+    <DndContext>
       <Navigation />
-      <DndContext>
-        <ArraySidePanel>
-          <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
-            <FocusNavigator
-              columns={visibleTags.length + 1}
-              rotated
-              style={{ display: 'contents' }}
-            >
-              <Column>
-                <VisualTree />
+      <ArraySidePanel>
+        <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
+          <FocusNavigator columns={visibleTags.length + 1} rotated style={{ display: 'contents' }}>
+            <Column>
+              <VisualTree />
+            </Column>
+            {visibleTags.map(tag => (
+              <Column key={tag.name}>
+                <VisualValueList tag={tag.name} />
               </Column>
-              {visibleTags.map(tag => (
-                <Column key={tag.name}>
-                  <VisualValueList tag={tag.name} />
-                </Column>
-              ))}
-            </FocusNavigator>
-          </ResizableTable>
-        </ArraySidePanel>
-      </DndContext>
-    </AppFrame>
+            ))}
+          </FocusNavigator>
+        </ResizableTable>
+      </ArraySidePanel>
+    </DndContext>
   )
 }
 

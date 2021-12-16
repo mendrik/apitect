@@ -39,7 +39,7 @@ const render = (): void =>
         </Suspense>
       </ErrorBoundary>
     </React.StrictMode>,
-    document.getElementById('root')
+    document.getElementById('apitect')
   )
 
 const start = () =>
