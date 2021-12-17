@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
+import { useStore } from 'effector-react'
 import { pipe, toLower, values, when } from 'ramda'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -12,6 +13,7 @@ import { iconMap, NodeType } from '~shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '~shared/types/forms/newNode'
 import { Maybe } from '~shared/types/generic'
 import { capitalize } from '~shared/utils/ramda'
+import { $canCreateNode, $selectedArrayNode } from '~stores/$selectedNode'
 
 import { Palette } from '../../css/colors'
 import { createNodeFx } from '../../events/tree'
@@ -56,7 +58,9 @@ export type SelectedNode = {
 }
 
 const NewNode: ModalFC = ({ close }) => {
+  const arrayNode = useStore($selectedArrayNode)
   const { state } = useLocation<SelectedNode>()
+  const canCreateNode = useStore($canCreateNode)
   const selectedNode = state?.selectedNode
   const form = useForm<NewNodeType>({
     resolver: zodResolver(TNewNode),
@@ -87,19 +91,25 @@ const NewNode: ModalFC = ({ close }) => {
         defaultValue={NodeType.Object}
         render={({ field }) => (
           <TypeGrid role="grid" columns={4}>
-            {values(NodeType).map((nodeType, _, __, Icon = iconMap[nodeType]) => (
-              <div
-                key={nodeType}
-                role="gridcell"
-                tabIndex={0}
-                onClick={() => field.onChange(nodeType)}
-                onKeyDown={when(spaceOrEnter, () => field.onChange(nodeType))}
-                className={clsx({ selected: field.value === nodeType })}
-              >
-                <Icon focusable="false" role="img" size={30} stroke={1} />
-                {pipe(toLower, capitalize)(nodeType)}
-              </div>
-            ))}
+            {values(NodeType).map((nodeType, _, __, Icon = iconMap[nodeType]) => {
+              const disabled = (nodeType === NodeType.Array && arrayNode != null) || !canCreateNode
+              return (
+                <div
+                  key={nodeType}
+                  role="gridcell"
+                  tabIndex={0}
+                  onClick={() => field.onChange(nodeType)}
+                  onKeyDown={when(spaceOrEnter, () => field.onChange(nodeType))}
+                  className={clsx({
+                    selected: field.value === nodeType && !disabled,
+                    disabled
+                  })}
+                >
+                  <Icon focusable="false" role="img" size={30} stroke={1} />
+                  {pipe(toLower, capitalize)(nodeType)}
+                </div>
+              )
+            })}
           </TypeGrid>
         )}
       />

@@ -3,7 +3,7 @@ import { useStore } from 'effector-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { $documentStore } from '~stores/$documentStore'
-import { $selectedNode } from '~stores/$selectedNode'
+import { $canCreateNode, $selectedNode } from '~stores/$selectedNode'
 
 import { deleteNodeFx, newNodeFx, nodeSettingsFx } from '../../events/tree'
 import { userSettingsFx } from '../../events/user'
@@ -15,6 +15,7 @@ import { WithTooltip } from '../generic/WithTooltip'
 export const ProjectTreeHeader = () => {
   const { t } = useTranslation()
   const selectedNode = useStore($selectedNode)
+  const canCreateNode = useStore($canCreateNode)
   const document = useStore($documentStore)
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
@@ -28,7 +29,11 @@ export const ProjectTreeHeader = () => {
           />
         </WithTooltip>
         <WithTooltip tooltipText={t('tooltips.createNode')} shortcut="N">
-          <Icon icon={IconCirclePlus} onClick={() => newNodeFx(selectedNode?.value)} />
+          <Icon
+            icon={IconCirclePlus}
+            disabled={!canCreateNode}
+            onClick={() => newNodeFx(selectedNode?.value)}
+          />
         </WithTooltip>
         <WithTooltip tooltipText={t('tooltips.nodeSettings')} shortcut="Enter">
           <Icon

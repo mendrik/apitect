@@ -16,8 +16,16 @@ export const $selectedNode = createStore<TreeNode<Node> | null>(null)
 
 export const $selectedArrayNode = createStore<TreeNode<Node> | null>(null)
 
+export const $canCreateNode = createStore<boolean>(true).reset(resetProject)
+
 sample({
   source: $selectedNode,
   fn: node => (isArray(node?.value ?? {}) ? node : node?.closest(isArray)) ?? null,
   target: $selectedArrayNode
+})
+
+sample({
+  source: $selectedNode,
+  fn: node => node == null || [NodeType.Array, NodeType.Object].includes(node.value.nodeType),
+  target: $canCreateNode
 })

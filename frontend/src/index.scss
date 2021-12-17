@@ -213,7 +213,7 @@ input[required] + label:after {
   transition-delay: 0.3s;
 }
 
-[disabled], [data-disabled=true] {
+[disabled], [data-disabled=true], .disabled {
   pointer-events: none;
   opacity: 0.3;
   user-focus: ignore;

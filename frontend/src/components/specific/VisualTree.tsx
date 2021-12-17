@@ -1,11 +1,11 @@
 import { useStore } from 'effector-react'
-import { both, cond } from 'ramda'
+import { always, both, cond } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React, { SyntheticEvent } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
 import '~stores/$enumsStore'
-import { $selectedNode } from '~stores/$selectedNode'
+import { $canCreateNode, $selectedNode } from '~stores/$selectedNode'
 import { $treeStore } from '~stores/$treeStore'
 
 import {
@@ -23,6 +23,7 @@ import { VisualNode } from './VisualNode'
 export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
+  const canCreateNode = useStore($canCreateNode)
 
   useDefinedEffect(sn => {
     focus(document.getElementById(sn.value.id))
@@ -46,7 +47,7 @@ export const VisualTree = () => {
     [both(keyIn('ArrowRight'), withoutModkey), setOpen(true)],
     [both(keyIn('ArrowLeft'), withoutModkey), setOpen(false)],
     [keyIn('Delete'), confirmDelete],
-    [keyIn('n'), pd(() => newNodeFx(selectedNode?.value))],
+    [both(always(canCreateNode), keyIn('n')), pd(() => newNodeFx(selectedNode?.value))],
     [keyIn('Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],
     [codeIn('Escape'), pd(() => selectNode(null))]
   ])
