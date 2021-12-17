@@ -20,7 +20,6 @@ const StyledGrid = styled.div<{ columns: any[]; defaultWidths?: number[] }>`
     )};
   grid-template-rows: 32px;
   grid-auto-rows: auto;
-  overflow: hidden;
 `
 
 const Sticky = styled.div`
