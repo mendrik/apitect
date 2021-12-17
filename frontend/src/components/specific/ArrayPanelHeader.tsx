@@ -23,7 +23,7 @@ export const ArrayPanelHeader = ({}: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const selectedNode = useStore($selectedArrayNode)
   return (
-    <HeaderSx className="d-grid gap-1">
+    <HeaderSx className="d-grid gap-1 px-1">
       <WithTooltip tooltipText={t('app.validation')}>
         <Icon icon={IconCheckbox} />
       </WithTooltip>

@@ -10,7 +10,7 @@ export enum DataSource {
   Database = 'Database'
 }
 
-export const ZInternal = ZNodeSettingsBase.merge(
+const ZInternal = ZNodeSettingsBase.merge(
   object({
     dataSource: literal(DataSource.Internal).default(DataSource.Internal),
     nodeType: literal(NodeType.Array),
@@ -18,11 +18,11 @@ export const ZInternal = ZNodeSettingsBase.merge(
   })
 )
 
-export const ZDatabase = ZNodeSettingsBase.merge(
+const ZDatabase = ZNodeSettingsBase.merge(
   object({
     dataSource: literal(DataSource.Database),
     nodeType: literal(NodeType.Array),
-    idField: string(),
+    idColumn: string(),
     dbUrl: string(),
     dbUser: string(),
     dbPassword: string(),
