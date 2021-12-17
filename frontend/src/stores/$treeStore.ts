@@ -1,4 +1,4 @@
-import { createEvent, createStore, sample } from 'effector'
+import { createEvent, createStore, sample, Store } from 'effector'
 import { isNil, prop, propEq, unless } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { ApiResult } from '~shared/types/api'
@@ -25,7 +25,9 @@ const $rawTree = createStore<Node>({
   .on(updateNodeSettingsFx.doneData, (state, result) => result)
   .reset(resetProject)
 
-export const $treeStore = $rawTree.map(unless(isNil, TreeNode.from<Node, 'children'>('children')))
+export const $treeStore: Store<TreeNode<Node>> = $rawTree.map(
+  unless(isNil, TreeNode.from<Node, 'children'>('children'))
+)
 
 export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
   byProp<Node, 'id'>('id')(root.flatten().map(prop('value')))
