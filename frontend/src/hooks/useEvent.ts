@@ -1,4 +1,4 @@
-import { MutableRefObject, RefObject, useEffect } from 'react'
+import { MutableRefObject, useEffect } from 'react'
 
 export const useEvent = <T extends HTMLElement>(
   event: string,

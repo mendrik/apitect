@@ -3,7 +3,6 @@ import React, { ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { Datepicker } from '../components/datepicker/Datepicker'
-import { Palette } from '../css/colors'
 
 export const useDatepicker = (name: string): ReactNode => {
   const { control, setValue } = useFormContext<{ [K in typeof name]: string }>()

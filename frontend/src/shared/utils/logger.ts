@@ -1,4 +1,4 @@
-import { blue, darkGray, red, cyan } from 'ansicolor'
+import { blue, cyan, darkGray, red } from 'ansicolor'
 import { log } from 'shrink-json'
 
 export const logger = {

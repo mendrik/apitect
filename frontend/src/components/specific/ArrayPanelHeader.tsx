@@ -4,7 +4,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
-import { $selectedArrayNode, $selectedNode } from '~stores/$selectedNode'
+import { $selectedArrayNode } from '~stores/$selectedNode'
 
 import { Palette } from '../../css/colors'
 import { Icon } from '../generic/Icon'

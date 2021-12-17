@@ -1,6 +1,5 @@
-import { createEffect, createEvent, createStore } from 'effector'
+import { createEffect, createStore } from 'effector'
 import { MongoClient } from 'mongodb'
-import { ApiRequest } from '~shared/types/apiRequest'
 import { Maybe } from '~shared/types/generic'
 
 import { connect } from './database'

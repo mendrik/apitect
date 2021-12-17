@@ -2,7 +2,6 @@ import { array, lazy, nativeEnum, object, Schema } from 'zod'
 
 import { idCodec } from '../../codecs/idCodec'
 import { nameCodec } from '../../codecs/nameCodec'
-import { Id } from './id'
 import { NodeType } from './nodeType'
 
 export type NodeId = string

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { forwardRef, HTMLAttributes } from 'react'
+import React, { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 

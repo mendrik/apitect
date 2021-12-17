@@ -15,7 +15,7 @@ import {
   openNodeState,
   selectNode
 } from '../../events/tree'
-import { codeIn, keyIn, withCtrl, withoutModkey } from '../../utils/eventUtils'
+import { codeIn, keyIn, withoutModkey } from '../../utils/eventUtils'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNode } from './VisualNode'

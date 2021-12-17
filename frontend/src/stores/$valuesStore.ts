@@ -2,7 +2,7 @@ import { createStore } from 'effector'
 import { both, join, juxt, pipe, prop, propEq, propOr, reject, uniqBy } from 'ramda'
 import { Value } from '~shared/types/domain/values/value'
 
-import { valueDeleteFx, valueUpdateFx, valueListFx } from '../events/values'
+import { valueDeleteFx, valueListFx, valueUpdateFx } from '../events/values'
 
 export const $valuesStore = createStore<Value[]>([])
 

@@ -1,4 +1,4 @@
-import { combine, createStore, Store } from 'effector'
+import { combine, createStore } from 'effector'
 import { NodeId } from '~shared/types/domain/node'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { byProp } from '~shared/utils/ramda'
