@@ -50,7 +50,10 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   })
 
   const keyMap = cond([
-    [both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
+    [
+      both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')),
+      preventDefault(views.isEditView() ? saveAsDate : undefined)
+    ],
     [codeIn('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIn('ArrowUp', 'ArrowDown'), stopPropagation()],
     [codeIn('Tab', 'Enter'), saveAsDate],
@@ -84,7 +87,6 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
         className={clsx('editor', { invalid: error != null })}
         autoFocus
         onKeyDown={keyMap}
-        onBlur={saveAsDate}
         defaultValue={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
       />
       {datepicker}
