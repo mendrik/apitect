@@ -1,11 +1,14 @@
 import { createStore } from 'effector'
 import { NodeId } from '~shared/types/domain/node'
+import { safeParseJson } from '~shared/utils/ramda'
 
 import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
 import { openNodeState, selectNode } from '../events/tree'
 
-export const $openNodes = createStore<Record<NodeId, boolean>>({})
+const initial = safeParseJson<Record<NodeId, boolean>>(localStorage.getItem('openNodes'))
+
+export const $openNodes = createStore<Record<NodeId, boolean>>(initial ?? {})
   .on(projectFx.doneData, (state, result) => ({
     ...state,
     [result.document.tree.id]: true
@@ -17,3 +20,7 @@ export const $openNodes = createStore<Record<NodeId, boolean>>({})
       : state
   )
   .reset(resetProject)
+
+$openNodes.watch(state => {
+  localStorage.setItem('openNodes', JSON.stringify(state))
+})
