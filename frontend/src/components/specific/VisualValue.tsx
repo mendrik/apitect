@@ -6,6 +6,7 @@ import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
+import { $creatingNewArrayItem } from '~stores/$arrayStores'
 import { $selectedArrayItem } from '~stores/$selectedArrayItem'
 import { $mappedNodesStore, $treeStore } from '~stores/$treeStore'
 
@@ -60,6 +61,7 @@ export const VisualValue = ({ nodeId, value, tag, loading }: Jsx<OwnProps>) => {
   const nodeMap = useStore($mappedNodesStore)
   const root = useStore($treeStore)
   const selectedArrayItem = useStore($selectedArrayItem)
+  const creating = useStore($creatingNewArrayItem)
   const node: Node = nodeMap[nodeId]!
   const Editor = getEditor(node.nodeType)
 
@@ -68,7 +70,7 @@ export const VisualValue = ({ nodeId, value, tag, loading }: Jsx<OwnProps>) => {
 
   return (
     <li>
-      {Editor && (!childOfArrayNode || selectedArrayItem != null) ? (
+      {Editor && (!childOfArrayNode || selectedArrayItem != null || creating) ? (
         <Editor value={value} node={node} tag={tag} loading={loading} />
       ) : (
         <Empty tabIndex={0} />
