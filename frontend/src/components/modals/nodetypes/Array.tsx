@@ -41,11 +41,16 @@ const Array = () => {
           {selected === DataSource.Database && (
             <>
               <TextInput label="modals.nodeSettings.array.database.url" name="dbUrl" />
-              <TextInput label="modals.nodeSettings.array.database.user" name="dbUser" />
+              <TextInput
+                label="modals.nodeSettings.array.database.user"
+                name="dbUser"
+                autoComplete="off"
+              />
               <TextInput
                 label="modals.nodeSettings.array.database.password"
                 type="password"
                 name="dbPassword"
+                autoComplete="off"
               />
               <TextInput
                 label="modals.nodeSettings.array.database.query"

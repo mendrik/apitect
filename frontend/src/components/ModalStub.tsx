@@ -1,4 +1,5 @@
 import { BaseModalProps } from '@restart/ui/Modal'
+import clsx from 'clsx'
 import { prop } from 'ramda'
 import React, { Suspense, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
@@ -29,6 +30,7 @@ const ModalStub = ({
   title,
   titleOptions,
   enforceFocus = true,
+  className,
   ...modalProps
 }: Jsx<OwnProps>): JSX.Element | null => {
   const { state } = useLocation()
@@ -51,7 +53,14 @@ const ModalStub = ({
   }
 
   return status.is === 'done' ? (
-    <Modal show={modalMatch} centered onHide={close} key={name} {...modalProps}>
+    <Modal
+      show={modalMatch}
+      centered
+      onHide={close}
+      key={name}
+      className={clsx('custom-scrollbars', className)}
+      {...modalProps}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{t(title, titleOptions ?? state)}</Modal.Title>
       </Modal.Header>

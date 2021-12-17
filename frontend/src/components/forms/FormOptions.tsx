@@ -19,7 +19,7 @@ const ListGroupItemSx = styled(ListGroupItem)`
   background-color: #eeeeee;
 
   &.open {
-    background-color: white;
+    background-color: rgba(13, 110, 253, 0.05);
     box-shadow: 3px 0 0px 0px ${Palette.primary} inset;
   }
 `
