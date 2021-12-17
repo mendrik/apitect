@@ -5,6 +5,7 @@ import { Node } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { Fn } from '~shared/types/generic'
 
+import { canHaveChildrenNodes } from '../constants'
 import { resetProject } from '../events/reset'
 import { selectNode } from '../events/tree'
 
@@ -26,6 +27,6 @@ sample({
 
 sample({
   source: $selectedNode,
-  fn: node => node == null || [NodeType.Array, NodeType.Object].includes(node.value.nodeType),
+  fn: node => node == null || canHaveChildrenNodes.includes(node.value.nodeType),
   target: $canCreateNode
 })
