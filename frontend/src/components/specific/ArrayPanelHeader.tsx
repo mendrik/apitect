@@ -1,11 +1,11 @@
-import { IconCheckbox, IconCirclePlus, IconCopy, IconDeviceFloppy, IconTrash } from '@tabler/icons'
+import { IconCheckbox, IconCirclePlus, IconCopy, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
+import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $selectedArrayItem } from '~stores/$selectedArrayItem'
-import { $selectedArrayNode } from '~stores/$selectedNode'
 
 import { Palette } from '../../css/colors'
 import { Icon } from '../generic/Icon'

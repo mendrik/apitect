@@ -32,5 +32,6 @@ export const ApiSchema = {
   valueList: [ZValueListRequest, ZValueList],
   valueUpdate: [ZValue, ZValue],
   enums: [undef(), ZEnums.nullable()],
-  updateEnums: [ZEnums, ZEnums]
+  updateEnums: [ZEnums, ZEnums],
+  createArrayItem: [undef(), undef()]
 } as const

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLogout } from '~hooks/useLogout'
-import { $selectedArrayNode } from '~stores/$selectedNode'
+import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $user } from '~stores/$userStore'
 
 import { Palette } from '../css/colors'

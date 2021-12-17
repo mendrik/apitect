@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
-import { prop } from 'ramda'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { SocketForm } from '~forms/SocketForm'
@@ -10,6 +9,7 @@ import {
   ProjectUsersSettings as Settings,
   ZProjectUsersSettings
 } from '~shared/types/forms/projectUsersSettings'
+import { field } from '~shared/utils/ramda'
 import { $treeStore } from '~stores/$treeStore'
 
 import { updateProjectUserSettingsFx } from '../../events/project'
@@ -37,14 +37,14 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
           tree={root}
           name="emailId"
           containerClasses="mb-3"
-          nodeRender={prop<string>('name')}
+          nodeRender={field('name')}
         />
         <TreeInput
           label="form.fields.passwordId"
           tree={root}
           name="passwordId"
           containerClasses="mb-3"
-          nodeRender={prop<string>('name')}
+          nodeRender={field('name')}
         />
       </SocketForm>
     )

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
-import { $arrayDrawerOpen } from '~stores/$arrayDrawerOpen'
+import { $arrayDrawerOpen } from '~stores/$arrayStores'
 
 import { stretchIn } from '../../animations/stretchIn'
 import { arrayPanelSize, navbarHeight } from '../../constants'

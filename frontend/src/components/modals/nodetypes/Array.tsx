@@ -8,7 +8,7 @@ import { FormOptions } from '~forms/FormOptions'
 import { TextInput } from '~forms/TextInput'
 import { TreeInput } from '~forms/TreeInput'
 import { DataSource } from '~shared/types/forms/nodetypes/arraySettings'
-import { $selectedArrayNode } from '~stores/$selectedNode'
+import { $selectedArrayNode } from '~stores/$arrayStores'
 
 const Array = () => {
   const { t } = useTranslation()

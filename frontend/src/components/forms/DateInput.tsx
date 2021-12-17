@@ -16,7 +16,7 @@ type OwnProps = {
   label: TFuncKey
   name: string
   options?: RegisterOptions
-  containerClassNames?: string
+  containerClasses?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
 const Input = styled.input`
