@@ -81,7 +81,7 @@ const NewNode: ModalFC = ({ close }) => {
       <TextInput
         name="name"
         label="form.fields.nodeName"
-        containerClassNames="mb-3"
+        containerClasses="mb-3"
         type="text"
         autoFocus
         options={{ required: true }}

@@ -15,7 +15,7 @@ type OwnProps = {
   label: TFuncKey
   name: string
   options?: RegisterOptions
-  containerClassNames?: string
+  containerClasses?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
 export const TextInput = ({
@@ -25,7 +25,7 @@ export const TextInput = ({
   type = 'text',
   className,
   placeholder,
-  containerClassNames,
+  containerClasses,
   autoFocus,
   ...props
 }: Jsx<OwnProps>) => {
@@ -40,7 +40,7 @@ export const TextInput = ({
   useAutoFocus(name, autoFocus)
 
   return (
-    <div className={clsx('form-floating has-validation', containerClassNames)}>
+    <div className={clsx('form-floating has-validation', containerClasses)}>
       <input
         type={type}
         className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}

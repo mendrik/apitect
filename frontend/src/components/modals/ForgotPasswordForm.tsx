@@ -47,7 +47,7 @@ const ForgotPasswordForm: ModalFC = ({ close }) => {
         label="form.fields.email"
         type="email"
         options={{ required: true }}
-        containerClassNames="mb-3"
+        containerClasses="mb-3"
       />
       <Alert variant="info">{t('modals.forgotPassword.info')}</Alert>
       <GenericError />

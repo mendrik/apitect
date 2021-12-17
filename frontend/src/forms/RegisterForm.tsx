@@ -67,19 +67,19 @@ export const RegisterForm: ModalFC = ({ close }) => {
 
   return (
     <Form form={form} onSubmit={onSubmit} status={status}>
-      <TextInput name="name" containerClassNames="mb-3" label="form.fields.name" />
-      <TextInput name="email" containerClassNames="mb-3" label="form.fields.email" type="email" />
+      <TextInput name="name" containerClasses="mb-3" label="form.fields.name" />
+      <TextInput name="email" containerClasses="mb-3" label="form.fields.email" type="email" />
       <TextInput
         name="password"
         label="form.fields.password"
         type="password"
-        containerClassNames="mb-3"
+        containerClasses="mb-3"
       />
       <TextInput
         name="passwordRepeat"
         label="form.fields.passwordRepeat"
         type="password"
-        containerClassNames="mb-3"
+        containerClasses="mb-3"
       />
       <GenericError />
       <ButtonRow>

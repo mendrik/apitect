@@ -55,12 +55,12 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
 
   return (
     <Form form={form} onSubmit={trigger} status={status}>
-      <TextInput name="email" label="form.fields.email" type="email" containerClassNames="mb-3" />
+      <TextInput name="email" label="form.fields.email" type="email" containerClasses="mb-3" />
       <TextInput
         name="password"
         label="form.fields.password"
         type="password"
-        containerClassNames="mb-3"
+        containerClasses="mb-3"
       />
       <GenericError />
       <ButtonRow>

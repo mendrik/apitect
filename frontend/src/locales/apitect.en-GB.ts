@@ -103,7 +103,8 @@ const en = {
             url: 'Connection Url',
             user: 'Database user',
             password: 'Database password',
-            query: 'Query'
+            query: 'Query',
+            testConnection: 'Test connection'
           }
         }
       },

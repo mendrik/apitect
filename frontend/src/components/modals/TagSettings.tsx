@@ -43,7 +43,7 @@ const TagSettings: ModalFC = ({ close }) => {
         label="form.fields.nodeName"
         type="text"
         autoFocus
-        containerClassNames="mb-3"
+        containerClasses="mb-3"
         options={{ required: true }}
       />
       <Dropdown

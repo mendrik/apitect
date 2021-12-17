@@ -36,7 +36,7 @@ export const DateInput = ({
   label,
   options,
   className,
-  containerClassNames,
+  containerClasses,
   autoFocus,
   ...props
 }: Jsx<OwnProps>) => {
@@ -52,7 +52,7 @@ export const DateInput = ({
   const CalendarIcon = useDatepicker(name)
 
   return (
-    <div className={clsx('form-floating has-validation position-relative', containerClassNames)}>
+    <div className={clsx('form-floating has-validation position-relative', containerClasses)}>
       <Input
         {...register(name, { ...options, setValueAs: val => parse(val, 'yyyy-MM-dd', new Date()) })}
         className={clsx('form-control', { 'is-invalid': path(name.split('.'), errors) }, className)}

@@ -20,20 +20,21 @@ const Array = () => {
   return (
     <FieldSet title="modals.nodeSettings.array.dataSource">
       <FormOptions name="dataSource" values={values(DataSource)}>
-        <div className="d-grid gap-2 pb-2">
+        <div className="d-grid gap-2">
           <label htmlFor={`dataSource-${DataSource.Internal}`}>
             {t('modals.nodeSettings.array.internal.title')}
           </label>
           {selected === DataSource.Internal && (
             <TreeInput
               tree={tree!}
+              containerClasses="pb-2"
               label="modals.nodeSettings.array.internal.idNode"
               name="idNode"
               nodeRender={prop('name')}
             />
           )}
         </div>
-        <div className="d-grid gap-2 pb-2">
+        <div className="d-grid gap-2">
           <label htmlFor={`dataSource-${DataSource.Database}`}>
             {t('modals.nodeSettings.array.database.title')}
           </label>
@@ -46,7 +47,11 @@ const Array = () => {
                 type="password"
                 name="dbPassword"
               />
-              <TextInput label="modals.nodeSettings.array.database.query" name="query" />
+              <TextInput
+                label="modals.nodeSettings.array.database.query"
+                name="query"
+                containerClasses="pb-2"
+              />
             </>
           )}
         </div>
