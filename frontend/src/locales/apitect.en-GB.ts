@@ -17,7 +17,13 @@ const en = {
       apiKeys: 'API keys',
       projectUsers: 'Project users',
       enumerations: 'Enumerations',
-      profile: 'Profile'
+      profile: 'Profile',
+      arrayPanel: {
+        newItem: 'Create a new item',
+        deleteItem: 'Delete item',
+        copyItem: 'Copy item',
+        selectAll: 'Select all'
+      }
     },
     common: {
       error: 'Error',

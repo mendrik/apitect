@@ -4,6 +4,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
+import { $selectedArrayItem } from '~stores/$selectedArrayItem'
 import { $selectedArrayNode } from '~stores/$selectedNode'
 
 import { Palette } from '../../css/colors'
@@ -21,21 +22,22 @@ const HeaderSx = styled.div`
 
 export const ArrayPanelHeader = ({}: Jsx<OwnProps>) => {
   const { t } = useTranslation()
-  const selectedNode = useStore($selectedArrayNode)
+  const selectedArrayNode = useStore($selectedArrayNode)
+  const selectedArrayItem = useStore($selectedArrayItem)
   return (
     <HeaderSx className="d-grid gap-1 px-1">
-      <WithTooltip tooltipText={t('app.validation')}>
+      <WithTooltip tooltipText={t('app.arrayPanel.selectAll')}>
         <Icon icon={IconCheckbox} />
       </WithTooltip>
-      <div className="text-truncate">{selectedNode?.value.name}</div>
-      <WithTooltip tooltipText={t('app.validation')}>
+      <div className="text-truncate">{selectedArrayNode?.value.name}</div>
+      <WithTooltip tooltipText={t('app.arrayPanel.newItem')}>
         <Icon icon={IconCirclePlus} />
       </WithTooltip>
-      <WithTooltip tooltipText={t('app.validation')}>
-        <Icon icon={IconCopy} />
+      <WithTooltip tooltipText={t('app.arrayPanel.copyItem')}>
+        <Icon icon={IconCopy} disabled={!selectedArrayItem} />
       </WithTooltip>
-      <WithTooltip tooltipText={t('app.tagSettings')}>
-        <Icon icon={IconTrash} />
+      <WithTooltip tooltipText={t('app.arrayPanel.deleteItem')}>
+        <Icon icon={IconTrash} disabled={!selectedArrayItem} />
       </WithTooltip>
     </HeaderSx>
   )

@@ -34,7 +34,7 @@ const Array = () => {
             />
           )}
         </div>
-        <div className="d-grid gap-2 pb-2">
+        <div className="d-grid gap-2">
           <label htmlFor={`dataSource-${DataSource.Database}`}>
             {t('modals.nodeSettings.array.database.title')}
           </label>
@@ -49,7 +49,7 @@ const Array = () => {
                 autoComplete="off"
               />
               <TextInput label="form.fields.query" name="query" />
-              <TextInput label="form.fields.displayColumn" name="displayColumn" />
+              <TextInput label="form.fields.displayColumn" name="displayColumn" className="pb-2" />
             </>
           )}
         </div>
