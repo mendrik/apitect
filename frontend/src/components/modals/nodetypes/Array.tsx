@@ -28,35 +28,28 @@ const Array = () => {
             <TreeInput
               tree={tree!}
               containerClasses="pb-2"
-              label="modals.nodeSettings.array.internal.idNode"
-              name="idNode"
+              label="form.fields.displayNode"
+              name="displayNode"
               nodeRender={prop('name')}
             />
           )}
         </div>
-        <div className="d-grid gap-2">
+        <div className="d-grid gap-2 pb-2">
           <label htmlFor={`dataSource-${DataSource.Database}`}>
             {t('modals.nodeSettings.array.database.title')}
           </label>
           {selected === DataSource.Database && (
             <>
-              <TextInput label="modals.nodeSettings.array.database.url" name="dbUrl" />
+              <TextInput label="form.fields.dbUrl" name="dbUrl" />
+              <TextInput label="form.fields.dbUser" name="dbUser" autoComplete="off" />
               <TextInput
-                label="modals.nodeSettings.array.database.user"
-                name="dbUser"
-                autoComplete="off"
-              />
-              <TextInput
-                label="modals.nodeSettings.array.database.password"
+                label="form.fields.dbPassword"
                 type="password"
                 name="dbPassword"
                 autoComplete="off"
               />
-              <TextInput
-                label="modals.nodeSettings.array.database.query"
-                name="query"
-                containerClasses="pb-2"
-              />
+              <TextInput label="form.fields.query" name="query" />
+              <TextInput label="form.fields.displayColumn" name="displayColumn" />
             </>
           )}
         </div>

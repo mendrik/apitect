@@ -14,7 +14,7 @@ const ZInternal = ZNodeSettingsBase.merge(
   object({
     dataSource: literal(DataSource.Internal).default(DataSource.Internal),
     nodeType: literal(NodeType.Array),
-    idField: idCodec
+    displayNode: idCodec
   })
 )
 
@@ -22,7 +22,7 @@ const ZDatabase = ZNodeSettingsBase.merge(
   object({
     dataSource: literal(DataSource.Database),
     nodeType: literal(NodeType.Array),
-    idColumn: string(),
+    displayColumn: string(),
     dbUrl: string(),
     dbUser: string(),
     dbPassword: string(),

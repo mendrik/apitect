@@ -94,16 +94,10 @@ const en = {
         array: {
           dataSource: 'Data source',
           internal: {
-            title: 'Internal',
-            idNode: 'Display node'
+            title: 'Internal'
           },
           database: {
             title: 'External database',
-            idProperty: 'Display column',
-            url: 'Connection Url',
-            user: 'Database user',
-            password: 'Database password',
-            query: 'Query',
             testConnection: 'Test connection'
           }
         }
@@ -157,7 +151,13 @@ const en = {
         search: 'Search',
         parentTag: 'Extends from',
         format: 'Custom format',
-        enumeration: 'Enumeration'
+        enumeration: 'Enumeration',
+        displayNode: 'Display node',
+        displayColumn: 'Display column',
+        dbUrl: 'Connection url',
+        dbUser: 'Database user',
+        dbPassword: 'Database password',
+        query: 'Query'
       },
       validation: {
         sherlock: 'Unable not understand this expression',
