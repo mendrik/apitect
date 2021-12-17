@@ -2,11 +2,22 @@ const en = {
   translation: {
     app: {
       name: '{ api/tect }',
-      defaultValues: 'Values',
-      tags: 'Select tags',
+      login: 'Login',
+      logout: 'Logout',
       tagSettings: 'Tag settings',
       download: 'Download',
-      validation: 'Validation issues'
+      publish: 'Publish',
+      tags: 'Tags',
+      validation: 'Validation issues',
+      search: {
+        global: 'Search...',
+        array: 'Search {{ array }}...'
+      },
+      importJson: 'Import json',
+      apiKeys: 'API keys',
+      projectUsers: 'Project users',
+      enumerations: 'Enumerations',
+      profile: 'Profile'
     },
     common: {
       error: 'Error',
@@ -87,7 +98,7 @@ const en = {
         errors: {
           invalidParent:
             'Email and Password field must be descendants of the same array-typed parent node',
-          invalidNodes: 'Invalid node types selected',
+          invalidNodes: 'Invalid node type selected',
           emailType: 'Email field must be of type string with email constraint',
           passwordType: 'Password field must be of type string with password constraint'
         }
@@ -111,10 +122,6 @@ const en = {
         title: 'User settings',
         visibleTags: 'Visible tags'
       }
-    },
-    navbar: {
-      login: 'Login',
-      logout: 'Logout'
     },
     form: {
       fields: {

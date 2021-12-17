@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLogout } from '~hooks/useLogout'
+import { $selectedArrayNode } from '~stores/$selectedNode'
 import { $user } from '~stores/$userStore'
 
 import { Palette } from '../css/colors'
@@ -38,8 +39,11 @@ const LogoText = styled.span`
 export const Navigation = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const arrayNode = useStore($selectedArrayNode)
   const logout = useLogout()
   const user = useStore($user)
+
+  const searchScope = arrayNode != null ? 'array' : 'global'
 
   return (
     <Navbar
@@ -63,42 +67,47 @@ export const Navigation = () => {
           <Item disabled>
             <Tuple first={Scale.CONTENT}>
               <IconWorldUpload className="icn" stroke={1} />
-              <span>Publish</span>
+              <span>{t('app.publish')}</span>
             </Tuple>
           </Item>
           <Item>
             <Tuple first={Scale.CONTENT}>
               <IconDownload className="icn" stroke={1} />
-              <span>Download</span>
+              <span>{t('app.download')}</span>
             </Tuple>
           </Item>
           <Item onClick={tagsSettingsFx}>
             <Tuple first={Scale.CONTENT}>
               <IconTags className="icn" stroke={1} />
-              <span>Tags</span>
+              <span>{t('app.tags')}</span>
             </Tuple>
           </Item>
-          <FormControl size="sm" type="search" placeholder="Search" aria-label="Search" />
+          <FormControl
+            size="sm"
+            type="search"
+            placeholder={t(`app.search.${searchScope}`, { arrayNode })}
+            aria-label={t(`app.search.${searchScope}`, { arrayNode })}
+          />
         </div>
       )}
       <Nav>
         {user != null ? (
           <NavDropdown title={user.name} align="end">
-            <NavDropdown.Item>Import Json</NavDropdown.Item>
-            <NavDropdown.Item>Api Keys</NavDropdown.Item>
+            <NavDropdown.Item>{t('app.importJson')}</NavDropdown.Item>
+            <NavDropdown.Item>{t('app.apiKeys')}</NavDropdown.Item>
             <NavDropdown.Item onClick={() => projectUserSettingsFx()}>
-              Project users
+              {t('app.projectUsers')}
             </NavDropdown.Item>
-            <NavDropdown.Item onClick={() => enumsFx()}>Enumerations</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => enumsFx()}>{t('app.enumerations')}</NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item>Profile</NavDropdown.Item>
-            <NavDropdown.Item onClick={logout}>{t('navbar.logout')}</NavDropdown.Item>
+            <NavDropdown.Item>{t('app.profile')}</NavDropdown.Item>
+            <NavDropdown.Item onClick={logout}>{t('app.logout')}</NavDropdown.Item>
           </NavDropdown>
         ) : (
           <Button onClick={() => navigate(addParams({ modal: 'login' }))} className="ps-2 d-flex">
             <div className="d-flex gap-1 align-items-center">
               <IconLogin className="icon-xs ms-1" />
-              <span>{t('navbar.login')}</span>
+              <span>{t('app.login')}</span>
             </div>
           </Button>
         )}
