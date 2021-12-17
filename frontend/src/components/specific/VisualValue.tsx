@@ -1,14 +1,11 @@
 import { useStore } from 'effector-react'
-import { propEq } from 'ramda'
 import React from 'react'
 import styled from 'styled-components'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
-import { $creatingNewArrayItem } from '~stores/$arrayStores'
-import { $selectedArrayItem } from '~stores/$selectedArrayItem'
-import { $mappedNodesStore, $treeStore } from '~stores/$treeStore'
+import { $mappedNodesStore } from '~stores/$treeStore'
 
 import { ArrayEditor } from '../editors/ArrayEditor'
 import { BooleanEditor } from '../editors/BooleanEditor'
@@ -59,18 +56,12 @@ const Empty = styled.div`
 
 export const VisualValue = ({ nodeId, value, tag, loading }: Jsx<OwnProps>) => {
   const nodeMap = useStore($mappedNodesStore)
-  const root = useStore($treeStore)
-  const selectedArrayItem = useStore($selectedArrayItem)
-  const creating = useStore($creatingNewArrayItem)
   const node: Node = nodeMap[nodeId]!
   const Editor = getEditor(node.nodeType)
 
-  const childOfArrayNode =
-    root.first(propEq('id', nodeId))?.pathToRoot().find(propEq('nodeType', NodeType.Array)) != null
-
   return (
     <li>
-      {Editor && (!childOfArrayNode || selectedArrayItem != null || creating) ? (
+      {Editor ? (
         <Editor value={value} node={node} tag={tag} loading={loading} />
       ) : (
         <Empty tabIndex={0} />

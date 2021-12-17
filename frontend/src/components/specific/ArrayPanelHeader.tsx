@@ -1,14 +1,14 @@
-import { IconCheckbox, IconCirclePlus, IconCopy, IconDeviceFloppy, IconTrash } from '@tabler/icons'
+import { IconCheckbox, IconCopy, IconDeviceFloppy, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
-import { $creatingNewArrayItem, $selectedArrayNode } from '~stores/$arrayStores'
+import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $selectedArrayItem } from '~stores/$selectedArrayItem'
 
 import { Palette } from '../../css/colors'
-import { creatingNewArrayItem } from '../../events/array'
+import { createArrayItemFx } from '../../events/array'
 import { Icon } from '../generic/Icon'
 import { WithTooltip } from '../generic/WithTooltip'
 
@@ -25,7 +25,6 @@ export const ArrayPanelHeader = ({}: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const selectedArrayNode = useStore($selectedArrayNode)
   const selectedArrayItem = useStore($selectedArrayItem)
-  const creating = useStore($creatingNewArrayItem)
   return (
     <HeaderSx className="d-grid gap-1 px-1">
       <WithTooltip tooltipText={t('app.arrayPanel.selectAll')}>
@@ -33,11 +32,10 @@ export const ArrayPanelHeader = ({}: Jsx<OwnProps>) => {
       </WithTooltip>
       <div className="text-truncate">{selectedArrayNode?.value.name}</div>
       <WithTooltip tooltipText={t('app.arrayPanel.newItem')}>
-        {creating ? (
-          <Icon icon={IconDeviceFloppy} onClick={() => creatingNewArrayItem(true)} />
-        ) : (
-          <Icon icon={IconCirclePlus} onClick={() => creatingNewArrayItem(true)} />
-        )}
+        <Icon
+          icon={IconDeviceFloppy}
+          onClick={() => createArrayItemFx(selectedArrayNode?.value.id!)}
+        />
       </WithTooltip>
       <WithTooltip tooltipText={t('app.arrayPanel.copyItem')}>
         <Icon icon={IconCopy} disabled={!selectedArrayItem} />
