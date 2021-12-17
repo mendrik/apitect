@@ -4,7 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { StringValue } from '~shared/types/domain/values/stringValue'
-import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
+import { StringSettings, StringValidationType } from '~shared/types/forms/nodetypes/stringSettings'
 import { Jsx } from '~shared/types/generic'
 import { getStringValidator } from '~shared/validators/stringValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
@@ -25,7 +25,9 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
 
   return views.isDisplayView() ? (
     <Text tabIndex={0} onFocus={views.editView}>
-      <span>{value?.value ?? ' '}</span>
+      {stringSettings?.validationType === StringValidationType.Password && value?.value != null
+        ? '*****'
+        : value?.value ?? ''}
     </Text>
   ) : (
     <TextInput
