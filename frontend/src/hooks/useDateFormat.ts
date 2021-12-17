@@ -1,5 +1,6 @@
 import { format, formatDistanceToNow, isValid } from 'date-fns'
 import { useStore } from 'effector-react'
+import { tryCatch } from 'ramda'
 import { DateDisplay, DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
 import { $dateLocale } from '~stores/$dateLocale'
 
@@ -11,7 +12,10 @@ export const useDateFormat = (settings: DateSettings) => {
     }
     switch (settings?.display) {
       case DateDisplay.Custom:
-        return format(date, settings.format)
+        return tryCatch(
+          date => format(date, settings.format, { locale }),
+          () => 'invalid format'
+        )(date)
       case DateDisplay.HumanReadable:
         return formatDistanceToNow(date, {
           includeSeconds: false,
