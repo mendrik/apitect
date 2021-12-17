@@ -6,12 +6,12 @@ import { Jsx } from '~shared/types/generic'
 import { $arrayDrawerOpen } from '~stores/$arrayDrawerOpen'
 
 import { stretchIn } from '../../animations/stretchIn'
-import { arrayPanelSize } from '../../constants'
+import { arrayPanelSize, navbarHeight } from '../../constants'
 import { Palette } from '../../css/colors'
 import { ArrayPanelHeader } from './ArrayPanelHeader'
 
 const WrapperSx = styled(motion.div)`
-  height: calc(100vh - 57px);
+  height: calc(100vh - ${navbarHeight}px);
   width: calc(100% + ${arrayPanelSize}px);
   display: flex;
   flex-direction: row;

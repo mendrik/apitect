@@ -125,7 +125,8 @@ export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProp
       ref={grid}
       columns={columns}
       defaultWidths={defaultWidths}
-      className="custom-scrollbars"
+      className="custom-scrollbars position-relative"
+      style={{ top: -scrollY }}
     >
       {columns.map((column, col) => (
         <Sticky key={col}>

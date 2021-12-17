@@ -42,7 +42,6 @@ export const Navigation = () => {
   const arrayNode = useStore($selectedArrayNode)
   const logout = useLogout()
   const user = useStore($user)
-
   const searchScope = arrayNode != null ? 'array' : 'global'
 
   return (
