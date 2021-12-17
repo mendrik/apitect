@@ -49,7 +49,7 @@ type TreeSelectConfig<T extends WithId> = {
 type OwnProps<T extends WithId> = {
   tree: TreeNode<T>
   label: TFuncKey
-  containerClasses: string
+  containerClasses?: string
 } & TreeSelectConfig<T>
 
 type TreeInputContextType = TreeSelectConfig<any> & {

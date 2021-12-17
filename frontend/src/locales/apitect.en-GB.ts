@@ -90,6 +90,21 @@ const en = {
         },
         enums: {
           enumeration: 'Enumeration'
+        },
+        array: {
+          dataSource: 'Data source',
+          internal: {
+            title: 'Internal',
+            idNode: 'Display node'
+          },
+          database: {
+            title: 'External database',
+            idProperty: 'Display column',
+            url: 'Connection Url',
+            user: 'Database user',
+            password: 'Database password',
+            query: 'Query'
+          }
         }
       },
       projectUserSettings: {

@@ -14,7 +14,7 @@ type OwnProps = {}
 
 const HeaderSx = styled.div`
   grid-template-rows: 32px;
-  grid-template-columns: 24px auto 24px 24px 24px 24px;
+  grid-template-columns: 24px auto 24px 24px 24px;
   align-items: center;
   border-bottom: 1px solid ${Palette.border};
 `
@@ -33,9 +33,6 @@ export const ArrayPanelHeader = ({}: Jsx<OwnProps>) => {
       </WithTooltip>
       <WithTooltip tooltipText={t('app.validation')}>
         <Icon icon={IconCopy} />
-      </WithTooltip>
-      <WithTooltip tooltipText={t('app.validation')}>
-        <Icon icon={IconDeviceFloppy} />
       </WithTooltip>
       <WithTooltip tooltipText={t('app.tagSettings')}>
         <Icon icon={IconTrash} />
