@@ -71,7 +71,7 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
 
   return views.isDisplayView() ? (
     <div className="d-inline-flex align-items-center gap-2">
-      <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView} style={{ minWidth: 85 }}>
+      <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
         {userFormat(value?.value)}
       </Text>
       {value?.value && datepicker}

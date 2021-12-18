@@ -29,8 +29,7 @@ const SidePanelSx = styled.div`
 `
 
 const getPanel: (path: NodeType[]) => JSX.Element | null = cond([
-  [includes<NodeType>(NodeType.Date), () => <div>Date</div>],
-  [includes(NodeType.Binary), () => <div>File</div>],
+  [includes<NodeType>(NodeType.Binary), () => <div>File</div>],
   [includes(NodeType.Array), () => <ArraySidePanel />]
 ])
 
