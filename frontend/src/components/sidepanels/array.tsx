@@ -36,7 +36,7 @@ const ArraySidePanelHeader = () => {
 const ArraySidePanel = () => (
   <div>
     <ArraySidePanelHeader />
-    <div>Array</div>
+    <div className="p-2">Array</div>
   </div>
 )
 

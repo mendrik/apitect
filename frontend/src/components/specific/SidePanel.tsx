@@ -11,6 +11,7 @@ import { stretchIn } from '../../animations/stretchIn'
 import { detailsPanelSize, navbarHeight } from '../../constants'
 import { Palette } from '../../css/colors'
 import { ArraySidePanel } from '../sidepanels/array'
+import { FileSidePanel } from '../sidepanels/file'
 
 const WrapperSx = styled(motion.div)`
   height: calc(100vh - ${navbarHeight}px);
@@ -29,7 +30,7 @@ const SidePanelSx = styled.div`
 `
 
 const getPanel: (path: NodeType[]) => JSX.Element | null = cond([
-  [includes<NodeType>(NodeType.Binary), () => <div>File</div>],
+  [includes<NodeType>(NodeType.Binary), () => <FileSidePanel />],
   [includes(NodeType.Array), () => <ArraySidePanel />]
 ])
 
