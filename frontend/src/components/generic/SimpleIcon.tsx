@@ -1,5 +1,6 @@
 import { TablerIcon as IconProp } from '@tabler/icons'
 import React, { HTMLAttributes } from 'react'
+import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
