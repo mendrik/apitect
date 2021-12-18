@@ -7,9 +7,9 @@ import { $tagStore } from '~stores/$tagStore'
 import { Navigation } from './Navigation'
 import { FocusNavigator } from './generic/FocusNavigator'
 import { ResizableTable } from './generic/ResizableTable'
-import { ArraySidePanel } from './specific/ArraySidePanel'
 import { ColumnHeader } from './specific/ColumnHeader'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
+import { SidePanel } from './specific/SidePanel'
 import { VisualTree } from './specific/VisualTree'
 import { VisualValueList } from './specific/VisualValueList'
 
@@ -37,7 +37,7 @@ const Dashboard = () => {
     <AppFrame>
       <DndContext>
         <Navigation />
-        <ArraySidePanel>
+        <SidePanel>
           <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
             <FocusNavigator
               columns={visibleTags.length + 1}
@@ -54,7 +54,7 @@ const Dashboard = () => {
               ))}
             </FocusNavigator>
           </ResizableTable>
-        </ArraySidePanel>
+        </SidePanel>
       </DndContext>
     </AppFrame>
   )

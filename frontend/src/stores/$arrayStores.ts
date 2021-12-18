@@ -1,21 +1,14 @@
 import { createStore, sample } from 'effector'
-import { propEq } from 'ramda'
-import { isNotNil } from 'ramda-adjunct'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
-import { Fn } from '~shared/types/generic'
-import { $selectedNode } from '~stores/$selectedNode'
+import { $selectedValueNode } from '~stores/$valuesStore'
 
-import { resetProject } from '../events/reset'
-
-const isArray: Fn<boolean> = propEq('nodeType', NodeType.Array)
-
-export const $selectedArrayNode = createStore<TreeNode<Node> | null>(null).reset(resetProject)
-export const $arrayDrawerOpen = $selectedArrayNode.map(isNotNil)
+export const $selectedArrayItem = createStore(null)
+export const $selectedArrayNode = createStore<TreeNode<Node> | null>(null)
 
 sample({
-  source: $selectedNode,
-  fn: node => (isArray(node?.value ?? {}) ? node : node?.closest(isArray)) ?? null,
+  source: $selectedValueNode,
+  fn: node => node?.$pathToRoot().find(n => n.value.nodeType === NodeType.Array) ?? null,
   target: $selectedArrayNode
 })

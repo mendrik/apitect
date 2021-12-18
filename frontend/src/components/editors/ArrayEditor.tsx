@@ -1,8 +1,12 @@
+import { IconChevronLeft, IconChevronRight, IconDeviceFloppy } from '@tabler/icons'
 import React from 'react'
 import styled from 'styled-components'
 import { ArrayValue } from '~shared/types/domain/values/arrayValue'
 import { Jsx } from '~shared/types/generic'
 
+import { HGrid } from '../generic/HGrid'
+import { SimpleIcon } from '../generic/SimpleIcon'
+import { Scale, Tuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
 
 const EditorSx = styled.div`
@@ -15,5 +19,12 @@ const EditorSx = styled.div`
 `
 
 export const ArrayEditor = ({ value }: Jsx<EditorProps<ArrayValue>>) => (
-  <EditorSx tabIndex={0}>{value?.value ?? '0'} items</EditorSx>
+  <Tuple first={Scale.MAX} second={Scale.CONTENT}>
+    <EditorSx tabIndex={0}>{value?.value ?? '0'} items</EditorSx>
+    <HGrid>
+      <SimpleIcon icon={IconChevronLeft} />
+      <SimpleIcon icon={IconDeviceFloppy} />
+      <SimpleIcon icon={IconChevronRight} />
+    </HGrid>
+  </Tuple>
 )

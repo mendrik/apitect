@@ -1,12 +1,12 @@
 import { Variants } from 'framer-motion'
 
-import { arrayPanelSize } from '../constants'
+import { detailsPanelSize } from '../constants'
 
 export const stretchIn: Variants = {
   open: {
     width: '100%'
   },
   close: {
-    width: `calc(100% + ${arrayPanelSize}px)`
+    width: `calc(100% + ${detailsPanelSize}px)`
   }
 }

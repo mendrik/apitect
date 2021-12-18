@@ -7,6 +7,7 @@ import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
 import { $mappedNodesStore } from '~stores/$treeStore'
 
+import { selectValue } from '../../events/values'
 import { ArrayEditor } from '../editors/ArrayEditor'
 import { BooleanEditor } from '../editors/BooleanEditor'
 import { DateEditor } from '../editors/DateEditor'
@@ -60,7 +61,7 @@ export const VisualValue = ({ nodeId, value, tag, loading }: Jsx<OwnProps>) => {
   const Editor = getEditor(node.nodeType)
 
   return (
-    <li>
+    <li onFocus={() => selectValue({ nodeId, value, tag })}>
       {Editor ? (
         <Editor value={value} node={node} tag={tag} loading={loading} />
       ) : (

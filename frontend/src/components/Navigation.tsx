@@ -84,8 +84,8 @@ export const Navigation = () => {
           <FormControl
             size="sm"
             type="search"
-            placeholder={t(`app.search.${searchScope}`, { array: arrayNode?.value.name })}
-            aria-label={t(`app.search.${searchScope}`, { array: arrayNode?.value.name })}
+            placeholder={t(`app.search.${searchScope}`, { array: arrayNode?.value?.name })}
+            aria-label={t(`app.search.${searchScope}`, { array: arrayNode?.value?.name })}
           />
         </div>
       )}
