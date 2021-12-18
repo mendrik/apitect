@@ -1,15 +1,20 @@
 import { logger } from '~shared/utils/logger'
 
-import { collection, Collections } from './database'
+import { collection, Collections, withTransaction } from './database'
 
 export const renameTag =
   (docId: string) =>
-  (from: string, to: string): Promise<any> => {
-    logger.info(`Renaming tag ${from} into ${to} in doc ${docId}`)
-    // todo: rename value sets here too
-    return collection(Collections.userSettings).updateMany(
-      { docId },
-      { $set: { 'visibleTags.$[filter]': to } },
-      { arrayFilters: [{ filter: from }] }
-    )
-  }
+  (from: string, to: string): Promise<any> =>
+    withTransaction(async session => {
+      logger.info(`Renaming tag ${from} into ${to} in doc ${docId}`)
+      await collection(Collections.values).updateMany(
+        { docId, tag: from },
+        { $set: { tag: to } },
+        { session }
+      )
+      return collection(Collections.userSettings).updateMany(
+        { docId },
+        { $set: { 'visibleTags.$[filter]': to } },
+        { arrayFilters: [{ filter: from }], session }
+      )
+    })

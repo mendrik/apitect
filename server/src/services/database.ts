@@ -56,6 +56,7 @@ export const connect = async (): Promise<MongoClient> => {
   keys(Collections)
     .filter(name => !existing.includes(name))
     .forEach(name => db.createCollection(name, {}))
+
   await db.collection(Collections.users).createIndex({ email: 1 }, { unique: true })
   await db.collection(Collections.documents).createIndex({ id: 1 }, { unique: true })
   await db.collection(Collections.documents).createIndex({ owner: 1 })
