@@ -24,6 +24,7 @@ import { Palette } from '../../css/colors'
 import { codeIn } from '../../utils/eventUtils'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { Scrollable } from '../generic/Scrollable'
+import { SimpleIcon } from '../generic/SimpleIcon'
 import { Month } from './Month'
 
 const FMT = 'dd-MM-yyyy'
@@ -202,7 +203,7 @@ export const Datepicker = ({
       {...props}
       className="calendar-icon"
     >
-      <IconCalendar className="w-4 h-4" size={iconSize} stroke={stroke} color={color} />
+      <SimpleIcon icon={IconCalendar} size={iconSize} stroke={stroke} color={color} />
       <AnimatePresence>
         {open && (
           <motion.div {...fullscreenScale} role="dialog" onAnimationStart={afterOpen}>

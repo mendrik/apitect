@@ -129,6 +129,10 @@ input[required] + label:after {
   }
 }
 
+.icon-hover:hover {
+  stroke: black;
+}
+
 .focus-within:focus-within {
   border-color: #86b7fe;
   outline: 0;
