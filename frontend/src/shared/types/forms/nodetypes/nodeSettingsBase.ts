@@ -1,7 +1,6 @@
 import { object } from 'zod'
-
-import { idCodec } from '../../../codecs/idCodec'
-import { nameCodec } from '../../../codecs/nameCodec'
+import { idCodec } from '~shared/codecs/idCodec'
+import { nameCodec } from '~shared/codecs/nameCodec'
 
 export const ZNodeSettingsBase = object({
   nodeId: idCodec,
