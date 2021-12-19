@@ -13,6 +13,7 @@ import { $openNodes } from '~stores/$openNodesStore'
 import { $selectedNode } from '~stores/$selectedNode'
 
 import { openNodeState, selectNode } from '../../events/tree'
+import { selectValue } from '../../events/values'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
@@ -51,12 +52,16 @@ export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
   const open = openNodes[id]
   const nodeType = node.value.nodeType
 
+  const onFocus = () => {
+    selectValue(null)
+    selectNode(node)
+  }
   return (
     <>
       {depth > 0 && (
         <NodeGrid
           tabIndex={0}
-          onFocus={() => selectNode(node)}
+          onFocus={onFocus}
           id={id}
           className={clsx('gap-1', { selectedNode: isActive })}
         >

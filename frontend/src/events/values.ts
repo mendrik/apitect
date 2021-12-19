@@ -9,4 +9,4 @@ export const valueListFx = createEffect<Api['valueList']>(req => api().valueList
 export const valueUpdateFx = createEffect<Api['valueUpdate']>(req => api().valueUpdate(req))
 export const valueDeleteFx = createEffect<Api['valueDelete']>(req => api().valueDelete(req))
 
-export const selectValue = createEvent<SelectedValue>('select-value')
+export const selectValue = createEvent<SelectedValue | null>('select-value')
