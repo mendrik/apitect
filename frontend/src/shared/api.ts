@@ -2,8 +2,9 @@ import { undefined as undef } from 'zod'
 import { ZEnums } from '~shared/types/domain/enums'
 import { ZValue } from '~shared/types/domain/values/value'
 import { ZValueBase } from '~shared/types/domain/values/valueBase'
+import { ZNewArrayItemRequest } from '~shared/types/request/newArrayItemRequest'
 
-import { arrayNodeId, idCodec } from './codecs/idCodec'
+import { idCodec } from './codecs/idCodec'
 import { ZNode } from './types/domain/node'
 import { ZProject } from './types/domain/project'
 import { TNewNode } from './types/forms/newNode'
@@ -33,5 +34,5 @@ export const ApiSchema = {
   valueUpdate: [ZValue, ZValue],
   enums: [undef(), ZEnums.nullable()],
   updateEnums: [ZEnums, ZEnums],
-  arrayItemCreate: [arrayNodeId, undef()]
+  arrayItemCreate: [ZNewArrayItemRequest, undef()]
 } as const

@@ -19,7 +19,7 @@ import {
 } from 'ramda'
 import { included, isNotNil, notEqual } from 'ramda-adjunct'
 import { ClipboardEvent, KeyboardEvent } from 'react'
-import { Fn } from '~shared/types/generic'
+import { ArgFn, Fn } from '~shared/types/generic'
 import {
   insertStr,
   removeCharAt,
@@ -100,3 +100,11 @@ export const futurePasteResult: (ev: ClipboardEvent<HTMLInputElement>) => string
 ])
 
 export const onlyNumbersPaste = unless(pipe(futurePasteResult, validNumber), stopEvent())
+
+export const whenDefined =
+  <T>(obj: T, fn: ArgFn<NonNullable<T>>) =>
+  () => {
+    if (isNotNil(obj)) {
+      fn(obj as NonNullable<T>)
+    }
+  }
