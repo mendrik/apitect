@@ -8,7 +8,8 @@ import { add, format, parse, setDate, setMonth, sub } from 'date-fns'
 import { useStore } from 'effector-react'
 import { propOr, range } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { SyntheticEvent, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { SyntheticEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { DateValue } from '~shared/types/domain/values/dateValue'
@@ -68,14 +69,14 @@ export const DateSidePanel = () => {
   const currentFmt = format(date, FMT)
   const ref = useRef<HTMLOListElement>(null)
 
-  useEffect(() => setSelected(date), [date])
+  useDeepCompareEffect(() => setSelected(date), [date])
 
   useLayoutEffect(() => {
-    if (date != null && ref.current != null) {
+    if (ref.current != null) {
       const m = ref.current.querySelector<HTMLDivElement>(`.day[data-date='${currentFmt}']`)
       m?.scrollIntoView({ block: 'center', inline: 'center' })
     }
-  }, [ref, currentFmt, selected])
+  }, [ref, currentFmt])
 
   const months = useMemo(() => range(0, 12).map(m => setDate(setMonth(selected, m), 1)), [selected])
 
