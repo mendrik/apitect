@@ -1,9 +1,9 @@
-import { allPass, always, cond, equals } from 'ramda'
+import { allPass, always, both, cond, equals } from 'ramda'
 import React, { EventHandler, HTMLAttributes, useRef } from 'react'
 import { Jsx, Maybe } from '~shared/types/generic'
 import { next, prev } from '~shared/utils/ramda'
 
-import { codeIn, withShift } from '../../utils/eventUtils'
+import { codeIn, withCtrl, withShift } from '../../utils/eventUtils'
 import { stopEvent } from '../../utils/stopPropagation'
 
 type OwnProps = {
@@ -59,10 +59,10 @@ export const FocusNavigator = ({
     })
 
   const keyMap = cond([
-    [codeIn('ArrowLeft'), moveFocus(rotated ? Direction.Up : Direction.Left)],
-    [codeIn('ArrowRight'), moveFocus(rotated ? Direction.Down : Direction.Right)],
-    [codeIn('ArrowUp'), moveFocus(rotated ? Direction.Left : Direction.Up)],
-    [codeIn('ArrowDown'), moveFocus(rotated ? Direction.Right : Direction.Down)],
+    [both(withCtrl, codeIn('ArrowLeft')), moveFocus(rotated ? Direction.Up : Direction.Left)],
+    [both(withCtrl, codeIn('ArrowRight')), moveFocus(rotated ? Direction.Down : Direction.Right)],
+    [both(withCtrl, codeIn('ArrowUp')), moveFocus(rotated ? Direction.Left : Direction.Up)],
+    [both(withCtrl, codeIn('ArrowDown')), moveFocus(rotated ? Direction.Right : Direction.Down)],
     [allPass([always(rotated), withShift, codeIn('Tab')]), moveFocus(Direction.Up)],
     [allPass([always(rotated), codeIn('Tab')]), moveFocus(Direction.Down)]
   ])
