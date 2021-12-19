@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import { useStoreMap } from 'effector-react'
-import { both, cond, pathOr, pipe, when } from 'ramda'
+import { cond, pathOr, pipe } from 'ramda'
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
@@ -13,9 +13,7 @@ import { getDateValidator } from '~shared/validators/dateValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIn, withCtrl } from '../../utils/eventUtils'
-import { preventDefault } from '../../utils/preventDefault'
-import { stopPropagation } from '../../utils/stopPropagation'
+import { codeIn } from '../../utils/eventUtils'
 import { StyledTuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
 
@@ -44,10 +42,6 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   const saveAsDate = pipe(pathOr('', ['target', 'value']), saveValue)
 
   const keyMap = cond([
-    [
-      both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')),
-      preventDefault(views.isEditView() ? saveAsDate : undefined)
-    ],
     [codeIn('Tab', 'Enter'), saveAsDate],
     [codeIn('Escape'), views.displayView]
   ])
