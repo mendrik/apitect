@@ -37,6 +37,10 @@ const SidePanelSx = styled.div`
 
   > :first-child {
     height: 100%;
+
+    &:before {
+      top: 33px;
+    }
   }
 `
 
