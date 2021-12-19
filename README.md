@@ -79,7 +79,7 @@
 - Reference
   ```typescript
   export default {
-    path: string[]
+    path: Array<string>
   }
   ```   
 
