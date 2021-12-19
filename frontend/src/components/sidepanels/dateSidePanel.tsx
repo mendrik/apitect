@@ -4,7 +4,7 @@ import {
   IconChevronsLeft,
   IconChevronsRight
 } from '@tabler/icons'
-import { add, format, parse, setDate, setMonth, sub } from 'date-fns'
+import { add, format, isSameDay, parse, setDate, setMonth, sub } from 'date-fns'
 import { useStore } from 'effector-react'
 import { propOr, range } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
@@ -70,11 +70,13 @@ export const DateSidePanel = () => {
 
   useLayoutEffect(() => {
     if (date != null && ref.current != null) {
-      setSelected(date)
+      if (!isSameDay(date, selected)) {
+        setSelected(date)
+      }
       const m = ref.current.querySelector<HTMLDivElement>(`.day[data-date='${currentFmt}']`)
       m?.scrollIntoView({ block: 'center', inline: 'center' })
     }
-  }, [ref, date, selected])
+  }, [ref, currentFmt, selected])
 
   const months = useMemo(() => range(0, 12).map(m => setDate(setMonth(selected, m), 1)), [selected])
 
