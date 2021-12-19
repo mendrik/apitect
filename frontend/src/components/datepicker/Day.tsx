@@ -16,6 +16,7 @@ const DaySx = styled.div`
   align-items: center;
   font-weight: 300;
   max-width: 40px;
+  cursor: pointer;
 
   &.off {
     color: transparent;

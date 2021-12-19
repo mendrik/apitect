@@ -8,7 +8,7 @@ import { $selectedValueNode } from '~stores/$valuesStore'
 export const $sidePanelOpen = createStore(false)
 export const $selectedNodePath = createStore<Node[]>([])
 
-const openFor = [NodeType.Array, NodeType.Binary]
+const openFor = [NodeType.Array, NodeType.Binary, NodeType.Date]
 
 sample({
   source: $selectedValueNode,

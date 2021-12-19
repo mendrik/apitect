@@ -3,7 +3,6 @@ import { format } from 'date-fns'
 import { useStoreMap } from 'effector-react'
 import { both, cond, pathOr, pipe, when } from 'ramda'
 import React, { useRef } from 'react'
-import { useClickAway } from 'react-use'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { useDateFormat } from '~hooks/useDateFormat'
@@ -17,7 +16,6 @@ import { Palette } from '../../css/colors'
 import { codeIn, withCtrl } from '../../utils/eventUtils'
 import { preventDefault } from '../../utils/preventDefault'
 import { stopPropagation } from '../../utils/stopPropagation'
-import { Datepicker } from '../datepicker/Datepicker'
 import { StyledTuple } from '../generic/Tuple'
 import { EditorProps } from '../specific/VisualValue'
 
@@ -44,10 +42,6 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
 
   const saveAsDate = pipe(pathOr('', ['target', 'value']), saveValue)
-  useClickAway(ref, () => {
-    const input = ref.current?.firstElementChild as HTMLInputElement | null
-    saveValue(input?.value)
-  })
 
   const keyMap = cond([
     [
@@ -60,22 +54,16 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
     [codeIn('Escape'), views.displayView]
   ])
 
-  const datepicker = (
-    <Datepicker
-      onDateSelected={saveValue}
-      stroke={0.5}
-      color={Palette.iconBorder.toString()}
-      currentDate={value?.value ?? new Date()}
-    />
-  )
-
   return views.isDisplayView() ? (
-    <div className="d-inline-flex align-items-center gap-2" style={{ minWidth: 100 }}>
-      <Text tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
-        {userFormat(value?.value)}
-      </Text>
-      {value?.value && datepicker}
-    </div>
+    <Text
+      tabIndex={0}
+      onKeyDown={keyMap}
+      onFocus={views.editView}
+      className="d-inline-flex align-items-center gap-2"
+      style={{ minWidth: 100 }}
+    >
+      {userFormat(value?.value)}
+    </Text>
   ) : (
     <StyledTuple
       ref={ref}
@@ -87,9 +75,9 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
         className={clsx('editor', { invalid: error != null })}
         autoFocus
         onKeyDown={keyMap}
+        onBlur={saveAsDate}
         defaultValue={value?.value ? format(value?.value, 'yyyy-MM-dd') : undefined}
       />
-      {datepicker}
     </StyledTuple>
   )
 }

@@ -10,8 +10,9 @@ import { $selectedNodePath, $sidePanelOpen } from '~stores/$sidePanel'
 import { stretchIn } from '../../animations/stretchIn'
 import { detailsPanelSize, navbarHeight } from '../../constants'
 import { Palette } from '../../css/colors'
-import { ArraySidePanel } from '../sidepanels/array'
-import { FileSidePanel } from '../sidepanels/file'
+import { ArraySidePanel } from '../sidepanels/arraySidePanel'
+import { BinarySidePanel } from '../sidepanels/binarySidePanel'
+import { DateSidePanel } from '../sidepanels/dateSidePanel'
 
 const WrapperSx = styled(motion.div)`
   height: calc(100vh - ${navbarHeight}px);
@@ -21,16 +22,27 @@ const WrapperSx = styled(motion.div)`
 
   > * {
     overflow-y: auto;
+
+    &:before {
+      top: 33px;
+    }
   }
 `
 
 const SidePanelSx = styled.div`
   border-left: 1px solid ${Palette.border};
   min-width: ${detailsPanelSize}px;
+  height: calc(100vh - ${navbarHeight}px);
+  overflow: hidden;
+
+  > :first-child {
+    height: 100%;
+  }
 `
 
 const getPanel: (path: NodeType[]) => JSX.Element | null = cond([
-  [includes<NodeType>(NodeType.Binary), () => <FileSidePanel />],
+  [includes<NodeType>(NodeType.Binary), () => <BinarySidePanel />],
+  [includes<NodeType>(NodeType.Date), () => <DateSidePanel />],
   [includes(NodeType.Array), () => <ArraySidePanel />]
 ])
 
@@ -41,7 +53,7 @@ export const SidePanel = ({ children }: Jsx) => {
   return (
     <WrapperSx variants={stretchIn} animate={open ? 'open' : 'hidden'}>
       {children}
-      <SidePanelSx id="panel">{getPanel(nodePath)}</SidePanelSx>
+      <SidePanelSx>{getPanel(nodePath)}</SidePanelSx>
     </WrapperSx>
   )
 }

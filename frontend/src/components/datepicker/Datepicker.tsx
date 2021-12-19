@@ -27,7 +27,7 @@ import { Scrollable } from '../generic/Scrollable'
 import { SimpleIcon } from '../generic/SimpleIcon'
 import { Month } from './Month'
 
-const FMT = 'dd-MM-yyyy'
+export const FMT = 'dd-MM-yyyy'
 
 type OwnProps = {
   onDateSelected: ArgFn<Date>
@@ -103,6 +103,10 @@ const FullYear = styled.ol`
   .day[data-date='${propOr('', 'data-today')}'] {
     color: #aa0000;
     font-weight: 600;
+  }
+
+  > li {
+    padding: 0 1rem 1.5rem 1rem;
   }
 `
 
