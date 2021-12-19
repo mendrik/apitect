@@ -163,7 +163,8 @@ const en = {
         dbUrl: 'Connection url',
         dbUser: 'Database user',
         dbPassword: 'Database password',
-        query: 'Query'
+        query: 'Query',
+        parent: 'Parent tag'
       },
       validation: {
         sherlock: 'Unable not understand this expression',

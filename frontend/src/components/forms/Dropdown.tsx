@@ -42,7 +42,7 @@ export const Dropdown = ({
         render={({ field }) => (
           <FloatingLabel controlId={inpId} label={t(label)}>
             <Form.Select aria-label={t(label) as string} {...field} {...props}>
-              {!required && <option>{t('form.dropDown.noValue')}</option>}
+              {!required && <option value="">{t('form.dropDown.noValue')}</option>}
               {mapIndexed(
                 ([key, value]) => (
                   <option value={value} key={value}>

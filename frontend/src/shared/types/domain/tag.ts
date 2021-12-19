@@ -1,4 +1,4 @@
-import { object, Schema } from 'zod'
+import { object, Schema, string } from 'zod'
 
 import { nameCodec } from '../../codecs/nameCodec'
 
@@ -11,5 +11,5 @@ export interface Tag {
 
 export const ZTag: Schema<Tag> = object({
   name: nameCodec,
-  parent: nameCodec.optional()
+  parent: string().optional()
 })
