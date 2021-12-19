@@ -4,7 +4,7 @@ import { arrayNodeId } from '~shared/codecs/idCodec'
 
 export const ZNewArrayItemRequest = object({
   tag: string(),
-  arrayNodeId: arrayNodeId.optional()
+  arrayNodeId
 })
 
 export type NewArrayItemRequest = TypeOf<typeof ZNewArrayItemRequest>
