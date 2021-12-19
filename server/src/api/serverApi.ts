@@ -1,6 +1,7 @@
 import { ServerApiMethod } from '~shared/apiResponse'
 import { ApiMethod } from '~shared/types/api'
 
+import { arrayItemCreate } from './arrayItemCreate'
 import { enums } from './enums'
 import { nodeCreate } from './nodeCreate'
 import { nodeDelete } from './nodeDelete'
@@ -19,6 +20,7 @@ import { valueList } from './valueList'
 import { valueUpdate } from './valueUpdate'
 
 export const apiMapping: { [K in ApiMethod]: ServerApiMethod<K> } = {
+  arrayItemCreate,
   enums,
   nodeCreate,
   nodeDelete,

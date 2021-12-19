@@ -9,7 +9,7 @@ export const horizontalGrowth: AnimationProps = {
   },
   transition: {
     type: 'spring',
-    stiffness: 500,
-    damping: 50
+    stiffness: 900,
+    damping: 300
   }
 }

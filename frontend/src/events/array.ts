@@ -4,6 +4,6 @@ import { $api } from '~stores/$apiStore'
 
 const api = () => sample($api).getState()
 
-export const createArrayItemFx = createEffect<Api['createArrayItem']>(nodeId =>
-  api().createArrayItem(nodeId)
+export const arrayItemCreateFx = createEffect<Api['arrayItemCreate']>(nodeId =>
+  api().arrayItemCreate(nodeId)
 )

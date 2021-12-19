@@ -22,7 +22,7 @@ import { ArgFn, Jsx } from '~shared/types/generic'
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { Palette } from '../../css/colors'
 import { codeIn } from '../../utils/eventUtils'
-import { stopPropagation } from '../../utils/stopPropagation'
+import { stopEvent, stopPropagation } from '../../utils/stopPropagation'
 import { Scrollable } from '../generic/Scrollable'
 import { SimpleIcon } from '../generic/SimpleIcon'
 import { Month } from './Month'
@@ -197,7 +197,7 @@ export const Datepicker = ({
 
   return (
     <CalendarButton
-      onClick={openPicker}
+      onMouseDown={stopEvent(openPicker)}
       onKeyDown={onEscape}
       ref={ref}
       {...props}
