@@ -60,8 +60,14 @@ export const VisualValue = ({ nodeId, value, tag, loading }: Jsx<OwnProps>) => {
   const node: Node = nodeMap[nodeId]!
   const Editor = getEditor(node.nodeType)
 
+  const onFocus = () => {
+    if (!document.body.classList.contains('datepicker-open')) {
+      selectValue({ nodeId, value, tag })
+    }
+  }
+
   return (
-    <li onFocus={() => selectValue({ nodeId, value, tag })}>
+    <li onFocus={onFocus}>
       {Editor ? (
         <Editor value={value} node={node} tag={tag} loading={loading} />
       ) : (

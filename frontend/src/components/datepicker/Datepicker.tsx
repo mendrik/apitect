@@ -121,6 +121,8 @@ const CalendarButton = styled.div`
   cursor: pointer;
 `
 
+const bodyCls = document.body.classList
+
 export const Datepicker = ({
   currentDate: $current,
   children,
@@ -153,6 +155,7 @@ export const Datepicker = ({
 
   const openPicker = () => {
     if (ref.current != null && !open) {
+      bodyCls.add('datepicker-open')
       const view = ref.current?.getBoundingClientRect()
       const x = (view.x + view.width / 2) / window.innerWidth
       const y = (view.y + view.height / 2) / window.innerHeight
@@ -160,6 +163,11 @@ export const Datepicker = ({
       ref.current.style.setProperty('--oy', `${(y * 100).toFixed(2)}%`)
       setOpen(true)
     }
+  }
+
+  const closePicker = () => {
+    bodyCls.remove('datepicker-open')
+    setOpen(false)
   }
 
   const scrollYear = () =>
@@ -179,7 +187,7 @@ export const Datepicker = ({
 
   const onEscape = when<KeyboardEvent<HTMLDivElement>, void>(
     codeIn('Escape'),
-    stopPropagation(() => setOpen(false))
+    stopPropagation(closePicker)
   )
 
   const click = (ev: SyntheticEvent<HTMLOListElement>): void => {
@@ -243,14 +251,14 @@ export const Datepicker = ({
                 </FullYear>
               </Scrollable>
               <GridButtonRow className="p-2">
-                <Button variant="outline-secondary" onClick={() => setOpen(false)}>
+                <Button variant="outline-secondary" onClick={closePicker}>
                   {t('common.cancel')}
                 </Button>
                 <Button
                   variant="primary"
                   onClick={() => {
                     onDateSelected(selected)
-                    setOpen(false)
+                    closePicker()
                   }}
                 >
                   Select
