@@ -8,9 +8,8 @@ import { add, format, parse, setDate, setMonth, sub } from 'date-fns'
 import { useStore } from 'effector-react'
 import { propOr, range } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { SyntheticEvent, useMemo, useRef, useState } from 'react'
+import React, { SyntheticEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { useDefinedEffect } from '~hooks/useDefinedEffect'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { DateValue } from '~shared/types/domain/values/dateValue'
 import { Value } from '~shared/types/domain/values/value'
@@ -64,16 +63,20 @@ const FullYear = styled.ol`
 export const DateSidePanel = () => {
   const selectedValue = useStore($selectedValue)
   const dateValue = selectedValue?.value as DateValue | null
-  const [selected, setSelected] = useState<Date>(dateValue?.value ?? new Date())
+  const date = dateValue?.value ?? new Date()
+  const [selected, setSelected] = useState<Date>(date)
+  const currentFmt = format(date, FMT)
   const ref = useRef<HTMLOListElement>(null)
+
+  useLayoutEffect(() => {
+    if (date != null && ref.current != null) {
+      setSelected(date)
+      const m = ref.current.querySelector<HTMLDivElement>(`.day[data-date='${currentFmt}']`)
+      m?.scrollIntoView({ block: 'center', inline: 'center' })
+    }
+  }, [ref, date, selected])
+
   const months = useMemo(() => range(0, 12).map(m => setDate(setMonth(selected, m), 1)), [selected])
-  useDefinedEffect(date => {
-    setSelected(date)
-    setTimeout(() => {
-      const m = ref.current?.querySelector<HTMLDivElement>(`.day[data-date='${format(date, FMT)}']`)
-      m?.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' })
-    }, 100)
-  }, dateValue?.value)
 
   const click = (ev: SyntheticEvent<HTMLOListElement>): void => {
     const target = ev.target as HTMLElement
@@ -115,6 +118,7 @@ export const DateSidePanel = () => {
         onClick={click}
         data-selected={format(selected, FMT)}
         data-today={format(Date.now(), FMT)}
+        key="full-year"
         ref={ref}
       >
         {mapIndexed(
