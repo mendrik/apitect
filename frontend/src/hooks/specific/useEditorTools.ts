@@ -1,5 +1,4 @@
-import { both, cond, when } from 'ramda'
-import { SyntheticEvent, useEffect, useState } from 'react'
+import { SyntheticEvent, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError, ZodSchema } from 'zod'
 import { useView } from '~hooks/useView'
@@ -8,9 +7,6 @@ import { Value } from '~shared/types/domain/values/value'
 import { Maybe } from '~shared/types/generic'
 
 import { valueDeleteFx, valueUpdateFx } from '../../events/values'
-import { codeIn, withCtrl } from '../../utils/eventUtils'
-import { preventDefault } from '../../utils/preventDefault'
-import { stopPropagation } from '../../utils/stopPropagation'
 
 const lastExecution = {
   time: Date.now()
@@ -79,16 +75,9 @@ export const useEditorTools = (
   const saveFromEvent = (e: SyntheticEvent<HTMLInputElement | HTMLSelectElement>) =>
     saveValue(e.currentTarget.value, e)
 
-  const keyMap = cond([
-    [both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
-    [codeIn('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
-    [codeIn('ArrowUp', 'ArrowDown', 'Tab'), saveFromEvent]
-  ])
-
   return {
     saveValue,
     saveFromEvent,
-    keyMap,
     error,
     setError,
     views

@@ -21,7 +21,7 @@ export const TextInput = styled.input`
 export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
   const stringSettings = useStoreMap($nodeSettings, s => s[node.id] as StringSettings)
   const validator = getStringValidator(stringSettings)
-  const { saveFromEvent, error, keyMap, views } = useEditorTools(node, value, tag, validator)
+  const { saveFromEvent, error, views } = useEditorTools(node, value, tag, validator)
 
   return views.isDisplayView() ? (
     <Text tabIndex={0} onFocus={views.editView}>
@@ -35,7 +35,6 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       className={clsx('editor', { invalid: error != null })}
       autoFocus
       placeholder={node.name}
-      onKeyDown={keyMap}
       onBlur={saveFromEvent}
       defaultValue={value?.value}
     />

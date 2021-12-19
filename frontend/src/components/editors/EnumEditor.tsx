@@ -40,8 +40,7 @@ export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) =>
   const { saveFromEvent, error, views, setError } = useEditorTools(node, value, tag, validator)
 
   const selKeyMap = cond([
-    [both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
-    [codeIn('ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Escape'), stopPropagation()],
+    [codeIn('Enter', 'Space', 'Escape'), stopPropagation()],
     [codeIn('Escape'), views.displayView]
   ])
 

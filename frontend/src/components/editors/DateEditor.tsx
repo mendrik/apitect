@@ -48,8 +48,6 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
       both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')),
       preventDefault(views.isEditView() ? saveAsDate : undefined)
     ],
-    [codeIn('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
-    [codeIn('ArrowUp', 'ArrowDown'), stopPropagation()],
     [codeIn('Tab', 'Enter'), saveAsDate],
     [codeIn('Escape'), views.displayView]
   ])

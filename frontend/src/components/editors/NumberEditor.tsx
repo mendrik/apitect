@@ -60,8 +60,6 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
   const saveAsNumber = pipe(pathOr('', ['target', 'value']), asNumber, saveValue)
 
   const keyMap = cond([
-    [both(withCtrl, codeIn('ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft')), preventDefault()],
-    [codeIn('ArrowRight', 'ArrowLeft'), when(views.isEditView, stopPropagation())],
     [codeIn('Tab', 'Enter'), saveAsNumber],
     [codeIn('Escape'), views.displayView],
     [T, onlyNumbers]
