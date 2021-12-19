@@ -4,11 +4,11 @@ import {
   IconChevronsLeft,
   IconChevronsRight
 } from '@tabler/icons'
-import { add, format, isSameDay, parse, setDate, setMonth, sub } from 'date-fns'
+import { add, format, parse, setDate, setMonth, sub } from 'date-fns'
 import { useStore } from 'effector-react'
 import { propOr, range } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { SyntheticEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { SyntheticEvent, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { DateValue } from '~shared/types/domain/values/dateValue'
@@ -68,11 +68,10 @@ export const DateSidePanel = () => {
   const currentFmt = format(date, FMT)
   const ref = useRef<HTMLOListElement>(null)
 
+  useEffect(() => setSelected(date), [date])
+
   useLayoutEffect(() => {
     if (date != null && ref.current != null) {
-      if (!isSameDay(date, selected)) {
-        setSelected(date)
-      }
       const m = ref.current.querySelector<HTMLDivElement>(`.day[data-date='${currentFmt}']`)
       m?.scrollIntoView({ block: 'center', inline: 'center' })
     }
