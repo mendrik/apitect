@@ -1,8 +1,7 @@
 import { createStore, sample } from 'effector'
-import { always, nthArg } from 'ramda'
+import { nthArg } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
-import { $selectedValueNode } from '~stores/$valuesStore'
 
 import { canHaveChildrenNodes } from '../constants'
 import { resetProject } from '../events/reset'

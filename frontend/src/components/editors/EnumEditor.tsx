@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { useStore, useStoreMap } from 'effector-react'
-import { both, cond, find, propEq } from 'ramda'
+import { cond, find, propEq } from 'ramda'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -14,8 +14,7 @@ import { $enumsStore } from '~stores/$enumsStore'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIn, withCtrl } from '../../utils/eventUtils'
-import { preventDefault } from '../../utils/preventDefault'
+import { codeIn } from '../../utils/eventUtils'
 import { stopPropagation } from '../../utils/stopPropagation'
 import { EditorProps } from '../specific/VisualValue'
 

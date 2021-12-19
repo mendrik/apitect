@@ -3,7 +3,6 @@ import { ZEnums } from '~shared/types/domain/enums'
 import { ZValue } from '~shared/types/domain/values/value'
 import { ZValueBase } from '~shared/types/domain/values/valueBase'
 
-import { arrayItemCreateFx } from '../events/array'
 import { arrayNodeId, idCodec } from './codecs/idCodec'
 import { ZNode } from './types/domain/node'
 import { ZProject } from './types/domain/project'
