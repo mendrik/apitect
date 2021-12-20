@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 import { $selectedRow } from '~stores/$selectedNode'
 
-import { Palette } from '../../css/colors'
 import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
