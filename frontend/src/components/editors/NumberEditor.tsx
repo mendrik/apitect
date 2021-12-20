@@ -1,7 +1,7 @@
 import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
-import { cond, pathOr, pipe, T } from 'ramda'
+import { cond, pipe, T } from 'ramda'
 import React from 'react'
 import styled from 'styled-components'
 import { useEditorTools } from '~hooks/specific/useEditorTools'
@@ -14,7 +14,7 @@ import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIn, onlyNumbers, onlyNumbersPaste } from '../../utils/eventUtils'
+import { codeIn, onlyNumbers, onlyNumbersPaste, target } from '../../utils/eventUtils'
 import { Autogrow } from '../generic/Autogrow'
 import { HGrid } from '../generic/HGrid'
 import { SimpleIcon } from '../generic/SimpleIcon'
@@ -55,7 +55,7 @@ export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>
   const validator = getNumberValidator(numberSettings)
   const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
 
-  const saveAsNumber = pipe(pathOr('', ['target', 'value']), asNumber, saveValue)
+  const saveAsNumber = pipe(target.value, asNumber, saveValue)
 
   const keyMap = cond([
     [codeIn('Tab', 'Enter'), saveAsNumber],

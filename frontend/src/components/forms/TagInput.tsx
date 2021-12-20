@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { append, cond, path, pathOr, pipe, propEq, remove, unless, when } from 'ramda'
+import { append, cond, path, pipe, propEq, remove, unless, when } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import React, { HTMLAttributes, useRef, useState } from 'react'
 import { Controller } from 'react-hook-form'
@@ -109,7 +109,7 @@ export const TagInput = <T extends object>({
                 value={currentName}
                 type="text"
                 required
-                onChange={pipe(pathOr('', ['target', 'value']), setCurrentName)}
+                onChange={pipe(target.value, setCurrentName)}
                 onKeyDown={keyMap}
                 onBlur={() => {
                   onAdd(currentName)
