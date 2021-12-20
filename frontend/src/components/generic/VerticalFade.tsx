@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { EventHandler, HTMLAttributes, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { useEvent } from '~hooks/useEvent'
@@ -37,7 +38,11 @@ const VerticalFadeStyled = styled.div`
   }
 `
 
-export const VerticalFade = ({ children, ...props }: Jsx<HTMLAttributes<HTMLDivElement>>) => {
+export const VerticalFade = ({
+  children,
+  className,
+  ...props
+}: Jsx<HTMLAttributes<HTMLDivElement>>) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const handler = useCallback<EventHandler<any>>(
@@ -58,7 +63,7 @@ export const VerticalFade = ({ children, ...props }: Jsx<HTMLAttributes<HTMLDivE
   })
 
   return (
-    <VerticalFadeStyled ref={ref} {...props}>
+    <VerticalFadeStyled ref={ref} {...props} className={clsx(className, 'fader')}>
       {children}
     </VerticalFadeStyled>
   )

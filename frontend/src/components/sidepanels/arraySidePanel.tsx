@@ -11,7 +11,6 @@ import { Icon } from '../generic/Icon'
 import { WithTooltip } from '../generic/WithTooltip'
 
 const ArraySidePanelSx = styled.div`
-  border-left: 1px solid ${Palette.border};
   min-width: ${detailsPanelSize}px;
   max-height: calc(100vh - ${navbarHeight}px);
   overflow: hidden;

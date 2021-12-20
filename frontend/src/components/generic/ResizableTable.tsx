@@ -1,9 +1,12 @@
 import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
+import { useStore } from 'effector-react'
 import { mapIndexed } from 'ramda-adjunct'
-import React, { useRef } from 'react'
+import React, { CSSProperties, useRef } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
+import { $selectedRow } from '~stores/$selectedNode'
 
+import { Palette } from '../../css/colors'
 import { Draggable, Draggables } from '../../utils/draggables'
 
 type OwnProps = {
@@ -12,6 +15,7 @@ type OwnProps = {
 }
 
 const StyledGrid = styled.div<{ columns: any[]; defaultWidths?: number[] }>`
+  --selectedRow: -5;
   display: grid;
   width: 100%;
   grid-template-columns: ${({ columns, defaultWidths }) =>
@@ -20,6 +24,17 @@ const StyledGrid = styled.div<{ columns: any[]; defaultWidths?: number[] }>`
     )};
   grid-template-rows: 32px;
   grid-auto-rows: auto;
+
+  &:before {
+    content: '';
+    position: absolute;
+    background-color: #f0f7df;
+    height: 24px;
+    left: 0;
+    right: 0;
+    top: calc(32px + 0.5rem + var(--selectedRow) * 24px);
+    z-index: -1;
+  }
 `
 
 const Sticky = styled.div`
@@ -86,6 +101,7 @@ const bodyStyle = document.body.style
 
 export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
+  const selectedRow = useStore($selectedRow)
   const style = grid.current?.style
 
   useDndMonitor({
@@ -126,7 +142,7 @@ export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProp
       columns={columns}
       defaultWidths={defaultWidths}
       className="custom-scrollbars position-relative"
-      style={{ top: -scrollY }}
+      style={{ top: -scrollY, '--selectedRow': selectedRow } as CSSProperties}
     >
       {columns.map((column, col) => (
         <Sticky key={col}>

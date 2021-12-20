@@ -23,7 +23,7 @@ const WrapperSx = styled(motion.div)`
   > * {
     overflow-y: auto;
 
-    &:before {
+    &.fader:before {
       top: 33px;
     }
   }

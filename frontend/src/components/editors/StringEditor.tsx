@@ -34,7 +34,6 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
       type="text"
       className={clsx('editor', { invalid: error != null })}
       autoFocus
-      placeholder={node.name}
       onBlur={saveFromEvent}
       defaultValue={value?.value}
     />
