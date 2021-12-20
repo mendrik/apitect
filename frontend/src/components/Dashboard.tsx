@@ -7,6 +7,7 @@ import { $tagStore } from '~stores/$tagStore'
 import { Navigation } from './Navigation'
 import { FocusNavigator } from './generic/FocusNavigator'
 import { ResizableTable } from './generic/ResizableTable'
+import { Column } from './specific/Column'
 import { ColumnHeader } from './specific/ColumnHeader'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
 import { SidePanel } from './specific/SidePanel'
@@ -17,12 +18,6 @@ const AppFrame = styled.div`
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-`
-
-const Column = styled.div`
-  padding: 0.5rem;
-  font-weight: 300;
-  font-family: 'Source Sans Pro';
 `
 
 const Dashboard = () => {
