@@ -26,7 +26,6 @@ const Wrap = styled.div`
 
   svg {
     color: ${Palette.iconText};
-    transition: all 0.2s ease-in-out;
   }
 
   &:not([disabled]) {

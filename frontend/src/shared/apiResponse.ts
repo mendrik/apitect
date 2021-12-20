@@ -30,6 +30,9 @@ const codecs = apiMethods.map(k =>
   })
 ) as UnionToTuple<AllCodecs>
 
+export const ZApiResponse = union(codecs)
+export type ApiResponse = TypeOf<typeof ZApiResponse>
+
 export const ZApiError = object({
   error: literal('error'),
   id: idCodec,
@@ -39,7 +42,3 @@ export const ZApiError = object({
 })
 
 export type ApiError = TypeOf<typeof ZApiError>
-
-export const ZApiResponse = union(codecs)
-
-export type ApiResponse = TypeOf<typeof ZApiResponse>
