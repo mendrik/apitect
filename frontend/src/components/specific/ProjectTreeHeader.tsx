@@ -3,7 +3,7 @@ import { useStore } from 'effector-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { $documentStore } from '~stores/$documentStore'
-import { $canCreateNode, $selectedNode } from '~stores/$selectedNode'
+import { $canCreateNode, $currentNode } from '~stores/$selectedNode'
 
 import { deleteNodeFx, newNodeFx, nodeSettingsFx } from '../../events/tree'
 import { userSettingsFx } from '../../events/user'
@@ -14,9 +14,10 @@ import { WithTooltip } from '../generic/WithTooltip'
 
 export const ProjectTreeHeader = () => {
   const { t } = useTranslation()
-  const selectedNode = useStore($selectedNode)
+  const selectedNode = useStore($currentNode)
   const canCreateNode = useStore($canCreateNode)
   const document = useStore($documentStore)
+
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <div className="text-truncate editable">{document.name}</div>

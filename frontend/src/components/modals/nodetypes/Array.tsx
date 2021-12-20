@@ -8,11 +8,11 @@ import { FormOptions } from '~forms/FormOptions'
 import { TextInput } from '~forms/TextInput'
 import { TreeInput } from '~forms/TreeInput'
 import { DataSource } from '~shared/types/forms/nodetypes/arraySettings'
-import { $selectedNode } from '~stores/$selectedNode'
+import { $currentNode } from '~stores/$selectedNode'
 
 const Array = () => {
   const { t } = useTranslation()
-  const tree = useStore($selectedNode)
+  const tree = useStore($currentNode)
   const { watch } = useFormContext<Record<string, string>>()
 
   const selected = watch('dataSource')

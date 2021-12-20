@@ -60,8 +60,8 @@ export type SelectedNode = {
 
 const NewNode: ModalFC = ({ close }) => {
   const arrayNode = useStore($selectedArrayNode)
-  const { state } = useLocation<SelectedNode>()
   const canCreateNode = useStore($canCreateNode)
+  const { state } = useLocation<SelectedNode>()
   const selectedNode = state?.selectedNode
   const form = useForm<NewNodeType>({
     resolver: zodResolver(TNewNode),

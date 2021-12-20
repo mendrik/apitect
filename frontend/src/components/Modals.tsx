@@ -2,7 +2,7 @@ import { useStore } from 'effector-react'
 import React, { Suspense, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ModalNames } from '~shared/types/modals'
-import { $selectedNode } from '~stores/$selectedNode'
+import { $currentNode } from '~stores/$selectedNode'
 
 import { closeModal, openModal } from '../events/modals'
 import { addParams, removeParams } from '../utils/url'
@@ -11,7 +11,7 @@ import { Loader } from './generic/Loader'
 
 export const Modals = () => {
   const navigate = useNavigate()
-  const selectedNode = useStore($selectedNode)
+  const selectedNode = useStore($currentNode)
 
   useEffect(() => {
     const openSub = openModal.watch(config => {

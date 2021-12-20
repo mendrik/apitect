@@ -25,6 +25,7 @@
 
 # Todo
 
+- unify selectedvaluenode and selectednode
 - ReferenceInput (gets a list of inputs (ref, rest, db) + ramda code -> final value)
 - ColorInput
 - RichtextInput

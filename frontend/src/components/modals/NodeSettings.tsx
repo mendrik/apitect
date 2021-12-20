@@ -21,7 +21,7 @@ import { ZObjectSettings } from '~shared/types/forms/nodetypes/objectSettings'
 import { ZReferenceSettings } from '~shared/types/forms/nodetypes/referenceSettings'
 import { ZRichTextSettings } from '~shared/types/forms/nodetypes/richTextSettings'
 import { ZStringSettings } from '~shared/types/forms/nodetypes/stringSettings'
-import { $selectedNode } from '~stores/$selectedNode'
+import { $currentNode } from '~stores/$selectedNode'
 
 import { updateNodeSettingsFx } from '../../events/tree'
 import { removeParams } from '../../utils/url'
@@ -105,7 +105,7 @@ const resolver = (nodeType: NodeType) => {
 }
 
 const NodeSettings: ModalFC = ({ close }) => {
-  const selectedNode = useStore($selectedNode)
+  const selectedNode = useStore($currentNode)
   const navigate = useNavigate()
   const { state } = useLocation<NodeSettingsType>()
 
