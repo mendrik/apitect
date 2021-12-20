@@ -19,7 +19,7 @@ import { getStringValidator } from '~shared/validators/stringValidator'
 import { enums } from '../api/enums'
 import { allNodeSettings } from '../api/nodeSettings'
 import { getLastDocument } from './document'
-import { toTreeNode } from './tree'
+import { getTree, toTreeNode } from './tree'
 
 type ValidationOptions = {
   enumerations: Record<string, Enum>
@@ -73,7 +73,7 @@ const getNodeValidator = async (
   email: string,
   nodeId: NodeId
 ): Promise<ZodObject<any>> => {
-  const tree = await getLastDocument(docId).then(prop('tree')).then(toTreeNode)
+  const tree = await getTree(docId)
   const node = tree.first(propEq('id', nodeId))
   if (node == null) {
     throw Error(`Node ${nodeId} not found in document ${docId}.`)

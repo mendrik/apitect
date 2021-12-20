@@ -28,3 +28,6 @@ export const withTree =
 export const validateTree = <T extends Node>(ops: ChildOperation<T>): ChildOperation<T> => ops
 
 export const toTreeNode = (node: Node) => TreeNode.from<Node, 'children'>('children')(node)
+
+export const getTree = (docId: string): Promise<TreeNode<Node>> =>
+  getLastDocument(docId).then(prop('tree')).then(toTreeNode)
