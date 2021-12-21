@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "deploy": "",
     "database": "docker-compose up",
     "start": "tsnd --respawn -r tsconfig-paths/register src/server.ts",
     "test": "jest",
