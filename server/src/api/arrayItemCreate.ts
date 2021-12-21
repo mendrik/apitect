@@ -1,14 +1,13 @@
 import { pathOr, prop, propEq } from 'ramda'
 import { v4 as uuid } from 'uuid'
 import { ServerApiMethod } from '~shared/apiResponse'
-import { NodeId, Node } from '~shared/types/domain/node'
+import { Node, NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { ArraySettings, DataSource } from '~shared/types/forms/nodetypes/arraySettings'
 import { logger } from '~shared/utils/logger'
 import { byProp } from '~shared/utils/ramda'
 
 import { getTree } from '../services'
-import { collection, Collections } from '../services/database'
 import { getNodeValidator } from '../services/validation'
 import { nodeSettings } from './nodeSettings'
 import { valueList } from './valueList'
@@ -40,8 +39,9 @@ export const arrayItemCreate: ServerApiMethod<'arrayItemCreate'> = async ({
       .then(byProp('nodeId'))
 
     const item = node.map((n: Node) => values[n.id]!.value)
-
     const validator = await getNodeValidator(docId, email, node.value.id)
+
+    /*
     await collection(Collections.values).findOneAndUpdate(
       {
         docId,
@@ -51,7 +51,8 @@ export const arrayItemCreate: ServerApiMethod<'arrayItemCreate'> = async ({
       },
       { $set: { arrayItemId } }
     )
+    */
+    logger.info('created', { docId, arrayNodeId, tag, arraySettings })
   }
-  logger.info('created', { docId, arrayNodeId, tag, arraySettings })
   return undefined
 }

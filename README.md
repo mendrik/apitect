@@ -12,16 +12,18 @@
 # Features
 
 - download as via rest api: content-type: Json, Typescript, Swagger config
-- values can have user ownership or tag
-- tags can extend each other
-- all values are inline editable
-- Mass editing on object nodes for single line editors
++ values can have user ownership or tag
++ tags can extend each other
++ all values are inline editable
 - Login endpoint for user collections -> returns jwt
 - Tags are sent as http headers
 - CRUD endpoints
 - Array needs ID field for CRUD operations
 - Value column head has extends/copy dropdown
 - publish only possible when doc is valid, otherwise API gives 404
+- 
+- date restrictions only future/past etc?
+- Value type for event like value with repetition (cron)?
 
 # Todo
 

@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import { useStoreMap } from 'effector-react'
-import { cond, equals, pipe, unless } from 'ramda'
+import { cond, equals, pipe, T } from 'ramda'
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
@@ -40,7 +40,14 @@ export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) =>
   const { saveValue, error, views } = useEditorTools(node, value, tag, validator)
 
   const oldValue = value?.value ? format(value?.value, 'yyyy-MM-dd') : ''
-  const saveAsDate = pipe(target.value, unless(equals(oldValue), saveValue))
+
+  const saveAsDate = pipe(
+    target.value,
+    cond([
+      [equals(oldValue), views.displayView],
+      [T, saveValue]
+    ])
+  )
 
   const keyMap = cond([
     [codeIn('Tab', 'Enter'), saveAsDate],
