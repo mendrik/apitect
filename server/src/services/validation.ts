@@ -1,4 +1,4 @@
-import { cond, prop, propEq, propOr, propSatisfies, T } from 'ramda'
+import { cond, propEq, propOr, propSatisfies, T } from 'ramda'
 import { included } from 'ramda-adjunct'
 import { boolean, object, ZodObject, ZodType } from 'zod'
 import { TreeNode } from '~shared/algebraic/treeNode'
@@ -18,8 +18,7 @@ import { getStringValidator } from '~shared/validators/stringValidator'
 
 import { enums } from '../api/enums'
 import { allNodeSettings } from '../api/nodeSettings'
-import { getLastDocument } from './document'
-import { getTree, toTreeNode } from './tree'
+import { getTree } from './tree'
 
 type ValidationOptions = {
   enumerations: Record<string, Enum>
@@ -68,7 +67,8 @@ const getZodObject = (
   )
   return acc
 }
-const getNodeValidator = async (
+
+export const getNodeValidator = async (
   docId: string,
   email: string,
   nodeId: NodeId
