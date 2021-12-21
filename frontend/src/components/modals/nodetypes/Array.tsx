@@ -7,7 +7,7 @@ import { FieldSet } from '~forms/FieldSet'
 import { FormOptions } from '~forms/FormOptions'
 import { TextInput } from '~forms/TextInput'
 import { TreeInput } from '~forms/TreeInput'
-import { DataSource } from '~shared/types/forms/nodetypes/arraySettings'
+import { DataSourceType } from '~shared/types/forms/nodetypes/arraySettings'
 import { $currentNode } from '~stores/$selectedNode'
 
 const Array = () => {
@@ -19,12 +19,12 @@ const Array = () => {
 
   return (
     <FieldSet title="modals.nodeSettings.array.dataSource">
-      <FormOptions name="dataSource" values={values(DataSource)}>
+      <FormOptions name="dataSource" values={values(DataSourceType)}>
         <div className="d-grid gap-2">
-          <label htmlFor={`dataSource-${DataSource.Internal}`}>
+          <label htmlFor={`dataSource-${DataSourceType.Internal}`}>
             {t('modals.nodeSettings.array.internal.title')}
           </label>
-          {selected === DataSource.Internal && (
+          {selected === DataSourceType.Internal && (
             <TreeInput
               tree={tree!}
               containerClasses="pb-2"
@@ -35,10 +35,10 @@ const Array = () => {
           )}
         </div>
         <div className="d-grid gap-2">
-          <label htmlFor={`dataSource-${DataSource.Database}`}>
+          <label htmlFor={`dataSource-${DataSourceType.Database}`}>
             {t('modals.nodeSettings.array.database.title')}
           </label>
-          {selected === DataSource.Database && (
+          {selected === DataSourceType.Database && (
             <>
               <TextInput label="form.fields.dbUrl" name="dbUrl" />
               <TextInput label="form.fields.dbUser" name="dbUser" autoComplete="off" />

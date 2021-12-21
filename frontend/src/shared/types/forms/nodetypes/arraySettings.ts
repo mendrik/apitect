@@ -5,14 +5,14 @@ import { idCodec } from '~shared/codecs/idCodec'
 import { NodeType } from '../../domain/nodeType'
 import { ZNodeSettingsBase } from './nodeSettingsBase'
 
-export enum DataSource {
+export enum DataSourceType {
   Internal = 'Internal',
   Database = 'Database'
 }
 
 const ZInternal = ZNodeSettingsBase.merge(
   object({
-    dataSource: literal(DataSource.Internal).default(DataSource.Internal),
+    dataSource: literal(DataSourceType.Internal).default(DataSourceType.Internal),
     nodeType: literal(NodeType.Array),
     displayNode: idCodec
   })
@@ -20,7 +20,7 @@ const ZInternal = ZNodeSettingsBase.merge(
 
 const ZDatabase = ZNodeSettingsBase.merge(
   object({
-    dataSource: literal(DataSource.Database),
+    dataSource: literal(DataSourceType.Database),
     nodeType: literal(NodeType.Array),
     displayColumn: string(),
     dbUrl: string(),

@@ -1,9 +1,12 @@
 import { Id } from '~shared/types/domain/id'
 
+export type ListResult<T> = {
+  count: number
+  items: T[]
+}
+
 export type DataSource = {
-  upsertItem: <T extends object>(item: T) => Id
-  deleteItem: (id: Id) => void
-  count: () => number
-  search: <T>(key: string) => T[]
-  list: <T>(index: number, count: number) => T[]
+  upsertItem: <T extends object>(item: T) => Promise<Id>
+  deleteItem: (id: Id) => Promise<void>
+  list: <T>(index: number, count: number, searchKey?: string) => Promise<ListResult<T>>
 }

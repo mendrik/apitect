@@ -1,3 +1,4 @@
+import { ZodVoid } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
 import { ApiSchema } from '../api'

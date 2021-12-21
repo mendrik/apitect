@@ -1,6 +1,7 @@
-import { cond, propEq, propOr, propSatisfies, T } from 'ramda'
+import { cond, propEq, propOr, propSatisfies, T as Tr } from 'ramda'
 import { included } from 'ramda-adjunct'
-import { boolean, object, ZodObject, ZodType } from 'zod'
+import { boolean, object, ZodObject } from 'zod'
+import { ZodRawShape } from 'zod/lib/types'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Enum } from '~shared/types/domain/enums'
 import { Node, NodeId } from '~shared/types/domain/node'
@@ -29,7 +30,7 @@ const getValidator = (
   nodeType: NodeType,
   options: ValidationOptions,
   nodeSettings?: NodeSettings
-): ZodType<any> => {
+) => {
   switch (nodeType) {
     case NodeType.Boolean:
       return boolean()
@@ -50,11 +51,11 @@ const getValidator = (
   }
 }
 
-const getZodObject = (
-  acc: ZodObject<any>,
+const getZodObject = <T extends ZodRawShape>(
+  acc: ZodObject<T>,
   nodes: TreeNode<Node>[],
   options: ValidationOptions
-): ZodObject<any> => {
+): ZodObject<T> => {
   nodes.forEach(
     cond([
       [
@@ -62,7 +63,12 @@ const getZodObject = (
         (n: TreeNode<Node>) =>
           acc.setKey(n.value.name, getZodObject(object({}), n.children, options))
       ],
-      [T, (n: TreeNode<Node>) => acc.setKey(n.value.name, getValidator(n.value.nodeType, options))]
+      [
+        Tr,
+        (n: TreeNode<Node>) => {
+          acc.setKey(n.value.name, getValidator(n.value.nodeType, options))
+        }
+      ]
     ])
   )
   return acc
