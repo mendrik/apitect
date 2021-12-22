@@ -1,0 +1,37 @@
+{
+  "id" : "61825e5fddfc3057694b6ec3",
+  "name" : "root",
+  "nodeType" : "OBJECT",
+  "children" : [
+    {
+      "id" : "674ae72f-cec7-468d-9158-1c0f9ea81c44",
+      "name" : "Name",
+      "nodeType" : "STRING",
+      "children" : []
+    },
+    {
+      "id" : "ae20e085-8394-4df9-aa03-7641abf38f17",
+      "name" : "Switch",
+      "nodeType" : "BOOLEAN",
+      "children" : []
+    },
+    {
+      "id" : "3618dec0-0e22-4146-bd71-b02070d31fb6",
+      "name" : "Date",
+      "nodeType" : "DATE",
+      "children" : []
+    },
+    {
+      "id" : "dac486c4-83a3-4068-811e-3978f8da2ad2",
+      "name" : "Dropdown",
+      "nodeType" : "ENUM",
+      "children" : []
+    },
+    {
+      "id" : "0ef4be3d-2497-4f63-a848-fccc0127664c",
+      "name" : "Price",
+      "nodeType" : "NUMBER",
+      "children" : []
+    }
+  ]
+}
