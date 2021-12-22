@@ -9,7 +9,9 @@ import { apiResponse, socketEstablished } from '../events/messages'
 export const WithSocket = ({ children }: Jsx) => {
   const [jwt] = useLocalStorage<string>('jwt')
   const { sendJsonMessage, readyState, lastMessage } = useWebSocket('ws://127.0.0.1:3001', {
-    protocols: jwt
+    protocols: jwt,
+    reconnectAttempts: 3,
+    retryOnError: true
   })
 
   useEffect(() => {
