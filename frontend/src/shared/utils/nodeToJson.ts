@@ -1,4 +1,5 @@
-import { cond, pipe, propEq, propOr, reduce, T as Otherwise } from 'ramda'
+import { cond, pipe, propOr, propSatisfies, reduce, T as Otherwise } from 'ramda'
+import { included } from 'ramda-adjunct'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
@@ -9,13 +10,12 @@ export const nodeToJson = (node: TreeNode<Node>, values: Record<NodeId, Value>) 
 
   const toJson: (node: Node) => object = cond([
     [
-      propEq('nodeType', NodeType.Object),
+      propSatisfies(included([NodeType.Array, NodeType.Object]), 'nodeType'),
       pipe<any, Node[], any>(
         propOr([], 'children'),
         reduce((acc, cur) => ({ ...acc, [cur.name]: toJson(cur) }), {})
       )
     ],
-    [propEq('nodeType', NodeType.Array), getArrayContent],
     [Otherwise, (node: Node) => values[node.id]?.value]
   ])
 

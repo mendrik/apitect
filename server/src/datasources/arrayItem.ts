@@ -2,6 +2,7 @@ import { pathOr, prop, propEq } from 'ramda'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
+import { logger } from '~shared/utils/logger'
 import { nodeToJson } from '~shared/utils/nodeToJson'
 import { byProp } from '~shared/utils/ramda'
 
@@ -28,9 +29,7 @@ export const getArrayItem = async <T>(
   })
     .then(prop('values'))
     .then(byProp('nodeId'))
-
   const item = nodeToJson(node, values)
-
   const validator = await getNodeValidator(docId, email, node.value.id)
   return validator.parse(item) as T
 }

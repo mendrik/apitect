@@ -1,7 +1,6 @@
+import { cond, propEq } from 'ramda'
 import { ServerApiMethod } from '~shared/apiResponse'
-import { NodeType } from '~shared/types/domain/nodeType'
 import { DataSourceType } from '~shared/types/forms/nodetypes/arraySettings'
-import { logger } from '~shared/utils/logger'
 
 import { getArrayItem } from '../datasources/arrayItem'
 import { DataSource } from '../datasources/datasource'
@@ -16,13 +15,11 @@ export const arrayItemCreate: ServerApiMethod<'arrayItemCreate'> = async ({
 }) => {
   const item: any = await getArrayItem(docId, email, tag, arrayNodeId)
   const arraySettings = await nodeSettings({ docId, email, payload: arrayNodeId })
-  const dataSource: DataSource =
-    arraySettings?.nodeType === NodeType.Array &&
-    arraySettings.dataSource === DataSourceType.Internal
-      ? internalDataSource(arrayNodeId)
-      : externalDataSource(arrayNodeId)
+  const dataSource: DataSource = cond([
+    [propEq<string>('dataSource', DataSourceType.Internal), () => internalDataSource(arrayNodeId)],
+    [propEq<string>('dataSource', DataSourceType.Database), () => externalDataSource(arrayNodeId)]
+  ])(arraySettings!)
   await dataSource.upsertItem(item)
-  logger.info('created', { docId, arrayNodeId, tag, arraySettings })
   return {
     values: []
   }

@@ -11,7 +11,7 @@
 
 # Features
 
-- download as via rest api: content-type: Json, Typescript, Swagger config
+- download as via rest api: content-type: Json, Typescript, Swagger config, capitalize/camelcase-keys
 + values can have user ownership or tag
 + tags can extend each other
 + all values are inline editable
