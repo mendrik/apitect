@@ -7,7 +7,7 @@ import { byProp } from '~shared/utils/ramda'
 
 import { valueList } from '../api/valueList'
 import { getTree } from '../services'
-import { getNodeValidator } from '../services/validation'
+import { nodeToValidator } from '../services/validation'
 
 export const getArrayItem = async <T>(
   docId: Id,
@@ -29,7 +29,7 @@ export const getArrayItem = async <T>(
     .then(prop('values'))
     .then(byProp('nodeId'))
   const item = nodeToJson(node, values)
-  const validator = await getNodeValidator(docId, email, arrayNodeId)
+  const validator = await nodeToValidator(node, docId, email)
   const res = validator.parse(item) as T
   console.info('Validated item', res)
   return res

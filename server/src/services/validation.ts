@@ -1,7 +1,5 @@
-import { cond, propEq, propOr, propSatisfies, T as Otherwise } from 'ramda'
-import { included } from 'ramda-adjunct'
-import { boolean, object, ZodObject } from 'zod'
-import { ZodRawShape } from 'zod/lib/types'
+import { cond, propEq, propOr, reduce, T as Otherwise } from 'ramda'
+import { array, boolean, object, ZodObject } from 'zod'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Enum } from '~shared/types/domain/enums'
 import { Node, NodeId } from '~shared/types/domain/node'
@@ -19,74 +17,53 @@ import { getStringValidator } from '~shared/validators/stringValidator'
 
 import { enums } from '../api/enums'
 import { allNodeSettings } from '../api/nodeSettings'
-import { getTree } from './tree'
 
-type ValidationOptions = {
-  enumerations: Record<string, Enum>
-  nodeSettings: Record<string, NodeSettings>
-}
-
-const getValidator = (
-  nodeType: NodeType,
-  options: ValidationOptions,
-  nodeSettings?: NodeSettings
-) => {
-  switch (nodeType) {
-    case NodeType.Boolean:
-      return boolean()
-    case NodeType.Number:
-      return getNumberValidator(nodeSettings as NumberSettings)
-    case NodeType.Date:
-      return getDateValidator(nodeSettings as DateSettings)
-    case NodeType.String:
-      return getStringValidator(nodeSettings as StringSettings)
-    case NodeType.Enum:
-      const enumSettings = nodeSettings as EnumSettings | undefined
-      const e = enumSettings?.enumeration
-        ? options.enumerations[enumSettings?.enumeration]
-        : undefined
-      return getEnumValidator(e, enumSettings)
-    default:
-      throw Error(`No validator found for nodeType ${nodeType}`)
-  }
-}
-
-const getZodObject = <T extends ZodRawShape>(
-  acc: ZodObject<T>,
-  nodes: TreeNode<Node>[],
-  options: ValidationOptions
-): ZodObject<T> => {
-  nodes.forEach(
-    cond([
-      [
-        propSatisfies(included([NodeType.Object, NodeType.Array]), 'nodeType'),
-        (n: TreeNode<Node>) =>
-          acc.setKey(n.value.name, getZodObject(object({}), n.children, options))
-      ],
-      [
-        Otherwise,
-        (n: TreeNode<Node>) => {
-          acc.setKey(n.value.name, getValidator(n.value.nodeType, options))
-        }
-      ]
-    ])
-  )
-  return acc
-}
-
-export const getNodeValidator = async (
+export const nodeToValidator = async (
+  node: TreeNode<Node>,
   docId: string,
-  email: string,
-  nodeId: NodeId
+  email: string
 ): Promise<ZodObject<any>> => {
-  const tree = await getTree(docId)
-  const node = tree.first(propEq('id', nodeId))
-  if (node == null) {
-    throw Error(`Node ${nodeId} not found in document ${docId}.`)
-  }
-  const enumerations = await enums({ docId, email })
+  const enumerations: Record<string, Enum> = await enums({ docId, email })
     .then<Enum[]>(propOr([], 'enums'))
-    .then(byProp<Enum, 'name'>('name'))
-  const nodeSettings = await allNodeSettings(docId).then(byProp<NodeSettings, 'nodeId'>('nodeId'))
-  return getZodObject(object({}), node.children, { enumerations, nodeSettings })
+    .then(byProp('name'))
+
+  const reducer = (acc: ZodObject<any>, cur: Node) => acc.setKey(cur.name, toValidator(cur))
+
+  const nodeSettings: Record<NodeId, NodeSettings> = await allNodeSettings(docId).then(
+    byProp('nodeId')
+  )
+
+  const primitiveValidator = (node: Node) => {
+    const settings: NodeSettings | undefined = nodeSettings[node.id]
+    switch (node.nodeType) {
+      case NodeType.Boolean:
+        return boolean()
+      case NodeType.Number:
+        return getNumberValidator(settings as NumberSettings)
+      case NodeType.Date:
+        return getDateValidator(settings as DateSettings)
+      case NodeType.String:
+        return getStringValidator(settings as StringSettings)
+      case NodeType.Enum:
+        const enumSettings = settings as EnumSettings | undefined
+        const e: Enum | undefined = enumerations[enumSettings?.enumeration ?? '']
+        return getEnumValidator(e, enumSettings)
+      default:
+        throw Error(`No validator found for nodeType ${node.nodeType}`)
+    }
+  }
+
+  const toValidator: (node: Node) => ZodObject<any> = cond<[Node], any>([
+    [
+      propEq('nodeType', NodeType.Object),
+      (node: Node) => reduce(reducer, object({}), node.children)
+    ],
+    [
+      propEq('nodeType', NodeType.Array),
+      (node: Node) => array(toValidator({ ...node, nodeType: NodeType.Object }))
+    ],
+    [Otherwise, primitiveValidator]
+  ]) as any
+
+  return toValidator(node.extract())
 }

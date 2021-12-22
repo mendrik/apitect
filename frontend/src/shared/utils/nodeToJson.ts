@@ -6,7 +6,7 @@ import { NodeType } from '~shared/types/domain/nodeType'
 import { Value } from '~shared/types/domain/values/value'
 
 export const nodeToJson = (node: TreeNode<Node>, values: Record<NodeId, Value>) => {
-  const getArrayContent = (child: Node) => []
+  const value = (node: Node) => values[node.id]?.value
 
   const toJson: (node: Node) => object = cond([
     [
@@ -16,7 +16,7 @@ export const nodeToJson = (node: TreeNode<Node>, values: Record<NodeId, Value>) 
         reduce((acc, cur) => ({ ...acc, [cur.name]: toJson(cur) }), {})
       )
     ],
-    [Otherwise, (node: Node) => values[node.id]?.value]
+    [Otherwise, value]
   ])
 
   return toJson(node.extract())
