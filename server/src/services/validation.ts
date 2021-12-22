@@ -1,5 +1,5 @@
 import { cond, propEq, propOr, reduce, T as Otherwise } from 'ramda'
-import { array, boolean, object, ZodObject } from 'zod'
+import { array, boolean, object, ZodObject, ZodSchema } from 'zod'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Enum } from '~shared/types/domain/enums'
 import { Node, NodeId } from '~shared/types/domain/node'
@@ -18,11 +18,11 @@ import { getStringValidator } from '~shared/validators/stringValidator'
 import { enums } from '../api/enums'
 import { allNodeSettings } from '../api/nodeSettings'
 
-export const nodeToValidator = async (
+export const nodeToValidator = async <T extends ZodSchema<any>>(
   node: TreeNode<Node>,
   docId: string,
   email: string
-): Promise<ZodObject<any>> => {
+): Promise<T> => {
   const enumerations: Record<string, Enum> = await enums({ docId, email })
     .then<Enum[]>(propOr([], 'enums'))
     .then(byProp('name'))
@@ -53,7 +53,7 @@ export const nodeToValidator = async (
     }
   }
 
-  const toValidator: (node: Node) => ZodObject<any> = cond<[Node], any>([
+  const toValidator: (node: Node) => T = cond<[Node], any>([
     [
       propEq('nodeType', NodeType.Object),
       (node: Node) => reduce(reducer, object({}), node.children)

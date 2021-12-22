@@ -1,4 +1,5 @@
 import { pathOr, prop, propEq } from 'ramda'
+import { AnyZodObject, ZodArray } from 'zod'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
@@ -29,8 +30,6 @@ export const getArrayItem = async <T>(
     .then(prop('values'))
     .then(byProp('nodeId'))
   const item = nodeToJson(node, values)
-  const validator = await nodeToValidator(node, docId, email)
-  const res = validator.parse(item) as T
-  console.info('Validated item', res)
-  return res
+  const validator: ZodArray<AnyZodObject> = await nodeToValidator(node, docId, email)
+  return validator.element.parse(item) as T
 }
