@@ -1,0 +1,27 @@
+[
+  {
+    "nodeId": "61825e5fddfc3057694b6ec3",
+    "name": "root",
+    "nodeType": "OBJECT"
+  },
+  {
+    "nodeId": "674ae72f-cec7-468d-9158-1c0f9ea81c44",
+    "value": "Andreas"
+  },
+  {
+    "nodeId": "ae20e085-8394-4df9-aa03-7641abf38f17",
+    "value": false
+  },
+  {
+    "nodeId": "3618dec0-0e22-4146-bd71-b02070d31fb6",
+    "value": "2021-12-22T12:07:42.074Z"
+  },
+  {
+    "nodeId": "dac486c4-83a3-4068-811e-3978f8da2ad2",
+    "value": "Option-1"
+  },
+  {
+    "nodeId": "0ef4be3d-2497-4f63-a848-fccc0127664c",
+    "value": 12345
+  }
+]
