@@ -2,7 +2,6 @@ import { pathOr, prop, propEq } from 'ramda'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
-import { logger } from '~shared/utils/logger'
 import { nodeToJson } from '~shared/utils/nodeToJson'
 import { byProp } from '~shared/utils/ramda'
 
