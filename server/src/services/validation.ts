@@ -1,4 +1,4 @@
-import { cond, propEq, propOr, propSatisfies, T as Tr } from 'ramda'
+import { cond, propEq, propOr, propSatisfies, T as Otherwise } from 'ramda'
 import { included } from 'ramda-adjunct'
 import { boolean, object, ZodObject } from 'zod'
 import { ZodRawShape } from 'zod/lib/types'
@@ -64,7 +64,7 @@ const getZodObject = <T extends ZodRawShape>(
           acc.setKey(n.value.name, getZodObject(object({}), n.children, options))
       ],
       [
-        Tr,
+        Otherwise,
         (n: TreeNode<Node>) => {
           acc.setKey(n.value.name, getValidator(n.value.nodeType, options))
         }

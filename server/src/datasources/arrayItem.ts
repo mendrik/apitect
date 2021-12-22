@@ -29,6 +29,8 @@ export const getArrayItem = async <T>(
     .then(prop('values'))
     .then(byProp('nodeId'))
   const item = nodeToJson(node, values)
-  const validator = await getNodeValidator(docId, email, node.value.id)
-  return validator.parse(item) as T
+  const validator = await getNodeValidator(docId, email, arrayNodeId)
+  const res = validator.parse(item) as T
+  console.info('Validated item', res)
+  return res
 }
