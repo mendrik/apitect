@@ -21,10 +21,13 @@ export enum Views {
 }
 
 export const Text = styled.div`
-  white-space: pre;
+  max-width: 100%;
   width: 100%;
   height: 24px;
   padding-left: 3px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `
 
 export const useEditorTools = (

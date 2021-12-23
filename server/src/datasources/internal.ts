@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
 
@@ -14,6 +15,7 @@ const dataSource = (arrayNodeId: NodeId): DataSource => ({
     })
   },
   upsertItem<T>(item: T): Promise<Id> {
+    const arrayItemId = uuid()
     return Promise.resolve('')
   }
 })
