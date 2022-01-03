@@ -1,9 +1,9 @@
 import { literal, number, object, string, union, ZodLiteral, ZodObject, ZodString } from 'zod'
 import { TypeOf } from 'zod/lib/types'
+import { ApiMethod, ApiMethods, ApiOutput, ApiParam, ApiResult } from '~shared/apiTypes'
 
 import { ApiSchema } from './api'
 import { idCodec } from './codecs/idCodec'
-import { ApiMethod, ApiMethods, ApiOutput, ApiParam, ApiResult } from './types/api'
 import { UnionToTuple } from './types/generic'
 
 export type ServerParam<T extends ApiMethod> = ApiParam<T> extends undefined

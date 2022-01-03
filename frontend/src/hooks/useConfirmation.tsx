@@ -25,6 +25,7 @@ export const useConfirmation = (
     close()
     onConfirm()
   })
+
   const refCancel = useOnActivate<HTMLButtonElement>(() => {
     close()
   })

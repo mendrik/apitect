@@ -1,5 +1,5 @@
 import { ServerApiMethod } from '~shared/apiResponse'
-import { ApiMethod } from '~shared/types/api'
+import { ApiMethod } from '~shared/apiTypes'
 
 import { arrayItemCreate } from './arrayItemCreate'
 import { enums } from './enums'

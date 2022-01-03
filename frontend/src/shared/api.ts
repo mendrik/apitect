@@ -1,4 +1,4 @@
-import { undefined as undef, ZodVoid } from 'zod'
+import { undefined as noArgs } from 'zod'
 import { ZEnums } from '~shared/types/domain/enums'
 import { ZValue } from '~shared/types/domain/values/value'
 import { ZValueBase } from '~shared/types/domain/values/valueBase'
@@ -21,18 +21,18 @@ export const ApiSchema = {
   nodeCreate: [TNewNode, TNodeCreated],
   nodeDelete: [idCodec, TNodeDeleted],
   nodeSettings: [idCodec, ZNodeSettings.nullable()],
-  project: [undef(), ZProject],
-  projectUsersSettings: [undef(), ZProjectUsersSettings.nullable()],
-  tagsSettings: [undef(), ZTagsSettings.nullable()],
+  project: [noArgs(), ZProject],
+  projectUsersSettings: [noArgs(), ZProjectUsersSettings.nullable()],
+  tagsSettings: [noArgs(), ZTagsSettings.nullable()],
   updateNodeSettings: [ZNodeSettings, ZNode],
   updateProjectUsersSettings: [ZProjectUsersSettings, ZProjectUsersSettings],
   updateTagsSettings: [ZTagsSettings, ZTagsSettings],
   updateUserSettings: [ZUserSettings, ZUserSettings],
-  userSettings: [undef(), ZUserSettings.nullable()],
+  userSettings: [noArgs(), ZUserSettings.nullable()],
   valueDelete: [ZValueBase, ZValue],
   valueList: [ZValueListRequest, ZValueList],
   valueUpdate: [ZValue, ZValue],
-  enums: [undef(), ZEnums.nullable()],
+  enums: [noArgs(), ZEnums.nullable()],
   updateEnums: [ZEnums, ZEnums],
   arrayItemCreate: [ZNewArrayItemRequest, ZValueList]
 } as const

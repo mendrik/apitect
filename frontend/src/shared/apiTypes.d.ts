@@ -1,8 +1,7 @@
-import { ZodVoid } from 'zod'
 import { TypeOf } from 'zod/lib/types'
 
-import { ApiSchema } from '../api'
-import { Primitives, UnionToTuple } from './generic'
+import { ApiSchema } from './api'
+import { Primitives, UnionToTuple } from './types/generic'
 
 export type ApiSchema = typeof ApiSchema
 export type ApiMethod = keyof ApiSchema

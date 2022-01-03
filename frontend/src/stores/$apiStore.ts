@@ -1,9 +1,9 @@
 import { createStore, sample } from 'effector'
 import { v4 as uuid } from 'uuid'
 import { ApiSchema } from '~shared/api'
+import { ZApiRequest } from '~shared/apiRequest'
 import { ApiError, ApiResponse, ZApiResponse } from '~shared/apiResponse'
-import { Api, ApiMethod } from '~shared/types/api'
-import { ZApiRequest } from '~shared/types/apiRequest'
+import { Api, ApiMethod } from '~shared/apiTypes'
 import { logger } from '~shared/utils/logger'
 
 import { apiResponse, socketEstablished } from '../events/messages'

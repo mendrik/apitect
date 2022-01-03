@@ -1,10 +1,10 @@
 import { literal, object, union, ZodLiteral, ZodObject, ZodString } from 'zod'
 import { TypeOf } from 'zod/lib/types'
+import { ApiInput, ApiMethod, ApiMethods } from '~shared/apiTypes'
 
-import { ApiSchema } from '../api'
-import { idCodec } from '../codecs/idCodec'
-import type { ApiInput, ApiMethod, ApiMethods } from './api'
-import { UnionToTuple } from './generic'
+import { ApiSchema } from './api'
+import { idCodec } from './codecs/idCodec'
+import { UnionToTuple } from './types/generic'
 
 const apiMethods = Object.keys(ApiSchema) as ApiMethods
 

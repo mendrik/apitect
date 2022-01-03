@@ -1,7 +1,7 @@
 import { RefObject, useEffect } from 'react'
 import { Fn } from '~shared/types/generic'
 
-export const useFocusOutside = <T extends HTMLElement>(ref: RefObject<T>, handler: Fn): void => {
+export const useFocusOutside = <T extends HTMLElement>(ref: RefObject<T>, handler: Fn): void =>
   useEffect(() => {
     const $handler = (ev: Event) => {
       const ae = document.activeElement
@@ -16,4 +16,3 @@ export const useFocusOutside = <T extends HTMLElement>(ref: RefObject<T>, handle
       document.removeEventListener('click', $handler)
     }
   }, [ref, handler])
-}

@@ -12,7 +12,7 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { FormControl, Overlay } from 'react-bootstrap'
+import { Overlay } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useSet } from 'react-use'
@@ -133,6 +133,7 @@ export const TreeInput = <T extends WithId>({
         placement="bottom-start"
       >
         <NodeSelector hidden={!show}>
+          {/* todo
           <div className="mx-2">
             <FormControl
               className="w-100 m-auto mt-2"
@@ -142,6 +143,7 @@ export const TreeInput = <T extends WithId>({
               aria-label="Search"
             />
           </div>
+          */}
           <TreeInputContext.Provider
             value={{
               close,
