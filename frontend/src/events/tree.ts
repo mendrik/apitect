@@ -1,7 +1,7 @@
 import { createEffect, createEvent, sample } from 'effector'
 import { tap } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { Api } from '~shared/types/api'
+import { Api } from '~shared/apiTypes'
 import { Node } from '~shared/types/domain/node'
 import { ModalNames } from '~shared/types/modals'
 import { $api } from '~stores/$apiStore'

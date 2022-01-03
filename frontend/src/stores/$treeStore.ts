@@ -1,7 +1,7 @@
 import { createEvent, createStore, sample, Store } from 'effector'
 import { isNil, prop, propEq, unless } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { ApiResult } from '~shared/types/api'
+import { ApiResult } from '~shared/apiTypes'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { byProp } from '~shared/utils/ramda'

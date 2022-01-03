@@ -1,7 +1,8 @@
+import { NodeType } from '~shared/types/domain/nodeType'
+
 import { ZApiRequest } from './apiRequest'
-import { NodeType } from './domain/nodeType'
-import { ZNumberSettings } from './forms/nodetypes/numberSettings'
-import { StringValidationType, ZStringSettings } from './forms/nodetypes/stringSettings'
+import { ZNumberSettings } from './types/forms/nodetypes/numberSettings'
+import { StringValidationType, ZStringSettings } from './types/forms/nodetypes/stringSettings'
 
 describe('ApiRequest', () => {
   it('can parse string settings', () => {

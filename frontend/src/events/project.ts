@@ -1,6 +1,6 @@
 import { createEffect, sample } from 'effector'
 import { find, isNil, propEq, propOr, tap } from 'ramda'
-import { Api } from '~shared/types/api'
+import { Api } from '~shared/apiTypes'
 import { Tag } from '~shared/types/domain/tag'
 import { ArgFn } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'

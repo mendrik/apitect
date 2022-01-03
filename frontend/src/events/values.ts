@@ -1,5 +1,5 @@
 import { createEffect, createEvent, sample } from 'effector'
-import { Api } from '~shared/types/api'
+import { Api } from '~shared/apiTypes'
 import { $api } from '~stores/$apiStore'
 import { SelectedValue } from '~stores/$valuesStore'
 

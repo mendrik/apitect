@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import useProgress from '~hooks/useProgress'
-import type { FormApiMethod } from '~shared/types/api'
+import type { FormApiMethod } from '~shared/apiTypes'
 import { ExtendedError } from '~shared/types/extendedError'
 import { Fn } from '~shared/types/generic'
 

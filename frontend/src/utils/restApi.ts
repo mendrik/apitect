@@ -30,8 +30,7 @@ const request =
         throw await e.data.json()
       })
 
-const promiseCache = new PromiseCache('100ms')
-// const cachedRequest = <T>(req: () => Promise<T>) => promiseCache.get(req, req) as Promise<T>
+const promiseCache = new PromiseCache(100)
 
 export const get = request('get')
 export const post = request('post')
