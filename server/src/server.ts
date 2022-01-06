@@ -3,10 +3,10 @@ import Cors from 'fastify-cors'
 import Ws from 'fastify-websocket'
 import { logger } from '~shared/utils/logger'
 
-import { initDatabaseFx } from './services'
 import { initAuthentication } from './services/authentication'
 import { config } from './services/config'
 import { initWebsocket } from './services/websocket'
+import { initDatabaseFx } from './stores/$serverState'
 
 const fastify = Fastify({ logger: true })
 fastify.register(Ws)

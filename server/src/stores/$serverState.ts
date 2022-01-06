@@ -2,7 +2,7 @@ import { createEffect, createStore } from 'effector'
 import { MongoClient } from 'mongodb'
 import { Maybe } from '~shared/types/generic'
 
-import { connect } from './database'
+import { connect } from '../services/database'
 
 type ServerState = {
   database: Maybe<MongoClient>

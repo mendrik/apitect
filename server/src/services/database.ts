@@ -16,7 +16,7 @@ import { TagsSettings } from '~shared/types/forms/tagsSettings'
 import { UserSettings } from '~shared/types/forms/userSettings'
 import { ensure } from '~shared/utils/ramda'
 
-import { $serverState } from './$serverState'
+import { $serverState } from '../stores/$serverState'
 import { config } from './config'
 
 const dbName = `${config.MONGO_INITDB_DATABASE}`
