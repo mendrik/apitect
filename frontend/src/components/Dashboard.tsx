@@ -11,6 +11,7 @@ import { Column } from './specific/Column'
 import { ColumnHeader } from './specific/ColumnHeader'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
 import { SidePanel } from './specific/SidePanel'
+import { Toasts } from './specific/Toasts'
 import { VisualTree } from './specific/VisualTree'
 import { VisualValueList } from './specific/VisualValueList'
 
@@ -51,6 +52,7 @@ const Dashboard = () => {
           </ResizableTable>
         </SidePanel>
       </DndContext>
+      <Toasts />
     </AppFrame>
   )
 }
