@@ -12,7 +12,8 @@ const dataSource =
     },
     list<T>(index: number, count: number, searchKey: string | undefined): Promise<ListResult<T>> {
       return Promise.resolve({
-        count: 0,
+        count,
+        index,
         items: []
       })
     },

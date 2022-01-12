@@ -10,12 +10,12 @@ import { valueList } from '../api/valueList'
 import { getTree } from '../services'
 import { nodeToValidator } from '../services/validation'
 
-export const getArrayItem = async <T>(
+export const validateValues = async (
   docId: Id,
   email: string,
   tag: string,
   arrayNodeId: Id
-): Promise<T> => {
+): Promise<Record<NodeId, Value>> => {
   const tree = await getTree(docId)
   const node = tree.first(propEq<'id'>('id', arrayNodeId))
   if (node == null) {
@@ -31,5 +31,6 @@ export const getArrayItem = async <T>(
     .then(byProp('nodeId'))
   const item = nodeToJson(node, values)
   const validator: ZodArray<AnyZodObject> = await nodeToValidator(node, docId, email)
-  return validator.element.parse(item) as T
+  validator.element.parse(item)
+  return values
 }
