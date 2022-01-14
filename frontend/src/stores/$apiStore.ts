@@ -7,6 +7,7 @@ import { Api, ApiMethod } from '~shared/apiTypes'
 import { logger } from '~shared/utils/logger'
 
 import { apiResponse, socketEstablished } from '../events/messages'
+import { showNotification } from '../events/notifications'
 import { projectFx } from '../events/project'
 import { uninitialized } from '../utils/uninitialized'
 
@@ -15,6 +16,9 @@ export const $api = createStore<Api>(uninitialized())
 apiResponse.watch(data => {
   if (isError(data)) {
     logger.error(`Res[${data.status}]: ${data.message}`)
+    if (data.notificationType != null && data.title != null) {
+      showNotification({ type: data.notificationType, content: data.message, title: data.title })
+    }
   } else {
     console.debug(`Res[${data.method}]:`, data.payload)
   }

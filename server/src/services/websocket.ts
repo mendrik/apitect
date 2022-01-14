@@ -7,6 +7,7 @@ import { ApiError, ServerParam, ZApiError, ZApiResponse } from '~shared/apiRespo
 import { ApiMethod } from '~shared/apiTypes'
 import { Fn } from '~shared/types/generic'
 import { HttpError } from '~shared/types/httpError'
+import { NotificationError } from '~shared/types/notificationError'
 import { JwtPayload } from '~shared/types/response/token'
 import { logger } from '~shared/utils/logger'
 
@@ -26,6 +27,9 @@ const socketErrorHandler =
     }
     if (e instanceof HttpError) {
       return $send({ status: e.status, message: e.message, field: e.field })
+    }
+    if (e instanceof NotificationError) {
+      return $send({ status: 400, message: e.message, title: e.title, notificationType: e.type })
     }
     return $send({ status: 500, message: e.message })
   }

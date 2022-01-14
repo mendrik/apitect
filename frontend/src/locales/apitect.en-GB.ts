@@ -194,7 +194,9 @@ const en = {
         passwordWrong: 'Wrong password',
         passwordMustMatch: "Password doesn't match",
         invalidId: 'ID must be a valid UUID'
-      }
+      },
+      failed: 'Validation failed',
+      createItemInfo: 'Make sure all fields for the current array node are valid.'
     },
     tooltips: {
       import: 'Import',

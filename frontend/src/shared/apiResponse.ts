@@ -1,6 +1,17 @@
-import { literal, number, object, string, union, ZodLiteral, ZodObject, ZodString } from 'zod'
+import {
+  literal,
+  nativeEnum,
+  number,
+  object,
+  string,
+  union,
+  ZodLiteral,
+  ZodObject,
+  ZodString
+} from 'zod'
 import { TypeOf } from 'zod/lib/types'
 import { ApiMethod, ApiMethods, ApiOutput, ApiParam, ApiResult } from '~shared/apiTypes'
+import { NotificationType } from '~shared/types/domain/notification'
 
 import { ApiSchema } from './api'
 import { idCodec } from './codecs/idCodec'
@@ -38,7 +49,9 @@ export const ZApiError = object({
   id: idCodec,
   status: number(),
   message: string(),
-  field: string().optional()
+  field: string().optional(),
+  title: string().optional(),
+  notificationType: nativeEnum(NotificationType).optional()
 })
 
 export type ApiError = TypeOf<typeof ZApiError>

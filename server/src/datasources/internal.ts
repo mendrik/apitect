@@ -1,9 +1,10 @@
 import { v4 as uuid } from 'uuid'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
+import { NotificationType } from '~shared/types/domain/notification'
 import { ArraySettings } from '~shared/types/forms/nodetypes/arraySettings'
+import { notificationError } from '~shared/types/notificationError'
 
-import { collection, Collections } from '../services/database'
 import { DataSource, ListResult } from './datasource'
 
 const dataSource =
@@ -21,6 +22,11 @@ const dataSource =
     },
     async upsertItem<T>(item: T): Promise<Id> {
       const arrayItemId = uuid()
+      throw notificationError(
+        'validation.failed',
+        NotificationType.WARNING,
+        'validation.createItemInfo'
+      )
       // await collection(Collections.values).updateMany({}, {})
       return arrayItemId
     }
