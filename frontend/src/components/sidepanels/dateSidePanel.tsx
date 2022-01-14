@@ -76,7 +76,7 @@ export const DateSidePanel = () => {
       const m = ref.current.querySelector<HTMLDivElement>(`.day[data-date='${currentFmt}']`)
       m?.scrollIntoView({ block: 'center', inline: 'center' })
     }
-  }, [ref, selected])
+  }, [selectedValue])
 
   const months = useMemo(() => range(0, 12).map(m => setDate(setMonth(selected, m), 1)), [selected])
 
