@@ -3,9 +3,11 @@ import { useStore } from 'effector-react'
 import { prop } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { CSSProperties, useRef } from 'react'
+import { useUpdateEffect } from 'react-use'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 import { $selectedRow } from '~stores/$selectedNode'
+import { $tagStore } from '~stores/$tagStore'
 
 import { Draggable, Draggables } from '../../utils/draggables'
 
@@ -100,9 +102,11 @@ const ColResizer = styled.div`
 const bodyStyle = document.body.style
 
 const relativeWidths = (el: HTMLDivElement, columns: JSX.Element[]) => {
-  const width = el.clientWidth
+  const width = el.offsetWidth ?? 0
   const columnWidths = Array.from(el.children).slice(0, columns.length).map(prop('clientWidth'))
-  columnWidths.forEach((w, idx) => el.style.setProperty(`--col-width-${idx}`, `${w / width}fr`))
+  columnWidths.forEach((w, idx) =>
+    el.style.setProperty(`--col-width-${idx}`, `${(100 * w) / width}%`)
+  )
 }
 
 const fixedWidths = (el: HTMLDivElement, columns: JSX.Element[]) => {
@@ -114,6 +118,11 @@ export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProp
   const grid = useRef<HTMLDivElement>(null)
   const selectedRow = useStore($selectedRow)
   const style = grid.current?.style
+  const { visibleTags, tags } = useStore($tagStore)
+
+  useUpdateEffect(() => {
+    tags.forEach((_, index) => grid.current?.style.removeProperty(`--col-width-${index}`))
+  }, [visibleTags, tags])
 
   useDndMonitor({
     onDragStart(event) {
@@ -131,15 +140,14 @@ export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProp
         }
       }
     },
-    onDragMove(event) {
-      const data = event.active.data.current as Draggable
-      if (data?.type === Draggables.COLUMN_HEADER) {
-        const startWidth = event.active.rect.current.initial?.width ?? NaN
-        const nextWidth = data.nextWidth
-        const deltaX = event.delta.x - document.documentElement.scrollLeft
+    onDragMove({ active, delta }) {
+      const { type, index, nextWidth } = (active.data.current ?? {}) as Draggable
+      if (type === Draggables.COLUMN_HEADER) {
+        const startWidth = active.rect.current.initial?.width ?? NaN
+        const deltaX = delta.x - document.documentElement.scrollLeft
         if (startWidth + deltaX >= 100 && nextWidth - deltaX >= 100) {
-          style?.setProperty(`--col-width-${data.index}`, `${startWidth + deltaX}px`)
-          style?.setProperty(`--col-width-${data.index + 1}`, `${nextWidth - deltaX}px`)
+          style?.setProperty(`--col-width-${index}`, `${startWidth + deltaX}px`)
+          style?.setProperty(`--col-width-${index + 1}`, `${nextWidth - deltaX}px`)
         }
       }
     },
