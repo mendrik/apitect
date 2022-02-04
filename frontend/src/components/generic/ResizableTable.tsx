@@ -1,5 +1,6 @@
 import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
+import { prop } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import React, { CSSProperties, useRef } from 'react'
 import styled from 'styled-components'
@@ -98,6 +99,17 @@ const ColResizer = styled.div`
 
 const bodyStyle = document.body.style
 
+const relativeWidths = (el: HTMLDivElement, columns: JSX.Element[]) => {
+  const width = el.clientWidth
+  const columnWidths = Array.from(el.children).slice(0, columns.length).map(prop('clientWidth'))
+  columnWidths.forEach((w, idx) => el.style.setProperty(`--col-width-${idx}`, `${w / width}fr`))
+}
+
+const fixedWidths = (el: HTMLDivElement, columns: JSX.Element[]) => {
+  const columnWidths = Array.from(el.children).slice(0, columns.length).map(prop('clientWidth'))
+  columnWidths.forEach((w, idx) => el.style.setProperty(`--col-width-${idx}`, `${w}px`))
+}
+
 export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
   const selectedRow = useStore($selectedRow)
@@ -108,6 +120,7 @@ export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProp
       const data = event.active.data.current as Draggable
       if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {
         bodyStyle.setProperty('cursor', 'col-resize')
+        fixedWidths(grid.current!, columns)
         const next = grid.current?.children.item(data.index + 1) as HTMLElement | undefined
         const nextWidth = next?.offsetWidth
         if (nextWidth) {
@@ -132,6 +145,9 @@ export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProp
     },
     onDragEnd() {
       bodyStyle.setProperty('cursor', 'default')
+      if (grid.current != null) {
+        relativeWidths(grid.current, columns)
+      }
     }
   })
 
