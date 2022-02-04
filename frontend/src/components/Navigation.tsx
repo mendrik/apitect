@@ -45,12 +45,7 @@ export const Navigation = () => {
   const searchScope = arrayNode != null ? 'array' : 'global'
 
   return (
-    <Navbar
-      variant="light"
-      expand="sm"
-      className="px-2 bevel-bottom bevel-shadow"
-      style={{ overflowX: 'clip', overflowY: 'visible' }}
-    >
+    <Navbar variant="light" expand="sm" className="px-2 bevel-bottom bevel-shadow">
       <Navbar.Brand
         tabIndex={-1}
         className="me-auto p-0 user-select-none"

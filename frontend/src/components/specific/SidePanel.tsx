@@ -17,6 +17,8 @@ import { DateSidePanel } from '../sidepanels/dateSidePanel'
 const WrapperSx = styled(motion.div)`
   height: calc(100vh - ${navbarHeight}px);
   width: calc(100% + ${detailsPanelSize}px);
+  position: fixed;
+  top: ${navbarHeight}px;
   display: flex;
   flex-direction: row;
 

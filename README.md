@@ -27,6 +27,7 @@
 
 # Todo
 
+- password input masked + view eye
 - unify selectedvaluenode and selectednode
 - ReferenceInput (gets a list of inputs (ref, rest, db) + ramda code -> final value)
 - ColorInput
