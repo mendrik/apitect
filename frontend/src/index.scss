@@ -11,6 +11,7 @@ body {
 }
 
 .custom-scrollbars {
+  scrollbar-width: thin;
 
   &::-webkit-scrollbar-track {
     background-color: #efefef;
