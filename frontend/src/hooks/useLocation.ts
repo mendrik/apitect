@@ -4,4 +4,4 @@ interface Location<T> extends LocationUntyped {
   state: T
 }
 
-export const useLocation = <T>(): Location<T> => useLocationUntyped()
+export const useLocation = <T>(): Location<T> => useLocationUntyped() as Location<T>

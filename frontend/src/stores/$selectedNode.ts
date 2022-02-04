@@ -1,7 +1,7 @@
-import { createStore, sample } from 'effector'
+import { createStore, sample, Store } from 'effector'
 import { nthArg } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { Node } from '~shared/types/domain/node'
+import { Node, NodeId } from '~shared/types/domain/node'
 import { $selectedValueNode } from '~stores/$valuesStore'
 import { $visibleNodes } from '~stores/$visibileNodes'
 
@@ -16,7 +16,11 @@ export const $selectedNode = createStore<TreeNode<Node> | null>(null)
 export const $selectedRow = createStore<number | null>(null)
 
 sample({
-  source: [$selectedNode, $selectedValueNode, $visibleNodes],
+  source: [$selectedNode, $selectedValueNode, $visibleNodes] as [
+    typeof $selectedNode,
+    typeof $selectedNode,
+    typeof $visibleNodes
+  ],
   fn: ([sv, svn, vn]) =>
     svn != null ? vn.indexOf(svn.extract().id) : sv != null ? vn.indexOf(sv.extract().id) : null,
   target: $selectedRow

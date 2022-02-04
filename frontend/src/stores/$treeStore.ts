@@ -34,15 +34,15 @@ export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
 )
 
 sample({
-  source: $treeStore,
   clock: treeCreateNode,
+  source: $treeStore,
   fn: (state, result) => state.first(propEq('id', result.nodeId)) ?? null,
   target: selectNode
 })
 
 sample({
-  source: $treeStore,
   clock: deleteNodeFx.doneData,
+  source: $treeStore,
   fn: (state, result) => {
     const parent = state.first(propEq('id', result.parentNode))
     return parent?.children[result.position - 1] ?? parent ?? null

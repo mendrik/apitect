@@ -4,7 +4,8 @@ import { prop } from 'ramda'
 import React, { Suspense, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useLocation } from '~hooks/useLocation'
 import useProgress from '~hooks/useProgress'
 import { usePromise } from '~hooks/usePromise'
 import { useQueryParams } from '~hooks/useQueryParams'
@@ -33,7 +34,7 @@ const ModalStub = ({
   className,
   ...modalProps
 }: Jsx<OwnProps>): JSX.Element | null => {
-  const { state } = useLocation()
+  const { state } = useLocation<Record<string, string>>()
   const { modal } = useQueryParams()
   const modalMatch = modal === name
 

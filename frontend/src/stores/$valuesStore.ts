@@ -1,4 +1,4 @@
-import { createStore, sample } from 'effector'
+import { createStore, sample, Store } from 'effector'
 import { both, join, juxt, nthArg, pipe, prop, propEq, propOr, reject, uniqBy } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node, NodeId } from '~shared/types/domain/node'
@@ -37,7 +37,7 @@ export const $selectedValue = createStore<SelectedValue | null>(null)
 export const $selectedValueNode = createStore<TreeNode<Node> | null>(null)
 
 sample({
-  source: [$selectedValue, $treeStore],
+  source: [$selectedValue, $treeStore] as [typeof $selectedValue, typeof $treeStore],
   fn: ([value, tree]) => tree.first(n => n.id === value?.nodeId) ?? null,
   target: $selectedValueNode
 })
