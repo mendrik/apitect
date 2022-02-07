@@ -1,4 +1,4 @@
-import { createStore, sample, Store } from 'effector'
+import { createStore, sample } from 'effector'
 import { both, join, juxt, nthArg, pipe, prop, propEq, propOr, reject, uniqBy } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node, NodeId } from '~shared/types/domain/node'

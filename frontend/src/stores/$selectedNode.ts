@@ -1,7 +1,7 @@
-import { createStore, sample, Store } from 'effector'
+import { createStore, sample } from 'effector'
 import { nthArg } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { Node, NodeId } from '~shared/types/domain/node'
+import { Node } from '~shared/types/domain/node'
 import { $selectedValueNode } from '~stores/$valuesStore'
 import { $visibleNodes } from '~stores/$visibileNodes'
 
