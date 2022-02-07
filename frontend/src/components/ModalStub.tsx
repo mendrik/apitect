@@ -1,7 +1,7 @@
 import { BaseModalProps } from '@restart/ui/Modal'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import React, { Suspense, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -10,9 +10,8 @@ import { useQueryParams } from '~hooks/useQueryParams'
 import { Fn, Jsx } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 
-import { $moduleStore, clearModuleFx, Import, loadModuleFx } from '../events/import'
+import { $moduleError, $moduleStore, clearModuleFx, Import, loadModuleFx } from '../events/import'
 import { removeParams } from '../utils/url'
-import { ErrorContext } from './generic/ErrorContext'
 import { Loader } from './generic/Loader'
 
 export type ModalFC = ({ close }: { close: Fn }) => JSX.Element | null
@@ -40,6 +39,12 @@ const ModalStub = ({
   const { t } = useTranslation()
   const navigate = useNavigate()
   const Module = useStore($moduleStore)
+  const loading = useStore(loadModuleFx.pending)
+  const error = useStore($moduleError)
+
+  if (error) {
+    throw Error()
+  }
 
   useEffect(() => {
     if (modalMatch) {
@@ -66,11 +71,7 @@ const ModalStub = ({
           <Modal.Title>{t(title, titleOptions ?? state)}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ErrorContext>
-            <Suspense fallback={<Loader style={{ minHeight: 200 }} />}>
-              <Module close={close} />
-            </Suspense>
-          </ErrorContext>
+          {loading ? <Loader style={{ minHeight: 200 }} /> : <Module close={close} />}
         </Modal.Body>
       </Modal>
     )

@@ -15,3 +15,5 @@ export const clearModuleFx = createEvent()
 export const $moduleStore = createStore<ModalFC | null>(null)
   .on(loadModuleFx.doneData, nthArg(1))
   .reset(clearModuleFx)
+
+export const $moduleError = createStore<Error | null>(null).on(loadModuleFx.failData, nthArg(1))

@@ -10,7 +10,7 @@ import { $api } from '~stores/$apiStore'
 
 import { openModal } from './modals'
 
-const api = () => sample($api).getState()
+const api = (): Api => sample($api).getState()
 
 export const projectFx = createEffect<Api['project']>(() => api().project())
 export const dateLocaleFx = createEffect<ArgFn<string, Promise<Locale>>>(locale =>
