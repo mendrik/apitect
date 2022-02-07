@@ -1,17 +1,16 @@
 import { BaseModalProps } from '@restart/ui/Modal'
 import clsx from 'clsx'
-import { prop } from 'ramda'
+import { useStore } from 'effector-react'
 import React, { Suspense, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from '~hooks/useLocation'
-import useProgress from '~hooks/useProgress'
-import { usePromise } from '~hooks/usePromise'
 import { useQueryParams } from '~hooks/useQueryParams'
 import { Fn, Jsx } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 
+import { $moduleStore, clearModuleFx, Import, loadModuleFx } from '../events/import'
 import { removeParams } from '../utils/url'
 import { ErrorContext } from './generic/ErrorContext'
 import { Loader } from './generic/Loader'
@@ -19,7 +18,7 @@ import { Loader } from './generic/Loader'
 export type ModalFC = ({ close }: { close: Fn }) => JSX.Element | null
 
 type OwnProps = {
-  from: () => Promise<{ default: ModalFC }>
+  from: Import<ModalFC>
   name: ModalNames
   title: TFuncKey
   titleOptions?: Record<string, string>
@@ -40,40 +39,42 @@ const ModalStub = ({
 
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const Module = useStore($moduleStore)
 
-  const [withProgress, status] = useProgress<ModalFC>()
-  const trigger = usePromise(() => withProgress(from().then(prop('default'))))
   useEffect(() => {
-    if (status.is === 'idle' && modalMatch) {
-      trigger()
+    if (modalMatch) {
+      void loadModuleFx(from)
     }
-  }, [trigger, status, modalMatch])
+  }, [from, modalMatch])
 
   const close = () => {
     navigate(removeParams(['modal']), { replace: true })
+    clearModuleFx()
   }
 
-  return status.is === 'done' ? (
-    <Modal
-      show={modalMatch}
-      centered
-      onHide={close}
-      key={name}
-      className={clsx('custom-scrollbars', className)}
-      {...modalProps}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>{t(title, titleOptions ?? state)}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <ErrorContext>
-          <Suspense fallback={<Loader style={{ minHeight: 200 }} />}>
-            <status.result close={close} />
-          </Suspense>
-        </ErrorContext>
-      </Modal.Body>
-    </Modal>
-  ) : null
+  return (
+    Module && (
+      <Modal
+        show={modalMatch}
+        centered
+        onHide={close}
+        key={name}
+        className={clsx('custom-scrollbars', className)}
+        {...modalProps}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{t(title, titleOptions ?? state)}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ErrorContext>
+            <Suspense fallback={<Loader style={{ minHeight: 200 }} />}>
+              <Module close={close} />
+            </Suspense>
+          </ErrorContext>
+        </Modal.Body>
+      </Modal>
+    )
+  )
 }
 
 export { ModalStub }
