@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useStore } from 'effector-react'
 import { prop } from 'ramda'
 import React from 'react'
 import { Button } from 'react-bootstrap'
@@ -10,13 +11,12 @@ import { Form } from '~forms/Form'
 import { GenericError } from '~forms/GenericError'
 import { SubmitButton } from '~forms/SubmitButton'
 import { TextInput } from '~forms/TextInput'
-import useProgress from '~hooks/useProgress'
-import { usePromise } from '~hooks/usePromise'
 import { useView } from '~hooks/useView'
 import { Register, ZRegister } from '~shared/types/forms/register'
 
 import { ModalFC } from '../components/ModalStub'
 import { SuccessView } from '../components/SuccessView'
+import { $apiError, apiFx } from '../events/api'
 import { whoAmIFx } from '../events/user'
 import { register } from '../utils/restApi'
 
@@ -29,6 +29,8 @@ export const RegisterForm: ModalFC = ({ close }) => {
   const { view, successView } = useView(Views)
   const [jwt, setJwt] = useLocalStorage('jwt')
   const { t } = useTranslation()
+  const error = useStore($apiError)
+  const running = useStore(apiFx.pending)
 
   const form = useForm<Register>({
     resolver: zodResolver(ZRegister),
@@ -39,12 +41,12 @@ export const RegisterForm: ModalFC = ({ close }) => {
       passwordRepeat: 'qctxExmNQ9FEcZ'
     }
   })
-  const [withProgress, status] = useProgress()
-  const onSubmit = usePromise<Register>(
-    data => withProgress(register(data).then(prop('token')).then(setJwt)).then(successView),
-    false,
-    false
-  )
+
+  const onSubmit = (data: Register) =>
+    apiFx(() => register(data))
+      .then(prop('token'))
+      .then(setJwt)
+      .then(successView)
 
   if (view === Views.Success) {
     return (
@@ -66,7 +68,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
   }
 
   return (
-    <Form form={form} onSubmit={onSubmit} status={status}>
+    <Form form={form} onSubmit={onSubmit} running={running}>
       <TextInput name="name" containerClasses="mb-3" label="form.fields.name" />
       <TextInput name="email" containerClasses="mb-3" label="form.fields.email" type="email" />
       <TextInput
@@ -81,7 +83,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
         type="password"
         containerClasses="mb-3"
       />
-      <GenericError />
+      <GenericError error={error} />
       <ButtonRow>
         <SubmitButton localeKey="modals.authenticate.register.submit" />
       </ButtonRow>

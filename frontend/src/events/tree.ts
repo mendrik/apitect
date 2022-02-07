@@ -12,7 +12,7 @@ import { projectFx } from './project'
 export const openNodeState = createEvent<[TreeNode<Node>, boolean]>('toggle node')
 export const selectNode = createEvent<TreeNode<Node> | null>('select node')
 
-const api = () => sample($api).getState()
+const api = (): Api => sample($api).getState()
 
 export const createNodeFx = createEffect<Api['nodeCreate']>(node => api().nodeCreate(node))
 export const deleteNodeFx = createEffect<Api['nodeDelete']>(id => api().nodeDelete(id))

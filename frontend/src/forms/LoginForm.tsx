@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useStore } from 'effector-react'
 import { prop } from 'ramda'
 import React from 'react'
 import { Button } from 'react-bootstrap'
@@ -10,14 +11,12 @@ import { Form } from '~forms/Form'
 import { GenericError } from '~forms/GenericError'
 import { SubmitButton } from '~forms/SubmitButton'
 import { TextInput } from '~forms/TextInput'
-import useProgress from '~hooks/useProgress'
-import { usePromise } from '~hooks/usePromise'
 import { useView } from '~hooks/useView'
 import { Login, ZLogin } from '~shared/types/forms/login'
 import { Fn, Jsx } from '~shared/types/generic'
-import { Token } from '~shared/types/response/token'
 
 import ForgotPasswordForm from '../components/modals/ForgotPasswordForm'
+import { $apiError, apiFx } from '../events/api'
 import { whoAmIFx } from '../events/user'
 import { login } from '../utils/restApi'
 
@@ -33,6 +32,8 @@ enum Views {
 export const LoginForm = ({ close }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
   const { view, loginView, forgotPasswordView } = useView(Views)
+  const error = useStore($apiError)
+  const running = useStore(apiFx.pending)
 
   const form = useForm<Login>({
     resolver: zodResolver(ZLogin),
@@ -42,19 +43,21 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
     }
   })
 
-  const [withProgress, status] = useProgress<Token>()
   const [, setJwt] = useLocalStorage('jwt')
 
-  const trigger = usePromise<Login>(data =>
-    withProgress(login(data)).then(prop('token')).then(setJwt).then(whoAmIFx).then(close)
-  )
+  const trigger = (data: Login) =>
+    apiFx(() => login(data))
+      .then(prop('token'))
+      .then(setJwt)
+      .then(whoAmIFx)
+      .then(close)
 
   if (view === Views.ForgotPassword) {
     return <ForgotPasswordForm close={loginView} />
   }
 
   return (
-    <Form form={form} onSubmit={trigger} status={status}>
+    <Form form={form} onSubmit={trigger} running={running}>
       <TextInput name="email" label="form.fields.email" type="email" containerClasses="mb-3" />
       <TextInput
         name="password"
@@ -62,7 +65,7 @@ export const LoginForm = ({ close }: Jsx<OwnProps>) => {
         type="password"
         containerClasses="mb-3"
       />
-      <GenericError />
+      <GenericError error={error} />
       <ButtonRow>
         <Button onClick={forgotPasswordView} variant="outline-primary">
           {t('modals.authenticate.login.forgotPassword')}

@@ -1,15 +1,17 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Alert } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { ExtendedError } from '~shared/types/extendedError'
-
-import { errorContext } from '../generic/ErrorContext'
+import { Jsx } from '~shared/types/generic'
 
 export const isExtendedError = (e: any): e is ExtendedError => 'status' in e
 
-export const GenericError = () => {
+type OwnProps = {
+  error: Error | null
+}
+
+export const GenericError = ({ error }: Jsx<OwnProps>) => {
   const { t } = useTranslation()
-  const { error } = useContext(errorContext)
 
   return error != null && isExtendedError(error) && !('field' in error) ? (
     <Alert variant={error.status === 500 ? 'danger' : 'warning'}>
