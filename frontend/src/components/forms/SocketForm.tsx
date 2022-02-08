@@ -4,8 +4,7 @@ import React, { PropsWithChildren, ReactElement, ReactNode, useEffect, useState 
 import { Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
-import type { Api, FormApiMethod } from '~shared/apiTypes'
-import { ExtendedError } from '~shared/types/extendedError'
+import type { Api, ApiInput, FormApiMethod } from '~shared/apiTypes'
 import { Fn } from '~shared/types/generic'
 
 import { Scale, Tuple } from '../generic/Tuple'
@@ -14,7 +13,7 @@ import { GenericError } from './GenericError'
 import { SubmitButton } from './SubmitButton'
 
 type OwnProps<M extends FormApiMethod> = {
-  form: UseFormReturn<any> // todo try to remove any
+  form: UseFormReturn<ApiInput<M>>
   onValid: EffectByHandler<Api[M], Error>
   close: Fn
   submitButton: TFuncKey
@@ -33,23 +32,20 @@ export const SocketForm = <M extends FormApiMethod>({
   const running = useStore(onValid.pending)
 
   useEffect(() => {
-    const sub = onValid.failData.watch(setError)
+    const sub = onValid.failData.watch(e => {
+      if (e.field != null) {
+        return form.setError(e.field as string, { message: e.message })
+      }
+      setError(e)
+    })
     return () => sub.unsubscribe()
-  }, [setError, onValid])
+  }, [form, setError, onValid])
 
   const { t } = useTranslation()
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit(data =>
-          onValid(data)
-            .then(close)
-            .catch((e: ExtendedError) => {
-              if (e.field != null) {
-                form.setError(e.field as string, { message: e.message })
-              }
-            })
-        )}
+        onSubmit={form.handleSubmit(data => onValid(data).then(close))}
         data-disabled={running ? 'true' : 'false'}
         noValidate
       >
