@@ -4,7 +4,7 @@ import React, { PropsWithChildren, ReactElement, ReactNode, useEffect, useState 
 import { Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
-import type { Api, ApiInput, FormApiMethod } from '~shared/apiTypes'
+import type { Api, FormApiMethod } from '~shared/apiTypes'
 import { Fn } from '~shared/types/generic'
 
 import { Scale, Tuple } from '../generic/Tuple'
@@ -13,7 +13,7 @@ import { GenericError, isExtendedError } from './GenericError'
 import { SubmitButton } from './SubmitButton'
 
 type OwnProps<M extends FormApiMethod> = {
-  form: UseFormReturn<ApiInput<M>>
+  form: UseFormReturn<any>
   onValid: EffectByHandler<Api[M], Error>
   close: Fn
   submitButton: TFuncKey
@@ -34,7 +34,7 @@ export const SocketForm = <M extends FormApiMethod>({
   useEffect(() => {
     const sub = onValid.failData.watch(e => {
       if (isExtendedError(e) && e.field != null) {
-        return form.setError(e.field, { message: e.message })
+        return form.setError(e.field as any, { message: e.message })
       }
       setError(e)
     })
