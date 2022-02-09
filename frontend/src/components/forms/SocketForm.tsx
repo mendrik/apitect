@@ -9,7 +9,7 @@ import { Fn } from '~shared/types/generic'
 
 import { Scale, Tuple } from '../generic/Tuple'
 import { ButtonRow } from './ButtonRow'
-import { GenericError } from './GenericError'
+import { GenericError, isExtendedError } from './GenericError'
 import { SubmitButton } from './SubmitButton'
 
 type OwnProps<M extends FormApiMethod> = {
@@ -33,8 +33,8 @@ export const SocketForm = <M extends FormApiMethod>({
 
   useEffect(() => {
     const sub = onValid.failData.watch(e => {
-      if (e.field != null) {
-        return form.setError(e.field as string, { message: e.message })
+      if (isExtendedError(e) && e.field != null) {
+        return form.setError(e.field, { message: e.message })
       }
       setError(e)
     })
