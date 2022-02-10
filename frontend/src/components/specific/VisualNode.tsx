@@ -97,7 +97,7 @@ export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
       {open && (
         <NotEmptyList list={node.children} as={depth === 0 ? RootWrap : ListWrap}>
           {mapIndexed((node, idx) => (
-            <li key={idx}>
+            <li key={node.value.id}>
               <VisualNode node={node} depth={depth + 1} />
             </li>
           ))}
