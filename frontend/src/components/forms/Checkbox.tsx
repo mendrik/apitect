@@ -3,6 +3,7 @@ import { assocPath, ifElse, pathEq } from 'ramda'
 import React, { HTMLAttributes } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
+import { ErrorInfo } from '~forms/ErrorInfo'
 import { useId } from '~hooks/useId'
 import { Jsx } from '~shared/types/generic'
 
@@ -42,6 +43,7 @@ export const Checkbox = ({
       <label className="form-check-label user-select-none cursor-pointer" htmlFor={inpId}>
         {t(label)}
       </label>
+      <ErrorInfo name={name} />
     </div>
   )
 }
