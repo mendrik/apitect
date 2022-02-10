@@ -2,7 +2,7 @@ import { always, invoker, isNil, pipe, unless } from 'ramda'
 import { number, ZodNumber } from 'zod'
 import { NumberSettings } from '~shared/types/forms/nodetypes/numberSettings'
 
-const $getNumberValidator = (settings?: NumberSettings) => {
+const $getNumberValidator = (settings?: NumberSettings): ZodNumber => {
   const min = settings?.validation.min
   const max = settings?.validation.max
   return pipe(
