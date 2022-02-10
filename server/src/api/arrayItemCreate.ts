@@ -14,10 +14,14 @@ export const arrayItemCreate: ServerApiMethod<'arrayItemCreate'> = async ({
   payload: { arrayNodeId, tag }
 }) => {
   const values = await validateValues(docId, email, tag, arrayNodeId)
-  const arraySettings = await nodeSettings({ docId, email, payload: arrayNodeId })
+  const arraySettings = (await nodeSettings({
+    docId,
+    email,
+    payload: arrayNodeId
+  })) as ArraySettings
   const dataSource: DataSource = cond([
     [propEq<string>('dataSource', DataSourceType.Internal), internalDataSource(arrayNodeId)],
     [propEq<string>('dataSource', DataSourceType.Database), externalDataSource(arrayNodeId)]
-  ])(arraySettings as ArraySettings)
+  ])(arraySettings)
   return dataSource.upsertItem(values)
 }

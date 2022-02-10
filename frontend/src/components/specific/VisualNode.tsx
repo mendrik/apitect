@@ -1,7 +1,7 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { useStore, useStoreMap } from 'effector-react'
-import { pathEq } from 'ramda'
+import { useStoreMap } from 'effector-react'
+import { pathEq, prop } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import React from 'react'
 import styled from 'styled-components'
@@ -46,16 +46,17 @@ const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
   const id = node.value.id
-  const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
-  const openNodes = useStore($openNodes)
-  const hasChildren = isNotNilOrEmpty(node.children)
-  const open = openNodes[id]
   const nodeType = node.value.nodeType
+
+  const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
+  const open = useStoreMap($openNodes, prop(id))
+  const hasChildren = isNotNilOrEmpty(node.children)
 
   const onFocus = () => {
     selectValue(null)
     selectNode(node)
   }
+
   return (
     <>
       {depth > 0 && (

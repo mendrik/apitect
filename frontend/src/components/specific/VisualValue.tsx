@@ -1,4 +1,5 @@
-import { useStore } from 'effector-react'
+import { useStoreMap } from 'effector-react'
+import { prop } from 'ramda'
 import React from 'react'
 import styled from 'styled-components'
 import { Node, NodeId } from '~shared/types/domain/node'
@@ -56,8 +57,7 @@ const Empty = styled.div`
 `
 
 export const VisualValue = ({ nodeId, value, tag, loading }: Jsx<OwnProps>) => {
-  const nodeMap = useStore($mappedNodesStore)
-  const node: Node = nodeMap[nodeId]!
+  const node = useStoreMap($mappedNodesStore, prop(nodeId))
   const Editor = getEditor(node.nodeType)
 
   const onFocus = () => {
