@@ -4,6 +4,7 @@ import { ApiSchema } from '~shared/api'
 import { ZApiRequest } from '~shared/apiRequest'
 import { ApiError, ApiResponse, ZApiResponse } from '~shared/apiResponse'
 import { Api, ApiMethod } from '~shared/apiTypes'
+import { newId } from '~shared/codecs/idCodec'
 import { logger } from '~shared/utils/logger'
 
 import { apiResponse, socketEstablished } from '../events/messages'
@@ -17,7 +18,12 @@ apiResponse.watch(data => {
   if (isError(data)) {
     logger.error(`Res[${data.status}]: ${data.message}`)
     if (data.notificationType != null && data.title != null) {
-      showNotification({ type: data.notificationType, content: data.message, title: data.title })
+      showNotification({
+        id: newId(),
+        type: data.notificationType,
+        content: data.message,
+        title: data.title
+      })
     }
   } else {
     console.debug(`Res[${data.method}]:`, data.payload)
