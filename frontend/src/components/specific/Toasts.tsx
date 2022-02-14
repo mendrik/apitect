@@ -14,8 +14,6 @@ export const Toasts = () => {
   const notifications = useStore($notificationsStore)
   const { t } = useTranslation()
 
-  console.log(notifications)
-
   return (
     <ToastContainer className="position-absolute p-2" position="bottom-end">
       <AnimatePresence>
