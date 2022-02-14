@@ -22,7 +22,7 @@ export const Toasts = () => {
             <Toast
               key={idx}
               onClose={() => removeNotification(notification)}
-              transition={SlideInTransitionComponent}
+              as={SlideInTransitionComponent}
             >
               <Toast.Header>
                 <strong className="me-auto">{t<any>(notification.title)}</strong>

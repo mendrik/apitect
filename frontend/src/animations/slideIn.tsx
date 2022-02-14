@@ -5,16 +5,15 @@ import React from 'react'
 
 export const slideIn: MotionProps = {
   initial: {
-    opacity: 0
+    transform: 'all',
+    translateX: '100%'
   },
   animate: {
-    opacity: 1,
-    transitionDelay: '500ms',
-    transitionDuration: '1s'
+    translateX: 0,
+    transitionDuration: '0.3s'
   },
   exit: {
-    opacity: 0,
-    visibility: 'hidden'
+    opacity: 0
   }
 }
 
