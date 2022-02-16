@@ -1,22 +1,20 @@
-import { TransitionComponent } from '@restart/ui/types'
-import { motion } from 'framer-motion'
 import { MotionProps } from 'framer-motion/types/motion/types'
 import React from 'react'
 
 export const slideIn: MotionProps = {
   initial: {
-    transform: 'all',
     translateX: '100%'
   },
+  transition: {
+    type: 'spring',
+    stiffness: 75,
+    duration: 100
+  },
   animate: {
-    translateX: 0,
-    transitionDuration: '0.3s'
+    opacity: 1,
+    translateX: 0
   },
   exit: {
-    opacity: 0
+    translateX: '100%'
   }
 }
-
-export const SlideInTransitionComponent: TransitionComponent = ({ children }) => (
-  <motion.div {...slideIn}>{children}</motion.div>
-)
