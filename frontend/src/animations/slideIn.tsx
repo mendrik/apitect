@@ -11,10 +11,9 @@ export const slideIn: MotionProps = {
     duration: 100
   },
   animate: {
-    opacity: 1,
     translateX: 0
   },
   exit: {
-    translateX: '100%'
+    translateX: '105%'
   }
 }
