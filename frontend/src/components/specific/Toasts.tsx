@@ -16,7 +16,7 @@ export const Toasts = () => {
     <ToastContainer className="position-absolute top-0 end-0 h-100 p-2 ps-5 overflow-hidden d-flex justify-content-end flex-column">
       <AnimatePresence presenceAffectsLayout>
         {notifications.map(notification => (
-          <motion.div {...slideIn} key={notification.id} layoutId={notification.id} layoutScroll>
+          <motion.div {...slideIn} key={notification.id} layoutId={notification.id}>
             <Toast onClose={() => removeNotification(notification.id)} show>
               <Toast.Header>
                 <strong className="me-auto">{t<any>(notification.title)}</strong>
