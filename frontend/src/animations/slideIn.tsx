@@ -7,13 +7,12 @@ export const slideIn: MotionProps = {
   },
   transition: {
     type: 'spring',
-    stiffness: 75,
-    duration: 100
+    stiffness: 75
   },
   animate: {
-    translateX: 0
+    translateX: '0%'
   },
   exit: {
-    translateX: '105%'
+    translateX: [null, '105%']
   }
 }
