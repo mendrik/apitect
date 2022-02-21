@@ -17,7 +17,7 @@ export const Toasts = () => {
       <AnimatePresence>
         {notifications.map(notification => (
           <motion.div {...slideIn} key={notification.id}>
-            <Toast onClose={() => removeNotification(notification.id)} show>
+            <Toast onClose={() => removeNotification(notification.id)} show autohide>
               <Toast.Header>
                 <strong className="me-auto">{t<any>(notification.title)}</strong>
               </Toast.Header>
