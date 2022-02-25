@@ -1,7 +1,8 @@
 import clsx from 'clsx'
 import { useStoreMap } from 'effector-react'
-import { cond } from 'ramda'
-import React from 'react'
+import { always, cond, equals, T } from 'ramda'
+import { isNilOrEmpty } from 'ramda-adjunct'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { StringValue } from '~shared/types/domain/values/stringValue'
@@ -30,11 +31,20 @@ export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>
     [codeIn('Escape'), views.displayView]
   ])
 
+  const textValue = (
+    type: StringValidationType | undefined,
+    value: string | undefined
+  ): ReactNode =>
+    cond<any, ReactNode>([
+      [always(isNilOrEmpty(value)), () => null],
+      [equals(StringValidationType.Password), always('*****')],
+      [equals(StringValidationType.Email), always(value)],
+      [T, always(value)]
+    ])(type)
+
   return views.isDisplayView() ? (
     <Text tabIndex={0} onFocus={views.editView}>
-      {stringSettings?.validationType === StringValidationType.Password && value?.value != null
-        ? '*****'
-        : value?.value ?? ''}
+      {textValue(stringSettings?.validationType, value?.value)}
     </Text>
   ) : (
     <TextInput
