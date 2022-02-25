@@ -1,4 +1,4 @@
-import { allPass, always, both, cond, equals } from 'ramda'
+import { allPass, always, both, cond, equals, T } from 'ramda'
 import React, { EventHandler, HTMLAttributes, useRef } from 'react'
 import { Jsx, Maybe } from '~shared/types/generic'
 import { next, prev } from '~shared/utils/ramda'
@@ -9,6 +9,7 @@ import { stopEvent } from '../../utils/stopPropagation'
 type OwnProps = {
   columns?: number
   rotated?: boolean
+  ctrlKey?: boolean
 } & HTMLAttributes<HTMLDivElement>
 
 enum Direction {
@@ -21,10 +22,12 @@ enum Direction {
 export const FocusNavigator = ({
   columns = 1,
   rotated = false,
+  ctrlKey = true,
   children,
   ...props
 }: Jsx<OwnProps>) => {
   const ref = useRef<HTMLDivElement>(null)
+  const ctrl = ctrlKey ? withCtrl : T
 
   const moveFocus = (dir: Direction): EventHandler<any> =>
     stopEvent(() => {
@@ -59,10 +62,10 @@ export const FocusNavigator = ({
     })
 
   const keyMap = cond([
-    [both(withCtrl, codeIn('ArrowLeft')), moveFocus(rotated ? Direction.Up : Direction.Left)],
-    [both(withCtrl, codeIn('ArrowRight')), moveFocus(rotated ? Direction.Down : Direction.Right)],
-    [both(withCtrl, codeIn('ArrowUp')), moveFocus(rotated ? Direction.Left : Direction.Up)],
-    [both(withCtrl, codeIn('ArrowDown')), moveFocus(rotated ? Direction.Right : Direction.Down)],
+    [both(ctrl, codeIn('ArrowLeft')), moveFocus(rotated ? Direction.Up : Direction.Left)],
+    [both(ctrl, codeIn('ArrowRight')), moveFocus(rotated ? Direction.Down : Direction.Right)],
+    [both(ctrl, codeIn('ArrowUp')), moveFocus(rotated ? Direction.Left : Direction.Up)],
+    [both(ctrl, codeIn('ArrowDown')), moveFocus(rotated ? Direction.Right : Direction.Down)],
     [allPass([always(rotated), withShift, codeIn('Tab')]), moveFocus(Direction.Up)],
     [allPass([always(rotated), codeIn('Tab')]), moveFocus(Direction.Down)]
   ])

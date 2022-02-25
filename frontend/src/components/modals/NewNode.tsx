@@ -91,7 +91,7 @@ const NewNode: ModalFC = ({ close }) => {
         name="nodeType"
         defaultValue={NodeType.Object}
         render={({ field }) => (
-          <TypeGrid role="grid" columns={4}>
+          <TypeGrid role="grid" columns={4} ctrlKey={false}>
             {values(NodeType).map((nodeType, _, __, Icon = iconMap[nodeType]) => {
               const disabled = (nodeType === NodeType.Array && arrayNode != null) || !canCreateNode
               return (
