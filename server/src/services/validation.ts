@@ -1,5 +1,5 @@
 import { cond, propEq, propOr, reduce, T as Otherwise } from 'ramda'
-import { array, boolean, object, ZodObject, ZodSchema, ZodTypeAny } from 'zod'
+import { array, boolean, object, ZodObject, ZodSchema } from 'zod'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Enum } from '~shared/types/domain/enums'
 import { Node, NodeId } from '~shared/types/domain/node'
@@ -33,7 +33,7 @@ export const nodeToValidator = async <T extends ZodSchema<any>>(
     byProp('nodeId')
   )
 
-  const primitiveValidator = (node: Node): ZodTypeAny => {
+  const primitiveValidator = (node: Node) => {
     const settings: NodeSettings | undefined = nodeSettings[node.id]
     switch (node.nodeType) {
       case NodeType.Boolean:

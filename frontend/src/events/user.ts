@@ -9,7 +9,7 @@ import { whoAmI } from '../utils/restApi'
 import { openModal } from './modals'
 import { projectFx } from './project'
 
-const api = (): Api => sample($api).getState()
+const api = (): Api => sample({ source: $api }).getState()
 
 export const whoAmIFx = createEffect<() => Promise<User | null>>(() => whoAmI().catch(() => null))
 

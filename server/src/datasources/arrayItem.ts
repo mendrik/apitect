@@ -2,7 +2,10 @@ import { pathOr, prop, propEq } from 'ramda'
 import { AnyZodObject, ZodArray } from 'zod'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
+import { NotificationType } from '~shared/types/domain/notification'
 import { Value } from '~shared/types/domain/values/value'
+import { notificationError } from '~shared/types/notificationError'
+import { logger } from '~shared/utils/logger'
 import { nodeToJson } from '~shared/utils/nodeToJson'
 import { byProp } from '~shared/utils/ramda'
 
@@ -31,6 +34,15 @@ export const validateValues = async (
     .then(byProp('nodeId'))
   const item = nodeToJson(node, values)
   const validator: ZodArray<AnyZodObject> = await nodeToValidator(node, docId, email)
-  validator.element.parse(item)
+  try {
+    validator.element.parse(item)
+  } catch (e) {
+    logger.warn('Array item validation failed', e)
+    throw notificationError(
+      'validation.failed',
+      NotificationType.WARNING,
+      'validation.createItemInfo'
+    )
+  }
   return values
 }
