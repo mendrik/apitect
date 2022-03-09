@@ -5,7 +5,6 @@ import { NodeId } from '~shared/types/domain/node'
 import { NotificationType } from '~shared/types/domain/notification'
 import { Value } from '~shared/types/domain/values/value'
 import { notificationError } from '~shared/types/notificationError'
-import { logger } from '~shared/utils/logger'
 import { nodeToJson } from '~shared/utils/nodeToJson'
 import { byProp } from '~shared/utils/ramda'
 
@@ -37,12 +36,7 @@ export const validateValues = async (
   try {
     validator.element.parse(item)
   } catch (e) {
-    logger.warn('Array item validation failed', e)
-    throw notificationError(
-      'validation.failed',
-      NotificationType.WARNING,
-      'validation.createItemInfo'
-    )
+    throw notificationError('validation.failed', NotificationType.WARNING, JSON.stringify(e))
   }
   return values
 }

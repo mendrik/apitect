@@ -1,9 +1,8 @@
 import { createStore, sample } from 'effector'
-import { both, join, juxt, nthArg, pipe, prop, propEq, propOr, reject, uniqBy } from 'ramda'
+import { any, join, juxt, nthArg, pipe, prop, propOr, reject, uniqBy, whereEq } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
-import { ValueList } from '~shared/types/response/valueList'
 import { $treeStore } from '~stores/$treeStore'
 
 import { arrayItemCreateFx } from '../events/array'
@@ -20,18 +19,30 @@ export const $valuesStore = createStore<Value[]>([])
 
 const byIdAndTag = pipe(juxt([prop('nodeId'), propOr('', 'tag')]), join('-'))
 
-const updateValues = (state: Value[], result: ValueList) =>
+$valuesStore.on(valueListFx.doneData, (state, result) =>
   uniqBy(byIdAndTag, result.values.concat(state))
+)
 
-$valuesStore.on(valueListFx.doneData, updateValues)
-$valuesStore.on(arrayItemCreateFx.doneData, updateValues)
+// after creating a new array item, let's remove the template values
+$valuesStore.on(arrayItemCreateFx.doneData, (state, result) =>
+  reject((value: Value) =>
+    any(
+      whereEq({
+        nodeId: value.nodeId,
+        tag: value.tag,
+        arrayItemId: undefined
+      }),
+      result.values
+    )
+  )(state)
+)
 
 $valuesStore.on(valueUpdateFx.doneData, (state, result) =>
   uniqBy(byIdAndTag, [result].concat(state))
 )
 
 $valuesStore.on(valueDeleteFx.done, (state, { params }) =>
-  reject(both(propEq('nodeId', params.nodeId), propEq('tag', params.tag) as any), state)
+  reject(whereEq({ nodeId: params.nodeId, tag: params.tag }), state)
 )
 
 export const $selectedValue = createStore<SelectedValue | null>(null)
