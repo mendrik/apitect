@@ -1,6 +1,5 @@
 import { keys } from 'ramda'
 import { v4 as uuid } from 'uuid'
-import { ServerParam } from '~shared/apiResponse'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
@@ -12,7 +11,7 @@ import { collection, Collections } from '../services/database'
 import { DataSource, ListResult } from './datasource'
 
 const dataSource =
-  (docId: string, email: string, arrayNodeId: NodeId, tag: string) =>
+  (arrayNodeId: NodeId, docId: string, email: string, tag: string) =>
   (arraySettings: ArraySettings): DataSource => ({
     deleteItem(id: Id): Promise<void> {
       return Promise.resolve(undefined)
@@ -28,18 +27,17 @@ const dataSource =
       const arrayItemId = uuid()
       const nodeIds = keys(values)
       await collection(Collections.values).updateMany(
-        { docId, nodeId: { $in: nodeIds } },
+        { docId, tag, nodeId: { $in: nodeIds }, arrayNodeId: { $exists: false } },
         { $set: { arrayItemId } }
       )
-      const params: ServerParam<'valueList'> = {
+      return valueList({
         docId,
         email,
         payload: {
           tag,
           nodeIds
         }
-      }
-      return valueList(params)
+      })
     }
   })
 
