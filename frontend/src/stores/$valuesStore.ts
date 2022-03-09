@@ -3,8 +3,10 @@ import { both, join, juxt, nthArg, pipe, prop, propEq, propOr, reject, uniqBy } 
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
+import { ValueList } from '~shared/types/response/valueList'
 import { $treeStore } from '~stores/$treeStore'
 
+import { arrayItemCreateFx } from '../events/array'
 import { resetProject } from '../events/reset'
 import { selectValue, valueDeleteFx, valueListFx, valueUpdateFx } from '../events/values'
 
@@ -18,9 +20,11 @@ export const $valuesStore = createStore<Value[]>([])
 
 const byIdAndTag = pipe(juxt([prop('nodeId'), propOr('', 'tag')]), join('-'))
 
-$valuesStore.on(valueListFx.doneData, (state, result) =>
+const updateValues = (state: Value[], result: ValueList) =>
   uniqBy(byIdAndTag, result.values.concat(state))
-)
+
+$valuesStore.on(valueListFx.doneData, updateValues)
+$valuesStore.on(arrayItemCreateFx.doneData, updateValues)
 
 $valuesStore.on(valueUpdateFx.doneData, (state, result) =>
   uniqBy(byIdAndTag, [result].concat(state))

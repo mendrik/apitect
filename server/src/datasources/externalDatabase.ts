@@ -1,11 +1,13 @@
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
+import { Value } from '~shared/types/domain/values/value'
 import { ArraySettings } from '~shared/types/forms/nodetypes/arraySettings'
+import { ValueList } from '~shared/types/response/valueList'
 
 import { DataSource, ListResult } from './datasource'
 
 const dataSource =
-  (arrayNodeId: NodeId) =>
+  (arrayNodeId: NodeId, docId: string, email: string, tag: string) =>
   (arraySettings: ArraySettings): DataSource => ({
     deleteItem(id: Id): Promise<void> {
       return Promise.resolve(undefined)
@@ -17,8 +19,8 @@ const dataSource =
         items: []
       })
     },
-    upsertItem<T>(item: T): Promise<Id> {
-      return Promise.resolve('')
+    upsertItem(item: Record<NodeId, Value>): Promise<ValueList> {
+      return Promise.resolve({ values: [] })
     }
   })
 

@@ -22,8 +22,14 @@ export const arrayItemCreate: ServerApiMethod<'arrayItemCreate'> = async ({
     payload: arrayNodeId
   })
   const dataSource: DataSource = cond([
-    [propEq<string>('dataSource', DataSourceType.Internal), internalDataSource(arrayNodeId)],
-    [propEq<string>('dataSource', DataSourceType.Database), externalDataSource(arrayNodeId)]
+    [
+      propEq<string>('dataSource', DataSourceType.Internal),
+      internalDataSource(arrayNodeId, docId, email, tag)
+    ],
+    [
+      propEq<string>('dataSource', DataSourceType.Database),
+      externalDataSource(arrayNodeId, docId, email, tag)
+    ]
   ])(arraySettings as ArraySettings)
   return dataSource.upsertItem(values)
 }
