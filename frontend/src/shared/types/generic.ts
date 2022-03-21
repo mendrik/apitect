@@ -31,3 +31,5 @@ export type NonEmptyArray<T> = [T, ...T[]]
 export type UseState<T> = [T, Dispatch<SetStateAction<T>>]
 
 export type Primitives = string | number | boolean | null | undefined
+
+export type Unboxed<T> = T extends (infer U)[] ? U : T

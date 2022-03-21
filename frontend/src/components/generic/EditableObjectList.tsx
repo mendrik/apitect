@@ -19,15 +19,15 @@ type OwnProps<T extends FieldValues> = {
   title: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => ReactNode
   name: ArrayPath<T>
   form: UseFormReturn<any>
-  selectedName: string
+  selectedName?: string
   deleteButtonRef: MutableRefObject<HTMLElement | null>
-  children: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => ReactNode
+  children: (field: FieldArrayWithId<T, ArrayPath<T>>, idx: number) => JSX.Element
 }
 
 export const EditableObjectList = <T extends FieldValues>({
   title,
   name,
-  selectedName,
+  selectedName = 'selection',
   form,
   deleteButtonRef,
   children
@@ -57,7 +57,7 @@ export const EditableObjectList = <T extends FieldValues>({
               )}
             </Tuple>
           </label>
-          {children(field, idx)}
+          {selected === idx && children(field, idx)}
         </div>
       ))}
     </FormOptions>

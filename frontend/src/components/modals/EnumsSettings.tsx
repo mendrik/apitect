@@ -63,7 +63,6 @@ const EnumsSettings: ModalFC = ({ close }) => {
       </Alert>
       <EditableObjectList
         form={form}
-        selectedName="selection"
         name="enums"
         deleteButtonRef={deleteButtonRef}
         title={(f, idx) => (
@@ -74,23 +73,17 @@ const EnumsSettings: ModalFC = ({ close }) => {
           </span>
         )}
       >
-        {(field, idx) =>
-          selection === idx && (
-            <EditableObjectList.Item key={field.id}>
-              <TextInput
-                name={`enums.${idx}.name`}
-                label="modals.enumsSettings.enumName"
-                required
-              />
-              <TagInput<EnumItem>
-                name={`enums.${idx}.values`}
-                label="modals.enumsSettings.values"
-                apply={value => ({ value, inUse: false })}
-                unapply={prop('value')}
-              />
-            </EditableObjectList.Item>
-          )
-        }
+        {(field, idx) => (
+          <EditableObjectList.Item key={field.id}>
+            <TextInput name={`enums.${idx}.name`} label="modals.enumsSettings.enumName" required />
+            <TagInput<EnumItem>
+              name={`enums.${idx}.values`}
+              label="modals.enumsSettings.values"
+              apply={value => ({ value, inUse: false })}
+              unapply={prop('value')}
+            />
+          </EditableObjectList.Item>
+        )}
       </EditableObjectList>
     </SocketForm>
   )
