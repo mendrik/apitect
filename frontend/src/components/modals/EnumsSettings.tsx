@@ -28,7 +28,7 @@ type EnumsSettings = TypeOf<typeof ZEnumsSettings>
 const EnumsSettings: ModalFC = ({ close }) => {
   const { state } = useLocation<Enums>()
   const { t } = useTranslation()
-  const deleteButtonRef = useRef<HTMLButtonElement | null>(null)
+  const deleteButtonRef = useRef<HTMLButtonElement>(null)
 
   const defaultEnums = append({ name: '', values: new Array<EnumItem>() }, state?.enums ?? [])
 

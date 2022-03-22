@@ -1,6 +1,6 @@
 import { IconAlertCircle } from '@tabler/icons'
 import { map, path, range } from 'ramda'
-import React, { MutableRefObject, ReactNode, useCallback } from 'react'
+import React, { MutableRefObject, ReactNode } from 'react'
 import {
   ArrayPath,
   FieldArrayWithId,
@@ -36,10 +36,10 @@ export const EditableObjectList = <T extends FieldValues>({
 
   const errors: any[] | undefined = path(name.split('.'), form.formState.errors)
   const selected = asNumber(form.watch(selectedName))
-  const onDelete = useCallback(() => {
+  const onDelete = () => {
     form.setValue(selectedName, undefined)
     remove(selected)
-  }, [selected, form, remove, selectedName])
+  }
 
   useEvent('click', onDelete, deleteButtonRef)
 
