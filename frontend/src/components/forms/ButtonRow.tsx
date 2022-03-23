@@ -12,6 +12,7 @@ export const ButtonRow = ({
   <FocusNavigator
     columns={2}
     rotated
+    ctrlKey={false}
     className={clsx('d-grid gap-2 d-sm-flex justify-content-sm-end', className)}
     {...props}
   >
