@@ -29,7 +29,7 @@ export const VisualTree = () => {
     focus(document.getElementById(sn.value.id))
   }, selectedNode)
 
-  const [ConfirmModal, confirmDelete] = useConfirmation(
+  const [DeleteModal, confirmDelete] = useConfirmation(
     'common.questions.delete',
     () => selectedNode && deleteNodeFx(selectedNode.value.id)
   )
@@ -55,7 +55,7 @@ export const VisualTree = () => {
   return (
     <div onKeyDown={keyMap} id="doc-tree">
       <VisualNode node={root} />
-      <ConfirmModal />
+      <DeleteModal />
     </div>
   )
 }
