@@ -42,6 +42,8 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
     [tag, missingNodeIds]
   )
 
+  console.log(values)
+
   return (
     <Values>
       {nodeIds.map(nodeId => (

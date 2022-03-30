@@ -1,7 +1,7 @@
 import { equals } from 'ramda'
 
 import { TreeNode } from '../algebraic/treeNode'
-import { next, prev, replaceSlice } from './ramda'
+import { byProp, next, prev, replaceSlice } from './ramda'
 
 describe('ramda', () => {
   it('next(pred)(arr) works', () => {
@@ -37,5 +37,20 @@ describe('ramda', () => {
   it('replaceSlice', () => {
     const res = replaceSlice(2, 4, 'abc', '1234567')
     expect(res).toBe('12abc567')
+  })
+
+  it('byProp', () => {
+    const arr = [
+      { id: 'a', text: 'A' },
+      { id: 'b', text: 'B' },
+      { id: 'c', text: 'D' }
+    ]
+    const res = byProp('id')(arr)
+    expect(res).toHaveProperty('a')
+    expect(res).toHaveProperty('b')
+    expect(res).toHaveProperty('c')
+    expect(res.a).toBe(arr[0])
+    expect(res.b).toBe(arr[1])
+    expect(res.c).toBe(arr[2])
   })
 })

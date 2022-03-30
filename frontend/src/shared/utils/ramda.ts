@@ -105,9 +105,9 @@ export const isCyclic =
   }
 
 export const byProp =
-  <T, K extends keyof T & string>(p: K) =>
-  (arr: T[]): Record<K, T> =>
-    map(head, groupBy(prop<K, T>(p) as any, arr))
+  (p: string) =>
+  <T extends Record<string, any>>(arr: T[]): Record<typeof p, T> =>
+    map(head, groupBy(prop<string, T>(p) as any, arr))
 
 export const insertStr = curry((index: number, text: string, input: string) =>
   insert(index, text, input.split('')).join('')
