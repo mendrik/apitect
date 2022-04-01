@@ -4,7 +4,7 @@ import { TreeNode } from '~shared/algebraic/treeNode'
 import { ApiResult } from '~shared/apiTypes'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
-import { byProp } from '~shared/utils/ramda'
+import { mapByProperty } from '~shared/utils/ramda'
 
 import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
@@ -30,7 +30,7 @@ export const $treeStore: Store<TreeNode<Node>> = $rawTree.map(
 )
 
 export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
-  byProp<Node, 'id'>('id')(root.flatten().map(prop('value')))
+  mapByProperty<Node, 'id'>('id')(root.flatten().map(prop('value')))
 )
 
 sample({

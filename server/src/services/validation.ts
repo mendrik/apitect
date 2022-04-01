@@ -9,7 +9,7 @@ import { EnumSettings } from '~shared/types/forms/nodetypes/enumSettings'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { NumberSettings } from '~shared/types/forms/nodetypes/numberSettings'
 import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
-import { byProp } from '~shared/utils/ramda'
+import { mapByProperty } from '~shared/utils/ramda'
 import { getDateValidator } from '~shared/validators/dateValidator'
 import { getEnumValidator } from '~shared/validators/enumValidator'
 import { getNumberValidator } from '~shared/validators/numberValidator'
@@ -25,12 +25,12 @@ export const nodeToValidator = async <T extends ZodSchema<any>>(
 ): Promise<T> => {
   const enumerations: Record<string, Enum> = await enums({ docId, email })
     .then<Enum[]>(propOr([], 'enums'))
-    .then(byProp('name'))
+    .then(mapByProperty('name'))
 
   const reducer = (acc: ZodObject<any>, cur: Node) => acc.setKey(cur.name, toValidator(cur))
 
   const nodeSettings: Record<NodeId, NodeSettings> = await allNodeSettings(docId).then(
-    byProp('nodeId')
+    mapByProperty('nodeId')
   )
 
   const primitiveValidator = (node: Node) => {

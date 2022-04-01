@@ -40,7 +40,7 @@ export const capitalize = compose(join(''), juxt([compose(toUpper, head), tail])
 export const assocBy =
   <K extends string, R>(field: K, func: Fn<R>) =>
   <U extends object>(obj: U) =>
-    converge(assoc(field) as any, [func, identity])(obj)
+    converge(assoc(field), [func, identity])(obj)
 
 export const safeParseJson = <T>(data: unknown): T | undefined =>
   tryCatch(d => JSON.parse(`${d}`), always(undefined))(data)
@@ -104,10 +104,12 @@ export const isCyclic =
     return isCyclic(pathMap)(pathMap[node], [node, ...visited])
   }
 
-export const byProp =
-  (p: string) =>
-  <T extends Record<string, any>>(arr: T[]): Record<typeof p, T> =>
-    map(head, groupBy(prop<string, T>(p) as any, arr))
+type Pluck<T extends readonly any[], K extends string> = T[number][K]
+
+export const mapByProperty =
+  <T extends Record<string, any>>(p: keyof T & string) =>
+  <T2 extends T>(arr: readonly T2[]): Record<Pluck<typeof arr, typeof p>, T2> =>
+    map(head, groupBy(prop(p), arr))
 
 export const insertStr = curry((index: number, text: string, input: string) =>
   insert(index, text, input.split('')).join('')

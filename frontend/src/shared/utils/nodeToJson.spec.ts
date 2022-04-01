@@ -2,13 +2,13 @@ import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { nodeToJson } from '~shared/utils/nodeToJson'
-import { byProp } from '~shared/utils/ramda'
+import { mapByProperty } from '~shared/utils/ramda'
 
 import tree from '../../fixtures/tree.json'
 import values from '../../fixtures/values.json'
 
 const x = TreeNode.from<Node, 'children'>('children')(tree as any)
-const v = byProp<'nodeId', any>('nodeId')(values as any) as any as Record<NodeId, Value>
+const v = mapByProperty<'nodeId', any>('nodeId')(values as any) as any as Record<NodeId, Value>
 
 describe('nodeToJson', () => {
   it('serialization works', () => {
