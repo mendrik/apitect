@@ -8,7 +8,7 @@ import tree from '../../fixtures/tree.json'
 import values from '../../fixtures/values.json'
 
 const x = TreeNode.from<Node, 'children'>('children')(tree as any)
-const v = mapByProperty<'nodeId', any>('nodeId')(values as any) as any as Record<NodeId, Value>
+const v: Record<NodeId, Value> = mapByProperty<any>('nodeId')(values)
 
 describe('nodeToJson', () => {
   it('serialization works', () => {

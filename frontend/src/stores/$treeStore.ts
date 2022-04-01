@@ -30,7 +30,7 @@ export const $treeStore: Store<TreeNode<Node>> = $rawTree.map(
 )
 
 export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
-  mapByProperty<Node, 'id'>('id')(root.flatten().map(prop('value')))
+  mapByProperty('id')(root.flatten().map(prop('value')))
 )
 
 sample({

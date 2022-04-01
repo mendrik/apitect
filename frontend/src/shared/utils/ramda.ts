@@ -111,7 +111,7 @@ export const mapByProperty =
   <T2 extends T>(arr: readonly T2[]): Record<Pluck<typeof arr, typeof p>, T2> =>
     map(head, groupBy(prop(p), arr))
 
-export const insertStr = curry((index: number, text: string, input: string) =>
+export const insertStr = curry((index: number, text: string, input: string): string =>
   insert(index, text, input.split('')).join('')
 )
 
