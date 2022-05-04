@@ -30,14 +30,16 @@ const root = createRoot(document.getElementById('apitect')!)
 
 const render = (): void =>
   root.render(
-    <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
-      <Suspense fallback={<Loader className="vh-100" delay={true} />}>
-        <BrowserRouter>
-          <App />
-          <Modals />
-        </BrowserRouter>
-      </Suspense>
-    </ErrorBoundary>
+    <React.StrictMode>
+      <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
+        <Suspense fallback={<Loader className="vh-100" delay={true} />}>
+          <BrowserRouter>
+            <App />
+            <Modals />
+          </BrowserRouter>
+        </Suspense>
+      </ErrorBoundary>
+    </React.StrictMode>
   )
 
 const start = () =>
