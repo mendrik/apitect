@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter } from 'react-router-dom'
@@ -30,7 +30,7 @@ const root = createRoot(document.getElementById('apitect')!)
 
 const render = (): void =>
   root.render(
-    <React.StrictMode>
+    <StrictMode>
       <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
         <Suspense fallback={<Loader className="vh-100" delay={true} />}>
           <BrowserRouter>
@@ -39,7 +39,7 @@ const render = (): void =>
           </BrowserRouter>
         </Suspense>
       </ErrorBoundary>
-    </React.StrictMode>
+    </StrictMode>
   )
 
 const start = () =>
