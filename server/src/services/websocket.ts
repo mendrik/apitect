@@ -1,5 +1,5 @@
+import { SocketStream } from '@fastify/websocket'
 import { FastifyInstance } from 'fastify'
-import { SocketStream } from 'fastify-websocket'
 import { verify } from 'jsonwebtoken'
 import { ZodError } from 'zod'
 import { ZApiRequest } from '~shared/apiRequest'

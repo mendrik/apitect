@@ -1,6 +1,6 @@
+import Cors from '@fastify/cors'
+import Ws from '@fastify/websocket'
 import Fastify from 'fastify'
-import Cors from 'fastify-cors'
-import Ws from 'fastify-websocket'
 import { logger } from '~shared/utils/logger'
 
 import { initAuthentication } from './services/authentication'
@@ -17,7 +17,7 @@ void initDatabaseFx()
     initAuthentication(fastify)
     initWebsocket(fastify)
 
-    fastify.listen(config.PORT, (err, address) => {
+    fastify.listen({ port: Number(config.PORT) }, (err, address) => {
       if (err) throw err
       console.log(`Server running on port ${address}`)
     })
