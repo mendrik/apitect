@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@dnd-kit/core": "5.0.3",
-    "@hookform/resolvers": "2.8.8",
-    "@tabler/icons": "1.68.0",
+    "@hookform/resolvers": "2.9.8",
+    "@tabler/icons": "1.96.0",
     "ansicolor": "1.1.100",
     "bootstrap": "5.1.3",
     "clsx": "1.1.1",
@@ -36,7 +36,7 @@
     "react-bootstrap": "2.3.1",
     "react-dom": "18.1.0",
     "react-error-boundary": "3.1.4",
-    "react-hook-form": "7.30.0",
+    "react-hook-form": "7.35.0",
     "react-i18next": "11.16.7",
     "react-router-dom": "6.3.0",
     "react-use": "17.3.2",
@@ -99,7 +99,7 @@
     "jest": "28.0.3",
     "prettier": "2.6.2",
     "sass": "1.51.0",
-    "typescript": "4.6.4",
+    "typescript": "4.8.3",
     "vite": "2.9.8",
     "vite-plugin-svgr": "2.1.0",
     "vite-tsconfig-paths": "3.4.1"
