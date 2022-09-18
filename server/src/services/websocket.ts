@@ -51,9 +51,11 @@ const openWebsocket = (connection: SocketStream) => {
     const { email, name, docId } = JwtPayload.parse(
       verify(connection.socket.protocol, `${config.TOKEN_KEY}`)
     )
+    logger.info(`Connect`, { email, name, docId })
 
     connection.socket.on('message', (buffer: Buffer) => {
       const content = buffer.toString('utf-8')
+      logger.message(content)
       const data = JSON.parse(content)
       try {
         const apiRequest = ZApiRequest.parse(data)
@@ -67,13 +69,19 @@ const openWebsocket = (connection: SocketStream) => {
         return apiCall(param as any)
           .then(send(apiRequest.id, apiRequest.method))
           .catch(socketErrorHandler(connection.socket.send.bind(connection.socket), apiRequest.id))
-      } catch (e: any) {
-        logger.info(`${name} [${email}]/failed`, data)
-        logger.error(e.message, getStack(e))
+      } catch (e) {
+        if (e instanceof Error) {
+          logger.error(e.message + `[${email}]`, getStack(e))
+        } else {
+          throw e
+        }
       }
     })
-  } catch (e) {
-    logger.error('Unauthorized socket access', e)
+    connection.socket.on('close', () => {
+      logger.info(`disconnect`, { email, name, docId })
+    })
+  } catch (e: any) {
+    logger.error('Unauthorized socket access', e.message)
   }
 }
 

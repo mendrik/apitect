@@ -14,6 +14,7 @@ import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { ProjectUsersSettings } from '~shared/types/forms/projectUsersSettings'
 import { TagsSettings } from '~shared/types/forms/tagsSettings'
 import { UserSettings } from '~shared/types/forms/userSettings'
+import { logger } from '~shared/utils/logger'
 import { ensure } from '~shared/utils/ramda'
 
 import { $serverState } from '../stores/$serverState'
@@ -46,10 +47,10 @@ export type CollectionMap = {
 }
 
 export const connect = async (): Promise<MongoClient> => {
-  console.log(`Connecting to database: ${config.DATABASE}`)
+  logger.info(`Connecting to database: ${config.DATABASE}`)
   const client = new MongoClient(`${config.DATABASE}`)
   await client.connect()
-  console.log(`Successfully connected to database`)
+  logger.info(`Successfully connected to database`)
   const db = client.db(dbName)
   const existing = await db.listCollections().toArray().then(pluck('name'))
 
