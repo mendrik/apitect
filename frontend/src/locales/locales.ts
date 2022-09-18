@@ -2,11 +2,7 @@ import i18n, { TFunction } from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { capitalize } from '~shared/utils/ramda'
 
-import en from './apitect.en-GB'
-
-const resources = {
-  'en-GB': en
-}
+import { resources } from '../type-patches/locales'
 
 export const initLocales = (): Promise<TFunction> =>
   i18n.use(initReactI18next).init({

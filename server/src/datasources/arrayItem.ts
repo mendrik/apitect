@@ -6,7 +6,7 @@ import { NotificationType } from '~shared/types/domain/notification'
 import { Value } from '~shared/types/domain/values/value'
 import { notificationError } from '~shared/types/notificationError'
 import { nodeToJson } from '~shared/utils/nodeToJson'
-import { byProp } from '~shared/utils/ramda'
+import { mapByProperty } from '~shared/utils/ramda'
 
 import { valueList } from '../api/valueList'
 import { getTree } from '../services'
@@ -30,7 +30,7 @@ export const validateValues = async (
     payload: { tag, nodeIds }
   })
     .then(prop('values'))
-    .then(byProp('nodeId'))
+    .then(mapByProperty('nodeId'))
   const item = nodeToJson(node, values)
   const validator: ZodArray<AnyZodObject> = await nodeToValidator(node, docId, email)
   try {

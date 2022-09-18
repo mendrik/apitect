@@ -3,7 +3,7 @@ import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form'
 import { useServerError } from '~hooks/useServerError'
 import { Fn, Jsx } from '~shared/types/generic'
 
-type OwnProps<T, S = any> = {
+type OwnProps<T extends FieldValues, S = any> = {
   form: UseFormReturn<T>
   onSubmit: Fn
   running: boolean

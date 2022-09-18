@@ -31,7 +31,7 @@ export const EditableObjectList = <T extends FieldValues>({
   form,
   deleteButtonRef,
   children
-}: Jsx<OwnProps<T>>) => {
+}: OwnProps<T>) => {
   const { fields, remove } = useFieldArray<T>({ name, control: form.control })
 
   const errors: any[] | undefined = path(name.split('.'), form.formState.errors)
@@ -64,8 +64,6 @@ export const EditableObjectList = <T extends FieldValues>({
   )
 }
 
-type ItemProps = {}
-
-EditableObjectList.Item = ({ children }: Jsx<ItemProps>) => (
+EditableObjectList.Item = ({ children }: Jsx): JSX.Element => (
   <div className="d-grid gap-2 mb-2">{children}</div>
 )

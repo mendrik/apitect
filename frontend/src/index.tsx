@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react'
-import ReactDOM from 'react-dom'
+import React, { StrictMode, Suspense } from 'react'
+import { createRoot } from 'react-dom/client'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter } from 'react-router-dom'
 import { setErrorMap, ZodErrorMap } from 'zod'
@@ -26,10 +26,11 @@ const errorMap: ZodErrorMap = (error, ctx) => {
 }
 
 setErrorMap(errorMap)
+const root = createRoot(document.getElementById('apitect')!)
 
 const render = (): void =>
-  void ReactDOM.render(
-    <React.StrictMode>
+  root.render(
+    <StrictMode>
       <ErrorBoundary FallbackComponent={ErrorView} onError={myErrorHandler}>
         <Suspense fallback={<Loader className="vh-100" delay={true} />}>
           <BrowserRouter>
@@ -38,8 +39,7 @@ const render = (): void =>
           </BrowserRouter>
         </Suspense>
       </ErrorBoundary>
-    </React.StrictMode>,
-    document.getElementById('apitect')
+    </StrictMode>
   )
 
 const start = () =>

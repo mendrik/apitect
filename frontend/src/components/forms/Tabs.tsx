@@ -23,7 +23,7 @@ export const Tabs = ({ initialTab = 0, children, ...props }: Jsx<OwnProps>) => {
     <div {...props}>
       <tabContext.Provider value={{ activeTab }}>
         <ul className="nav nav-tabs mb-4">
-          {Children.map(children, (child, i) => (
+          {Children.map(children, (child: ReactElement, i) => (
             <li className="nav-item">
               <button
                 type="button"

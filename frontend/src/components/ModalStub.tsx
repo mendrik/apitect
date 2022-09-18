@@ -68,7 +68,7 @@ const ModalStub = ({
         {...modalProps}
       >
         <Modal.Header closeButton>
-          <Modal.Title>{t(title, titleOptions ?? state)}</Modal.Title>
+          <Modal.Title>{t<any>(title, titleOptions ?? state)}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {loading ? <Loader style={{ minHeight: 200 }} /> : <Module close={close} />}

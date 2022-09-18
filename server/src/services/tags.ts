@@ -1,3 +1,5 @@
+import { MatchKeysAndValues } from 'mongodb'
+import { UserSettings } from '~shared/types/forms/userSettings'
 import { logger } from '~shared/utils/logger'
 
 import { collection, Collections, withTransaction } from './database'
@@ -14,7 +16,7 @@ export const renameTag =
       )
       return collection(Collections.userSettings).updateMany(
         { docId },
-        { $set: { 'visibleTags.$[filter]': to } },
+        { $set: { 'visibleTags.$[filter]': to } as MatchKeysAndValues<UserSettings> },
         { arrayFilters: [{ filter: from }], session }
       )
     })

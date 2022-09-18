@@ -1,12 +1,13 @@
-import { useStore, useStoreMap } from 'effector-react'
+import { useStore } from 'effector-react'
 import { filter, keys, pipe, propEq, without } from 'ramda'
 import React, { useMemo } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
+import { useStoreMap } from '~hooks/useStoreMap'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { Jsx } from '~shared/types/generic'
-import { byProp } from '~shared/utils/ramda'
+import { mapByProperty } from '~shared/utils/ramda'
 import { $valuesStore } from '~stores/$valuesStore'
 import { $visibleNodes } from '~stores/$visibileNodes'
 
@@ -32,7 +33,7 @@ export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
   const loading = useStore(valueListFx.pending)
   const values: Record<NodeId, Value> = useStoreMap(
     $valuesStore,
-    pipe(filter(propEq('tag', tag)), byProp('nodeId'))
+    pipe(filter(propEq('tag', tag)), mapByProperty('nodeId'))
   )
 
   const nodeIds = useStore($visibleNodes)

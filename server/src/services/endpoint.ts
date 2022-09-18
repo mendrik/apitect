@@ -25,9 +25,9 @@ export const noContent = always({})
 type Collector = Record<string, ZodSchema<any> | ((req: FastifyRequest) => Promise<any> | any)>
 
 export const body =
-  <S>(decoder: ZodSchema<S>) =>
+  <S>({ parse }: ZodSchema<S>) =>
   (req: FastifyRequest): S =>
-    decoder.parse(req.body)
+    (parse as Fn<S>)(req.body) // cast to improve TS performance
 
 export const verifyP: Fn<Promise<{ email: string }>> = promisify<any, any>(verify)
 

@@ -73,7 +73,7 @@ const EnumsSettings: ModalFC = ({ close }) => {
           </span>
         )}
       >
-        {(field, idx) => (
+        {(field: any, idx: number) => (
           <EditableObjectList.Item key={field.id}>
             <TextInput name={`enums.${idx}.name`} label="modals.enumsSettings.enumName" required />
             <TagInput<EnumItem>

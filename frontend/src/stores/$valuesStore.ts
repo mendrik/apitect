@@ -1,5 +1,5 @@
 import { createStore, sample } from 'effector'
-import { any, join, juxt, nthArg, pipe, prop, propOr, reject, uniqBy, whereEq } from 'ramda'
+import { any, join, juxt, pipe, prop, propOr, reject, uniqBy, whereEq } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
@@ -46,7 +46,7 @@ $valuesStore.on(valueDeleteFx.done, (state, { params }) =>
 )
 
 export const $selectedValue = createStore<SelectedValue | null>(null)
-  .on(selectValue, nthArg(1))
+  .on(selectValue, (_, result) => result)
   .reset(resetProject)
 
 export const $selectedValueNode = createStore<TreeNode<Node> | null>(null)

@@ -50,10 +50,10 @@ export const target = {
   valueIs: <T>(val: T) => pathEq(['target', 'value'], val),
   caretPosition: pathOr(0, ['target', 'selectionStart']),
   selectionEnd: pathOr(0, ['target', 'selectionEnd']),
-  hasSelection: converge<any, boolean, number, number>(notEqual as any, [
-    pathOr(0, ['target', 'selectionStart']),
-    pathOr(0, ['target', 'selectionEnd'])
-  ])
+  hasSelection: converge(
+    (x: number, y: number) => notEqual(x, y),
+    [pathOr(0, ['target', 'selectionStart']), pathOr(0, ['target', 'selectionEnd'])]
+  )
 }
 
 /**
@@ -62,16 +62,16 @@ export const target = {
 export const futureValue: (ev: KeyboardEvent<HTMLInputElement>) => string = cond([
   [
     both(target.hasSelection, codeIn('Delete', 'Backspace')),
-    converge(removeSlice as any, [target.caretPosition, target.selectionEnd, target.value])
+    converge(removeSlice, [target.caretPosition, target.selectionEnd, target.value])
   ],
   [target.hasSelection, target.value],
   [
     pathEq(['key', 'length'], 1),
-    converge(insertStr as any, [target.caretPosition, propOr('', 'key'), target.value])
+    converge(insertStr, [target.caretPosition, propOr('', 'key'), target.value])
   ],
   [both(withCtrl, codeIn('Delete', 'Backspace')), always('')],
-  [codeIn('Backspace'), converge(removeCharBefore as any, [target.caretPosition, target.value])],
-  [codeIn('Delete'), converge(removeCharAt as any, [target.caretPosition, target.value])],
+  [codeIn('Backspace'), converge(removeCharBefore, [target.caretPosition, target.value])],
+  [codeIn('Delete'), converge(removeCharAt, [target.caretPosition, target.value])],
   [T, target.value]
 ])
 
@@ -79,24 +79,22 @@ const noOp = (_e: KeyboardEvent<HTMLInputElement>) => void 0
 
 export const onlyNumbers = cond([
   [allPass([withShift, withCtrl, codeIn('ArrowLeft', 'ArrowRight')]), stopPropagation()],
-  [pipe<any, any, any>(futureValue, isEmpty), noOp],
+  [pipe(futureValue, isEmpty), noOp],
   [either(withCtrl, withShift), noOp],
-  [pipe<any, any, any>(futureValue, complement(validNumber)), stopEvent()]
+  [pipe(futureValue, complement(validNumber)), stopEvent()]
 ])
 
 const clipboard = (e: ClipboardEvent<HTMLInputElement>) => e.clipboardData?.getData('Text')
 
-export const futurePasteResult: (ev: ClipboardEvent<HTMLInputElement>) => string = cond([
+export const futurePasteResult: (ev: ClipboardEvent<HTMLInputElement>) => string = cond<
+  any[],
+  string
+>([
   [
-    both(target.hasSelection, pipe<any, any, boolean>(clipboard, isNotNil)),
-    converge(replaceSlice as any, [
-      target.caretPosition,
-      target.selectionEnd,
-      clipboard,
-      target.value
-    ])
+    both(target.hasSelection, pipe(clipboard, isNotNil)),
+    converge(replaceSlice, [target.caretPosition, target.selectionEnd, clipboard, target.value])
   ],
-  [T, converge(insertStr as any, [target.caretPosition, clipboard, target.value])]
+  [T, converge(insertStr, [target.caretPosition, clipboard, target.value])]
 ])
 
 export const onlyNumbersPaste = unless(pipe(futurePasteResult, validNumber), stopEvent())
