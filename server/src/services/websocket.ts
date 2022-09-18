@@ -55,7 +55,7 @@ const openWebsocket = (connection: SocketStream) => {
 
     connection.socket.on('message', (buffer: Buffer) => {
       const content = buffer.toString('utf-8')
-      logger.message(content)
+      // logger.message(content)
       const data = JSON.parse(content)
       try {
         const apiRequest = ZApiRequest.parse(data)
