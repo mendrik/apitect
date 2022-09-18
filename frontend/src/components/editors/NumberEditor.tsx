@@ -1,7 +1,6 @@
 import { IconSquareMinus, IconSquarePlus } from '@tabler/icons'
 import clsx from 'clsx'
 import { cond, pipe, T } from 'ramda'
-import React from 'react'
 import styled from 'styled-components'
 import { useEditorTools } from '~hooks/specific/useEditorTools'
 import { useNumberFormat } from '~hooks/useNumberFormat'

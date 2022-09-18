@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { cond, find, propEq } from 'ramda'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'

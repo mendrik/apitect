@@ -5,7 +5,7 @@
     }
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["prettier", "effector", "react", "react-hooks"],
+  "plugins": ["unused-imports","prettier", "effector", "react", "react-hooks"],
   "extends": ["prettier", "plugin:effector/recommended", "plugin:react/recommended", "plugin:react/jsx-runtime"],
   "parserOptions": {
     "sourceType": "module"
@@ -24,6 +24,7 @@
     "react-hooks/exhaustive-deps": "warn",
     "react/display-name": "off",
     "react/prop-types": "off",
+    "react/jsx-no-undef": "off",
     "no-console": [
       "off",
       {
@@ -50,6 +51,7 @@
       {
         "singleQuote": true
       }
-    ]
+    ],
+    "unused-imports/no-unused-imports": "error"
   }
 }

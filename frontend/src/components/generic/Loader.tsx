@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import { Jsx } from '~shared/types/generic'
 
 import { delayedBlendIn } from '../../animations/delayedBlendIn'

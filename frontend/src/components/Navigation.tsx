@@ -1,6 +1,5 @@
 import { IconDownload, IconLogin, IconTags, IconTrees, IconWorldUpload } from '@tabler/icons'
 import { useStore } from 'effector-react'
-import React from 'react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'

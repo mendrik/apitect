@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
-import React, { PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { SocketForm } from '~forms/SocketForm'

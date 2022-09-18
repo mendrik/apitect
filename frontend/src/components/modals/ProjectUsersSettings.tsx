@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
 import { prop } from 'ramda'
-import React from 'react'
 import { useForm } from 'react-hook-form'
 import { SocketForm } from '~forms/SocketForm'
 import { TreeInput } from '~forms/TreeInput'

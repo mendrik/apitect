@@ -1,6 +1,5 @@
 import { IconCirclePlus, IconColumns, IconSettings, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { $documentStore } from '~stores/$documentStore'
 import { $canCreateNode, $currentNode } from '~stores/$selectedNode'

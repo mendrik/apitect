@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react'
-import React, { Suspense, useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ModalNames } from '~shared/types/modals'
 import { $currentNode } from '~stores/$selectedNode'

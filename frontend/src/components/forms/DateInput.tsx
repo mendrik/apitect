@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { parse } from 'date-fns'
 import { path } from 'ramda'
-import React, { InputHTMLAttributes } from 'react'
+import { InputHTMLAttributes } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'

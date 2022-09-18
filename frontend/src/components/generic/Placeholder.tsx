@@ -1,5 +1,5 @@
 import { range } from 'ramda'
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { NodeId } from '~shared/types/domain/node'
 import { Jsx } from '~shared/types/generic'

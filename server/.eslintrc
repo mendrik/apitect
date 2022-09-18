@@ -1,6 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["prettier", "effector"],
+  "plugins": ["unused-imports","prettier", "effector"],
   "extends": ["prettier", "plugin:effector/recommended"],
   "parserOptions": {
 
@@ -23,6 +23,7 @@
     "no-underscore-dangle": "off",
     "no-void": ["off", { "allowAsStatement": true }],
     "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
-    "prettier/prettier": ["error", { "singleQuote": true }]
+    "prettier/prettier": ["error", { "singleQuote": true }],
+    "unused-imports/no-unused-imports": "error"
   }
 }

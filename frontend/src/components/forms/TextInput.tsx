@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { path } from 'ramda'
 import { isEmptyString } from 'ramda-adjunct'
-import React, { InputHTMLAttributes } from 'react'
+import { InputHTMLAttributes } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'

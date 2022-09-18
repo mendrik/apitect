@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { append, cond, path, pipe, propEq, remove, unless, when } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import React, { HTMLAttributes, useRef, useState } from 'react'
+import { HTMLAttributes, useRef, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'

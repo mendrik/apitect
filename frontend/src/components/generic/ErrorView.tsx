@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ReactComponent as ErrorSvg } from '../../assets/error.svg'
 
 export const ErrorView = ({ error }: { error?: Error }) => (

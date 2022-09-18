@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import React, { Children, HTMLAttributes } from 'react'
+import { Children, HTMLAttributes } from 'react'
 import { Jsx } from '~shared/types/generic'
 
 export const HGrid = ({ className, children, ...props }: Jsx<HTMLAttributes<HTMLDivElement>>) => {

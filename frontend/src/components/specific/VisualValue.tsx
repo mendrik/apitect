@@ -1,5 +1,4 @@
 import { prop } from 'ramda'
-import React from 'react'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { Node, NodeId } from '~shared/types/domain/node'

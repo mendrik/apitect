@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import { cond, equals, pipe, T } from 'ramda'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { useDateFormat } from '~hooks/useDateFormat'

@@ -1,5 +1,4 @@
 import { MotionProps } from 'framer-motion/types/motion/types'
-import React from 'react'
 
 export const slideIn: MotionProps = {
   initial: {

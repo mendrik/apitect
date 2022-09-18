@@ -1,4 +1,3 @@
-import React from 'react'
 import { Alert } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { ExtendedError } from '~shared/types/extendedError'

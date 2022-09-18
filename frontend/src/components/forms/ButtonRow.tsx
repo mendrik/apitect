@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import { Jsx } from '~shared/types/generic'
 
 import { FocusNavigator } from '../generic/FocusNavigator'

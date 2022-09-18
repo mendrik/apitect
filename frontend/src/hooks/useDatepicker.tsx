@@ -1,5 +1,5 @@
 import { format, parse } from 'date-fns'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { Datepicker } from '../components/datepicker/Datepicker'

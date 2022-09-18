@@ -1,7 +1,6 @@
 import { useStore } from 'effector-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { mapIndexed } from 'ramda-adjunct'
-import React from 'react'
 import { Toast, ToastContainer } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { ZodError } from 'zod'

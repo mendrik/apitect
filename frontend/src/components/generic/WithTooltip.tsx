@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Jsx } from '~shared/types/generic'
 

@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { always, cond, equals, T } from 'ramda'
 import { isNilOrEmpty } from 'ramda-adjunct'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { useStoreMap } from '~hooks/useStoreMap'

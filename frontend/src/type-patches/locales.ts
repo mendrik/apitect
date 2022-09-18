@@ -1,6 +1,5 @@
-import { StringMap, TFunctionResult, TOptions } from 'i18next'
-import * as React from 'react'
-import { DefaultNamespace, Namespace, TFuncKey, TFuncReturn } from 'react-i18next'
+import { StringMap, TOptions } from 'i18next'
+import { DefaultNamespace, Namespace, TFuncKey } from 'react-i18next'
 
 import en from '../locales/apitect.en-GB'
 

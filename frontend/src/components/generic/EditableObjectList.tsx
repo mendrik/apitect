@@ -1,6 +1,6 @@
 import { IconAlertCircle } from '@tabler/icons'
 import { map, path, range } from 'ramda'
-import React, { MutableRefObject, ReactNode } from 'react'
+import { MutableRefObject, ReactNode } from 'react'
 import {
   ArrayPath,
   FieldArrayWithId,

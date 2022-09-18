@@ -1,6 +1,6 @@
 import { TablerIcon as IconProp } from '@tabler/icons'
 import clsx from 'clsx'
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 

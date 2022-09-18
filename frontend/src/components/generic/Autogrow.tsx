@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { converge, pipe } from 'ramda'
-import React, { ClipboardEvent, HTMLAttributes, ReactNode, useState } from 'react'
+import { ClipboardEvent, HTMLAttributes, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 import { removeSlice } from '~shared/utils/ramda'

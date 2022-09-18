@@ -1,6 +1,5 @@
 import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import React from 'react'
 import styled from 'styled-components'
 import { $tagStore } from '~stores/$tagStore'
 

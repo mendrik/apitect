@@ -1,7 +1,7 @@
 import { useStore } from 'effector-react'
 import { always, both, cond } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import React, { SyntheticEvent } from 'react'
+import { SyntheticEvent } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
 import '~stores/$enumsStore'

@@ -4,7 +4,7 @@ import { addYears, format, isSameYear, isValid, parse, setDate, setMonth } from 
 import { AnimatePresence, motion } from 'framer-motion'
 import { cond, propOr, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import React, {
+import {
   HTMLAttributes,
   KeyboardEvent,
   SyntheticEvent,

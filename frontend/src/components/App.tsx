@@ -1,5 +1,4 @@
 import { useStore } from 'effector-react'
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { $user } from '~stores/$userStore'
 

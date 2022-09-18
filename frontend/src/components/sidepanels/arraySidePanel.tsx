@@ -1,6 +1,5 @@
 import { IconCheckbox, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { $selectedArrayItem, $selectedArrayNode } from '~stores/$arrayStores'

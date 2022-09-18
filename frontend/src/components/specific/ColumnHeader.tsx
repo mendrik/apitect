@@ -1,5 +1,4 @@
 import { IconSettings, IconShieldCheck } from '@tabler/icons'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tag } from '~shared/types/domain/tag'
 import { Jsx } from '~shared/types/generic'

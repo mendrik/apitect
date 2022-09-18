@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
-import React from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 

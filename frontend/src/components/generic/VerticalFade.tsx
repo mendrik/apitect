@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { EventHandler, HTMLAttributes, useCallback, useRef } from 'react'
+import { EventHandler, HTMLAttributes, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { useEvent } from '~hooks/useEvent'
 import { Jsx } from '~shared/types/generic'

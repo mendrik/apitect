@@ -1,4 +1,4 @@
-import React, { FunctionComponent, SVGProps } from 'react'
+import { FunctionComponent, SVGProps } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { Jsx } from '~shared/types/generic'

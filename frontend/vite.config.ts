@@ -1,4 +1,4 @@
-import reactRefresh from '@vitejs/plugin-react-refresh'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 // @ts-ignore
 import svgrPlugin from 'vite-plugin-svgr'
@@ -11,5 +11,5 @@ export default defineConfig({
   build: {
     outDir: 'build'
   },
-  plugins: [tsconfigPaths(), reactRefresh(), svgrPlugin()]
+  plugins: [tsconfigPaths(), react(), svgrPlugin()]
 })

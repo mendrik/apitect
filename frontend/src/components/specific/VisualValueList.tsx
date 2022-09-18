@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react'
 import { filter, keys, pipe, propEq, without } from 'ramda'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useDeepCompareEffect } from 'react-use'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'

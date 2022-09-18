@@ -1,12 +1,10 @@
 import { IconChevronLeft, IconChevronRight, IconDeviceFloppy } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import { path } from 'ramda'
-import React from 'react'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { NodeId } from '~shared/types/domain/node'
 import { ArrayValue } from '~shared/types/domain/values/arrayValue'
-import { Jsx } from '~shared/types/generic'
 import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $selectedValue } from '~stores/$valuesStore'
 
@@ -26,7 +24,7 @@ const EditorSx = styled.div`
   width: min-content;
 `
 
-export const ArrayEditor = ({ node, value, tag: columnTag }: Jsx<EditorProps<ArrayValue>>) => {
+export const ArrayEditor = ({ node, value, tag: columnTag }: EditorProps<ArrayValue>) => {
   const arrayNodeId: NodeId | undefined = useStoreMap($selectedArrayNode, path(['value', 'id']))
   const sv = useStore($selectedValue)
 

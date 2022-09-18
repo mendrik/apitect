@@ -1,6 +1,6 @@
 import { addDays, format, getDay, isAfter, lastDayOfMonth, setDay } from 'date-fns'
 import { range, reduce, take } from 'ramda'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Jsx } from '~shared/types/generic'
 

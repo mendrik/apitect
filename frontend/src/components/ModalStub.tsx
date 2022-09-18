@@ -1,7 +1,7 @@
 import { BaseModalProps } from '@restart/ui/Modal'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'

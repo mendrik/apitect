@@ -1,5 +1,5 @@
 import { allPass, always, both, cond, equals, T } from 'ramda'
-import React, { EventHandler, HTMLAttributes, useRef } from 'react'
+import { EventHandler, HTMLAttributes, useRef } from 'react'
 import { Jsx, Maybe } from '~shared/types/generic'
 import { next, prev } from '~shared/utils/ramda'
 

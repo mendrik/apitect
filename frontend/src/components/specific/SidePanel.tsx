@@ -1,7 +1,6 @@
 import { useStore } from 'effector-react'
 import { motion } from 'framer-motion'
 import { cond, includes, map, prop } from 'ramda'
-import React from 'react'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { NodeType } from '~shared/types/domain/nodeType'

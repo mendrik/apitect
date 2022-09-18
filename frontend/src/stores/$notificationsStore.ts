@@ -1,6 +1,5 @@
 import { createStore } from 'effector'
 import { propEq, reject } from 'ramda'
-import { Notification } from '~shared/types/domain/notification'
 import { logger } from '~shared/utils/logger'
 
 import { IdNotification, removeNotification, showNotification } from '../events/notifications'

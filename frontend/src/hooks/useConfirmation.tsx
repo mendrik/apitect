@@ -1,5 +1,5 @@
 import { complement, cond } from 'ramda'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { ButtonRow } from '~forms/ButtonRow'
@@ -18,7 +18,6 @@ export const useConfirmation = (
   cancelButton: TFuncKey = 'common.cancel'
 ): [Fn<JSX.Element | null>, Fn] => {
   const [open, setOpen] = useState(false)
-  const close = () => setOpen(false)
 
   const keyMap = cond([
     [codeIn('Escape'), sp(close)],
@@ -40,10 +39,17 @@ export const useConfirmation = (
       if (refOk.current) {
         focus(refOk.current)
       }
-    }, [open, refOk])
+    }, [refOk])
 
     return open ? (
-      <Modal show={open} onHide={close} centered enforceFocus onKeyDown={keyMap} key="">
+      <Modal
+        show={open}
+        onHide={() => setOpen(false)}
+        centered
+        enforceFocus
+        onKeyDown={keyMap}
+        key=""
+      >
         <Modal.Header closeButton>
           <Modal.Title>{t('common.confirmation')}</Modal.Title>
         </Modal.Header>
@@ -61,7 +67,8 @@ export const useConfirmation = (
         </Modal.Body>
       </Modal>
     ) : null
-  }, [open, close, question])
+  }, [open, question, cancelButton, confirmButton, keyMap, onConfirm])
 
-  return [Confirm, () => setOpen(true)]
+  const openFn = useCallback(() => setOpen(true), [])
+  return [Confirm, openFn]
 }

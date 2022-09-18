@@ -1,4 +1,3 @@
-import React from 'react'
 import { Tab } from '~forms/Tab'
 import { Tabs } from '~forms/Tabs'
 

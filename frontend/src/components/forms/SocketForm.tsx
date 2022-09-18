@@ -1,5 +1,5 @@
 import { EffectByHandler } from 'effector'
-import React, { PropsWithChildren, ReactElement, ReactNode, useState } from 'react'
+import { PropsWithChildren, ReactElement, ReactNode, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { FieldValues } from 'react-hook-form/dist/types/fields'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useLocalStorage } from 'react-use'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { Jsx } from '~shared/types/generic'

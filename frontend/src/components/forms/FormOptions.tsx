@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { path } from 'ramda'
-import React, { Children, HTMLAttributes, useEffect } from 'react'
+import { Children, HTMLAttributes, useEffect } from 'react'
 import { Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 import styled from 'styled-components'

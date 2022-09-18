@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
 import { always, fromPairs, juxt, map, prop, propEq } from 'ramda'
-import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Dropdown } from '~forms/Dropdown'
 import { SocketForm } from '~forms/SocketForm'

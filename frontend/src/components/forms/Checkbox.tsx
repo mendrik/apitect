@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { assocPath, ifElse, pathEq } from 'ramda'
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ErrorInfo } from '~forms/ErrorInfo'

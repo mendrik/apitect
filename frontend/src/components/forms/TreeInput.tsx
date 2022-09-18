@@ -2,7 +2,7 @@ import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
 import { all, cond, not, path, propEq, propOr, T as RT } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
-import React, {
+import {
   createContext,
   Dispatch,
   MouseEvent,

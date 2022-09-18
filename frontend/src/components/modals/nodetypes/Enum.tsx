@@ -1,5 +1,4 @@
 import { useStore } from 'effector-react'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Checkbox } from '~forms/Checkbox'
 import { FieldSet } from '~forms/FieldSet'

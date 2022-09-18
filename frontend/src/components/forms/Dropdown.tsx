@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import { mapIndexed } from 'ramda-adjunct'
-import React from 'react'
 import { FloatingLabel, Form } from 'react-bootstrap'
 import { FormSelectProps } from 'react-bootstrap/FormSelect'
 import { Controller } from 'react-hook-form'
