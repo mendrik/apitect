@@ -85,6 +85,5 @@ const openWebsocket = (connection: SocketStream) => {
   }
 }
 
-export const initWebsocket = (fastify: FastifyInstance) => {
-  fastify.get('/', { websocket: true }, openWebsocket)
-}
+export const initWebsocket = (fastify: FastifyInstance) =>
+  fastify.register(async () => fastify.get('/', { websocket: true }, openWebsocket))

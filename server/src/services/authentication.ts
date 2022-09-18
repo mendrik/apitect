@@ -108,10 +108,11 @@ const logout = endpoint({ user }, ({ user }) =>
 
 const whomAmI = endpoint({ user }, async ({ user }): Promise<User> => user)
 
-export const initAuthentication = (fastify: FastifyInstance) => {
-  fastify.post('/register', {}, register)
-  fastify.post('/login', login)
-  fastify.delete('/logout', logout)
-  fastify.get('/whoami', whomAmI)
-  fastify.put('/forgot-password', forgotPassword)
-}
+export const initAuthentication = (fastify: FastifyInstance) =>
+  fastify.register(async () => {
+    fastify.post('/register', {}, register)
+    fastify.post('/login', login)
+    fastify.delete('/logout', logout)
+    fastify.get('/whoami', whomAmI)
+    fastify.put('/forgot-password', forgotPassword)
+  })
