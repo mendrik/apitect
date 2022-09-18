@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { propOr } from 'ramda'
+import { objOf, propOr } from 'ramda'
 import React from 'react'
 import { Alert } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
@@ -8,7 +8,6 @@ import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
 import { useLocation } from '~hooks/useLocation'
 import { TagsSettings as Settings, ZTagsSettings } from '~shared/types/forms/tagsSettings'
-import { toObj } from '~shared/utils/ramda'
 
 import { updateTagsSettingsFx } from '../../events/project'
 import { ModalFC } from '../ModalStub'
@@ -31,7 +30,7 @@ const TagsSettings: ModalFC = ({ close }) => {
         label="form.fields.tags"
         name="tags"
         containerClasses="mb-3"
-        apply={toObj('name')}
+        apply={objOf('name')}
         unapply={propOr('', 'name')}
       />
     </SocketForm>

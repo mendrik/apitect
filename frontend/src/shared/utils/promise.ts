@@ -38,6 +38,3 @@ export const delay =
   (wait: Milliseconds) =>
   <T>(data: T) =>
     new Promise<T>(res => setTimeout(() => res(data), wait))
-
-export const delayCatch = (wait: Milliseconds) => (e: unknown) =>
-  new Promise((_res, rej) => setTimeout(() => rej(e), wait))

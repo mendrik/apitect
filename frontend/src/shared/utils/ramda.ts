@@ -2,7 +2,6 @@ import {
   always,
   aperture,
   append,
-  assoc,
   converge,
   curry,
   findIndex,
@@ -16,24 +15,23 @@ import {
   last,
   map,
   o,
+  pickBy,
   pipe,
   Pred,
   prop,
-  reduce,
   remove,
   replace,
   reverse,
   tail,
   toLower,
-  toPairs,
   toUpper,
   tryCatch,
   unless,
   update
 } from 'ramda'
-import { findOr, sliceFrom, sliceTo } from 'ramda-adjunct'
+import { findOr, isNotNil, sliceFrom, sliceTo } from 'ramda-adjunct'
 
-import { ArgFn, Fn, Maybe } from '../types/generic'
+import { ArgFn, Maybe } from '../types/generic'
 
 type Str = string
 
@@ -43,21 +41,10 @@ export const capitalize = pipe<[Str], Str, Str[], Str>(
   join('')
 )
 
-export const assocBy =
-  <K extends Str, R>(field: K, func: Fn<R>) =>
-  <U extends object>(obj: U) =>
-    converge(assoc(field), [func, identity])(obj)
-
 export const safeParseJson = <T>(data: unknown): T | undefined =>
   tryCatch(d => JSON.parse(`${d}`), always(undefined))(data)
 
-export const satiated = <T>(data: Record<Str, T>): Record<Str, NonNullable<T>> =>
-  reduce((p, [k, v]) => (v == null ? p : { ...p, [k]: v }), {}, toPairs(data))
-
-export const toObj =
-  <T extends object>(prop: keyof T) =>
-  (value: Str): T =>
-    ({ [prop]: value } as T)
+export const satiated = pickBy(isNotNil)
 
 export const asNumber = (val: Maybe<Str>): number =>
   val != null ? parseFloat(val.replace(/,/, '.')) : NaN
@@ -78,17 +65,17 @@ const $next: (p:Pred) => <T>(l: T[]) => Maybe<T> = (pred: Pred) =>
     last
   )
 
+// returns a circular next element where last + 1 jumps to head
 export const next =
   (pred: Pred) =>
   <T>(list: T[]): Maybe<T> =>
     $next(pred)(list)
 
+// returns a circular previous element where head - 1 jumps to last
 export const prev =
   (pred: Pred) =>
   <T>(list: T[]): Maybe<T> =>
     $next(pred)(reverse(list))
-
-export const isNumeric: Pred = (str: Str) => !isNaN(Number(str))
 
 export const decapitalizeFirst = unless(isNil, replace(/^./, toLower))
 

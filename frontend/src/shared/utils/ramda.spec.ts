@@ -1,7 +1,7 @@
 import { equals } from 'ramda'
 
 import { TreeNode } from '../algebraic/treeNode'
-import { mapByProperty, next, prev, replaceSlice } from './ramda'
+import { mapByProperty, next, prev, replaceSlice, satiated } from './ramda'
 
 describe('ramda', () => {
   it('next(pred)(arr) works', () => {
@@ -39,7 +39,17 @@ describe('ramda', () => {
     expect(res).toBe('12abc567')
   })
 
-  it('byProp', () => {
+  it('satiated', () => {
+    const obj = {
+      a: 1,
+      b: null,
+      c: false,
+      d: undefined
+    }
+    expect(satiated(obj)).toEqual({ a: 1, c: false })
+  })
+
+  it('mapByProperty', () => {
     const arr = [
       { id: 'a', text: 'A' },
       { id: 'b', text: 'B' },
