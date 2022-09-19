@@ -114,6 +114,14 @@
     "moduleNameMapper": {
       "~shared/(.*)": "<rootDir>/src/shared/$1",
       "~stores/(.*)": "<rootDir>/src/stores/$1"
+    },
+    "mongodbMemoryServerOptions": {
+      "binary": {
+        "version": "4.0.3",
+        "skipMD5": true
+      },
+      "instance": {},
+      "autoStart": false
     }
   }
 }

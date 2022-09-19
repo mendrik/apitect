@@ -1,17 +1,14 @@
 import { MongoClient } from 'mongodb'
+import { MongoMemoryReplSet } from 'mongodb-memory-server'
 
 import { initDatabaseFx } from '../stores/$serverState'
-
-declare global {
-  // noinspection ES6ConvertVarToLetConst
-  var __MONGO_URI__: string
-}
 
 export const withDatabase = () => {
   let connection: MongoClient
 
   beforeAll(async () => {
-    connection = await initDatabaseFx(globalThis.__MONGO_URI__)
+    const mongoServer = await MongoMemoryReplSet.create({ replSet: { count: 4 } })
+    connection = await initDatabaseFx(mongoServer.getUri())
   })
 
   afterAll(async () => {
