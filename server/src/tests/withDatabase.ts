@@ -1,10 +1,6 @@
-import { config as dotenv } from 'dotenv'
 import { MongoClient } from 'mongodb'
 
-import { Tag } from '../services/config'
 import { initDatabaseFx } from '../stores/$serverState'
-
-export const config: Record<Tag, number | string> = dotenv({ path: '.test-env' }).parsed as any
 
 declare global {
   // noinspection ES6ConvertVarToLetConst
