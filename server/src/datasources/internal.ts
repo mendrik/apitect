@@ -16,12 +16,16 @@ const dataSource =
     deleteItem(id: Id): Promise<void> {
       return Promise.resolve(undefined)
     },
-    list<T>(index: number, count: number, searchKey: string | undefined): Promise<ListResult<T>> {
-      return Promise.resolve({
+    async list<T>(
+      index: number,
+      count: number,
+      searchKey: string | undefined
+    ): Promise<ListResult<T>> {
+      return {
         count,
         index,
         items: []
-      })
+      }
     },
     async upsertItem(values: Record<NodeId, Value>): Promise<ValueList> {
       const arrayItemId = uuid()
