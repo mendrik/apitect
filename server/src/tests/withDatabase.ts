@@ -1,9 +1,11 @@
 import { MongoClient } from 'mongodb'
 import { MongoMemoryReplSet } from 'mongodb-memory-server'
+import { logger } from '~shared/utils/logger'
 
 import { initDatabaseFx } from '../stores/$serverState'
 
 export const withDatabase = () => {
+  jest.setTimeout(100000)
   let connection: MongoClient
 
   beforeAll(async () => {
@@ -13,5 +15,6 @@ export const withDatabase = () => {
 
   afterAll(async () => {
     await connection.close()
+    logger.info('Database disconnected')
   })
 }
