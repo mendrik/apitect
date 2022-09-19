@@ -16,8 +16,13 @@ sample({
   target: $selectedNodePath
 })
 
+// prettier-ignore
 sample({
   source: $selectedNodePath,
-  fn: pipe(map(prop('nodeType')), flip(without)(openFor), propNotEq('length', openFor.length)),
+  fn: pipe(
+    map(prop('nodeType')),
+    flip(without)(openFor),
+    propNotEq('length', openFor.length),
+  ),
   target: $sidePanelOpen
 })
