@@ -1,4 +1,5 @@
 import { createStore, sample } from 'effector'
+import { JsonValue } from 'react-use-websocket/dist/lib/types'
 import { v4 as uuid } from 'uuid'
 import { ApiSchema } from '~shared/api'
 import { ZApiRequest } from '~shared/apiRequest'
@@ -53,7 +54,7 @@ $api.on(
                 payload
               })
               console.debug(`Sent: ${method}`, apiCall.payload)
-              sendJsonMessage(apiCall)
+              sendJsonMessage(apiCall as JsonValue)
             } catch (e) {
               logger.error('Failed to parse ApiRequest', payload)
               throw e
