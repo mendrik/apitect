@@ -13,7 +13,7 @@ const $getStringValidator = (settings?: StringSettings): ZodString => {
     case StringValidationType.Password:
       return passwordString
     default:
-      return string().nonempty()
+      return string().min(1)
   }
 }
 

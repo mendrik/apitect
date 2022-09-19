@@ -1,3 +1,3 @@
 import { string } from 'zod'
 
-export const nonEmptyString = string().nonempty('form.validation.required')
+export const nonEmptyString = string().min(1, 'form.validation.required')

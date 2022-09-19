@@ -55,7 +55,7 @@ describe('TreeNode', () => {
 
   it('Node next', () => {
     const start = TreeNode.of(6)
-    const x = TreeNode.of(1, [
+    TreeNode.of(1, [
       TreeNode.of(2),
       TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
       TreeNode.of(4, [start])
@@ -65,7 +65,7 @@ describe('TreeNode', () => {
 
   it('Node prev', () => {
     const start = TreeNode.of(2)
-    const x = TreeNode.of(1, [
+    TreeNode.of(1, [
       start,
       TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
       TreeNode.of(4, [TreeNode.of(6)])
