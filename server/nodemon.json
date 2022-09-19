@@ -1,0 +1,7 @@
+{
+  "watch": ["src"],
+  "ignore": ["src/**/*.spec.ts", "node_modules"],
+  "ext": "ts",
+  "exec": "esbuild ./src/server.ts --bundle --outfile=./build/server.js --platform=node --target=node16 && node ./build/server.js",
+  "legacyWatch": true
+}

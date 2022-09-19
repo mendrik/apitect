@@ -30,9 +30,7 @@ export const Day = ({ day, month }: OwnProps) => {
   return (
     <DaySx
       tabIndex={off ? -1 : 0}
-      className={clsx('day', {
-        off: off
-      })}
+      className={clsx('day', { off })}
       data-date={off ? undefined : key}
     >
       {dayNumber}
