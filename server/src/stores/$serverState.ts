@@ -12,6 +12,6 @@ export const $serverState = createStore<ServerState>({
   database: null
 })
 
-export const initDatabaseFx = createEffect<ArgFn<string, Promise<MongoClient>>>(connect)
+export const initDatabaseFx = createEffect<ArgFn<string, Promise<MongoClient>>>(url => connect(url))
 
 $serverState.on(initDatabaseFx.doneData, (state, database) => ({ ...state, database }))

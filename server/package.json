@@ -5,7 +5,6 @@
   "scripts": {
     "deploy": "",
     "database": "docker-compose up",
-    "start-legacy": "tsnd --respawn -r tsconfig-paths/register src/server.ts",
     "start": "nodemon",
     "test": "jest",
     "validate": "tsc --noEmit --skipLibCheck",

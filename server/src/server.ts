@@ -12,6 +12,7 @@ const fastify = Fastify({ logger: false })
 fastify.register(Ws)
 fastify.register(Cors)
 
+// eslint-disable-next-line no-console
 void initDatabaseFx(config.DATABASE as string)
   .then(() => {
     logger.info('Adding authentication routes...')
