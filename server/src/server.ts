@@ -12,7 +12,7 @@ const fastify = Fastify({ logger: false })
 fastify.register(Ws)
 fastify.register(Cors)
 
-void initDatabaseFx()
+void initDatabaseFx(config.DATABASE as string)
   .then(() => {
     logger.info('Adding authentication routes...')
     initAuthentication(fastify)
