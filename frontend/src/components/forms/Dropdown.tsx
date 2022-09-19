@@ -6,7 +6,6 @@ import { Controller } from 'react-hook-form'
 import { ControllerProps } from 'react-hook-form/dist/types'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import { useId } from '~hooks/useId'
-import { Jsx } from '~shared/types/generic'
 
 import { ErrorInfo } from './ErrorInfo'
 
@@ -29,7 +28,7 @@ export const Dropdown = ({
   autoFocus,
   options,
   ...props
-}: Jsx<OwnProps>) => {
+}: OwnProps) => {
   const { t } = useTranslation()
   const inpId = useId()
 

@@ -8,7 +8,7 @@ import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useId } from '~hooks/useId'
-import { Fn, Jsx } from '~shared/types/generic'
+import { Fn } from '~shared/types/generic'
 import { asNumber, undef } from '~shared/utils/ramda'
 
 import { onlyNumbers, onlyNumbersPaste, validNumber } from '../../utils/eventUtils'
@@ -69,7 +69,7 @@ export const NumberInput = ({
   min,
   max,
   ...props
-}: Jsx<OwnProps>) => {
+}: OwnProps) => {
   const { t } = useTranslation()
   const {
     register,

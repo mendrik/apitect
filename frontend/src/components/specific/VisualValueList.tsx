@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
-import { Jsx } from '~shared/types/generic'
 import { mapByProperty } from '~shared/utils/ramda'
 import { $valuesStore } from '~stores/$valuesStore'
 import { $visibleNodes } from '~stores/$visibileNodes'
@@ -29,7 +28,7 @@ const Values = styled.ol`
   }
 `
 
-export const VisualValueList = ({ tag }: Jsx<OwnProps>) => {
+export const VisualValueList = ({ tag }: OwnProps) => {
   const loading = useStore(valueListFx.pending)
   const values: Record<NodeId, Value> = useStoreMap(
     $valuesStore,

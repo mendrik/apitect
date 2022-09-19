@@ -43,7 +43,7 @@ const NodeGrid = styled.div`
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNode = ({ depth = 0, node }: Jsx<OwnProps>) => {
+export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   const id = node.value.id
   const nodeType = node.value.nodeType
 

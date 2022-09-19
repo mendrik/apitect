@@ -8,7 +8,6 @@ import { useDateFormat } from '~hooks/useDateFormat'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { DateValue } from '~shared/types/domain/values/dateValue'
 import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
-import { Jsx } from '~shared/types/generic'
 import { getDateValidator } from '~shared/validators/dateValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
@@ -32,7 +31,7 @@ export const DateInput = styled.input`
   }
 `
 
-export const DateEditor = ({ value, node, tag }: Jsx<EditorProps<DateValue>>) => {
+export const DateEditor = ({ value, node, tag }: EditorProps<DateValue>) => {
   const dateSettings = useStoreMap($nodeSettings, s => s[node.id] as DateSettings)
   const userFormat = useDateFormat(dateSettings)
   const validator = getDateValidator(dateSettings)

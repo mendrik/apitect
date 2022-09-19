@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useDatepicker } from '~hooks/useDatepicker'
 import { useId } from '~hooks/useId'
-import { Jsx } from '~shared/types/generic'
 
 import { ErrorInfo } from './ErrorInfo'
 
@@ -39,7 +38,7 @@ export const DateInput = ({
   containerClasses,
   autoFocus,
   ...props
-}: Jsx<OwnProps>) => {
+}: OwnProps) => {
   const { t } = useTranslation()
   const {
     register,

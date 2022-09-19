@@ -2,7 +2,6 @@ import clsx from 'clsx'
 import { EventHandler, HTMLAttributes, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { useEvent } from '~hooks/useEvent'
-import { Jsx } from '~shared/types/generic'
 
 const VerticalFadeStyled = styled.div`
   --scrollOpacityTop: 0;
@@ -38,11 +37,7 @@ const VerticalFadeStyled = styled.div`
   }
 `
 
-export const VerticalFade = ({
-  children,
-  className,
-  ...props
-}: Jsx<HTMLAttributes<HTMLDivElement>>) => {
+export const VerticalFade = ({ children, className, ...props }: HTMLAttributes<HTMLDivElement>) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const handler = useCallback<EventHandler<any>>(

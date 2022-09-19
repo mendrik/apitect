@@ -2,7 +2,6 @@ import { TablerIcon as IconProp } from '@tabler/icons'
 import clsx from 'clsx'
 import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
 
@@ -53,7 +52,7 @@ export const Icon = ({
   iconClasses,
   tabIndex = -1,
   ...props
-}: Jsx<OwnProps>) => (
+}: OwnProps) => (
   <Wrap
     className={clsx('d-block', { 'cursor-pointer': !!props.onClick })}
     {...props}

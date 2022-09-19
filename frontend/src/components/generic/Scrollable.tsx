@@ -1,6 +1,5 @@
 import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
 
 import { VerticalFade } from './VerticalFade'
 
@@ -18,7 +17,7 @@ const Div = styled.div`
   max-height: 100%;
 `
 
-export const Scrollable = ({ fade = false, children, ...props }: Jsx<OwnProps>) => {
+export const Scrollable = ({ fade = false, children, ...props }: OwnProps) => {
   const Wrapper = fade ? VerticalFade : Div
   return (
     <Wrapper {...props}>

@@ -1,7 +1,6 @@
 import { IconSettings, IconShieldCheck } from '@tabler/icons'
 import { useTranslation } from 'react-i18next'
 import { Tag } from '~shared/types/domain/tag'
-import { Jsx } from '~shared/types/generic'
 
 import { tagSettingsFx } from '../../events/project'
 import { HGrid } from '../generic/HGrid'
@@ -14,7 +13,7 @@ type OwnProps = {
   tag: Tag
 }
 
-export const ColumnHeader = ({ name, tag }: Jsx<OwnProps>) => {
+export const ColumnHeader = ({ name, tag }: OwnProps) => {
   const { t } = useTranslation()
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>

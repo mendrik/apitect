@@ -4,7 +4,6 @@ import { Children, HTMLAttributes, useEffect } from 'react'
 import { Form, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
 import { Scale, Tuple } from '../generic/Tuple'
@@ -36,7 +35,7 @@ const ListGroupSx = styled(ListGroup)`
   }
 `
 
-export const FormOptions = ({ name, values, children, ...props }: Jsx<OwnProps>) => {
+export const FormOptions = ({ name, values, children, ...props }: OwnProps) => {
   const { register, watch, clearErrors, formState } =
     useFormContext<{ [K in typeof name]: string }>()
   const val = watch(name)

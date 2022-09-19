@@ -2,7 +2,6 @@ import { range } from 'ramda'
 import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { NodeId } from '~shared/types/domain/node'
-import { Jsx } from '~shared/types/generic'
 
 type OwnProps = HTMLAttributes<HTMLDivElement>
 
@@ -53,7 +52,7 @@ const Wrapper = styled.div`
   height: 24px;
 `
 
-export const Placeholder = ({ ...props }: Jsx<OwnProps>) => (
+export const Placeholder = ({ ...props }: OwnProps) => (
   <Wrapper>
     <StyledPlaceholder {...props}>&nbsp;</StyledPlaceholder>
   </Wrapper>

@@ -5,7 +5,6 @@ import { HTMLAttributes, useRef, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { TFuncKey, useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
 import { keyIn, target } from '../../utils/eventUtils'
@@ -60,7 +59,7 @@ export const TagInput = <T extends object>({
   apply,
   unapply,
   ...props
-}: Jsx<OwnProps<T>>) => {
+}: OwnProps<T>) => {
   const [currentName, setCurrentName] = useState<string>('')
   const inpRef = useRef<HTMLInputElement>(null)
   const { t } = useTranslation()
@@ -157,7 +156,7 @@ const Tag = styled.div`
   }
 `
 
-TagInput.Tag = ({ tag, onRemove }: Jsx<TagProps>) => (
+TagInput.Tag = ({ tag, onRemove }: TagProps) => (
   <Tag
     onClick={preventDefault(ev => {
       ev.stopPropagation()

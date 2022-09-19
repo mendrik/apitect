@@ -1,12 +1,11 @@
 import { Button } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
-import { Jsx } from '~shared/types/generic'
 
 type OwnProps = {
   localeKey: TFuncKey
 }
 
-export const SubmitButton = ({ localeKey }: Jsx<OwnProps>) => {
+export const SubmitButton = ({ localeKey }: OwnProps) => {
   const { t } = useTranslation()
   return (
     <Button type="submit" variant="primary" className="d-flex flex-row ps-2 justify-content-center">

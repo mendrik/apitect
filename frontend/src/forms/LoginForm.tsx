@@ -12,7 +12,7 @@ import { SubmitButton } from '~forms/SubmitButton'
 import { TextInput } from '~forms/TextInput'
 import { useView } from '~hooks/useView'
 import { Login, ZLogin } from '~shared/types/forms/login'
-import { Fn, Jsx } from '~shared/types/generic'
+import { Fn } from '~shared/types/generic'
 
 import ForgotPasswordForm from '../components/modals/ForgotPasswordForm'
 import { $apiError, apiFx } from '../events/api'
@@ -28,7 +28,7 @@ enum Views {
   ForgotPassword
 }
 
-export const LoginForm = ({ close }: Jsx<OwnProps>) => {
+export const LoginForm = ({ close }: OwnProps) => {
   const { t } = useTranslation()
   const { view, loginView, forgotPasswordView } = useView(Views)
   const error = useStore($apiError)

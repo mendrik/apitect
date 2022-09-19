@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ErrorInfo } from '~forms/ErrorInfo'
 import { useId } from '~hooks/useId'
-import { Jsx } from '~shared/types/generic'
 
 import { LocaleKey } from '../../type-patches/locales'
 
@@ -23,7 +22,7 @@ export const Checkbox = ({
   className,
   name,
   ...props
-}: Jsx<OwnProps>) => {
+}: OwnProps) => {
   const { register } = useFormContext()
   const { t } = useTranslation()
 

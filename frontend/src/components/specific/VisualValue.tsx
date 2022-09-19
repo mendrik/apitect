@@ -4,7 +4,6 @@ import { useStoreMap } from '~hooks/useStoreMap'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { Value } from '~shared/types/domain/values/value'
-import { Jsx } from '~shared/types/generic'
 import { $mappedNodesStore } from '~stores/$treeStore'
 
 import { selectValue } from '../../events/values'
@@ -55,7 +54,7 @@ const Empty = styled.div`
   height: 24px;
 `
 
-export const VisualValue = ({ nodeId, value, tag, loading }: Jsx<OwnProps>) => {
+export const VisualValue = ({ nodeId, value, tag, loading }: OwnProps) => {
   const node = useStoreMap($mappedNodesStore, prop(nodeId))
   const Editor = getEditor(node.nodeType)
 

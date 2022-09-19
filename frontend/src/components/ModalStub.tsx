@@ -7,7 +7,7 @@ import { TFuncKey, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from '~hooks/useLocation'
 import { useQueryParams } from '~hooks/useQueryParams'
-import { Fn, Jsx } from '~shared/types/generic'
+import { Fn } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 
 import { $moduleError, $moduleStore, clearModuleFx, Import, loadModuleFx } from '../events/import'
@@ -31,7 +31,7 @@ const ModalStub = ({
   enforceFocus = true,
   className,
   ...modalProps
-}: Jsx<OwnProps>): JSX.Element | null => {
+}: OwnProps): JSX.Element | null => {
   const { state } = useLocation<Record<string, string>>()
   const { modal } = useQueryParams()
   const modalMatch = modal === name

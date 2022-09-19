@@ -1,14 +1,13 @@
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import { HTMLAttributes } from 'react'
-import { Jsx } from '~shared/types/generic'
 
 import { delayedBlendIn } from '../../animations/delayedBlendIn'
 import { ReactComponent as LoadingSvg } from '../../assets/loader.svg'
 
 type OwnProps = { delay?: boolean } & HTMLAttributes<HTMLDivElement>
 
-export const Loader = ({ className, delay = false, ...props }: Jsx<OwnProps>) => (
+export const Loader = ({ className, delay = false, ...props }: OwnProps) => (
   <div
     className={clsx('d-flex w-100 justify-content-center align-items-center', className)}
     {...props}

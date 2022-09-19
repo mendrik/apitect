@@ -1,6 +1,5 @@
 import { TablerIcon as IconProp } from '@tabler/icons'
 import { HTMLAttributes } from 'react'
-import { Jsx } from '~shared/types/generic'
 
 import { Palette } from '../../css/colors'
 
@@ -10,7 +9,7 @@ export type OwnProps = {
   stroke?: number
 } & HTMLAttributes<HTMLOrSVGElement>
 
-export const SimpleIcon = ({ icon: IconCmp, stroke = 0.5, size = 20, ...props }: Jsx<OwnProps>) => (
+export const SimpleIcon = ({ icon: IconCmp, stroke = 0.5, size = 20, ...props }: OwnProps) => (
   <IconCmp
     stroke={stroke}
     size={size}

@@ -2,7 +2,6 @@ import clsx from 'clsx'
 import { converge, pipe } from 'ramda'
 import { ClipboardEvent, HTMLAttributes, ReactNode, useState } from 'react'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
 import { removeSlice } from '~shared/utils/ramda'
 
 import { Palette } from '../../css/colors'
@@ -32,7 +31,7 @@ const MeasureSx = styled.div`
   }
 `
 
-export const Autogrow = ({ className, initial, children, ...props }: Jsx<OwnProps>) => {
+export const Autogrow = ({ className, initial, children, ...props }: OwnProps) => {
   const [value, setValue] = useState<ReactNode>(initial)
 
   const onCut: (e: ClipboardEvent<HTMLInputElement>) => string = converge(removeSlice as any, [

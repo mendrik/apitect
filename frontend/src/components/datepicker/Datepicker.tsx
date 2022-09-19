@@ -17,7 +17,7 @@ import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ButtonRow } from '~forms/ButtonRow'
-import { ArgFn, Jsx } from '~shared/types/generic'
+import { ArgFn } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { Palette } from '../../css/colors'
@@ -135,7 +135,7 @@ export const Datepicker = ({
   iconSize = 20,
   stroke = 1,
   ...props
-}: Jsx<OwnProps>) => {
+}: OwnProps) => {
   const { t } = useTranslation()
   const currentDate: Date = useMemo(() => (isValid($current) ? $current : new Date()), [$current])
   const [selected, setSelected] = useState<Date>(currentDate)

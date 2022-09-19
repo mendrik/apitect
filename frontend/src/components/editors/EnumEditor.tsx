@@ -8,7 +8,6 @@ import { useStoreMap } from '~hooks/useStoreMap'
 import { Enum } from '~shared/types/domain/enums'
 import { EnumValue } from '~shared/types/domain/values/enums'
 import { EnumSettings } from '~shared/types/forms/nodetypes/enumSettings'
-import { Jsx } from '~shared/types/generic'
 import { getEnumValidator } from '~shared/validators/enumValidator'
 import { $enumsStore } from '~stores/$enumsStore'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
@@ -29,7 +28,7 @@ const OptionSx = styled.option`
   font-weight: 300;
 `
 
-export const EnumEditor = ({ node, value, tag }: Jsx<EditorProps<EnumValue>>) => {
+export const EnumEditor = ({ node, value, tag }: EditorProps<EnumValue>) => {
   const { t } = useTranslation()
   const enumSettings = useStoreMap($nodeSettings, s => s[node.id] as EnumSettings)
   const enums = useStore($enumsStore)

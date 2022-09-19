@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
 
 type OwnProps = {
   day: Date
@@ -24,7 +23,7 @@ const DaySx = styled.div`
   }
 `
 
-export const Day = ({ day, month }: Jsx<OwnProps>) => {
+export const Day = ({ day, month }: OwnProps) => {
   const key = format(day, 'dd-MM-yyyy')
   const dayNumber = day.getDate()
   const off = day.getMonth() !== month.getMonth()

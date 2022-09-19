@@ -7,7 +7,6 @@ import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { StringValue } from '~shared/types/domain/values/stringValue'
 import { StringSettings, StringValidationType } from '~shared/types/forms/nodetypes/stringSettings'
-import { Jsx } from '~shared/types/generic'
 import { getStringValidator } from '~shared/validators/stringValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
@@ -21,7 +20,7 @@ export const TextInput = styled.input`
   }
 `
 
-export const StringEditor = ({ node, value, tag }: Jsx<EditorProps<StringValue>>) => {
+export const StringEditor = ({ node, value, tag }: EditorProps<StringValue>) => {
   const stringSettings = useStoreMap($nodeSettings, s => s[node.id] as StringSettings)
   const validator = getStringValidator(stringSettings)
   const { saveFromEvent, error, views } = useEditorTools(node, value, tag, validator)

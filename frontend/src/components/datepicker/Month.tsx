@@ -2,7 +2,6 @@ import { addDays, format, getDay, isAfter, lastDayOfMonth, setDay } from 'date-f
 import { range, reduce, take } from 'ramda'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
 
 import { Day } from './Day'
 
@@ -41,7 +40,7 @@ const Week = styled.div`
 }
 `
 
-export const Month = ({ month }: Jsx<OwnProps>, monthStr = format(month, 'MM-yyyy')) =>
+export const Month = ({ month }: OwnProps, monthStr = format(month, 'MM-yyyy')) =>
   useMemo(() => {
     const firstDate = setDay(month, 1)
     const $lastDate = lastDayOfMonth(month)

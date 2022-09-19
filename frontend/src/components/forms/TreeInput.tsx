@@ -20,7 +20,7 @@ import { Actions } from 'react-use/lib/useSet'
 import { useFocusOutside } from '~hooks/useFocusOutside'
 import { useUndefinedEffect } from '~hooks/useUndefinedEffect'
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { Fn, Jsx, Maybe, UseState } from '~shared/types/generic'
+import { Fn, Maybe, UseState } from '~shared/types/generic'
 
 import {
   NodeNode,
@@ -68,7 +68,7 @@ export const TreeInput = <T extends WithId>({
   selectionFilter = RT,
   nodeRender,
   ...props
-}: Jsx<OwnProps<T>>) => {
+}: OwnProps<T>) => {
   const {
     setValue,
     getValues,
@@ -177,7 +177,7 @@ type TreeNodeProps<T> = {
   node: TreeNode<T>
 }
 
-TreeInput.Node = <T extends WithId>({ node }: Jsx<TreeNodeProps<T>>) => {
+TreeInput.Node = <T extends WithId>({ node }: TreeNodeProps<T>) => {
   const { name, close, nodeRender, setSelected, focusedNodeState, openStateActions } =
     useContext(TreeInputContext)
   const { setValue } = useFormContext()

@@ -1,9 +1,8 @@
 import clsx from 'clsx'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { Children, HTMLAttributes } from 'react'
-import { Jsx } from '~shared/types/generic'
 
-export const HGrid = ({ className, children, ...props }: Jsx<HTMLAttributes<HTMLDivElement>>) => {
+export const HGrid = ({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) => {
   const childCount = Children.toArray(children).filter(isNotNilOrEmpty).length
   return (
     <div

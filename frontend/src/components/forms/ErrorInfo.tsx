@@ -1,14 +1,13 @@
 import { last, pathOr } from 'ramda'
 import { FieldError, useFormContext } from 'react-hook-form'
 import { TFuncKey } from 'react-i18next'
-import { Jsx } from '~shared/types/generic'
 
 import { Html } from '../generic/Html'
 
 type OwnProps = {
   name: string
 }
-export const ErrorInfo = ({ name }: Jsx<OwnProps>) => {
+export const ErrorInfo = ({ name }: OwnProps) => {
   const {
     formState: { errors }
   } = useFormContext()

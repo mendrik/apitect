@@ -2,7 +2,6 @@ import { IconCircleX } from '@tabler/icons'
 import clsx from 'clsx'
 import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
 
 const StyledDelete = styled.div`
   position: absolute;
@@ -23,7 +22,7 @@ const StyledDelete = styled.div`
   }
 `
 
-export const DeleteIcon = ({ className, ...props }: Jsx<HTMLAttributes<HTMLDivElement>>) => (
+export const DeleteIcon = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
   <StyledDelete {...props} className={clsx('delete', className)}>
     <IconCircleX stroke={1} width={16} height={16} />
   </StyledDelete>

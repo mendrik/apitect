@@ -7,7 +7,6 @@ import { useNumberFormat } from '~hooks/useNumberFormat'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { NumberValue } from '~shared/types/domain/values/numberValue'
 import { NumberSettings } from '~shared/types/forms/nodetypes/numberSettings'
-import { Jsx } from '~shared/types/generic'
 import { asNumber } from '~shared/utils/ramda'
 import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
@@ -48,7 +47,7 @@ const Wrap = styled.div`
   padding-left: 3px;
 `
 
-export const NumberEditor = ({ value, node, tag }: Jsx<EditorProps<NumberValue>>) => {
+export const NumberEditor = ({ value, node, tag }: EditorProps<NumberValue>) => {
   const numberSettings = useStoreMap($nodeSettings, s => s[node.id] as NumberSettings)
   const numberFormat = useNumberFormat(numberSettings)
   const validator = getNumberValidator(numberSettings)

@@ -1,6 +1,6 @@
 import { allPass, always, both, cond, equals, T } from 'ramda'
 import { EventHandler, HTMLAttributes, useRef } from 'react'
-import { Jsx, Maybe } from '~shared/types/generic'
+import { Maybe } from '~shared/types/generic'
 import { next, prev } from '~shared/utils/ramda'
 
 import { codeIn, withCtrl, withShift } from '../../utils/eventUtils'
@@ -25,7 +25,7 @@ export const FocusNavigator = ({
   ctrlKey = true,
   children,
   ...props
-}: Jsx<OwnProps>) => {
+}: OwnProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const ctrl = ctrlKey ? withCtrl : T
 
