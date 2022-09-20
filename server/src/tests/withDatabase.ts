@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import { MongoClient } from 'mongodb'
 import { MongoMemoryReplSet } from 'mongodb-memory-server'
 import path from 'path'
-import { evolve, prop } from 'ramda'
+import { evolve, prop, tap } from 'ramda'
 import { isNotEmpty } from 'ramda-adjunct'
 import { logger } from '~shared/utils/logger'
 
@@ -17,25 +17,17 @@ export const withDatabase = () => {
   let connection: MongoClient
 
   const importCollection = async (name: Collections) => {
-    const file = readFileSync(path.join(__dirname, `../../../database/dummy/${name}.json`), {
+    const file = readFileSync(path.join(__dirname, `../../../database/dummy/${name}.list`), {
       encoding: 'utf-8'
     })
     const col = connection.db(dbName).collection(name)
-    file
+    const work = file
       .split(/\r?\n/)
       .filter(isNotEmpty)
       .map(line => JSON.parse(line))
       .map(evolve({ _id: prop('$oid') }))
-      .forEach(doc => {
-        try {
-          logger.debug(`import ${name}`, doc)
-          col.insertOne(doc)
-        } catch (e: any) {
-          // eslint-disable-next-line no-console
-          logger.error(`Import failed: ${name}, ${e.message}`, doc)
-          throw e
-        }
-      })
+      .map(doc => col.insertOne(doc).then(tap(() => logger.debug(`import ${name}`, doc))))
+    await Promise.all(work)
   }
 
   beforeAll(async () => {

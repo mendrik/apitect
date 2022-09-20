@@ -11,8 +11,8 @@ describe('arrayItemCreate', () => {
   withDatabase()
 
   it('arrayItemCreate', async () => {
-    await addValue(Nodes.name, 'Andreas')
-    await addValue(Nodes.name, '1976-11-13T22:00:00.000Z')
+    await addValue(Nodes.fullName, 'Andreas')
+    await addValue(Nodes.birthday, '1976-11-13T22:00:00.000Z')
     await arrayItemCreate({
       ...params,
       payload: {

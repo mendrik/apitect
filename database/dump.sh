@@ -1,6 +1,6 @@
-mongoexport -d apitect --collection=users --forceTableScan --out=dummy/users.json
-mongoexport -d apitect --collection=documents --forceTableScan --out=dummy/documents.json
-mongoexport -d apitect --collection=enums --forceTableScan --out=dummy/enums.json
-mongoexport -d apitect --collection=tagsSettings --forceTableScan --out=dummy/tagsSettings.json
-mongoexport -d apitect --collection=nodeSettings --forceTableScan --out=dummy/nodeSettings.json
+#!/bin/bash
+for value in users documents enums tagsSettings nodeSettings
+do
+  mongoexport --uri="mongodb://localhost:27017/apitect?replicaSet=rs0" --collection=$value --forceTableScan --out=dummy/$value.list
+done
 

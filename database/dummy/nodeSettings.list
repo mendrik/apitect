@@ -13,7 +13,6 @@
 {"_id":{"$oid":"61a546027514c28dd0f4feeb"},"nodeId":"0738dba7-29c5-4157-b70a-9519a1226d01","name":"Andreas","nodeType":"OBJECT","apiEndpoint":false,"docId":"6175b4d9859da8379531aff5"}
 {"_id":{"$oid":"61a546057514c28dd0f4fef0"},"nodeId":"72132805-d9e3-4e51-99a8-3d29bb044676","name":"Blub","nodeType":"OBJECT","apiEndpoint":false,"docId":"6175b4d9859da8379531aff5"}
 {"_id":{"$oid":"61a637943a8f00f36636d48a"},"nodeId":"60a8f8cc-a97c-4037-a6ca-f5d2ee4662bd","name":"Kaneli","nodeType":"OBJECT","apiEndpoint":false,"docId":"6175b4d9859da8379531aff5"}
-{"_id":{"$oid":"61a7358afd6d615c054b5597"},"nodeId":"d2e7a2db-2000-4d58-a634-0f7948d27340","name":"Fullname","validationType":"None","nodeType":"STRING","docId":"6175b4d9859da8379531aff5"}
 {"_id":{"$oid":"61a73c83fd6d615c054b58c2"},"nodeId":"4233fbfa-443f-404b-9843-fb57ab1d7bde","name":"Kaneli","nodeType":"OBJECT","apiEndpoint":false,"docId":"6175b4d9859da8379531aff5"}
 {"_id":{"$oid":"61aa7480a43dc04c510a82ee"},"nodeId":"f90a1b13-9a66-478f-a7c0-16269aa8627f","name":"Bla","validationType":"None","nodeType":"STRING","docId":"6175b4d9859da8379531aff5"}
 {"_id":{"$oid":"61ab3e335a1667063750ab72"},"nodeId":"b040e965-4aa2-4959-a5ab-6645f40ebe43","name":"Blabba","nodeType":"OBJECT","apiEndpoint":false,"docId":"6175b4d9859da8379531aff5"}

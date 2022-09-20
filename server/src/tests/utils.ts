@@ -9,7 +9,7 @@ import { docId, email, tag } from './fixtureContants'
 
 export const addValue = async (nodeId: NodeId, value: string) => {
   const node = await nodeSettings({ docId, email, payload: nodeId }).then(
-    failOn<NodeSettings>(isNil, `No node found for id ${nodeId}`)
+    failOn<NodeSettings>(isNil, `No node found for nodeId ${nodeId}`)
   )
   await valueUpdate({
     docId,
