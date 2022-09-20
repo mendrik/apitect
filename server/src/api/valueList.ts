@@ -10,6 +10,6 @@ export const valueList: ServerApiMethod<'valueList'> = async ({
 }) =>
   resolvePromised({
     values: collection(Collections.values)
-      .find<Value>({ docId, tag, nodeId: { $in: nodeIds }, arrayItemId: undefined })
+      .find<Value>({ docId, tag, nodeId: { $in: nodeIds }, arrayItemId: { $exists: false } })
       .toArray()
   })

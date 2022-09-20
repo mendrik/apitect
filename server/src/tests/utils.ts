@@ -3,6 +3,7 @@ import { NodeId } from '~shared/types/domain/node'
 
 import { valueUpdate } from '../api/valueUpdate'
 import { getTree } from '../services'
+import { collection, Collections } from '../services/database'
 import { existsOrThrow } from '../utils/maybe'
 import { docId, email, tag } from './fixtureContants'
 
@@ -23,3 +24,8 @@ export const addValue = async (nodeId: NodeId, value: string) => {
     }
   })
 }
+
+export const deleteValues = async (...nodeId: NodeId[]) =>
+  await collection(Collections.values).deleteMany({
+    id: { $in: nodeId }
+  })
