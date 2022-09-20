@@ -24,7 +24,7 @@ describe('arrayItemCreate', () => {
     expect(uuid).toBeDefined()
     const { values } = await valueList({
       ...params,
-      payload: { tag, nodeIds: [Nodes.fullName, Nodes.birthday], arrayItemId: uuid }
+      payload: { tag, nodeIds: [Nodes.fullName, Nodes.birthday] }
     })
     expect(values).toHaveLength(0) // dangling values have been cleared
   })

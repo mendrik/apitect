@@ -37,7 +37,9 @@ export const ArrayEditor = ({ node, value, tag: columnTag }: EditorProps<ArrayVa
             <SimpleIcon icon={IconChevronLeft} />
             <SimpleIcon
               icon={IconDeviceFloppy}
-              onClick={whenDefined(arrayNodeId, () => arrayItemCreateFx({ tag: columnTag }))}
+              onClick={whenDefined(arrayNodeId, () =>
+                arrayItemCreateFx({ tag: columnTag, arrayNodeId })
+              )}
             />
             <SimpleIcon icon={IconChevronRight} />
           </HGrid>
