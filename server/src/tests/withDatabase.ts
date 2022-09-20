@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import { MongoClient } from 'mongodb'
 import { MongoMemoryReplSet } from 'mongodb-memory-server'
 import path from 'path'
-import { pipe } from 'ramda'
+import { evolve, prop } from 'ramda'
 import { isNotEmpty } from 'ramda-adjunct'
 import { logger } from '~shared/utils/logger'
 
@@ -24,14 +24,15 @@ export const withDatabase = () => {
     file
       .split(/\r?\n/)
       .filter(isNotEmpty)
-      .forEach(line => {
+      .map(line => JSON.parse(line))
+      .map(evolve({ _id: prop('$oid') }))
+      .forEach(doc => {
         try {
-          const doc = pipe(JSON.parse)(line)
           logger.debug(`import ${name}`, doc)
           col.insertOne(doc)
         } catch (e: any) {
           // eslint-disable-next-line no-console
-          console.error(`Import failed: ${name}, ${e.message}`, line)
+          logger.error(`Import failed: ${name}, ${e.message}`, doc)
           throw e
         }
       })
