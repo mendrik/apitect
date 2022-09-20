@@ -5,12 +5,12 @@ import { Node, ZNode } from '~shared/types/domain/node'
 import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from './database'
-import { getLastDocument } from './document'
+import { getDocument } from './document'
 
 export const withTree =
   (docId: string) =>
   <T extends Node>(fn: (root: TreeNode<Node>) => ChildOperation<T>): Promise<ChildOperation<T>> =>
-    getLastDocument(docId).then(async doc => {
+    getDocument(docId).then(async doc => {
       const tree = toTreeNode(doc.tree)
       const res = await fn(tree)
       const docTree = ZNode.parse(res.self.extract())
@@ -30,4 +30,4 @@ export const validateTree = <T extends Node>(ops: ChildOperation<T>): ChildOpera
 export const toTreeNode = (node: Node) => TreeNode.from<Node, 'children'>('children')(node)
 
 export const getTree = (docId: string): Promise<TreeNode<Node>> =>
-  getLastDocument(docId).then(prop('tree')).then(toTreeNode)
+  getDocument(docId).then(prop('tree')).then(toTreeNode)
