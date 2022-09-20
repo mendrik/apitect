@@ -5,7 +5,7 @@ import { arrayNodeId, nodeId } from '~shared/codecs/idCodec'
 export const ZValueListRequest = object({
   tag: string(),
   nodeIds: array(nodeId),
-  arrayNodeId: arrayNodeId.optional()
+  arrayItemId: arrayNodeId.optional()
 })
 
 export type ValueListRequest = TypeOf<typeof ZValueListRequest>

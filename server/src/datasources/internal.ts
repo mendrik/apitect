@@ -1,5 +1,5 @@
 import { keys } from 'ramda'
-import { v4 as uuid } from 'uuid'
+import { newId } from '~shared/codecs/idCodec'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
@@ -27,21 +27,24 @@ const dataSource =
         items: []
       }
     },
-    async upsertItem(values: Record<NodeId, Value>): Promise<ValueList> {
-      const arrayItemId = uuid()
+    async insertItem(values: Record<NodeId, Value>): Promise<Id> {
+      const arrayItemId = newId()
       const nodeIds = keys(values)
       await collection(Collections.values).updateMany(
-        { docId, tag, nodeId: { $in: nodeIds }, arrayNodeId: { $exists: false } },
+        { docId, tag, nodeId: { $in: nodeIds }, arrayItemId: { $exists: false } },
         { $set: { arrayItemId } }
       )
-      return valueList({
-        docId,
-        email,
-        payload: {
-          tag,
-          nodeIds
-        }
-      })
+      return arrayItemId
+    },
+    async updateItem(arrayItemId: Id, values: Record<NodeId, Value>): Promise<ValueList> {
+      const nodeIds = keys(values)
+      /*
+      await collection(Collections.values).updateMany(
+        { docId, tag, nodeId: { $in: nodeIds }, arrayItemId },
+        { $set: { arrayItemId } }
+      )
+      */
+      return valueList({ docId, email, payload: { tag, nodeIds } })
     }
   })
 

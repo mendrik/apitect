@@ -19,11 +19,11 @@ export const validateValues = async (
   arrayNodeId: Id
 ): Promise<Record<NodeId, Value>> => {
   const tree = await getTree(docId)
-  const node = tree.first(propEq<'id'>('id', arrayNodeId))
-  if (node == null) {
-    throw Error(`Unable to find node ${arrayNodeId} in document ${docId}`)
+  const arrayNode = tree.first(propEq<'id'>('id', arrayNodeId))
+  if (arrayNode == null) {
+    throw Error(`Unable to find array node ${arrayNodeId} in document ${docId}`)
   }
-  const nodeIds = node.flatten().map(pathOr<NodeId>('', ['value', 'id']))
+  const nodeIds = arrayNode.flatten().map(pathOr<NodeId>('', ['value', 'id']))
   const values: Record<NodeId, Value> = await valueList({
     docId,
     email,
@@ -31,8 +31,8 @@ export const validateValues = async (
   })
     .then(prop('values'))
     .then(mapByProperty('nodeId'))
-  const item = nodeToJson(node, values)
-  const validator: ZodArray<AnyZodObject> = await nodeToValidator(node, docId, email)
+  const item = nodeToJson(arrayNode, values)
+  const validator: ZodArray<AnyZodObject> = await nodeToValidator(arrayNode, docId, email)
   try {
     validator.element.parse(item)
   } catch (e) {
