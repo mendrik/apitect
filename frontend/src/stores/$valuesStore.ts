@@ -1,5 +1,5 @@
 import { createStore, sample } from 'effector'
-import { any, join, juxt, pipe, prop, propOr, reject, uniqBy, whereEq } from 'ramda'
+import { join, juxt, pipe, prop, propOr, reject, uniqBy, whereEq } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
@@ -23,19 +23,8 @@ $valuesStore.on(valueListFx.doneData, (state, result) =>
   uniqBy(byIdAndTag, result.values.concat(state))
 )
 
-// after creating a new array item, let's remove the template values
-$valuesStore.on(arrayItemCreateFx.doneData, (state, result) =>
-  reject((value: Value) =>
-    any(
-      whereEq({
-        nodeId: value.nodeId,
-        tag: value.tag,
-        arrayItemId: undefined
-      }),
-      result.values
-    )
-  )(state)
-)
+// after creating a new array item let's todo
+$valuesStore.on(arrayItemCreateFx.doneData, (state, result) => state)
 
 $valuesStore.on(valueUpdateFx.doneData, (state, result) =>
   uniqBy(byIdAndTag, [result].concat(state))
