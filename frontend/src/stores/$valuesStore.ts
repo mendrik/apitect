@@ -6,6 +6,7 @@ import { Value } from '~shared/types/domain/values/value'
 import { $treeStore } from '~stores/$treeStore'
 
 import { arrayItemCreateFx } from '../events/array'
+import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
 import { selectValue, valueDeleteFx, valueListFx, valueUpdateFx } from '../events/values'
 
@@ -36,6 +37,7 @@ $valuesStore.on(valueDeleteFx.done, (state, { params }) =>
 
 export const $selectedValue = createStore<SelectedValue | null>(null)
   .on(selectValue, (_, result) => result)
+  .on(projectFx.doneData, () => null)
   .reset(resetProject)
 
 export const $selectedValueNode = createStore<TreeNode<Node> | null>(null)
