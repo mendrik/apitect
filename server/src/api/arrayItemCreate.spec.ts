@@ -1,3 +1,5 @@
+import { CreateItemResponse, ZCreateItemResponse } from '~shared/types/response/createItemResponse'
+
 import { docId, email, Nodes, tag } from '../tests/fixtureContants'
 import { addValue, deleteValues } from '../tests/utils'
 import { withDatabase } from '../tests/withDatabase'
@@ -14,14 +16,15 @@ describe('arrayItemCreate', () => {
   it('can create item', async () => {
     await addValue(Nodes.fullName, 'Andreas')
     await addValue(Nodes.birthday, '1976-11-13T22:00:00.000Z')
-    const uuid = await arrayItemCreate({
+    const res: CreateItemResponse = await arrayItemCreate({
       ...params,
       payload: {
         arrayNodeId: Nodes.people,
         tag
       }
     })
-    expect(uuid).toBeDefined()
+    const parse = ZCreateItemResponse.parse(res)
+    expect(parse.values).toHaveLength(2)
     const { values } = await valueList({
       ...params,
       payload: { tag, nodeIds: [Nodes.fullName, Nodes.birthday] }

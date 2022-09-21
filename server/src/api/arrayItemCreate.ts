@@ -1,8 +1,10 @@
-import { cond, propEq } from 'ramda'
+import { cond, propEq, values as objectValues } from 'ramda'
 import { ServerApiMethod } from '~shared/apiResponse'
 import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { ArraySettings, DataSourceType } from '~shared/types/forms/nodetypes/arraySettings'
+import { CreateItemResponse } from '~shared/types/response/createItemResponse'
+import { resolvePromised } from '~shared/utils/promise'
 
 import { validateValues } from '../datasources/arrayItem'
 import { DataSource } from '../datasources/datasource'
@@ -35,5 +37,9 @@ export const arrayItemCreate: ServerApiMethod<'arrayItemCreate'> = async ({
       externalDataSource(arrayNodeId, docId, email, tag)
     ]
   ])(arraySettings as ArraySettings)
-  return dataSource.insertItem(values)
+  return resolvePromised<CreateItemResponse>({
+    arrayItemId: dataSource.insertItem(values),
+    arrayNodeId,
+    values: objectValues(values)
+  })
 }

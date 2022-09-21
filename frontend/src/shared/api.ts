@@ -2,7 +2,8 @@ import { undefined as noArgs } from 'zod'
 import { ZEnums } from '~shared/types/domain/enums'
 import { ZValue } from '~shared/types/domain/values/value'
 import { ZValueBase } from '~shared/types/domain/values/valueBase'
-import { ZNewArrayItemRequest } from '~shared/types/request/newArrayItemRequest'
+import { ZCreateItemRequest } from '~shared/types/request/createItemRequest'
+import { ZCreateItemResponse } from '~shared/types/response/createItemResponse'
 
 import { idCodec } from './codecs/idCodec'
 import { ZNode } from './types/domain/node'
@@ -34,5 +35,5 @@ export const ApiSchema = {
   valueUpdate: [ZValue, ZValue],
   enums: [noArgs(), ZEnums.nullable()],
   updateEnums: [ZEnums, ZEnums],
-  arrayItemCreate: [ZNewArrayItemRequest, idCodec]
+  arrayItemCreate: [ZCreateItemRequest, ZCreateItemResponse]
 } as const
