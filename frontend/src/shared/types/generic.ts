@@ -33,3 +33,5 @@ export type UseState<T> = [T, Dispatch<SetStateAction<T>>]
 export type Primitives = string | number | boolean | null | undefined
 
 export type Unboxed<T> = T extends (infer U)[] ? U : T
+
+export type Json = string | number | boolean | null | Json[] | { [key: string]: Json }
