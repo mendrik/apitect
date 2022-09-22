@@ -1,1 +1,3 @@
-export const defaultProjection = { projection: { _id: 0, docId: 0 } }
+import { Document } from 'mongodb'
+
+export const projection: Document = { _id: 0, docId: 0 }
