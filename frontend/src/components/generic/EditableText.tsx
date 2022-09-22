@@ -4,7 +4,7 @@ import { cond, F, o, pipe, T } from 'ramda'
 import { HTMLAttributes, useState } from 'react'
 import { onlyText } from 'react-children-utilities'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
+import { ArgFn, Jsx } from '~shared/types/generic'
 
 import { codeIn } from '../../utils/eventUtils'
 import { eventValue } from '../../utils/paths'
@@ -22,9 +22,9 @@ const SeamlessInput = styled.input`
 
 export const EditableText = ({ editAction, children, className, ...rest }: Jsx<OwnProps>) => {
   const [editing, setEditing] = useState(false)
-  const stopEditing = o(setEditing, F)
-  const startEditing = o(setEditing, T)
-  const editingStopped = pipe(eventValue, editAction, stopEditing)
+  const stopEditing: ArgFn<any> = o(setEditing, F)
+  const startEditing: ArgFn<any> = o(setEditing, T)
+  const editingStopped = pipe(eventValue, value => editAction(value).then(stopEditing))
 
   const keyMap = cond([
     [codeIn('Enter'), editingStopped],

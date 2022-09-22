@@ -5,10 +5,11 @@ import { logger } from '~shared/utils/logger'
 import { collection, Collections, withTransaction } from './database'
 
 export const renameProject = (docId: string, name: string): Promise<string> =>
-  withTransaction(async session => {
-    logger.info(`Renaming project with doc ${docId} to ${name}`)
-    return await collection(Collections.documents)
-      .findOneAndUpdate({ docId }, { name }, { session, returnDocument: 'after' })
-      .then(path(['value', 'name']))
-      .then(failOn<string>(isNil))
-  })
+  withTransaction(
+    async session =>
+      await collection(Collections.documents)
+        .findOneAndUpdate({ id: docId }, { $set: { name } }, { session, returnDocument: 'after' })
+        .then(path(['value', 'name']))
+        .then(failOn<string>(isNil))
+        .then(logger.info(`Renamed project with doc ${docId}`))
+  )
