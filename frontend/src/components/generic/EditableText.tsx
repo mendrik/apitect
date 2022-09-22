@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Effect } from 'effector'
-import { cond, pipe } from 'ramda'
+import { cond, F, o, pipe, T } from 'ramda'
 import { HTMLAttributes, useState } from 'react'
 import { onlyText } from 'react-children-utilities'
 import styled from 'styled-components'
@@ -22,11 +22,13 @@ const SeamlessInput = styled.input`
 
 export const EditableText = ({ editAction, children, className, ...rest }: Jsx<OwnProps>) => {
   const [editing, setEditing] = useState(false)
-  const editingStopped = pipe(eventValue, editAction, () => setEditing(false))
+  const stopEditing = o(setEditing, F)
+  const startEditing = o(setEditing, T)
+  const editingStopped = pipe(eventValue, editAction, stopEditing)
 
   const keyMap = cond([
     [codeIn('Enter'), editingStopped],
-    [codeIn('Escape'), () => setEditing(false)]
+    [codeIn('Escape'), stopEditing]
   ])
 
   return editing ? (
@@ -38,7 +40,7 @@ export const EditableText = ({ editAction, children, className, ...rest }: Jsx<O
       onBlur={editingStopped}
     />
   ) : (
-    <div className={clsx('editable', className)} onClick={() => setEditing(true)} {...rest}>
+    <div className={clsx('editable', className)} onClick={startEditing} {...rest}>
       {children}
     </div>
   )
