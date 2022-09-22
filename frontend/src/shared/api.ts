@@ -1,4 +1,4 @@
-import { undefined as noArgs } from 'zod'
+import { string, undefined as noArgs } from 'zod'
 import { ZEnums } from '~shared/types/domain/enums'
 import { ZValue } from '~shared/types/domain/values/value'
 import { ZValueBase } from '~shared/types/domain/values/valueBase'
@@ -25,6 +25,7 @@ export const ApiSchema = {
   nodeDelete: [idCodec, TNodeDeleted],
   nodeSettings: [idCodec, ZNodeSettings.nullable()],
   project: [noArgs(), ZProject],
+  renameProject: [string(), string()],
   projectUsersSettings: [noArgs(), ZProjectUsersSettings.nullable()],
   tagsSettings: [noArgs(), ZTagsSettings.nullable()],
   updateNodeSettings: [ZNodeSettings, ZNode],

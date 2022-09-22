@@ -1,4 +1,4 @@
-import { Dispatch, PropsWithChildren, SetStateAction } from 'react'
+import { Dispatch, PropsWithChildren, SetStateAction, SyntheticEvent } from 'react'
 
 export type Fn<R = void> = (...args: any[]) => R
 export type ArgFn<A, R = void> = (arg: A) => R
@@ -35,3 +35,5 @@ export type Primitives = string | number | boolean | null | undefined
 export type Unboxed<T> = T extends (infer U)[] ? U : T
 
 export type Json = string | number | boolean | null | Json[] | { [key: string]: Json }
+
+export type InputEvent = SyntheticEvent<HTMLInputElement, Event> & { target: HTMLInputElement }
