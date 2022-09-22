@@ -1,4 +1,4 @@
-import { pathOr, prop, propEq } from 'ramda'
+import { pathOr, prop } from 'ramda'
 import { AnyZodObject, ZodArray } from 'zod'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Id } from '~shared/types/domain/id'
@@ -10,7 +10,7 @@ import { nodeToJson } from '~shared/utils/nodeToJson'
 import { mapByProperty } from '~shared/utils/ramda'
 
 import { valueList } from '../api/valueList'
-import { getTree } from '../services'
+import { getArrayNode } from '../services/arrayNode'
 import { nodeToValidator } from '../services/validation'
 
 export const asJson = async (
@@ -33,11 +33,7 @@ export const validateValues = async (
   tag: string,
   arrayNodeId: Id
 ): Promise<Record<NodeId, Value>> => {
-  const tree = await getTree(docId)
-  const arrayNode = tree.first(propEq<'id'>('id', arrayNodeId))
-  if (arrayNode == null) {
-    throw Error(`Unable to find array node ${arrayNodeId} in document ${docId}`)
-  }
+  const arrayNode = await getArrayNode(docId, arrayNodeId)
   const { values, item } = await asJson(arrayNode, docId, email, tag)
   const validator: ZodArray<AnyZodObject> = await nodeToValidator(arrayNode, docId, email)
   try {
