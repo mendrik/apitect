@@ -1,4 +1,5 @@
 import { createStore, sample } from 'effector'
+import { apply } from 'ramda'
 import { isNotNil } from 'ramda-adjunct'
 import { Api } from '~shared/apiTypes'
 import { Id } from '~shared/types/domain/id'
@@ -19,7 +20,7 @@ const api = (): Api => sample({ source: $api }).getState()
 
 sample({
   source: [$currentTag, $selectedArrayNode] as [typeof $currentTag, typeof $selectedArrayNode],
-  filter: matches(isNotNil, isNotNil),
+  filter: apply(matches(isNotNil, isNotNil)),
   fn: ([tag, node]) => ({ tag: tag!.name, arrayNodeId: node!.value.id }),
   target: arrayItemsFx
 })
