@@ -1,15 +1,13 @@
-import { createEffect, sample } from 'effector'
+import { createEffect } from 'effector'
 import { tap } from 'ramda'
 import { Api } from '~shared/apiTypes'
 import { User } from '~shared/types/domain/user'
 import { ModalNames } from '~shared/types/modals'
-import { $api } from '~stores/$apiStore'
 
 import { whoAmI } from '../utils/restApi'
+import { api } from './api'
 import { openModal } from './modals'
 import { projectFx } from './project'
-
-const api = (): Api => sample({ source: $api }).getState()
 
 export const whoAmIFx = createEffect<() => Promise<User | null>>(() => whoAmI().catch(() => null))
 

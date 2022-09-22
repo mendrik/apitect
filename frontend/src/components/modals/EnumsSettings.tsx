@@ -13,7 +13,7 @@ import { lastItemOptional } from '~shared/codecs/lastItemOptional'
 import { EnumItem, Enums, ZEnum } from '~shared/types/domain/enums'
 import { asNumber } from '~shared/utils/ramda'
 
-import { updateEnumsFx } from '../../events/project'
+import { updateEnumsFx } from '../../events/enums'
 import { ModalFC } from '../ModalStub'
 import { EditableObjectList } from '../generic/EditableObjectList'
 

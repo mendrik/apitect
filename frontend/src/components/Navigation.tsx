@@ -9,7 +9,9 @@ import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $user } from '~stores/$userStore'
 
 import { Palette } from '../css/colors'
-import { enumsFx, projectUserSettingsFx, tagsSettingsFx } from '../events/project'
+import { enumsFx } from '../events/enums'
+import { projectUserSettingsFx } from '../events/projectUsers'
+import { tagsSettingsFx } from '../events/tagSettings'
 import { addParams } from '../utils/url'
 import { Scale, Tuple } from './generic/Tuple'
 

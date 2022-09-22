@@ -1,18 +1,16 @@
-import { createEffect, createEvent, sample } from 'effector'
+import { createEffect, createEvent } from 'effector'
 import { tap } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Api } from '~shared/apiTypes'
 import { Node } from '~shared/types/domain/node'
 import { ModalNames } from '~shared/types/modals'
-import { $api } from '~stores/$apiStore'
 
+import { api } from './api'
 import { openModal } from './modals'
 import { projectFx } from './project'
 
 export const openNodeState = createEvent<[TreeNode<Node>, boolean]>('toggle node')
 export const selectNode = createEvent<TreeNode<Node> | null>('select node')
-
-const api = (): Api => sample({ source: $api }).getState()
 
 export const createNodeFx = createEffect<Api['nodeCreate']>(node => api().nodeCreate(node))
 export const deleteNodeFx = createEffect<Api['nodeDelete']>(id => api().nodeDelete(id))

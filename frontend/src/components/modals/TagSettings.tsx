@@ -10,7 +10,7 @@ import { Tag, ZTag } from '~shared/types/domain/tag'
 import { isCyclic, updateArrayBy } from '~shared/utils/ramda'
 import { $tagStore } from '~stores/$tagStore'
 
-import { updateTagsSettingsFx } from '../../events/project'
+import { updateTagsSettingsFx } from '../../events/tagSettings'
 import { ModalFC } from '../ModalStub'
 
 const TagSettings: ModalFC = ({ close }) => {
