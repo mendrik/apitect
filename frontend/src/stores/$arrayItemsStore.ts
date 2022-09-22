@@ -9,7 +9,10 @@ import { $currentTag } from '~stores/$currentTag'
 
 import { arrayItemsFx } from '../events/array'
 
-type Item = Json & { id: Id }
+type Item = Json & {
+  id: Id
+  displayString: string
+}
 
 export const $arrayItems = createStore<Item[]>([])
 export const $selectedArrayItem = createStore<Item | null>(null)

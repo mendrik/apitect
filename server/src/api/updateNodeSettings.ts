@@ -12,10 +12,6 @@ export const updateNodeSettings: ServerApiMethod<'updateNodeSettings'> = ({
     root.update(propEq('id', nodeSettings.nodeId), assoc('name', nodeSettings.name))
   ).then(op =>
     collection(Collections.nodeSettings)
-      .findOneAndReplace(
-        { nodeId: nodeSettings.nodeId },
-        { ...nodeSettings, docId },
-        { upsert: true }
-      )
+      .findOneAndReplace({ nodeId: nodeSettings.nodeId }, { ...nodeSettings, docId })
       .then(() => op.self.extract())
   )

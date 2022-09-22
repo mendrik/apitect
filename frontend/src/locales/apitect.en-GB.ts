@@ -157,7 +157,7 @@ const en = {
       parentTag: 'Extends from',
       format: 'Custom format',
       enumeration: 'Enumeration',
-      displayNode: 'Display node',
+      displayFormat: 'Display format',
       displayColumn: 'Display column',
       dbUrl: 'Connection url',
       dbUser: 'Database user',
