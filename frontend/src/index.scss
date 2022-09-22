@@ -257,7 +257,8 @@ label {
   cursor: pointer;
 }
 
-input + label {
+input[type=text] + label,
+textarea + label {
   color: $form-label-color;
 }
 
