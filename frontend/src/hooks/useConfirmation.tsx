@@ -27,7 +27,7 @@ export const useConfirmation = (
     const { t } = useTranslation()
     const refOk = useRef<HTMLButtonElement>(null)
     const close = () => setOpen(false)
-    const okClick = juxt([sp(), close, onConfirm])
+    const okClick = juxt([sp(close), onConfirm])
 
     useFocus(refOk)
 
