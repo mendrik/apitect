@@ -2,6 +2,9 @@
   "name": "apitect",
   "version": "0.1.0",
   "private": true,
+  "author": "Andreas Herd",
+  "repository": "https://github.com/mendrik/apitect",
+  "description": "Frontend for Apitect",
   "scripts": {
     "start": "vite",
     "build": "tsc --skipLibCheck && vite build",
