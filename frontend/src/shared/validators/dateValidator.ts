@@ -4,6 +4,6 @@ import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
 const $getDateValidator = (settings?: DateSettings) => dateCodec
 
 export const getDateValidator = (settings?: DateSettings) => {
-  const base = $getDateValidator(settings)
+  const base = $getDateValidator(settings).describe('date')
   return settings?.required === true ? base : base.optional()
 }

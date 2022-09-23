@@ -12,6 +12,6 @@ const $getNumberValidator = (settings?: NumberSettings): ZodNumber => {
 }
 
 export const getNumberValidator = (settings?: NumberSettings) => {
-  const base = $getNumberValidator(settings)
+  const base = $getNumberValidator(settings).describe('number')
   return settings?.required === true ? base : base.optional()
 }
