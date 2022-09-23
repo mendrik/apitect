@@ -1,4 +1,4 @@
-import { groupBy, mapObjIndexed, prop, values } from 'ramda'
+import { groupBy, length, mapObjIndexed, prop, values } from 'ramda'
 import { Item } from '~shared/types/domain/item'
 import { NodeId } from '~shared/types/domain/node'
 import { TagName } from '~shared/types/domain/tag'
@@ -8,11 +8,13 @@ import { projection } from '../utils/projection'
 import { collection, Collections } from './database'
 
 export const getItemsTotal = (nodeIds: NodeId[], tag: TagName): Promise<number> =>
-  collection(Collections.values).countDocuments({
-    tag,
-    nodeId: { $in: nodeIds },
-    arrayItemId: { $exists: true }
-  })
+  collection(Collections.values)
+    .distinct('arrayItemId', {
+      tag,
+      nodeId: { $in: nodeIds },
+      arrayItemId: { $exists: true }
+    })
+    .then(length)
 
 export const getArrayItems = async (
   nodeIds: NodeId[],
