@@ -16,6 +16,7 @@ import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $canCreateNode } from '~stores/$selectedNode'
 
 import { Palette } from '../../css/colors'
+import { insetFocus } from '../../css/insetFocus'
 import { createNodeFx } from '../../events/tree'
 import { spaceOrEnter } from '../../utils/eventUtils'
 import { ModalFC } from '../ModalStub'
@@ -40,6 +41,8 @@ const TypeGrid = styled(FocusNavigator)`
     border-radius: 0.25rem;
     height: 70px;
     cursor: pointer;
+
+    ${insetFocus}
 
     &.selected,
     &.selected:hover {
