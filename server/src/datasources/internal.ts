@@ -1,4 +1,4 @@
-import { keys } from 'ramda'
+import { keys, prop } from 'ramda'
 import { newId } from '~shared/codecs/idCodec'
 import { Id } from '~shared/types/domain/id'
 import { NodeId } from '~shared/types/domain/node'
@@ -27,9 +27,9 @@ const dataSource =
         items: []
       }
     },
-    async insertItem(values: Record<NodeId, Value>): Promise<Id> {
+    async insertItem(values: Value[]): Promise<Id> {
       const arrayItemId = newId()
-      const nodeIds = keys(values)
+      const nodeIds = values.map(prop('nodeId'))
       await collection(Collections.values).updateMany(
         { docId, tag, nodeId: { $in: nodeIds }, arrayItemId: { $exists: false } },
         { $set: { arrayItemId } }

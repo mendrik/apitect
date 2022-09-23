@@ -1,3 +1,4 @@
+import { Dictionary } from 'ramda'
 import { Dispatch, PropsWithChildren, SetStateAction, SyntheticEvent } from 'react'
 
 export type Fn<R = void> = (...args: any[]) => R
@@ -34,6 +35,6 @@ export type Primitives = string | number | boolean | null | undefined
 
 export type Unboxed<T> = T extends (infer U)[] ? U : T
 
-export type Json = string | number | boolean | null | Json[] | { [key: string]: Json }
+export type Json = string | number | boolean | null | Json[] | Dictionary<Json>
 
 export type InputEvent = SyntheticEvent<HTMLInputElement, Event> & { target: HTMLInputElement }

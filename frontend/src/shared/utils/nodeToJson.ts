@@ -1,14 +1,16 @@
-import { cond, pipe, propOr, propSatisfies, reduce, T as Otherwise } from 'ramda'
+import { cond, Dictionary, pipe, propOr, propSatisfies, reduce, T as Otherwise } from 'ramda'
 import { included } from 'ramda-adjunct'
-import { JsonObject } from 'react-use-websocket/dist/lib/types'
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { Node, NodeId } from '~shared/types/domain/node'
+import { Node } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { Value } from '~shared/types/domain/values/value'
+import { Json } from '~shared/types/generic'
+import { mapByProperty } from '~shared/utils/ramda'
 
-export const nodeToJson = (node: TreeNode<Node>, values: Record<NodeId, Value>): JsonObject => {
-  const value = (node: Node) => values[node.id]?.value
-  const toJson: (node: Node) => JsonObject = cond([
+export const nodeToJson = (node: TreeNode<Node>, values: Value[]): Dictionary<Json> => {
+  const mappedValues = mapByProperty('nodeId')(values)
+  const value = (node: Node) => mappedValues[node.id]?.value
+  const toJson: (node: Node) => Dictionary<Json> = cond([
     [
       propSatisfies(included([NodeType.Array, NodeType.Object]), 'nodeType'),
       pipe<any, Node[], any>(

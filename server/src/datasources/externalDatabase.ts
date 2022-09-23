@@ -19,7 +19,7 @@ const dataSource =
         items: []
       })
     },
-    insertItem(item: Record<NodeId, Value>): Promise<Id> {
+    insertItem(item: Value[]): Promise<Id> {
       return Promise.resolve('uuid')
     },
     updateItem(id: Id, item: Record<NodeId, Value>): Promise<ValueList> {

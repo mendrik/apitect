@@ -6,7 +6,6 @@ import { TagName } from '~shared/types/domain/tag'
 import { Value } from '~shared/types/domain/values/value'
 import { ArraySettings } from '~shared/types/forms/nodetypes/arraySettings'
 import { nodeToJson } from '~shared/utils/nodeToJson'
-import { mapByProperty } from '~shared/utils/ramda'
 
 import { nodeSettings } from '../api/nodeSettings'
 import { projection } from '../utils/projection'
@@ -45,8 +44,7 @@ export const getArrayItems = async (
     .then(groupBy(prop('arrayItemId')))
 
   const items = mapObjIndexed((values: Value[], arrayItemId: string) => {
-    const valueMap = mapByProperty('nodeId')(values)
-    const item = nodeToJson(arrayNode, valueMap)
+    const item = nodeToJson(arrayNode, values)
     return {
       id: arrayItemId,
       displayString: displayString(arraySettings.displayFormat, item),

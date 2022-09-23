@@ -7,22 +7,21 @@ import { NotificationType } from '~shared/types/domain/notification'
 import { Value } from '~shared/types/domain/values/value'
 import { notificationError } from '~shared/types/notificationError'
 import { nodeToJson } from '~shared/utils/nodeToJson'
-import { mapByProperty } from '~shared/utils/ramda'
 
 import { valueList } from '../api/valueList'
 import { getArrayNode } from '../services/arrayNode'
 import { nodeToValidator } from '../services/validation'
 
-export const asJson = async (
+const fetchValues = async (
   arrayNode: TreeNode<Node>,
   docId: string,
   email: string,
   tag: string
 ) => {
   const nodeIds = arrayNode.flatten().map(pathOr<NodeId>('', ['value', 'id']))
-  const values: Record<NodeId, Value> = await valueList({ docId, email, payload: { tag, nodeIds } })
-    .then(prop('values'))
-    .then(mapByProperty('nodeId'))
+  const values: Value[] = await valueList({ docId, email, payload: { tag, nodeIds } }).then(
+    prop('values')
+  )
   const item = nodeToJson(arrayNode, values)
   return { values, item }
 }
@@ -32,9 +31,9 @@ export const validateValues = async (
   email: string,
   tag: string,
   arrayNodeId: Id
-): Promise<Record<NodeId, Value>> => {
+): Promise<Value[]> => {
   const arrayNode = await getArrayNode(docId, arrayNodeId)
-  const { values, item } = await asJson(arrayNode, docId, email, tag)
+  const { values, item } = await fetchValues(arrayNode, docId, email, tag)
   const validator: ZodArray<AnyZodObject> = await nodeToValidator(arrayNode, docId, email)
   try {
     validator.element.parse(item)

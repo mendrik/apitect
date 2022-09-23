@@ -10,7 +10,7 @@ export type ListResult<T> = {
 }
 
 export type DataSource = {
-  insertItem: (values: Record<NodeId, Value>) => Promise<Id>
+  insertItem: (values: Value[]) => Promise<Id>
   updateItem: (id: Id, values: Record<NodeId, Value>) => Promise<ValueList>
   deleteItem: (id: Id) => Promise<void>
   list: <T>(index: number, count: number, searchKey?: string) => Promise<ListResult<T>>
