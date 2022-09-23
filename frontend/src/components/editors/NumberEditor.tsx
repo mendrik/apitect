@@ -39,7 +39,7 @@ export const NumberText = styled.div`
 const UnitSx = styled.span`
   color: ${Palette.darkBorder};
   &:before {
-    content: '\u202F';
+    content: '\u00A0';
   }
 `
 
@@ -62,12 +62,13 @@ export const NumberEditor = ({ value, node, tag }: EditorProps<NumberValue>) => 
   ])
 
   const step = numberSettings?.display.step ?? 1
+  const val = value?.value
   const asStepper = (children: JSX.Element) =>
-    numberSettings?.display.step != null && value?.value != null ? (
+    numberSettings?.display.step != null && val != null ? (
       <HGrid className="w-min-c align-items-center gap-2 text-center">
-        <SimpleIcon icon={IconSquareMinus} onClick={() => saveValue((value?.value ?? 0) - step)} />
+        <SimpleIcon icon={IconSquareMinus} onClick={() => saveValue((val ?? 0) - step)} />
         {children}
-        <SimpleIcon icon={IconSquarePlus} onClick={() => saveValue((value?.value ?? 0) + step)} />
+        <SimpleIcon icon={IconSquarePlus} onClick={() => saveValue((val ?? 0) + step)} />
       </HGrid>
     ) : (
       <Wrap>{children}</Wrap>
@@ -77,11 +78,11 @@ export const NumberEditor = ({ value, node, tag }: EditorProps<NumberValue>) => 
   return asStepper(
     views.isDisplayView() ? (
       <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
-        {numberFormat(value?.value)}
-        {value?.value && unit && <UnitSx>{unit}</UnitSx>}
+        {numberFormat(val)}
+        {val && unit && <UnitSx>{unit}</UnitSx>}
       </NumberText>
     ) : (
-      <Autogrow initial={value?.value}>
+      <Autogrow initial={val}>
         <NumberInput
           type="text"
           className={clsx('editor', { invalid: error != null })}
@@ -90,7 +91,7 @@ export const NumberEditor = ({ value, node, tag }: EditorProps<NumberValue>) => 
           lang={navigator.language}
           onKeyDown={keyMap}
           onBlur={saveAsNumber}
-          defaultValue={value?.value}
+          defaultValue={val}
         />
       </Autogrow>
     )
