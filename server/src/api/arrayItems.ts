@@ -1,16 +1,21 @@
+import { prop } from 'ramda'
 import { ServerApiMethod } from '~shared/apiResponse'
 import { resolvePromised } from '~shared/utils/promise'
 
 import { getArrayItems, getItemsTotal } from '../services/arrayItems'
+import { getNode } from '../services/node'
 
-export const arrayItems: ServerApiMethod<'arrayItems'> = ({
+export const arrayItems: ServerApiMethod<'arrayItems'> = async ({
   docId,
-  email,
   payload: { arrayNodeId, page, pageSize, tag }
-}) =>
-  resolvePromised({
-    items: getArrayItems(docId, email, tag, arrayNodeId, page, pageSize),
+}) => {
+  const arrayNode = await getNode(docId, arrayNodeId)
+  const nodeIds = arrayNode.toArray().map(prop('id'))
+
+  return resolvePromised({
+    items: getArrayItems(nodeIds, tag, page, pageSize),
     pageSize,
     page,
-    total: getItemsTotal(docId, tag, arrayNodeId)
+    total: getItemsTotal(nodeIds, tag)
   })
+}

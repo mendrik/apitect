@@ -1,18 +1,15 @@
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { Node, NodeId } from '~shared/types/domain/node'
-import { Value } from '~shared/types/domain/values/value'
+import { Node } from '~shared/types/domain/node'
 import { nodeToJson } from '~shared/utils/nodeToJson'
-import { mapByProperty } from '~shared/utils/ramda'
 
 import tree from '../../fixtures/tree.json'
 import values from '../../fixtures/values.json'
 
 const x = TreeNode.from<Node, 'children'>('children')(tree as any)
-const v: Record<NodeId, Value> = mapByProperty<any>('nodeId')(values)
 
 describe('nodeToJson', () => {
   it('serialization works', () => {
-    const json = nodeToJson(x, v)
+    const json = nodeToJson(x, values as any)
     expect(json).toStrictEqual({
       Name: 'Andreas',
       Switch: false,

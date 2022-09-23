@@ -9,7 +9,7 @@ import { notificationError } from '~shared/types/notificationError'
 import { nodeToJson } from '~shared/utils/nodeToJson'
 
 import { valueList } from '../api/valueList'
-import { getArrayNode } from '../services/arrayNode'
+import { getNode } from '../services/node'
 import { nodeToValidator } from '../services/validation'
 
 const fetchValues = async (
@@ -32,7 +32,7 @@ export const validateValues = async (
   tag: string,
   arrayNodeId: Id
 ): Promise<Value[]> => {
-  const arrayNode = await getArrayNode(docId, arrayNodeId)
+  const arrayNode = await getNode(docId, arrayNodeId)
   const { values, item } = await fetchValues(arrayNode, docId, email, tag)
   const validator: ZodArray<AnyZodObject> = await nodeToValidator(arrayNode, docId, email)
   try {
