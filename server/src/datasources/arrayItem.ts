@@ -23,6 +23,7 @@ export const validateValues = async (
 
   if (isNotEmpty(errors)) {
     throw notificationError(
+      arrayNodeId,
       'validation.failed',
       NotificationType.WARNING,
       JSON.stringify({ errors })

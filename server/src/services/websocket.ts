@@ -1,38 +1,16 @@
 import { SocketStream } from '@fastify/websocket'
 import { FastifyInstance } from 'fastify'
 import { verify } from 'jsonwebtoken'
-import { ZodError } from 'zod'
 import { ZApiRequest } from '~shared/apiRequest'
-import { ApiError, ServerParam, ZApiError, ZApiResponse } from '~shared/apiResponse'
+import { ServerParam, ZApiResponse } from '~shared/apiResponse'
 import { ApiMethod } from '~shared/apiTypes'
-import { Fn } from '~shared/types/generic'
-import { HttpError } from '~shared/types/httpError'
-import { NotificationError } from '~shared/types/notificationError'
 import { JwtPayload } from '~shared/types/response/token'
 import { logger } from '~shared/utils/logger'
 
 import { apiMapping } from '../api/serverApi'
 import { config } from './config'
+import { socketErrorHandler } from './errorHandler'
 import { getStack } from './errors'
-
-const socketErrorHandler =
-  (send: Fn, id: string) =>
-  (e: Error): void => {
-    logger.error(e.message, getStack(e))
-    const $send = (data: Omit<ApiError, 'error' | 'id'>) =>
-      send(JSON.stringify(ZApiError.parse({ id, error: 'error', ...data })))
-
-    if (e instanceof ZodError) {
-      return $send({ status: 400, message: e.message })
-    }
-    if (e instanceof HttpError) {
-      return $send({ status: e.status, message: e.message, field: e.field })
-    }
-    if (e instanceof NotificationError) {
-      return $send({ status: 400, message: e.message, title: e.title, notificationType: e.type })
-    }
-    return $send({ status: 500, message: e.message })
-  }
 
 const openWebsocket = (connection: SocketStream) => {
   const send =

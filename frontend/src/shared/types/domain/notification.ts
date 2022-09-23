@@ -1,5 +1,6 @@
 import { nativeEnum, object, string } from 'zod'
 import { TypeOf } from 'zod/lib/types'
+import { idCodec } from '~shared/codecs/idCodec'
 
 export enum NotificationType {
   INFO,
@@ -8,6 +9,7 @@ export enum NotificationType {
 }
 
 export const ZNotification = object({
+  uniqueId: idCodec,
   title: string(),
   content: string(),
   type: nativeEnum(NotificationType)
