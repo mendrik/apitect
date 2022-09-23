@@ -16,6 +16,7 @@ const notificationContent = (notification: Notification): JSX.Element => {
   switch (notification.title) {
     case 'validation.failed':
       const error = safeParseJson<ZodError>(notification.content)
+      console.debug(error)
       return (
         <NotEmptyList list={error?.issues}>
           {mapIndexed(issue => {

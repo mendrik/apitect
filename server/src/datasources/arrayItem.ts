@@ -22,7 +22,11 @@ export const validateValues = async (
   )
 
   if (isNotEmpty(errors)) {
-    throw notificationError('validation.failed', NotificationType.WARNING, JSON.stringify(errors))
+    throw notificationError(
+      'validation.failed',
+      NotificationType.WARNING,
+      JSON.stringify({ errors })
+    )
   }
 
   return result.map(prop('data')) as Value[]

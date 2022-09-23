@@ -57,7 +57,9 @@ export const validateNode = async (
   return node.toArray().map(valueNode => {
     const value = values.find(propEq('nodeId', valueNode.id))
     const validator = primitiveValidator(valueNode)
-    const res = validator.safeParse(value?.value)
+    const res = validator.safeParse(value?.value, {
+      path: [node.extract().name, valueNode.name, valueNode.id]
+    })
     logger.info(`Debugging ${valueNode.name}/${value?.value} - ${validator.description}`, res)
     return res
   })
