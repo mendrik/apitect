@@ -1,30 +1,12 @@
-import { pathOr, prop } from 'ramda'
-import { AnyZodObject, ZodArray } from 'zod'
-import { TreeNode } from '~shared/algebraic/treeNode'
+import { prop } from 'ramda'
+import { isNotEmpty } from 'ramda-adjunct'
+import { ZodError } from 'zod'
 import { Id } from '~shared/types/domain/id'
-import { Node, NodeId } from '~shared/types/domain/node'
 import { NotificationType } from '~shared/types/domain/notification'
 import { Value } from '~shared/types/domain/values/value'
 import { notificationError } from '~shared/types/notificationError'
-import { nodeToJson } from '~shared/utils/nodeToJson'
 
-import { valueList } from '../api/valueList'
-import { getNode } from '../services/node'
-import { nodeToValidator } from '../services/validation'
-
-const fetchValues = async (
-  arrayNode: TreeNode<Node>,
-  docId: string,
-  email: string,
-  tag: string
-) => {
-  const nodeIds = arrayNode.flatten().map(pathOr<NodeId>('', ['value', 'id']))
-  const values: Value[] = await valueList({ docId, email, payload: { tag, nodeIds } }).then(
-    prop('values')
-  )
-  const item = nodeToJson(arrayNode, values)
-  return { values, item }
-}
+import { validateNode, Validation } from '../services/validation'
 
 export const validateValues = async (
   docId: Id,
@@ -32,13 +14,16 @@ export const validateValues = async (
   tag: string,
   arrayNodeId: Id
 ): Promise<Value[]> => {
-  const arrayNode = await getNode(docId, arrayNodeId)
-  const { values, item } = await fetchValues(arrayNode, docId, email, tag)
-  const validator: ZodArray<AnyZodObject> = await nodeToValidator(arrayNode, docId, email)
-  try {
-    validator.element.parse(item)
-  } catch (e) {
-    throw notificationError('validation.failed', NotificationType.WARNING, JSON.stringify(e))
+  const result = await validateNode(docId, tag, arrayNodeId, email)
+
+  const errors = result.reduce(
+    (acc: ZodError[], res: Validation) => (res.success ? acc : [...acc, res.error]),
+    []
+  )
+
+  if (isNotEmpty(errors)) {
+    throw notificationError('validation.failed', NotificationType.WARNING, JSON.stringify(errors))
   }
-  return values
+
+  return result.map(prop('data')) as Value[]
 }

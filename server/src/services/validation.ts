@@ -1,15 +1,17 @@
-import { cond, propEq, propOr, reduce, T as Otherwise } from 'ramda'
-import { array, boolean, object, ZodObject, ZodSchema } from 'zod'
-import { TreeNode } from '~shared/algebraic/treeNode'
+import { map, prop, propEq, propOr } from 'ramda'
+import { any, boolean, SafeParseReturnType, ZodSchema } from 'zod'
 import { Enum } from '~shared/types/domain/enums'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
+import { TagName } from '~shared/types/domain/tag'
+import { Value } from '~shared/types/domain/values/value'
 import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
 import { EnumSettings } from '~shared/types/forms/nodetypes/enumSettings'
 import { NodeSettings } from '~shared/types/forms/nodetypes/nodeSettings'
 import { NumberSettings } from '~shared/types/forms/nodetypes/numberSettings'
 import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
 import { mapByProperty } from '~shared/utils/ramda'
+import { throwError } from '~shared/utils/throwError'
 import { getDateValidator } from '~shared/validators/dateValidator'
 import { getEnumValidator } from '~shared/validators/enumValidator'
 import { getNumberValidator } from '~shared/validators/numberValidator'
@@ -17,22 +19,24 @@ import { getStringValidator } from '~shared/validators/stringValidator'
 
 import { enums } from '../api/enums'
 import { allNodeSettings } from '../api/nodeSettings'
+import { valueList } from '../api/valueList'
+import { getNode } from './node'
 
-export const nodeToValidator = async <T extends ZodSchema<any>>(
-  node: TreeNode<Node>,
+export type Validation = SafeParseReturnType<Value, any>
+
+export const validateNode = async <T extends ZodSchema<any>>(
   docId: string,
+  tag: TagName,
+  nodeId: NodeId,
   email: string
-): Promise<T> => {
-  const enumerations: Record<string, Enum> = await enums({ docId, email })
-    .then<Enum[]>(propOr([], 'enums'))
-    .then(mapByProperty('name'))
-
-  const reducer = (acc: ZodObject<any>, cur: Node) => acc.setKey(cur.name, toValidator(cur))
-
-  const nodeSettings: Record<NodeId, NodeSettings> = await allNodeSettings(docId).then(
-    mapByProperty('nodeId')
-  )
-
+): Promise<Validation[]> => {
+  const node = await getNode(docId, nodeId)
+  const nodeIds = map(prop('id'), node.toArray())
+  const [values, enumerations, nodeSettings] = await Promise.all([
+    valueList({ docId, email, payload: { tag, nodeIds } }).then(prop('values')),
+    enums({ docId, email }).then<Enum[]>(propOr([], 'enums')).then(mapByProperty('name')),
+    allNodeSettings(docId).then(mapByProperty('nodeId'))
+  ])
   const primitiveValidator = (node: Node) => {
     const settings: NodeSettings | undefined = nodeSettings[node.id]
     switch (node.nodeType) {
@@ -49,21 +53,13 @@ export const nodeToValidator = async <T extends ZodSchema<any>>(
         const e: Enum | undefined = enumerations[enumSettings?.enumeration ?? '']
         return getEnumValidator(e, enumSettings)
       default:
-        throw Error(`No validator found for nodeType ${node.nodeType}`)
+        return any()
     }
   }
 
-  const toValidator: (node: Node) => T = cond<[Node], any>([
-    [
-      propEq('nodeType', NodeType.Object),
-      (node: Node) => reduce(reducer, object({}), node.children)
-    ],
-    [
-      propEq('nodeType', NodeType.Array),
-      (node: Node) => array(toValidator({ ...node, nodeType: NodeType.Object }))
-    ],
-    [Otherwise, primitiveValidator]
-  ]) as any
-
-  return toValidator(node.extract())
+  return values.map(value => {
+    const valueNode =
+      node.first(propEq('id', value.nodeId)) ?? throwError(`Node ${value.nodeId} missing for value`)
+    return primitiveValidator(valueNode.extract()).safeParse(value.value)
+  })
 }
