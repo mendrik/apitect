@@ -1,5 +1,6 @@
 import { createEffect, createEvent } from 'effector'
 import { Api } from '~shared/apiTypes'
+import { Id } from '~shared/types/domain/id'
 import { SelectedValue } from '~stores/$valuesStore'
 
 import { api } from './api'
@@ -9,3 +10,5 @@ export const valueUpdateFx = createEffect<Api['valueUpdate']>(req => api().value
 export const valueDeleteFx = createEffect<Api['valueDelete']>(req => api().valueDelete(req))
 
 export const selectValue = createEvent<SelectedValue | null>('select-value')
+
+export const goToValue = createEvent<Id>()

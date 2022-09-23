@@ -5,7 +5,8 @@ import { idCodec } from '~shared/codecs/idCodec'
 export enum NotificationType {
   INFO,
   ERROR,
-  WARNING
+  WARNING,
+  VALIDATION
 }
 
 export const ZNotification = object({

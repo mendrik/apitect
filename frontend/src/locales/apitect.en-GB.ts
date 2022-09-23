@@ -191,7 +191,8 @@ const en = {
       userNotFound: 'User not found',
       passwordWrong: 'Wrong password',
       passwordMustMatch: "Password doesn't match",
-      invalidId: 'ID must be a valid UUID'
+      invalidId: 'ID must be a valid UUID',
+      arrayItemInvalid: 'Item failed validation'
     },
     failed: 'Validation failed',
     createItemInfo: 'Make sure all fields for the current array node are valid.'
