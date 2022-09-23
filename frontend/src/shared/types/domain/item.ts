@@ -1,12 +1,10 @@
-import { any, object, record, string, union } from 'zod'
+import { array, object, string } from 'zod'
 import { TypeOf } from 'zod/lib/types'
+import { ZValue } from '~shared/types/domain/values/value'
 
-const ZItem = union([
-  object({
-    id: string(),
-    displayString: string()
-  }),
-  record(string().min(1), any())
-])
+export const ZItem = object({
+  id: string(),
+  values: array(ZValue)
+})
 
 export type Item = TypeOf<typeof ZItem>

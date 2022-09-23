@@ -1,4 +1,5 @@
-import { groupBy, prop } from 'ramda'
+import { groupBy, mapObjIndexed, prop, values } from 'ramda'
+import { Item } from '~shared/types/domain/item'
 import { NodeId } from '~shared/types/domain/node'
 import { TagName } from '~shared/types/domain/tag'
 import { Value } from '~shared/types/domain/values/value'
@@ -18,7 +19,7 @@ export const getArrayItems = async (
   tag: TagName,
   page: number,
   pageSize: number
-): Promise<Record<NodeId, Value[]>> =>
+): Promise<Item[]> =>
   collection(Collections.values)
     .find<Value>(
       {
@@ -32,3 +33,5 @@ export const getArrayItems = async (
     .limit(pageSize)
     .toArray()
     .then(groupBy(prop('arrayItemId')))
+    .then(mapObjIndexed((values, id) => ({ id, values })))
+    .then(values)

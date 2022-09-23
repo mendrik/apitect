@@ -1,12 +1,12 @@
-import { object, record, string, number, array } from 'zod'
+import { object, number, array } from 'zod'
 import { TypeOf } from 'zod/lib/types'
-import { ZValue } from '~shared/types/domain/values/value'
+import { ZItem } from '~shared/types/domain/item'
 
 export const ZArrayItemsResponse = object({
   total: number(),
   page: number(),
   pageSize: number(),
-  items: record(string(), array(ZValue))
+  items: array(ZItem)
 })
 
 export type ArrayItemsResponse = TypeOf<typeof ZArrayItemsResponse>
