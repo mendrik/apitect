@@ -6,8 +6,9 @@ import { Value } from '~shared/types/domain/values/value'
 
 import { projection } from '../utils/projection'
 import { collection, Collections } from './database'
+import { getNode } from './node'
 
-export const getItemsTotal = (nodeIds: NodeId[], tag: TagName): Promise<number> =>
+export const $getItemsTotal = (nodeIds: NodeId[], tag: TagName): Promise<number> =>
   collection(Collections.values)
     .distinct('arrayItemId', {
       tag,
@@ -15,6 +16,16 @@ export const getItemsTotal = (nodeIds: NodeId[], tag: TagName): Promise<number> 
       arrayItemId: { $exists: true }
     })
     .then(length)
+
+export const getItemsTotal = async (
+  docId: string,
+  arrayNodeId: NodeId,
+  tag: TagName
+): Promise<number> => {
+  const arrayNode = await getNode(docId, arrayNodeId)
+  const nodeIds = arrayNode.toArray().map(prop('id'))
+  return $getItemsTotal(nodeIds, tag)
+}
 
 export const getArrayItems = async (
   nodeIds: NodeId[],

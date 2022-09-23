@@ -2,7 +2,7 @@ import { prop } from 'ramda'
 import { ServerApiMethod } from '~shared/apiResponse'
 import { resolvePromised } from '~shared/utils/promise'
 
-import { getArrayItems, getItemsTotal } from '../services/arrayItems'
+import { getArrayItems, $getItemsTotal } from '../services/arrayItems'
 import { getNode } from '../services/node'
 
 export const arrayItems: ServerApiMethod<'arrayItems'> = async ({
@@ -16,6 +16,6 @@ export const arrayItems: ServerApiMethod<'arrayItems'> = async ({
     items: getArrayItems(nodeIds, tag, page, pageSize),
     pageSize,
     page,
-    total: getItemsTotal(nodeIds, tag)
+    total: $getItemsTotal(nodeIds, tag)
   })
 }

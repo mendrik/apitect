@@ -1,5 +1,5 @@
 import { createStore, sample } from 'effector'
-import { apply } from 'ramda'
+import { apply, prop } from 'ramda'
 import { isNotNil } from 'ramda-adjunct'
 import { ApiParam } from '~shared/apiTypes'
 import { Id } from '~shared/types/domain/id'
@@ -12,6 +12,7 @@ import { arrayItemsFx } from '../events/array'
 
 export const $arrayItems = createStore<Item[]>([])
 export const $selectedArrayItem = createStore<Id | null>(null)
+export const $itemsTotal = createStore<number | null>(null)
 
 sample({
   source: [$currentTag, $selectedArrayNode] as [typeof $currentTag, typeof $selectedArrayNode],
@@ -26,5 +27,11 @@ sample({
 })
 
 $arrayItems.on(arrayItemsFx.doneData, (state, { items, page, pageSize }) =>
-  state.splice(0, pageSize, ...items)
+  state.splice(page, pageSize, ...items)
 )
+
+sample({
+  source: arrayItemsFx.doneData,
+  fn: prop('total'),
+  target: $itemsTotal
+})

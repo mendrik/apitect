@@ -1,11 +1,11 @@
 import { IconChevronLeft, IconChevronRight, IconDeviceFloppy } from '@tabler/icons'
 import { useStore } from 'effector-react'
-import { path } from 'ramda'
 import styled from 'styled-components'
-import { useStoreMap } from '~hooks/useStoreMap'
-import { NodeId } from '~shared/types/domain/node'
 import { ArrayValue } from '~shared/types/domain/values/arrayValue'
+import { blank } from '~shared/utils/strings'
+import { $itemsTotal } from '~stores/$arrayItemsStore'
 import { $selectedArrayNode } from '~stores/$arrayStores'
+import { $currentTag } from '~stores/$currentTag'
 import { $selectedValue } from '~stores/$valuesStore'
 
 import { arrayItemCreateFx } from '../../events/array'
@@ -24,13 +24,17 @@ const EditorSx = styled.div`
   width: min-content;
 `
 
-export const ArrayEditor = ({ node, value, tag: columnTag }: EditorProps<ArrayValue>) => {
-  const arrayNodeId: NodeId | undefined = useStoreMap($selectedArrayNode, path(['value', 'id']))
+export const ArrayEditor = ({ node, tag: columnTag }: EditorProps<ArrayValue>) => {
+  const tag = useStore($currentTag)
+  const arrayNode = useStore($selectedArrayNode)
+  const arrayNodeId = arrayNode?.value.id
   const sv = useStore($selectedValue)
+  const total = useStore($itemsTotal)
 
+  const showTotal = tag?.name === columnTag && arrayNodeId === node.id
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT}>
-      <EditorSx tabIndex={0}>{value?.value ?? '0'} items</EditorSx>
+      <EditorSx tabIndex={0}>{blank`${showTotal && total} items`}</EditorSx>
       <div>
         {node.id === arrayNodeId && sv?.tag == columnTag && (
           <HGrid>
