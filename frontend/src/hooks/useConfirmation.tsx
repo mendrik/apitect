@@ -58,7 +58,7 @@ export const useConfirmation = (
         </Modal.Body>
       </Modal>
     ) : null
-  }, [open, question, cancelButton, confirmButton, keyMap, onConfirm])
+  }, [open, onConfirm])
 
   const openFn = useCallback(() => setOpen(true), [])
   return [Confirm, openFn]
