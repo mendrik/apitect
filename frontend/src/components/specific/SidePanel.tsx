@@ -10,9 +10,9 @@ import { $selectedNodePath, $sidePanelOpen } from '~stores/$sidePanel'
 import { stretchIn } from '../../animations/stretchIn'
 import { detailsPanelSize, navbarHeight } from '../../constants'
 import { Palette } from '../../css/colors'
-import { ArraySidePanel } from '../sidepanels/arraySidePanel'
-import { BinarySidePanel } from '../sidepanels/binarySidePanel'
-import { DateSidePanel } from '../sidepanels/dateSidePanel'
+import { ArraySidePanel } from '../sidepanels/ArraySidePanel'
+import { BinarySidePanel } from '../sidepanels/BinarySidePanel'
+import { DateSidePanel } from '../sidepanels/DateSidePanel'
 
 const WrapperSx = styled(motion.div)`
   height: calc(100vh - ${navbarHeight}px);
