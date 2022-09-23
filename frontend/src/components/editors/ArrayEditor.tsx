@@ -2,7 +2,7 @@ import { IconChevronLeft, IconChevronRight, IconDeviceFloppy } from '@tabler/ico
 import { useStore } from 'effector-react'
 import styled from 'styled-components'
 import { ArrayValue } from '~shared/types/domain/values/arrayValue'
-import { withoutBlanks as $ } from '~shared/utils/strings'
+import { withoutBlanks as λ } from '~shared/utils/strings'
 import { $itemsTotal } from '~stores/$arrayItemsStore'
 import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $currentTag } from '~stores/$currentTag'
@@ -34,7 +34,7 @@ export const ArrayEditor = ({ node, tag: columnTag }: EditorProps<ArrayValue>) =
   const showTotal = tag?.name === columnTag && arrayNodeId === node.id
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT}>
-      <EditorSx tabIndex={0}>{$`${showTotal && total} items`}</EditorSx>
+      <EditorSx tabIndex={0}>{λ`${showTotal && total} items`}</EditorSx>
       <div>
         {node.id === arrayNodeId && sv?.tag == columnTag && (
           <HGrid>
