@@ -16,7 +16,6 @@ const notificationContent = (notification: Notification): JSX.Element => {
   switch (notification.title) {
     case 'validation.failed':
       const error = safeParseJson<ZodError>(notification.content)
-      console.debug(error)
       return (
         <NotEmptyList list={error?.issues}>
           {mapIndexed(issue => {
@@ -38,7 +37,7 @@ export const Toasts = () => {
   const { t } = useTranslation()
 
   return (
-    <ToastContainer className="position-absolute top-0 end-0 h-100 p-2 ps-5 overflow-hidden d-flex justify-content-end flex-column">
+    <ToastContainer className="position-absolute top-0 end-0 h-100 p-2 ps-5 overflow-hidden d-flex justify-content-end flex-column gap-2">
       <AnimatePresence>
         {notifications.map(notification => (
           <motion.div {...slideIn} key={notification.id}>
