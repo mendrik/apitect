@@ -1,13 +1,18 @@
 import { cond, map, prop, propEq, propOr, T } from 'ramda'
-import { any, boolean, SafeParseReturnType, ZodSchema } from 'zod'
+import { isNotEmpty } from 'ramda-adjunct'
+import { any, boolean, SafeParseReturnType, ZodError, ZodSchema } from 'zod'
 import { Enum } from '~shared/types/domain/enums'
+import { Id } from '~shared/types/domain/id'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
+import { NotificationType } from '~shared/types/domain/notification'
 import { TagName } from '~shared/types/domain/tag'
+import { Value } from '~shared/types/domain/values/value'
 import { DateSettings } from '~shared/types/forms/nodetypes/dateSettings'
 import { EnumSettings } from '~shared/types/forms/nodetypes/enumSettings'
 import { NumberSettings } from '~shared/types/forms/nodetypes/numberSettings'
 import { StringSettings } from '~shared/types/forms/nodetypes/stringSettings'
+import { notificationError } from '~shared/types/notificationError'
 import { logger } from '~shared/utils/logger'
 import { mapByProperty } from '~shared/utils/ramda'
 import { getDateValidator } from '~shared/validators/dateValidator'
@@ -24,7 +29,7 @@ export type Validation = SafeParseReturnType<any, any>
 
 const typeIs = propEq('nodeType')
 
-export const validateNode = async (
+const validateNode = async (
   docId: string,
   tag: TagName,
   nodeId: NodeId,
@@ -60,7 +65,35 @@ export const validateNode = async (
     const res = validator.safeParse(value?.value, {
       path: [node.extract().name, valueNode.name, valueNode.id]
     })
-    logger.info(`Debugging ${valueNode.name}/${value?.value} - ${validator.description}`, res)
+    logger.debug(
+      `Validating ${docId}/${tag}/${valueNode.name}/${value?.value} - ${validator.description}`,
+      res
+    )
     return res
   })
+}
+
+export const validateArrayNode = async (
+  docId: Id,
+  email: string,
+  tag: string,
+  arrayNodeId: Id
+): Promise<Value[]> => {
+  const result = await validateNode(docId, tag, arrayNodeId, email)
+
+  const errors = result.reduce(
+    (acc: ZodError[], res: Validation) => (res.success ? acc : [...acc, res.error]),
+    []
+  )
+
+  if (isNotEmpty(errors)) {
+    throw notificationError(
+      arrayNodeId,
+      'validation.server.arrayItemInvalid',
+      NotificationType.VALIDATION,
+      JSON.stringify({ errors })
+    )
+  }
+
+  return result.map(prop('data')) as Value[]
 }

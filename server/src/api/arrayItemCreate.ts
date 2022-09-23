@@ -3,8 +3,8 @@ import { Value } from '~shared/types/domain/values/value'
 import { CreateItemResponse } from '~shared/types/response/createItemResponse'
 import { resolvePromised } from '~shared/utils/promise'
 
-import { validateValues } from '../datasources/arrayItem'
 import { getDataSource } from '../services/datasource'
+import { validateArrayNode } from '../services/validation'
 
 /**
  * The item is created from existing values that have no arrayNodeId assigned to them
@@ -19,7 +19,7 @@ export const arrayItemCreate: ServerApiMethod<'arrayItemCreate'> = async ({
   email,
   payload: { arrayNodeId, tag }
 }) => {
-  const values: Value[] = await validateValues(docId, email, tag, arrayNodeId)
+  const values: Value[] = await validateArrayNode(docId, email, tag, arrayNodeId)
   const dataSource = await getDataSource(docId, tag, email, arrayNodeId)
   return resolvePromised<CreateItemResponse>({
     arrayItemId: dataSource.insertItem(values),
