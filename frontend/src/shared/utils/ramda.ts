@@ -2,6 +2,7 @@ import {
   always,
   aperture,
   append,
+  apply,
   converge,
   curry,
   findIndex,
@@ -127,3 +128,6 @@ export const undef = always(undefined)
 
 export const matches = <TArgs extends any[]>(...preds: Pred[]): ((...args: TArgs) => boolean) =>
   useWith(unapply(allEqualTo(true)), preds as any) as any
+
+export const matchesArr = <TArgs extends any[]>(...preds: Pred[]): ((args: TArgs) => boolean) =>
+  apply(matches(...preds))
