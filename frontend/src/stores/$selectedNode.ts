@@ -1,9 +1,9 @@
 import { createStore, sample } from 'effector'
-import { TypeOfSource } from 'effector/effector.cjs'
 import { cond, nthArg, T } from 'ramda'
 import { isNotNil } from 'ramda-adjunct'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
+import { TypeOfSources } from '~shared/types/effector'
 import { matchesArr } from '~shared/utils/ramda'
 import { $selectedValueNode } from '~stores/$valuesStore'
 import { $visibleNodes } from '~stores/$visibileNodes'
@@ -18,18 +18,22 @@ export const $selectedNode = createStore<TreeNode<Node> | null>(null)
 
 export const $selectedRow = createStore<number | null>(null)
 
-type s1 = typeof $selectedNode
-type s2 = typeof $selectedValueNode
-type s3 = typeof $visibleNodes
-type t1 = TypeOfSource<s1>
-type t2 = TypeOfSource<s2>
-type t3 = TypeOfSource<s3>
+type Stores = [typeof $selectedNode, typeof $selectedValueNode, typeof $visibleNodes]
+type StoresTypes = TypeOfSources<Stores>
 
+const nodeId =
+  (idx: 0 | 1) =>
+  (args: StoresTypes): number =>
+    args[2].indexOf(args[idx]!.extract().id)
+
+/**
+ * Get current table row from either selected value or selected tree node
+ */
 sample({
-  source: [$selectedNode, $selectedValueNode, $visibleNodes] as [s1, s2, s3],
-  fn: cond<[[t1, t2, t3]], number | null>([
-    [matchesArr(T, isNotNil, T), ([_, svn, vn]) => vn.indexOf(svn!.extract().id)],
-    [matchesArr(isNotNil, T, T), ([sv, _, vn]) => vn.indexOf(sv!.extract().id)],
+  source: [$selectedNode, $selectedValueNode, $visibleNodes] as Stores,
+  fn: cond<[StoresTypes], number | null>([
+    [matchesArr(T, isNotNil, T), nodeId(1)],
+    [matchesArr(isNotNil, T, T), nodeId(0)],
     [T, () => null]
   ]),
   target: $selectedRow
