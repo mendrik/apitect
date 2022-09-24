@@ -158,7 +158,6 @@ const en = {
       format: 'Custom format',
       enumeration: 'Enumeration',
       displayFormat: 'Display format',
-      displayColumn: 'Display column',
       dbUrl: 'Connection url',
       dbUser: 'Database user',
       dbPassword: 'Database password',

@@ -38,7 +38,7 @@ const Array = () => {
                 autoComplete="off"
               />
               <TextInput label="form.fields.query" name="query" />
-              <TextInput label="form.fields.displayColumn" name="displayColumn" className="mb-2" />
+              <TextInput label="form.fields.displayFormat" name="displayFormat" className="mb-2" />
             </>
           )}
         </div>
