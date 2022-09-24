@@ -1,8 +1,8 @@
 import { IconCheckbox, IconTrash } from '@tabler/icons'
-import { useStore } from 'effector-react'
+import { useList, useStore } from 'effector-react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { $selectedArrayItem } from '~stores/$arrayItemsStore'
+import { $arrayItems, $selectedArrayItem } from '~stores/$arrayItemsStore'
 import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $currentTag } from '~stores/$currentTag'
 
@@ -10,6 +10,7 @@ import { detailsPanelSize, navbarHeight } from '../../constants'
 import { Palette } from '../../css/colors'
 import { Icon } from '../generic/Icon'
 import { WithTooltip } from '../generic/WithTooltip'
+import { RenderedItem } from './components/RenderedItem'
 
 const ArraySidePanelSx = styled.div`
   min-width: ${detailsPanelSize}px;
@@ -44,11 +45,18 @@ const ArraySidePanelHeader = () => {
   )
 }
 
-const ArraySidePanel = () => (
-  <ArraySidePanelSx>
-    <ArraySidePanelHeader />
-    <div className="p-2">Array</div>
-  </ArraySidePanelSx>
-)
+const ArraySidePanel = () => {
+  const list = useList($arrayItems, ({ values }, index) => (
+    <li>
+      <RenderedItem values={values} />
+    </li>
+  ))
+  return (
+    <ArraySidePanelSx>
+      <ArraySidePanelHeader />
+      <ul className="p-2">{list}</ul>
+    </ArraySidePanelSx>
+  )
+}
 
 export { ArraySidePanel }

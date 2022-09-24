@@ -1,10 +1,10 @@
 import { createStore, sample } from 'effector'
-import { apply, prop } from 'ramda'
+import { prop } from 'ramda'
 import { isNotNil } from 'ramda-adjunct'
 import { ApiParam } from '~shared/apiTypes'
 import { Id } from '~shared/types/domain/id'
 import { Item } from '~shared/types/domain/item'
-import { matches } from '~shared/utils/ramda'
+import { matchesArr } from '~shared/utils/ramda'
 import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $currentTag } from '~stores/$currentTag'
 
@@ -16,7 +16,7 @@ export const $itemsTotal = createStore<number | null>(null)
 
 sample({
   source: [$currentTag, $selectedArrayNode] as [typeof $currentTag, typeof $selectedArrayNode],
-  filter: apply(matches(isNotNil, isNotNil)),
+  filter: matchesArr(isNotNil, isNotNil),
   fn: ([tag, node]): ApiParam<'arrayItems'> => ({
     tag: tag!.name,
     arrayNodeId: node!.value.id,
@@ -26,12 +26,13 @@ sample({
   target: arrayItemsFx
 })
 
-$arrayItems.on(arrayItemsFx.doneData, (state, { items, page, pageSize }) =>
+$arrayItems.on(arrayItemsFx.doneData, (state, { items, page, pageSize }) => {
   state.splice(page, pageSize, ...items)
-)
+  return [...state]
+})
 
 sample({
-  source: arrayItemsFx.doneData,
+  clock: arrayItemsFx.doneData,
   fn: prop('total'),
   target: $itemsTotal
 })

@@ -33,23 +33,32 @@ export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
   mapByProperty('id')(root.flatten().map(prop('value')))
 )
 
+/**
+ * After node has been created select it
+ */
 sample({
   clock: treeCreateNode,
   source: $treeStore,
-  fn: (state, result) => state.first(propEq('id', result.nodeId)) ?? null,
+  fn: (rootNode, result) => rootNode.first(propEq('id', result.nodeId)) ?? null,
   target: selectNode
 })
 
+/**
+ * After node has been deleted select previous sibling, or parent, or nothing
+ */
 sample({
   clock: deleteNodeFx.doneData,
   source: $treeStore,
-  fn: (state, result) => {
-    const parent = state.first(propEq('id', result.parentNode))
+  fn: (rootNode, result) => {
+    const parent = rootNode.first(propEq('id', result.parentNode))
     return parent?.children[result.position - 1] ?? parent ?? null
   },
   target: selectNode
 })
 
+/**
+ * when node has been created, notify tree and rawTree
+ */
 sample({
   clock: createNodeFx.doneData,
   target: [rawTreeCreateNode, treeCreateNode]
