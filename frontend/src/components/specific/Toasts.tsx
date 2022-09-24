@@ -56,7 +56,7 @@ export const Toasts = () => {
               <Toast.Header>
                 <strong className="me-auto">{t<any>(notification.title)}</strong>
               </Toast.Header>
-              <Toast.Body>{notificationContent(notification)}</Toast.Body>
+              <Toast.Body className="bg-white">{notificationContent(notification)}</Toast.Body>
             </Toast>
           </motion.div>
         ))}
