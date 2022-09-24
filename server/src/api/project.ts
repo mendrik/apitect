@@ -5,7 +5,7 @@ import { Project } from '~shared/types/domain/project'
 import { Tag } from '~shared/types/domain/tag'
 import { resolvePromised } from '~shared/utils/promise'
 
-import { getLastDocument } from '../services'
+import { getDocument } from '../services'
 import { enums } from './enums'
 import { allNodeSettings } from './nodeSettings'
 import { tagsSettings } from './tagsSettings'
@@ -13,7 +13,7 @@ import { userSettings } from './userSettings'
 
 export const project: ServerApiMethod<'project'> = ({ docId, email }) =>
   resolvePromised<Project>({
-    document: getLastDocument(docId),
+    document: getDocument(docId),
     tags: tagsSettings({ docId, email }).then<Tag[]>(propOr([], 'tags')),
     visibleTags: userSettings({ docId, email }).then<string[]>(propOr([], 'visibleTags')),
     nodeSettings: allNodeSettings(docId),

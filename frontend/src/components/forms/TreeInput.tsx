@@ -119,7 +119,7 @@ export const TreeInput = <T extends WithId>({
         {selected && nodeRender(selected)}
       </Selected>
       <DeleteIcon
-        onPointerDown={() => {
+        onClick={() => {
           setSelected(undefined)
           setValue(name, undefined)
           setShow(false)

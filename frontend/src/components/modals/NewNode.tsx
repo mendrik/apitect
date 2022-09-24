@@ -16,6 +16,7 @@ import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $canCreateNode } from '~stores/$selectedNode'
 
 import { Palette } from '../../css/colors'
+import { insetFocus } from '../../css/insetFocus'
 import { createNodeFx } from '../../events/tree'
 import { spaceOrEnter } from '../../utils/eventUtils'
 import { ModalFC } from '../ModalStub'
@@ -41,6 +42,8 @@ const TypeGrid = styled(FocusNavigator)`
     height: 70px;
     cursor: pointer;
 
+    ${insetFocus}
+
     &.selected,
     &.selected:hover {
       background-color: ${Palette.selected};
@@ -58,7 +61,7 @@ export type SelectedNode = {
 }
 
 const NewNode: ModalFC = ({ close }) => {
-  const arrayNode = useStore($selectedArrayNode)
+  const canAddArray = useStore($selectedArrayNode) == null
   const canCreateNode = useStore($canCreateNode)
   const { state } = useLocation<SelectedNode>()
   const selectedNode = state?.selectedNode
@@ -71,10 +74,12 @@ const NewNode: ModalFC = ({ close }) => {
     }
   })
 
+  const arrayCheck = canAddArray || form.watch('nodeType') != NodeType.Array
+
   return (
     <SocketForm
       form={form}
-      onValid={createNodeFx}
+      onValid={node => (arrayCheck ? createNodeFx(node) : Promise.reject())}
       close={close}
       submitButton="modals.newNode.submit"
     >
@@ -92,7 +97,7 @@ const NewNode: ModalFC = ({ close }) => {
         render={({ field }) => (
           <TypeGrid role="grid" columns={4} ctrlKey={false}>
             {values(NodeType).map((nodeType, _, __, Icon = iconMap[nodeType]) => {
-              const disabled = (nodeType === NodeType.Array && arrayNode != null) || !canCreateNode
+              const disabled = (nodeType === NodeType.Array && !canAddArray) || !canCreateNode
               return (
                 <div
                   key={nodeType}

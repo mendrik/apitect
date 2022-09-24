@@ -4,8 +4,8 @@ import { $user } from '~stores/$userStore'
 
 import Dashboard from './Dashboard'
 import { NotLoggedIn } from './NotLoggedIn'
+import { WithSocket } from './WithSocket'
 import { ErrorView } from './generic/ErrorView'
-import { WithSocket } from './withSocket'
 
 const App = () => {
   const user = useStore($user)

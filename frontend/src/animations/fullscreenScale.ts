@@ -1,4 +1,4 @@
-import { MotionProps } from 'framer-motion/types/motion/types'
+import type { MotionProps } from 'framer-motion'
 
 export const fullscreenScale: MotionProps = {
   initial: {

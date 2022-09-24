@@ -42,6 +42,7 @@ const StyledGrid = styled.div<{ columns: any[]; defaultWidths?: number[] }>`
 const Sticky = styled.div`
   position: sticky;
   top: 0;
+  height: 103%; // prevents bg gap on different zoom levels
   background: white;
   z-index: 1;
 `

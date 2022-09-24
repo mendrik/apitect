@@ -8,7 +8,7 @@ import { TagInput } from '~forms/TagInput'
 import { useLocation } from '~hooks/useLocation'
 import { TagsSettings as Settings, ZTagsSettings } from '~shared/types/forms/tagsSettings'
 
-import { updateTagsSettingsFx } from '../../events/project'
+import { updateTagsSettingsFx } from '../../events/tagSettings'
 import { ModalFC } from '../ModalStub'
 
 const TagsSettings: ModalFC = ({ close }) => {

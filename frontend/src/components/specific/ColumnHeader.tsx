@@ -2,7 +2,7 @@ import { IconSettings, IconShieldCheck } from '@tabler/icons'
 import { useTranslation } from 'react-i18next'
 import { Tag } from '~shared/types/domain/tag'
 
-import { tagSettingsFx } from '../../events/project'
+import { tagSettingsFx } from '../../events/tagSettings'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'

@@ -6,7 +6,7 @@ import { ProjectUsersSettings } from '~shared/types/forms/projectUsersSettings'
 import { HttpError } from '~shared/types/httpError'
 import { failOn } from '~shared/utils/failOn'
 
-import { getLastDocument, toTreeNode } from '../services'
+import { getDocument, toTreeNode } from '../services'
 import { collection, Collections } from '../services/database'
 import { nodeSettings } from './nodeSettings'
 
@@ -15,7 +15,7 @@ export const updateProjectUsersSettings: ServerApiMethod<'updateProjectUsersSett
   email,
   payload: projectUsersSettings
 }) =>
-  getLastDocument(docId).then(async doc => {
+  getDocument(docId).then(async doc => {
     const tree = toTreeNode(doc.tree)
 
     const es = await nodeSettings({

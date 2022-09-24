@@ -2,6 +2,7 @@ import {
   always,
   aperture,
   append,
+  apply,
   converge,
   curry,
   findIndex,
@@ -26,10 +27,12 @@ import {
   toLower,
   toUpper,
   tryCatch,
+  unapply,
   unless,
-  update
+  update,
+  useWith
 } from 'ramda'
-import { findOr, isNotNil, sliceFrom, sliceTo } from 'ramda-adjunct'
+import { allEqualTo, findOr, isNotNil, sliceFrom, sliceTo } from 'ramda-adjunct'
 
 import { ArgFn, Maybe } from '../types/generic'
 
@@ -122,3 +125,9 @@ export const removeCharBefore = curry(
 )
 
 export const undef = always(undefined)
+
+export const matches = <TArgs extends any[]>(...preds: Pred[]): ((...args: TArgs) => boolean) =>
+  useWith(unapply(allEqualTo(true)), preds as any) as any
+
+export const matchesArr = <TArgs extends any[]>(...preds: Pred[]): ((args: TArgs) => boolean) =>
+  apply(matches(...preds))

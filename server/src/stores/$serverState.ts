@@ -1,6 +1,6 @@
 import { createEffect, createStore } from 'effector'
 import { MongoClient } from 'mongodb'
-import { Maybe } from '~shared/types/generic'
+import { ArgFn, Maybe } from '~shared/types/generic'
 
 import { connect } from '../services/database'
 
@@ -12,6 +12,6 @@ export const $serverState = createStore<ServerState>({
   database: null
 })
 
-export const initDatabaseFx = createEffect(() => connect())
+export const initDatabaseFx = createEffect<ArgFn<string, Promise<MongoClient>>>(url => connect(url))
 
 $serverState.on(initDatabaseFx.doneData, (state, database) => ({ ...state, database }))

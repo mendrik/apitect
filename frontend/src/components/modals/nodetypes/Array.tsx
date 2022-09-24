@@ -1,17 +1,13 @@
-import { useStore } from 'effector-react'
-import { prop, values } from 'ramda'
+import { values } from 'ramda'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FieldSet } from '~forms/FieldSet'
 import { FormOptions } from '~forms/FormOptions'
 import { TextInput } from '~forms/TextInput'
-import { TreeInput } from '~forms/TreeInput'
 import { DataSourceType } from '~shared/types/forms/nodetypes/arraySettings'
-import { $currentNode } from '~stores/$selectedNode'
 
 const Array = () => {
   const { t } = useTranslation()
-  const tree = useStore($currentNode)
   const { watch } = useFormContext<Record<string, string>>()
 
   const selected = watch('dataSource')
@@ -24,13 +20,7 @@ const Array = () => {
             {t('modals.nodeSettings.array.internal.title')}
           </label>
           {selected === DataSourceType.Internal && (
-            <TreeInput
-              tree={tree!}
-              containerClasses="pb-2"
-              label="form.fields.displayNode"
-              name="displayNode"
-              nodeRender={prop('name')}
-            />
+            <TextInput label="form.fields.displayFormat" name="displayFormat" />
           )}
         </div>
         <div className="d-grid gap-2">
@@ -48,7 +38,7 @@ const Array = () => {
                 autoComplete="off"
               />
               <TextInput label="form.fields.query" name="query" />
-              <TextInput label="form.fields.displayColumn" name="displayColumn" className="pb-2" />
+              <TextInput label="form.fields.displayColumn" name="displayColumn" className="mb-2" />
             </>
           )}
         </div>

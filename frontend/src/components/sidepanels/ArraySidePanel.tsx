@@ -2,7 +2,9 @@ import { IconCheckbox, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { $selectedArrayItem, $selectedArrayNode } from '~stores/$arrayStores'
+import { $selectedArrayItem } from '~stores/$arrayItemsStore'
+import { $selectedArrayNode } from '~stores/$arrayStores'
+import { $currentTag } from '~stores/$currentTag'
 
 import { detailsPanelSize, navbarHeight } from '../../constants'
 import { Palette } from '../../css/colors'
@@ -26,12 +28,15 @@ const ArraySidePanelHeader = () => {
   const { t } = useTranslation()
   const selectedArrayNode = useStore($selectedArrayNode)
   const selectedArrayItem = useStore($selectedArrayItem)
+  const tag = useStore($currentTag)
   return (
     <HeaderSx className="d-grid gap-1 px-1">
       <WithTooltip tooltipText={t('app.arrayPanel.selectAll')}>
         <Icon icon={IconCheckbox} />
       </WithTooltip>
-      <div className="text-truncate">{selectedArrayNode?.value.name}</div>
+      <div className="text-truncate">
+        {tag?.name} {selectedArrayNode?.value.name}
+      </div>
       <WithTooltip tooltipText={t('app.arrayPanel.deleteItem')}>
         <Icon icon={IconTrash} disabled={!selectedArrayItem} />
       </WithTooltip>

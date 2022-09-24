@@ -20,7 +20,7 @@ apiResponse.watch(data => {
     logger.error(`Res[${data.status}]: ${data.message}`)
     if (data.notificationType != null && data.title != null) {
       showNotification({
-        id: newId(),
+        uniqueId: data.uniqueId ?? newId(),
         type: data.notificationType,
         content: data.message,
         title: data.title

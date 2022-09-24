@@ -1,7 +1,7 @@
 import { complement, Pred } from 'ramda'
 
 export const failOn =
-  <T, E extends Error = Error>(pred: Pred, error: Error | string | ((errData: T) => E)) =>
+  <T, E extends Error = Error>(pred: Pred, error?: Error | string | ((errData: T) => E)) =>
   (data: any): T | never => {
     const check = (c: any): c is T => pred(data)
     if (check(data)) {

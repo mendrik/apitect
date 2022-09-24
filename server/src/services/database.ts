@@ -46,9 +46,9 @@ export type CollectionMap = {
   enums: WithDocId<Enums>
 }
 
-export const connect = async (): Promise<MongoClient> => {
-  logger.info(`Connecting to database: ${config.DATABASE}`)
-  const client = new MongoClient(`${config.DATABASE}`)
+export const connect = async (url: string): Promise<MongoClient> => {
+  logger.info(`Connecting to database: ${url}`)
+  const client = new MongoClient(`${url}`)
   await client.connect()
   logger.info(`Successfully connected to database`)
   const db = client.db(dbName)

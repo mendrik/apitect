@@ -3,6 +3,7 @@ import { Value } from '~shared/types/domain/values/value'
 import { resolvePromised } from '~shared/utils/promise'
 
 import { collection, Collections } from '../services/database'
+import { projection } from '../utils/projection'
 
 export const valueList: ServerApiMethod<'valueList'> = async ({
   docId,
@@ -10,6 +11,9 @@ export const valueList: ServerApiMethod<'valueList'> = async ({
 }) =>
   resolvePromised({
     values: collection(Collections.values)
-      .find<Value>({ docId, tag, nodeId: { $in: nodeIds }, arrayItemId: undefined })
+      .find<Value>(
+        { docId, tag, nodeId: { $in: nodeIds }, arrayItemId: { $exists: false } },
+        { projection }
+      )
       .toArray()
   })

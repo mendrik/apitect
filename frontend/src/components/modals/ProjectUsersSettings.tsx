@@ -11,7 +11,7 @@ import {
 } from '~shared/types/forms/projectUsersSettings'
 import { $treeStore } from '~stores/$treeStore'
 
-import { updateProjectUserSettingsFx } from '../../events/project'
+import { updateProjectUserSettingsFx } from '../../events/projectUsers'
 import { ModalFC } from '../ModalStub'
 
 const ProjectUsersSettings: ModalFC = ({ close }) => {

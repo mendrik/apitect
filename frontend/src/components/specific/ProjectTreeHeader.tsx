@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { $documentStore } from '~stores/$documentStore'
 import { $canCreateNode, $currentNode } from '~stores/$selectedNode'
 
+import { renameProjectFx } from '../../events/project'
 import { deleteNodeFx, newNodeFx, nodeSettingsFx } from '../../events/tree'
 import { userSettingsFx } from '../../events/user'
+import { EditableText } from '../generic/EditableText'
 import { HGrid } from '../generic/HGrid'
 import { Icon } from '../generic/Icon'
 import { Scale, Tuple } from '../generic/Tuple'
@@ -19,7 +21,9 @@ export const ProjectTreeHeader = () => {
 
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
-      <div className="text-truncate editable">{document.name}</div>
+      <EditableText editAction={renameProjectFx}>
+        <div className="text-truncate">{document.name}</div>
+      </EditableText>
       <HGrid>
         <WithTooltip tooltipText={t('tooltips.deleteNode')} shortcut="Del">
           <Icon

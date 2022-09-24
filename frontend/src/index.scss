@@ -50,6 +50,7 @@ $color6: #d9e8b5;
 $color7: #98a773;
 
 $form-feedback-invalid-color: $color2;
+$form-label-color: #adb5bd;
 
 $progress-border-radius: 0;
 $link-color: $color5;
@@ -254,6 +255,11 @@ input[required] + label:after {
 
 label {
   cursor: pointer;
+}
+
+input[type=text] + label,
+textarea + label {
+  color: $form-label-color;
 }
 
 @import "node_modules/bootstrap/scss/bootstrap";

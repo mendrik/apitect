@@ -4,7 +4,7 @@ import { failOn } from '~shared/utils/failOn'
 
 import { collection, Collections } from './database'
 
-export const getLastDocument = (id: string): Promise<Document> =>
+export const getDocument = (id: string): Promise<Document> =>
   collection(Collections.documents)
     .findOne({ id }, { projection: { _id: 0 } })
     .then(failOn<Document>(isNil, 'document not found'))

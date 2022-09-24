@@ -1,8 +1,11 @@
-import { undefined as noArgs } from 'zod'
+import { string, undefined as noArgs } from 'zod'
 import { ZEnums } from '~shared/types/domain/enums'
 import { ZValue } from '~shared/types/domain/values/value'
 import { ZValueBase } from '~shared/types/domain/values/valueBase'
-import { ZNewArrayItemRequest } from '~shared/types/request/newArrayItemRequest'
+import { ZArrayItemsRequest } from '~shared/types/request/arrayItemsRequest'
+import { ZCreateItemRequest } from '~shared/types/request/createItemRequest'
+import { ZArrayItemsResponse } from '~shared/types/response/arrayItemsResponse'
+import { ZCreateItemResponse } from '~shared/types/response/createItemResponse'
 
 import { idCodec } from './codecs/idCodec'
 import { ZNode } from './types/domain/node'
@@ -22,6 +25,7 @@ export const ApiSchema = {
   nodeDelete: [idCodec, TNodeDeleted],
   nodeSettings: [idCodec, ZNodeSettings.nullable()],
   project: [noArgs(), ZProject],
+  renameProject: [string(), string()],
   projectUsersSettings: [noArgs(), ZProjectUsersSettings.nullable()],
   tagsSettings: [noArgs(), ZTagsSettings.nullable()],
   updateNodeSettings: [ZNodeSettings, ZNode],
@@ -34,5 +38,6 @@ export const ApiSchema = {
   valueUpdate: [ZValue, ZValue],
   enums: [noArgs(), ZEnums.nullable()],
   updateEnums: [ZEnums, ZEnums],
-  arrayItemCreate: [ZNewArrayItemRequest, ZValueList]
+  arrayItemCreate: [ZCreateItemRequest, ZCreateItemResponse],
+  arrayItems: [ZArrayItemsRequest, ZArrayItemsResponse]
 } as const

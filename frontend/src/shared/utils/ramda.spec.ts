@@ -1,7 +1,8 @@
-import { equals } from 'ramda'
+import { equals, isNil } from 'ramda'
+import { isNaturalNumber, isString } from 'ramda-adjunct'
 
 import { TreeNode } from '../algebraic/treeNode'
-import { mapByProperty, next, prev, replaceSlice, satiated } from './ramda'
+import { mapByProperty, matches, matchesArr, next, prev, replaceSlice, satiated } from './ramda'
 
 describe('ramda', () => {
   it('next(pred)(arr) works', () => {
@@ -63,5 +64,15 @@ describe('ramda', () => {
     expect(res.a).toBe(arr[0])
     expect(res.b).toBe(arr[1])
     expect(res.c).toBe(arr[2])
+  })
+
+  it('matches', () => {
+    expect(matches(isNil, isString, isNaturalNumber)(null, 'a', 3)).toBe(true)
+    expect(matches(isNil, isNaturalNumber, isNaturalNumber)(null, 'a', 3)).toBe(false)
+  })
+
+  it('matchesArr', () => {
+    expect(matchesArr(isNil, isString, isNaturalNumber)([null, 'a', 3])).toBe(true)
+    expect(matchesArr(isNil, isNaturalNumber, isNaturalNumber)([null, 'a', 3])).toBe(false)
   })
 })

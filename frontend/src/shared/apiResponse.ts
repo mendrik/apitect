@@ -51,7 +51,8 @@ export const ZApiError = object({
   message: string(),
   field: string().optional(),
   title: string().optional(),
-  notificationType: nativeEnum(NotificationType).optional()
+  notificationType: nativeEnum(NotificationType).optional(),
+  uniqueId: idCodec.optional()
 })
 
 export type ApiError = TypeOf<typeof ZApiError>
