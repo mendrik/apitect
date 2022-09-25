@@ -1,3 +1,5 @@
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
 import { pathEq, prop } from 'ramda'
@@ -13,6 +15,7 @@ import { $selectedNode } from '~stores/$selectedNode'
 
 import { openNodeState, selectNode } from '../../events/tree'
 import { selectValue } from '../../events/values'
+import { Draggables } from '../../utils/draggables'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
@@ -47,9 +50,19 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   const id = node.value.id
   const nodeType = node.value.nodeType
 
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id,
+    data: [Draggables.TREE_NODE]
+  })
+
   const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
   const open = useStoreMap($openNodes, prop(id))
   const hasChildren = isNotNilOrEmpty(node.children)
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  }
 
   const onFocus = () => {
     selectValue(null)
@@ -57,14 +70,9 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   }
 
   return (
-    <>
+    <div /* ref={setNodeRef} style={style} {...listeners} {...attributes}> */>
       {depth > 0 && (
-        <NodeGrid
-          tabIndex={0}
-          onFocus={onFocus}
-          id={id}
-          className={clsx('gap-1', { selectedNode: isActive })}
-        >
+        <NodeGrid onFocus={onFocus} id={id} className={clsx('gap-1', { selectedNode: isActive })}>
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
@@ -102,6 +110,6 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
           ))}
         </NotEmptyList>
       )}
-    </>
+    </div>
   )
 }

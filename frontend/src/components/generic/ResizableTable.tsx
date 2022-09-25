@@ -1,11 +1,11 @@
 import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import { prop } from 'ramda'
+import { pipe, propOr, take, zipWith } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import { CSSProperties, useRef } from 'react'
 import { useUpdateEffect } from 'react-use'
 import styled from 'styled-components'
-import { Jsx } from '~shared/types/generic'
+import { ArgFn, Fn, Jsx, Width } from '~shared/types/generic'
 import { $selectedRow } from '~stores/$selectedNode'
 import { $tagStore } from '~stores/$tagStore'
 
@@ -102,23 +102,18 @@ const ColResizer = styled.div`
 
 const bodyStyle = document.body.style
 
-const relativeWidths = (el: HTMLDivElement, columns: JSX.Element[]) => {
-  const width = el.offsetWidth ?? 0
-  const columnWidths = Array.from(el.children).slice(0, columns.length).map(prop('clientWidth'))
-  columnWidths.forEach((w, idx) =>
-    el.style.setProperty(`--col-width-${idx}`, `${(100 * w) / width}%`)
-  )
-}
-
-const fixedWidths = (el: HTMLDivElement, columns: JSX.Element[]) => {
-  const columnWidths = Array.from(el.children).slice(0, columns.length).map(prop('clientWidth'))
-  columnWidths.forEach((w, idx) => el.style.setProperty(`--col-width-${idx}`, `${w}px`))
-}
+const setColumnWidths = (el: HTMLDivElement, colCount: number, widthFn: ArgFn<Width, string>) =>
+  pipe(
+    take(colCount - 1), // leave last column as buffer
+    zipWith(propOr(100, 'clientWidth')) as Fn<[HTMLDivElement, number][]>,
+    mapIndexed(([el, w], idx) => {
+      el.style.setProperty(`--col-width-${idx}`, widthFn(w))
+    })
+  )(Array.from(el.children))
 
 export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProps>) => {
   const grid = useRef<HTMLDivElement>(null)
   const selectedRow = useStore($selectedRow)
-  const style = grid.current?.style
   const { visibleTags, tags } = useStore($tagStore)
 
   useUpdateEffect(() => {
@@ -127,35 +122,39 @@ export const ResizableTable = ({ columns, defaultWidths, children }: Jsx<OwnProp
 
   useDndMonitor({
     onDragStart(event) {
-      const data = event.active.data.current as Draggable
-      if (data?.type === Draggables.COLUMN_HEADER && grid.current != null) {
+      const data = event.active.data.current as Draggable | null
+      if (data?.type === Draggables.COLUMN_HEADER && grid.current) {
         bodyStyle.setProperty('cursor', 'col-resize')
-        fixedWidths(grid.current!, columns)
-        const next = grid.current?.children.item(data.index + 1) as HTMLElement | undefined
-        const nextWidth = next?.offsetWidth
-        if (nextWidth) {
+        setColumnWidths(grid.current, columns.length, w => `${w}px`)
+        const next = grid.current.children.item(data.index + 1)
+        const current = grid.current.children.item(data.index)
+        if (next && current) {
           event.active.data.current = {
             ...event.active.data.current,
-            nextWidth
+            startWidth: current.clientWidth,
+            nextWidth: next.clientWidth
           }
         }
       }
     },
     onDragMove({ active, delta }) {
-      const { type, index, nextWidth } = (active.data.current ?? {}) as Draggable
-      if (type === Draggables.COLUMN_HEADER) {
-        const startWidth = active.rect.current.initial?.width ?? NaN
+      const { type, index, nextWidth, startWidth } = active.data.current as Draggable
+      if (type === Draggables.COLUMN_HEADER && grid.current?.style) {
+        const style = grid.current.style
         const deltaX = delta.x - document.documentElement.scrollLeft
-        if (startWidth + deltaX >= 100 && nextWidth - deltaX >= 100) {
-          style?.setProperty(`--col-width-${index}`, `${startWidth + deltaX}px`)
-          style?.setProperty(`--col-width-${index + 1}`, `${nextWidth - deltaX}px`)
+        if (startWidth + deltaX >= 100) {
+          style.setProperty(`--col-width-${index}`, `${startWidth + deltaX}px`)
+          if (nextWidth - deltaX >= 100) {
+            style.setProperty(`--col-width-${index + 1}`, `${nextWidth - deltaX}px`)
+          }
         }
       }
     },
     onDragEnd() {
       bodyStyle.setProperty('cursor', 'default')
-      if (grid.current != null) {
-        relativeWidths(grid.current, columns)
+      if (grid.current) {
+        const totalWidth = grid.current.clientWidth
+        setColumnWidths(grid.current, columns.length, w => `${(100 * w) / totalWidth}%`)
       }
     }
   })

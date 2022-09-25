@@ -1,5 +1,6 @@
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import { useStore } from 'effector-react'
-import { always, both, cond } from 'ramda'
+import { always, both, cond, prop } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { SyntheticEvent } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
@@ -54,7 +55,9 @@ export const VisualTree = () => {
 
   return (
     <div onKeyDown={keyMap} id="doc-tree">
-      <VisualNode node={root} />
+      <SortableContext items={root.toArray().map(prop('id'))} strategy={rectSortingStrategy}>
+        <VisualNode node={root} />
+      </SortableContext>
       <DeleteModal />
     </div>
   )

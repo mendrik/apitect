@@ -3,11 +3,14 @@ import { Dispatch, PropsWithChildren, SetStateAction, SyntheticEvent } from 'rea
 
 export type Fn<R = void> = (...args: any[]) => R
 export type ArgFn<A, R = void> = (arg: A) => R
+export type ArgsFn<A extends any[], R = void> = (...args: A) => R
 
 export type Milliseconds = number
 export type Seconds = number
 export type Fr = number
 export type Pixels = number
+export type Width = number
+export type Index = number
 
 export type Maybe<T> = T | undefined | null
 
