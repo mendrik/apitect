@@ -11,7 +11,7 @@ import { Fn } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 
 import { $moduleError, $moduleStore, clearModuleFx, Import, loadModuleFx } from '../events/import'
-import { removeParams } from '../utils/url'
+import { closeModal } from '../events/modals'
 import { Loader } from './generic/Loader'
 
 export type ModalFC = ({ close }: { close: Fn }) => JSX.Element | null
@@ -53,8 +53,8 @@ const ModalStub = ({
   }, [from, modalMatch])
 
   const close = () => {
-    navigate(removeParams(['modal']), { replace: true })
     clearModuleFx()
+    closeModal()
   }
 
   return (
@@ -65,6 +65,7 @@ const ModalStub = ({
         onHide={close}
         key={name}
         className={clsx('custom-scrollbars', className)}
+        restoreFocus
         {...modalProps}
       >
         <Modal.Header closeButton>

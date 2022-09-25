@@ -21,7 +21,6 @@
 - Array needs ID field for CRUD operations
 - Value column head has extends/copy dropdown
 - publish only possible when doc is valid, otherwise API gives 404
-- 
 - date restrictions only future/past etc?
 - Value type for event like value with repetition (cron)?
 
@@ -57,9 +56,7 @@
     red: number,
     green: number,
     blue: number,
-    alpha: number,
-    hex: string,
-    alphaHex: string
+    alpha: number
   }
   ```
 

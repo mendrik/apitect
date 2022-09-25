@@ -2,7 +2,7 @@ import { useStore } from 'effector-react'
 import { Suspense, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ModalNames } from '~shared/types/modals'
-import { $currentNode } from '~stores/$selectedNode'
+import { $currentNode, $selectedNode } from '~stores/$selectedNode'
 
 import { closeModal, openModal } from '../events/modals'
 import { addParams, removeParams } from '../utils/url'
@@ -11,19 +11,23 @@ import { Loader } from './generic/Loader'
 
 export const Modals = () => {
   const navigate = useNavigate()
-  const selectedNode = useStore($currentNode)
+  const node = useStore($currentNode)
+  const treeNode = useStore($selectedNode)
 
-  useEffect(() => {
-    const openSub = openModal.watch(config => {
-      const to = addParams({ modal: config.name })
-      navigate(to, { state: config.params })
-    })
-    const closeSub = closeModal.watch(() => navigate(removeParams(['modal'])))
-    return () => {
-      openSub()
-      closeSub()
-    }
-  }, [navigate, selectedNode])
+  useEffect(
+    () =>
+      openModal.watch(config => {
+        const to = addParams({ modal: config.name })
+        navigate(to, { state: config.params })
+
+        const unsub = closeModal.watch(() => {
+          navigate(removeParams(['modal']))
+          document.getElementById(treeNode?.value.id ?? '')?.focus()
+          unsub()
+        })
+      }),
+    [treeNode]
+  )
 
   return (
     <Suspense fallback={<Loader className="d-fixed inset-0 min-vh-100" />}>
@@ -41,15 +45,10 @@ export const Modals = () => {
         title="modals.newNode.title"
         from={() => import('./modals/NewNode')}
         name={ModalNames.NEW_NODE}
-        restoreFocus={false}
-        onExited={() => {
-          const node = document.querySelector<HTMLElement>('#doc-tree .selectedNode')
-          setTimeout(() => node?.focus())
-        }}
       />
       <ModalStub
         title="modals.nodeSettings.title"
-        titleOptions={{ property: selectedNode?.value.name ?? '' }}
+        titleOptions={{ property: node?.value.name ?? '' }}
         from={() => import('./modals/NodeSettings')}
         name={ModalNames.NODE_SETTINGS}
       />
@@ -77,7 +76,6 @@ export const Modals = () => {
         title={`modals.userSettings.title`}
         from={() => import('./modals/UserSettings')}
         name={ModalNames.USER_SETTINGS}
-        restoreFocus={false}
       />
     </Suspense>
   )

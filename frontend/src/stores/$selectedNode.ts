@@ -11,9 +11,11 @@ import { $visibleNodes } from '~stores/$visibileNodes'
 import { canHaveChildrenNodes } from '../constants'
 import { resetProject } from '../events/reset'
 import { selectNode } from '../events/tree'
+import { selectValue } from '../events/values'
 
 export const $selectedNode = createStore<TreeNode<Node> | null>(null)
   .on(selectNode, nthArg(1))
+  .on(selectValue, () => null)
   .reset(resetProject)
 
 export const $selectedRow = createStore<number | null>(null)
