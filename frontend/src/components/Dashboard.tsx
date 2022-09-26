@@ -1,11 +1,10 @@
-import { DndContext } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
 import styled from 'styled-components'
 import { $tagStore } from '~stores/$tagStore'
 
 import { Navigation } from './Navigation'
 import { FocusNavigator } from './generic/FocusNavigator'
-import { ResizableTable } from './generic/ResizableTable'
+import { ResizableTable } from './generic/resizabletable/ResizableTable'
 import { Column } from './specific/Column'
 import { ColumnHeader } from './specific/ColumnHeader'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
@@ -30,27 +29,21 @@ const Dashboard = () => {
 
   return (
     <AppFrame>
-      <DndContext>
-        <Navigation />
-        <SidePanel>
-          <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
-            <FocusNavigator
-              columns={visibleTags.length + 1}
-              rotated
-              style={{ display: 'contents' }}
-            >
-              <Column>
-                <VisualTree />
+      <Navigation />
+      <SidePanel>
+        <ResizableTable columns={columns} defaultWidths={[1 + 0.1 * columns.length]}>
+          <FocusNavigator columns={visibleTags.length + 1} rotated style={{ display: 'contents' }}>
+            <Column>
+              <VisualTree />
+            </Column>
+            {visibleTags.map(tag => (
+              <Column key={tag.name}>
+                <VisualValueList tag={tag.name} />
               </Column>
-              {visibleTags.map(tag => (
-                <Column key={tag.name}>
-                  <VisualValueList tag={tag.name} />
-                </Column>
-              ))}
-            </FocusNavigator>
-          </ResizableTable>
-        </SidePanel>
-      </DndContext>
+            ))}
+          </FocusNavigator>
+        </ResizableTable>
+      </SidePanel>
       <Toasts />
     </AppFrame>
   )
