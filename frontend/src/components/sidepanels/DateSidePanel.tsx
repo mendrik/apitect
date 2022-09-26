@@ -6,10 +6,9 @@ import {
 } from '@tabler/icons'
 import { add, format, parse, setDate, setMonth, sub } from 'date-fns'
 import { useStore } from 'effector-react'
-import { propOr, range } from 'ramda'
+import { propOr, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import { SyntheticEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useDeepCompareEffect } from 'react-use'
+import { SyntheticEvent, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { DateValue } from '~shared/types/domain/values/dateValue'
@@ -18,6 +17,7 @@ import { $selectedValue } from '~stores/$valuesStore'
 
 import { Palette } from '../../css/colors'
 import { valueUpdateFx } from '../../events/values'
+import { codeIn } from '../../utils/eventUtils'
 import { FMT } from '../datepicker/Datepicker'
 import { Month } from '../datepicker/Month'
 import { Scrollable } from '../generic/Scrollable'
@@ -61,15 +61,17 @@ const FullYear = styled.ol`
   }
 `
 
+const today = new Date()
+
 export const DateSidePanel = () => {
   const selectedValue = useStore($selectedValue)
   const dateValue = selectedValue?.value as DateValue | null
-  const date = dateValue?.value ?? new Date()
+  const date = dateValue?.value ?? today
   const [selected, setSelected] = useState<Date>(date)
   const currentFmt = format(date, FMT)
   const ref = useRef<HTMLOListElement>(null)
 
-  useDeepCompareEffect(() => setSelected(date), [date])
+  useEffect(() => setSelected(date), [date])
 
   useLayoutEffect(() => {
     if (ref.current != null) {
@@ -83,6 +85,7 @@ export const DateSidePanel = () => {
 
   const click = (ev: SyntheticEvent<HTMLOListElement>): void => {
     const target = ev.target as HTMLElement
+    // eslint-disable-next-line no-console
     if (target.matches('.day')) {
       const dateStr = target.dataset.date!
       const date = parse(dateStr, FMT, new Date())
@@ -119,6 +122,7 @@ export const DateSidePanel = () => {
       </HeaderSx>
       <FullYear
         onClick={click}
+        onKeyDown={when(codeIn('Enter'), click)}
         data-selected={format(selected, FMT)}
         data-today={format(Date.now(), FMT)}
         key="full-year"

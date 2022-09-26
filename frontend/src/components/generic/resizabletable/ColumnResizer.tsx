@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const ColResizer = styled.div`
+export const ColumnResizer = styled.div`
   position: absolute;
   width: 10px;
   height: 100%;

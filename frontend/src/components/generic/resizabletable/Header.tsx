@@ -2,7 +2,7 @@ import { DragStartEvent, useDndMonitor, useDraggable } from '@dnd-kit/core'
 import { Jsx } from '~shared/types/generic'
 
 import { Draggables } from '../../../utils/draggables'
-import { ColResizer } from './ColResizer'
+import { ColumnResizer } from './ColumnResizer'
 
 type HeaderProps = {
   index: number
@@ -30,7 +30,7 @@ export const Header = ({ index, last, children }: Jsx<HeaderProps>) => {
   return (
     <div className="px-2 py-1 bevel-bottom position-relative" ref={setNodeRef}>
       <div>{children}</div>
-      {!last && <ColResizer {...attributes} {...listeners} id={`drag-header-${index}`} />}
+      {!last && <ColumnResizer {...attributes} {...listeners} id={`drag-header-${index}`} />}
     </div>
   )
 }
