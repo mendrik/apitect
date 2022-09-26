@@ -1,9 +1,13 @@
+import { DndContext, DragOverlay, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { DragStartEvent } from '@dnd-kit/core/dist/types'
 import { useStore } from 'effector-react'
-import { always, both, cond } from 'ramda'
+import { always, both, cond, propEq } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import { SyntheticEvent } from 'react'
+import { SyntheticEvent, useState } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
+import { TreeNode } from '~shared/algebraic/treeNode'
+import { Node } from '~shared/types/domain/node'
 import '~stores/$enumsStore'
 import { $canCreateNode, $selectedNode } from '~stores/$selectedNode'
 import { $treeStore } from '~stores/$treeStore'
@@ -24,6 +28,15 @@ export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
   const canCreateNode = useStore($canCreateNode)
+  const [draggedNode, setDraggedNode] = useState<TreeNode<Node> | null>(null)
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 5
+      }
+    })
+  )
 
   useDefinedEffect(sn => {
     focus(document.getElementById(sn.value.id))
@@ -52,9 +65,33 @@ export const VisualTree = () => {
     [codeIn('Escape'), pd(() => selectNode(null))]
   ])
 
+  const handleNodeDrop = () => {
+    // eslint-disable-next-line no-console
+    console.log('drop')
+  }
+
+  const handleNodeDrag = (ev: DragStartEvent) => {
+    const first = root.first(propEq('id', ev.active.id)) ?? null
+    setDraggedNode(first)
+  }
+
   return (
     <div onKeyDown={keyMap} id="doc-tree">
-      <VisualNode node={root} />
+      <DndContext
+        onDragEnd={handleNodeDrop}
+        onDragStart={handleNodeDrag}
+        autoScroll
+        sensors={sensors}
+      >
+        <VisualNode node={root} />
+        <DragOverlay>
+          {draggedNode && (
+            <div className={'bg-white bg-opacity-75 border border-1 rounded border-dotted'}>
+              <VisualNode node={draggedNode} disabled />
+            </div>
+          )}
+        </DragOverlay>
+      </DndContext>
       <DeleteModal />
     </div>
   )

@@ -1,3 +1,5 @@
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
 import { pathEq, prop } from 'ramda'
@@ -13,12 +15,14 @@ import { $selectedNode } from '~stores/$selectedNode'
 
 import { openNodeState, selectNode } from '../../events/tree'
 import { selectValue } from '../../events/values'
+import { Draggables } from '../../utils/draggables'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
 
 type OwnProps = {
   node: TreeNode<Node>
   depth?: number
+  disabled?: boolean
 }
 
 const Ol = styled.ol`
@@ -43,46 +47,52 @@ const NodeGrid = styled.div`
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNode = ({ depth = 0, node }: OwnProps) => {
+export const VisualNode = ({ depth = 0, node, disabled = false }: OwnProps) => {
   const id = node.value.id
   const nodeType = node.value.nodeType
 
-  /*
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id,
     data: [Draggables.TREE_NODE]
   })
-*/
 
   const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
+
   const open = useStoreMap($openNodes, prop(id))
   const hasChildren = isNotNilOrEmpty(node.children)
 
-  /*
   const style = {
     transform: CSS.Transform.toString(transform),
     transition
   }
-*/
 
   const onFocus = () => {
     selectValue(null)
     selectNode(node)
   }
 
+  const events = disabled
+    ? {}
+    : {
+        onMouseDown: () => {
+          if (document.activeElement?.id === node.value.id) {
+            selectNode(isActive ? null : node)
+          }
+        },
+        ref: setNodeRef,
+        ...attributes,
+        ...listeners,
+        style
+      }
+
   return (
     <>
-      {depth > 0 && (
-        <NodeGrid
-          tabIndex={0}
-          onFocus={onFocus}
-          id={id}
-          className={clsx('gap-1', { selectedNode: isActive })}
-        >
+      {(depth > 0 || disabled) && (
+        <NodeGrid onFocus={onFocus} id={id} className={clsx('gap-1', { selectedNode: isActive })}>
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() => openNodeState([node, !open])}
+              onClick={() => !disabled && openNodeState([node, !open])}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
@@ -94,24 +104,20 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
           <div
             className={clsx('text-truncate', { thin: !hasChildren })}
             title={node.value.name}
-            onMouseDown={() => {
-              if (document.activeElement?.id === node.value.id) {
-                selectNode(isActive ? null : node)
-              }
-            }}
+            {...events}
           >
             {node.value.name}
           </div>
-          {nodeType === NodeType.Array && (
+          {!disabled && nodeType === NodeType.Array && (
             <Icon icon={iconMap[nodeType]} size={14} disabled tabIndex={0} />
           )}
         </NodeGrid>
       )}
       {open && (
-        <NotEmptyList list={node.children} as={depth === 0 ? RootWrap : ListWrap}>
+        <NotEmptyList list={node.children} as={depth === 0 && !disabled ? RootWrap : ListWrap}>
           {mapIndexed(node => (
             <li key={node.value.id}>
-              <VisualNode node={node} depth={depth + 1} />
+              <VisualNode node={node} depth={depth + 1} disabled={disabled} />
             </li>
           ))}
         </NotEmptyList>
