@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react'
+import { ChangeEvent, SyntheticEvent, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError, ZodSchema } from 'zod'
 import { useView } from '~hooks/useView'
@@ -78,8 +78,18 @@ export const useEditorTools = (
   const saveFromEvent = (e: SyntheticEvent<HTMLInputElement | HTMLSelectElement>) =>
     saveValue(e.currentTarget.value, e)
 
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const result = validator.safeParse(e.currentTarget.value)
+    if (result.success) {
+      setError(null)
+    } else {
+      setError(result.error)
+    }
+  }
+
   return {
     saveValue,
+    onChange,
     saveFromEvent,
     error,
     setError,

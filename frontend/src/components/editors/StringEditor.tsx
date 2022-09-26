@@ -23,7 +23,7 @@ export const TextInput = styled.input`
 export const StringEditor = ({ node, value, tag }: EditorProps<StringValue>) => {
   const stringSettings = useStoreMap($nodeSettings, s => s[node.id] as StringSettings)
   const validator = getStringValidator(stringSettings)
-  const { saveFromEvent, error, views } = useEditorTools(node, value, tag, validator)
+  const { saveFromEvent, error, views, onChange } = useEditorTools(node, value, tag, validator)
 
   const keyMap = cond([
     [codeIn('Tab', 'Enter'), saveFromEvent],
@@ -51,6 +51,7 @@ export const StringEditor = ({ node, value, tag }: EditorProps<StringValue>) => 
       className={clsx('editor', { invalid: error != null })}
       autoFocus
       onKeyDown={keyMap}
+      onChange={onChange}
       onBlur={saveFromEvent}
       defaultValue={value?.value}
     />
