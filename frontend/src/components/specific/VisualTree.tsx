@@ -71,8 +71,8 @@ export const VisualTree = () => {
   }
 
   const handleNodeDrag = (ev: DragStartEvent) => {
-    const first = root.first(propEq('id', ev.active.id)) ?? null
-    setDraggedNode(first)
+    const first = root.first(propEq('id', ev.active.id))
+    setDraggedNode(first ?? null)
   }
 
   return (
@@ -86,8 +86,11 @@ export const VisualTree = () => {
         <VisualNode node={root} />
         <DragOverlay>
           {draggedNode && (
-            <div className={'bg-white bg-opacity-75 border border-1 rounded border-dotted'}>
-              <VisualNode node={draggedNode} disabled />
+            <div
+              className={'bg-white bg-opacity-75 border border-1 rounded border-dotted'}
+              id={draggedNode.value.id}
+            >
+              <VisualNode node={draggedNode} passive />
             </div>
           )}
         </DragOverlay>

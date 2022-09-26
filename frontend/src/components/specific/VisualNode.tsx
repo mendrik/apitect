@@ -1,4 +1,4 @@
-import { useSortable } from '@dnd-kit/sortable'
+import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
@@ -22,7 +22,7 @@ import { NotEmptyList } from '../generic/NotEmptyList'
 type OwnProps = {
   node: TreeNode<Node>
   depth?: number
-  disabled?: boolean
+  passive?: boolean
 }
 
 const Ol = styled.ol`
@@ -47,52 +47,50 @@ const NodeGrid = styled.div`
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNode = ({ depth = 0, node, disabled = false }: OwnProps) => {
+export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
   const id = node.value.id
   const nodeType = node.value.nodeType
+  const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
+  const open = useStoreMap($openNodes, prop(id))
+  const hasChildren = isNotNilOrEmpty(node.children)
+  const isRoot = depth === 0
 
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+  const { attributes, listeners, setNodeRef, transform, setActivatorNodeRef } = useDraggable({
     id,
     data: [Draggables.TREE_NODE]
   })
 
-  const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
-
-  const open = useStoreMap($openNodes, prop(id))
-  const hasChildren = isNotNilOrEmpty(node.children)
-
   const style = {
-    transform: CSS.Transform.toString(transform),
-    transition
+    transform: CSS.Transform.toString(transform)
   }
+
+  const dndKit = passive
+    ? {}
+    : {
+        ref: setActivatorNodeRef,
+        ...attributes,
+        ...listeners,
+        style,
+        id
+      }
 
   const onFocus = () => {
     selectValue(null)
     selectNode(node)
   }
 
-  const events = disabled
-    ? {}
-    : {
-        onMouseDown: () => {
-          if (document.activeElement?.id === node.value.id) {
-            selectNode(isActive ? null : node)
-          }
-        },
-        ref: setNodeRef,
-        ...attributes,
-        ...listeners,
-        style
-      }
-
   return (
     <>
-      {(depth > 0 || disabled) && (
-        <NodeGrid onFocus={onFocus} id={id} className={clsx('gap-1', { selectedNode: isActive })}>
+      {(!isRoot || passive) && (
+        <NodeGrid
+          onFocus={onFocus}
+          className={clsx('gap-1', { selectedNode: isActive })}
+          ref={setNodeRef}
+        >
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() => !disabled && openNodeState([node, !open])}
+              onClick={() => !passive && openNodeState([node, !open])}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
@@ -104,20 +102,25 @@ export const VisualNode = ({ depth = 0, node, disabled = false }: OwnProps) => {
           <div
             className={clsx('text-truncate', { thin: !hasChildren })}
             title={node.value.name}
-            {...events}
+            onMouseDown={() => {
+              if (document.activeElement?.id === node.value.id) {
+                selectNode(isActive ? null : node)
+              }
+            }}
+            {...dndKit}
           >
             {node.value.name}
           </div>
-          {!disabled && nodeType === NodeType.Array && (
+          {!passive && nodeType === NodeType.Array && (
             <Icon icon={iconMap[nodeType]} size={14} disabled tabIndex={0} />
           )}
         </NodeGrid>
       )}
       {open && (
-        <NotEmptyList list={node.children} as={depth === 0 && !disabled ? RootWrap : ListWrap}>
+        <NotEmptyList list={node.children} as={isRoot && !passive ? RootWrap : ListWrap}>
           {mapIndexed(node => (
             <li key={node.value.id}>
-              <VisualNode node={node} depth={depth + 1} disabled={disabled} />
+              <VisualNode node={node} depth={depth + 1} passive={passive} />
             </li>
           ))}
         </NotEmptyList>
