@@ -80,11 +80,7 @@ export const useEditorTools = (
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const result = validator.safeParse(e.currentTarget.value)
-    if (result.success) {
-      setError(null)
-    } else {
-      setError(result.error)
-    }
+    setError(result.success ? undefined : result.error)
   }
 
   return {

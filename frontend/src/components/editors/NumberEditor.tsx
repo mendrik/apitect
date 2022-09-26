@@ -7,6 +7,7 @@ import { useNumberFormat } from '~hooks/useNumberFormat'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { NumberValue } from '~shared/types/domain/values/numberValue'
 import { NumberSettings } from '~shared/types/forms/nodetypes/numberSettings'
+import { Jsx } from '~shared/types/generic'
 import { asNumber } from '~shared/utils/ramda'
 import { getNumberValidator } from '~shared/validators/numberValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
@@ -14,6 +15,7 @@ import { $nodeSettings } from '~stores/$nodeSettingsStore'
 import { Palette } from '../../css/colors'
 import { codeIn, onlyNumbers, onlyNumbersPaste, target } from '../../utils/eventUtils'
 import { Autogrow } from '../generic/Autogrow'
+import { ConditionalWrapper } from '../generic/ConditionalWrapper'
 import { HGrid } from '../generic/HGrid'
 import { SimpleIcon } from '../generic/SimpleIcon'
 import { EditorProps } from '../specific/VisualValue'
@@ -43,10 +45,6 @@ const UnitSx = styled.span`
   }
 `
 
-const Wrap = styled.div`
-  padding-left: 3px;
-`
-
 export const NumberEditor = ({ value, node, tag }: EditorProps<NumberValue>) => {
   const numberSettings = useStoreMap($nodeSettings, s => s[node.id] as NumberSettings)
   const numberFormat = useNumberFormat(numberSettings)
@@ -63,37 +61,37 @@ export const NumberEditor = ({ value, node, tag }: EditorProps<NumberValue>) => 
 
   const step = numberSettings?.display.step ?? 1
   const val = value?.value
-  const asStepper = (children: JSX.Element) =>
-    numberSettings?.display.step != null && val != null ? (
-      <HGrid className="w-min-c align-items-center gap-2 text-center">
-        <SimpleIcon icon={IconSquareMinus} onClick={() => saveValue((val ?? 0) - step)} />
-        {children}
-        <SimpleIcon icon={IconSquarePlus} onClick={() => saveValue((val ?? 0) + step)} />
-      </HGrid>
-    ) : (
-      <Wrap>{children}</Wrap>
-    )
+
+  const asStepper = ({ children }: Jsx) => (
+    <HGrid className="w-min-c align-items-center gap-2 text-center">
+      <SimpleIcon icon={IconSquareMinus} onClick={() => saveValue((val ?? 0) - step)} />
+      {children}
+      <SimpleIcon icon={IconSquarePlus} onClick={() => saveValue((val ?? 0) + step)} />
+    </HGrid>
+  )
 
   const unit = numberSettings?.display.unit
-  return asStepper(
-    views.isDisplayView() ? (
-      <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
-        {numberFormat(val)}
-        {val && unit && <UnitSx>{unit}</UnitSx>}
-      </NumberText>
-    ) : (
-      <Autogrow initial={val}>
-        <NumberInput
-          type="text"
-          className={clsx('editor', { invalid: error != null })}
-          autoFocus
-          onPaste={onlyNumbersPaste}
-          lang={navigator.language}
-          onKeyDown={keyMap}
-          onBlur={saveAsNumber}
-          defaultValue={val}
-        />
-      </Autogrow>
-    )
+  const hasSteps = Boolean(numberSettings?.display.step && val)
+  return (
+    <ConditionalWrapper condition={hasSteps} wrapper={asStepper}>
+      {views.isDisplayView() ? (
+        <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
+          {val && [numberFormat(val), unit && <UnitSx>{unit}</UnitSx>]}
+        </NumberText>
+      ) : (
+        <Autogrow initial={val}>
+          <NumberInput
+            type="text"
+            className={clsx('editor', { invalid: error != null })}
+            autoFocus
+            onPaste={onlyNumbersPaste}
+            lang={navigator.language}
+            onKeyDown={keyMap}
+            onBlur={saveAsNumber}
+            defaultValue={val}
+          />
+        </Autogrow>
+      )}
+    </ConditionalWrapper>
   )
 }
