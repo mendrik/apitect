@@ -16,8 +16,12 @@ export const useConfirmation = (
   confirmButton: TFuncKey = 'common.confirm',
   cancelButton: TFuncKey = 'common.cancel'
 ): [Fn<JSX.Element | null>, Fn] => {
+  const focusElement = useRef<HTMLElement>()
   const [open, setOpen] = useState(false)
-  const close = () => setOpen(false)
+  const close = () => {
+    setOpen(false)
+    focusElement.current?.focus?.()
+  }
 
   const keyMap = cond([
     [codeIn('Escape'), pipe(stopPropagation, close)],
@@ -34,7 +38,7 @@ export const useConfirmation = (
     return open ? (
       <Modal
         show={open}
-        onHide={() => setOpen(false)}
+        onHide={close}
         centered
         enforceFocus
         onKeyDown={keyMap}
@@ -60,6 +64,9 @@ export const useConfirmation = (
     ) : null
   }, [open, onConfirm])
 
-  const openFn = useCallback(() => setOpen(true), [])
+  const openFn = useCallback(() => {
+    focusElement.current = document.activeElement as HTMLElement
+    setOpen(true)
+  }, [])
   return [Confirm, openFn]
 }
