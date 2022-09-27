@@ -13,11 +13,11 @@ const $getStringValidator = (settings?: StringSettings): ZodString => {
     case StringValidationType.Password:
       return passwordString.describe('password')
     default:
-      return string().min(1).describe('non-empty string')
+      return string().describe('non-empty string')
   }
 }
 
 export const getStringValidator = (settings?: StringSettings) => {
   const base = $getStringValidator(settings)
-  return settings?.required === true ? base : base.optional()
+  return settings?.required === true ? base.min(1) : base.optional()
 }

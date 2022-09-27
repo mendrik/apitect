@@ -49,6 +49,7 @@ export const StringEditor = ({ node, value, tag }: EditorProps<StringValue>) => 
       type="text"
       className={clsx('editor', { invalid: error != null })}
       autoFocus
+      onBlur={saveFromEvent}
       onKeyDown={keyMap}
       onChange={onChange}
       defaultValue={value?.value}

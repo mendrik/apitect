@@ -35,11 +35,11 @@ export const EnumEditor = ({ node, value, tag }: EditorProps<EnumValue>) => {
   const e = find<Enum>(propEq('name', enumSettings?.enumeration), enums)
 
   const validator = getEnumValidator(e, enumSettings)
-  const { saveValue, error, views, setError } = useEditorTools(node, value, tag, validator)
+  const { saveValue, error, views, onChange } = useEditorTools(node, value, tag, validator)
 
   const selKeyMap = cond([
-    [codeIn('Enter', 'Space', 'Escape'), stopPropagation],
-    [codeIn('Escape'), views.displayView]
+    [codeIn('Enter', 'Space'), stopPropagation],
+    [codeIn('Escape'), pipe(stopPropagation, views.displayView)]
   ])
 
   return !e || views.isDisplayView() ? (
@@ -53,7 +53,7 @@ export const EnumEditor = ({ node, value, tag }: EditorProps<EnumValue>) => {
       defaultValue={value?.value}
       onBlur={pipe(target.value, saveValue)}
       onKeyDown={selKeyMap}
-      onChange={() => setError(undefined)}
+      onChange={onChange}
     >
       {!enumSettings.required && <OptionSx value="">{t('common.select')}</OptionSx>}
       {e.values.map(v => (
