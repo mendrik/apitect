@@ -10,7 +10,7 @@ import { DragStartEvent } from '@dnd-kit/core/dist/types'
 import { useStore } from 'effector-react'
 import { always, both, cond, propEq } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import { SyntheticEvent, useMemo, useState } from 'react'
+import { SyntheticEvent, useState } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import { useDefinedEffect } from '~hooks/useDefinedEffect'
 import { TreeNode } from '~shared/algebraic/treeNode'
@@ -48,16 +48,6 @@ export const VisualTree = () => {
         distance: 5
       }
     })
-  )
-
-  const draggedNodeJsx = useMemo(
-    () =>
-      draggedNode ? (
-        <div className="bg-white bg-opacity-75 border border-1 rounded border-dotted">
-          <VisualNode node={draggedNode} isDragGhost />
-        </div>
-      ) : null,
-    [draggedNode]
   )
 
   useDefinedEffect(sn => {
