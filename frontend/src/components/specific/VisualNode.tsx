@@ -1,8 +1,8 @@
-import { useSortable } from '@dnd-kit/sortable'
+import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { pathEq, prop } from 'ramda'
+import { includes, juxt, pathEq, prop } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
@@ -50,16 +50,34 @@ const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
   const id = node.value.id
   const nodeType = node.value.nodeType
+
+  const {
+    active,
+    attributes,
+    listeners,
+    transform,
+    setNodeRef: dragRef,
+    setActivatorNodeRef
+  } = useDraggable({
+    id,
+    data: [Draggables.TREE_NODE]
+  })
+
+  const { setNodeRef: dropRef, isOver } = useDroppable({
+    id,
+    data: [Draggables.TREE_NODE]
+  })
+
   const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
   const open = useStoreMap($openNodes, prop(id))
   const hasChildren = isNotNilOrEmpty(node.children)
   const isRoot = depth === 0
-
-  const { attributes, listeners, setNodeRef, transform, setActivatorNodeRef, isDragging } =
-    useSortable({
-      id,
-      data: [Draggables.TREE_NODE]
-    })
+  const isDraggedDescendent =
+    active &&
+    includes(
+      active.id,
+      node.pathToRoot().map(n => n.id)
+    )
 
   const style = {
     transform: CSS.Transform.toString(transform)
@@ -86,7 +104,7 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
         <NodeGrid
           onFocus={onFocus}
           className={clsx('gap-1', { selectedNode: isActive })}
-          ref={setNodeRef}
+          ref={juxt([dragRef, dropRef])}
         >
           {hasChildren ? (
             <Icon
@@ -126,6 +144,7 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
           ))}
         </NotEmptyList>
       )}
+      {isOver && !hasChildren && !isDraggedDescendent && <div>----------</div>}
     </>
   )
 }
