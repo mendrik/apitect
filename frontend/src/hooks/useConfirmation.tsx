@@ -17,6 +17,7 @@ export const useConfirmation = (
   cancelButton: TFuncKey = 'common.cancel'
 ): [Fn<JSX.Element | null>, Fn] => {
   const [open, setOpen] = useState(false)
+  const close = () => setOpen(false)
 
   const keyMap = cond([
     [codeIn('Escape'), pipe(stopPropagation, close)],
@@ -26,7 +27,6 @@ export const useConfirmation = (
   const Confirm = useCallback(() => {
     const { t } = useTranslation()
     const refOk = useRef<HTMLButtonElement>(null)
-    const close = () => setOpen(false)
     const okClick = juxt([pipe(stopPropagation, close), onConfirm])
 
     useFocus(refOk)

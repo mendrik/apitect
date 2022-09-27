@@ -2,7 +2,6 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { motion } from 'framer-motion'
 import { pathEq, prop } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import styled from 'styled-components'
@@ -56,10 +55,11 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
   const hasChildren = isNotNilOrEmpty(node.children)
   const isRoot = depth === 0
 
-  const { attributes, listeners, setNodeRef, transform, setActivatorNodeRef } = useSortable({
-    id,
-    data: [Draggables.TREE_NODE]
-  })
+  const { attributes, listeners, setNodeRef, transform, setActivatorNodeRef, isDragging } =
+    useSortable({
+      id,
+      data: [Draggables.TREE_NODE]
+    })
 
   const style = {
     transform: CSS.Transform.toString(transform)
@@ -81,7 +81,7 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
   }
 
   return (
-    <motion.div layoutId={node.value.id}>
+    <>
       {(!isRoot || passive) && (
         <NodeGrid
           onFocus={onFocus}
@@ -126,6 +126,6 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
           ))}
         </NotEmptyList>
       )}
-    </motion.div>
+    </>
   )
 }

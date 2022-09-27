@@ -1,6 +1,7 @@
 import { IconCirclePlus, IconColumns, IconSettings, IconTrash } from '@tabler/icons'
 import { useStore } from 'effector-react'
 import { useTranslation } from 'react-i18next'
+import { useConfirmation } from '~hooks/useConfirmation'
 import { $documentStore } from '~stores/$documentStore'
 import { $canCreateNode, $currentNode } from '~stores/$selectedNode'
 
@@ -19,6 +20,11 @@ export const ProjectTreeHeader = () => {
   const canCreateNode = useStore($canCreateNode)
   const document = useStore($documentStore)
 
+  const [DeleteModal, confirmDelete] = useConfirmation(
+    'common.questions.delete',
+    () => selectedNode && deleteNodeFx(selectedNode.value.id)
+  )
+
   return (
     <Tuple first={Scale.MAX} second={Scale.CONTENT} gap={1}>
       <EditableText editAction={renameProjectFx}>
@@ -26,11 +32,7 @@ export const ProjectTreeHeader = () => {
       </EditableText>
       <HGrid>
         <WithTooltip tooltipText={t('tooltips.deleteNode')} shortcut="Del">
-          <Icon
-            icon={IconTrash}
-            onClick={() => deleteNodeFx(selectedNode!.value.id)}
-            disabled={selectedNode == null}
-          />
+          <Icon icon={IconTrash} onClick={confirmDelete} disabled={selectedNode == null} />
         </WithTooltip>
         <WithTooltip tooltipText={t('tooltips.createNode')} shortcut="N">
           <Icon
@@ -50,6 +52,7 @@ export const ProjectTreeHeader = () => {
           <Icon icon={IconColumns} onClick={() => userSettingsFx()} />
         </WithTooltip>
       </HGrid>
+      <DeleteModal />
     </Tuple>
   )
 }
