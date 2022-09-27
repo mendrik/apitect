@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import { cond, find, propEq } from 'ramda'
+import { cond, find, pipe, propEq } from 'ramda'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Text, useEditorTools } from '~hooks/specific/useEditorTools'
@@ -13,8 +13,8 @@ import { $enumsStore } from '~stores/$enumsStore'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIn } from '../../utils/eventUtils'
-import { stopPropagation } from '../../utils/stopPropagation'
+import { codeIn, target } from '../../utils/eventUtils'
+import { stopPropagation } from '../../utils/events'
 import { EditorProps } from '../specific/VisualValue'
 
 const SelectSx = styled.select`
@@ -35,10 +35,10 @@ export const EnumEditor = ({ node, value, tag }: EditorProps<EnumValue>) => {
   const e = find<Enum>(propEq('name', enumSettings?.enumeration), enums)
 
   const validator = getEnumValidator(e, enumSettings)
-  const { saveFromEvent, error, views, setError } = useEditorTools(node, value, tag, validator)
+  const { saveValue, error, views, setError } = useEditorTools(node, value, tag, validator)
 
   const selKeyMap = cond([
-    [codeIn('Enter', 'Space', 'Escape'), stopPropagation()],
+    [codeIn('Enter', 'Space', 'Escape'), stopPropagation],
     [codeIn('Escape'), views.displayView]
   ])
 
@@ -51,7 +51,7 @@ export const EnumEditor = ({ node, value, tag }: EditorProps<EnumValue>) => {
       className={clsx('editor', { invalid: error != null })}
       autoFocus
       defaultValue={value?.value}
-      onBlur={saveFromEvent}
+      onBlur={pipe(target.value, saveValue)}
       onKeyDown={selKeyMap}
       onChange={() => setError(undefined)}
     >

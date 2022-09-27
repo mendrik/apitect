@@ -1,6 +1,6 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { all, cond, not, path, propEq, propOr, T as RT } from 'ramda'
+import { all, cond, F, ifElse, not, path, pipe, propEq, propOr, T as RT } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import {
   createContext,
@@ -31,8 +31,8 @@ import {
   StyledTreeInput
 } from '../../css/TreeInput.css'
 import { codeIn, keyIn } from '../../utils/eventUtils'
+import { stopPropagation } from '../../utils/events'
 import { offset, sameWidth } from '../../utils/sameWidthMod'
-import { stopPropagation as sp } from '../../utils/stopPropagation'
 import { uninitialized } from '../../utils/uninitialized'
 import { DeleteIcon } from '../generic/DeleteIcon'
 import { Scale, Tuple } from '../generic/Tuple'
@@ -89,15 +89,14 @@ export const TreeInput = <T extends WithId>({
   const target = useRef<HTMLDivElement>(null)
   const container = useRef<HTMLDivElement>(null)
 
-  const close = sp(() => {
+  const close = pipe(stopPropagation, () => {
     const el = target.current
     el?.focus()
     setShow(false)
   })
 
   const keyMap = cond([
-    [codeIn('Enter'), sp(() => setShow(not))],
-    [codeIn('Space'), sp(() => setShow(not))],
+    [codeIn('Enter', 'Space'), pipe(stopPropagation, F, setShow)],
     [codeIn('Escape'), close]
   ])
 
@@ -194,7 +193,7 @@ TreeInput.Node = <T extends WithId>({ node }: TreeNodeProps<T>) => {
   const isVisible = (n: TreeNode<T>) => all(isOpen, n.$pathToRoot())
 
   const focus = (method: 'next' | 'prev') =>
-    sp(() => {
+    pipe(stopPropagation, () => {
       const id = focusedNode?.[method](isVisible)?.value.id
       document.getElementById(`${name}-${id}`)?.focus()
     })
@@ -202,10 +201,10 @@ TreeInput.Node = <T extends WithId>({ node }: TreeNodeProps<T>) => {
   const keyMap = cond([
     [codeIn('ArrowDown'), focus('next')],
     [codeIn('ArrowUp'), focus('prev')],
-    [codeIn('ArrowLeft'), sp(() => remove(node))],
-    [codeIn('ArrowRight'), sp(() => add(node))],
-    [keyIn('Enter'), sp(activate)],
-    [codeIn('Space'), sp(activate)]
+    [codeIn('ArrowLeft'), pipe(stopPropagation, () => remove(node))],
+    [codeIn('ArrowRight'), pipe(stopPropagation, () => add(node))],
+    [keyIn('Enter'), pipe(stopPropagation, activate)],
+    [codeIn('Space'), pipe(stopPropagation, activate)]
   ])
 
   return (
@@ -224,7 +223,10 @@ TreeInput.Node = <T extends WithId>({ node }: TreeNodeProps<T>) => {
         onClick={activate}
       >
         {hasChildren ? (
-          <div className="icn" onClick={sp(() => (isOpen(node) ? remove(node) : add(node)))}>
+          <div
+            className="icn"
+            onClick={pipe(stopPropagation, () => ifElse(isOpen, remove, add)(node))}
+          >
             <IconChevronRight
               stroke={1}
               width={16}

@@ -42,7 +42,7 @@ export const DateEditor = ({ value, node, tag }: EditorProps<DateValue>) => {
 
   const saveAsDate = pipe(
     target.value,
-    cond([
+    cond<[string], void>([
       [equals(oldValue), views.displayView],
       [T, saveValue]
     ])

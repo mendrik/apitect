@@ -18,7 +18,7 @@ import {
   unless
 } from 'ramda'
 import { included, isNotNil, notEqual } from 'ramda-adjunct'
-import { ClipboardEvent, KeyboardEvent } from 'react'
+import { ClipboardEvent, KeyboardEvent, SyntheticEvent } from 'react'
 import { ArgFn, Fn } from '~shared/types/generic'
 import {
   insertStr,
@@ -28,7 +28,7 @@ import {
   replaceSlice
 } from '~shared/utils/ramda'
 
-import { stopEvent, stopPropagation } from './stopPropagation'
+import { stopEvent, stopPropagation } from './events'
 
 export const validNumber = test(/^-?[0-9]\d*[,.]?\d*$/)
 
@@ -53,7 +53,8 @@ export const target = {
   hasSelection: converge(
     (x: number, y: number) => notEqual(x, y),
     [pathOr(0, ['target', 'selectionStart']), pathOr(0, ['target', 'selectionEnd'])]
-  )
+  ),
+  focus: <E extends SyntheticEvent | Event>(ev: E) => (ev.target as HTMLElement)?.focus()
 }
 
 /**
@@ -75,13 +76,15 @@ export const futureValue: (ev: KeyboardEvent<HTMLInputElement>) => string = cond
   [T, target.value]
 ])
 
-const noOp = (_e: KeyboardEvent<HTMLInputElement>) => void 0
+type KEvent = KeyboardEvent<HTMLInputElement>
 
-export const onlyNumbers = cond([
-  [allPass([withShift, withCtrl, codeIn('ArrowLeft', 'ArrowRight')]), stopPropagation()],
+const noOp = (_e: KEvent) => void 0
+
+export const onlyNumbers = cond<[KEvent], void>([
+  [allPass([withShift, withCtrl, codeIn('ArrowLeft', 'ArrowRight')]), stopPropagation],
   [pipe(futureValue, isEmpty), noOp],
   [either(withCtrl, withShift), noOp],
-  [pipe(futureValue, complement(validNumber)), stopEvent()]
+  [pipe(futureValue, complement(validNumber)), stopEvent]
 ])
 
 const clipboard = (e: ClipboardEvent<HTMLInputElement>) => e.clipboardData?.getData('Text')
@@ -97,7 +100,7 @@ export const futurePasteResult: (ev: ClipboardEvent<HTMLInputElement>) => string
   [T, converge(insertStr, [target.caretPosition, clipboard, target.value])]
 ])
 
-export const onlyNumbersPaste = unless(pipe(futurePasteResult, validNumber), stopEvent())
+export const onlyNumbersPaste = unless(pipe(futurePasteResult, validNumber), stopEvent)
 
 export const whenDefined =
   <T>(obj: T, fn: ArgFn<NonNullable<T>>) =>

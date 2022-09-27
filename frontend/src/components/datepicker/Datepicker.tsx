@@ -2,17 +2,9 @@ import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
 import { addYears, format, isSameYear, isValid, parse, setDate, setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
-import { cond, propOr, range, when } from 'ramda'
+import { cond, pipe, propOr, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
-import {
-  HTMLAttributes,
-  KeyboardEvent,
-  SyntheticEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
+import { HTMLAttributes, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -22,7 +14,7 @@ import { ArgFn } from '~shared/types/generic'
 import { fullscreenScale } from '../../animations/fullscreenScale'
 import { Palette } from '../../css/colors'
 import { codeIn } from '../../utils/eventUtils'
-import { stopEvent, stopPropagation } from '../../utils/stopPropagation'
+import { stopEvent, stopPropagation } from '../../utils/events'
 import { Scrollable } from '../generic/Scrollable'
 import { SimpleIcon } from '../generic/SimpleIcon'
 import { Month } from './Month'
@@ -189,10 +181,7 @@ export const Datepicker = ({
       m?.focus()
     }, 1)
 
-  const onEscape = when<KeyboardEvent<HTMLDivElement>, void>(
-    codeIn('Escape'),
-    stopPropagation(closePicker)
-  )
+  const onEscape = when(codeIn('Escape'), pipe(stopPropagation, closePicker))
 
   const click = (ev: SyntheticEvent<HTMLOListElement>): void => {
     const target = ev.target as HTMLElement
@@ -204,12 +193,12 @@ export const Datepicker = ({
 
   const keyMap = cond([
     [codeIn('Space'), click],
-    [codeIn('Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'), stopPropagation()]
+    [codeIn('Tab', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'), stopPropagation]
   ])
 
   return (
     <CalendarButton
-      onMouseDown={stopEvent(openPicker)}
+      onMouseDown={pipe(stopEvent, openPicker)}
       onKeyDown={onEscape}
       ref={ref}
       {...props}

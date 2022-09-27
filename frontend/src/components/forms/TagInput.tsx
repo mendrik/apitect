@@ -8,6 +8,7 @@ import styled from 'styled-components'
 
 import { Palette } from '../../css/colors'
 import { keyIn, target } from '../../utils/eventUtils'
+import { stopEvent } from '../../utils/events'
 import { preventDefault } from '../../utils/preventDefault'
 import { DeleteIcon } from '../generic/DeleteIcon'
 import { ErrorInfo } from './ErrorInfo'
@@ -158,10 +159,7 @@ const Tag = styled.div`
 
 TagInput.Tag = ({ tag, onRemove }: TagProps) => (
   <Tag
-    onClick={preventDefault(ev => {
-      ev.stopPropagation()
-      ev.target.focus()
-    })}
+    onClick={pipe(stopEvent, target.focus)}
     className="tag"
     tabIndex={0}
     onKeyDown={when(propEq('key', 'Delete'), onRemove)}

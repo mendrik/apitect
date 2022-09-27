@@ -1,4 +1,4 @@
-import { ChangeEvent, SyntheticEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import styled from 'styled-components'
 import { ZodError, ZodSchema } from 'zod'
 import { useView } from '~hooks/useView'
@@ -7,10 +7,6 @@ import { Value } from '~shared/types/domain/values/value'
 import { Maybe } from '~shared/types/generic'
 
 import { valueDeleteFx, valueUpdateFx } from '../../events/values'
-
-const lastExecution = {
-  time: Date.now()
-}
 
 const emptyToUndefined = <T extends Value['value'] | undefined>(str: T): T | undefined =>
   typeof str === 'string' && /^\s*$/.test(str) ? undefined : (str as T)
@@ -39,17 +35,7 @@ export const useEditorTools = (
   const views = useView(Views)
   const [error, setError] = useState<Maybe<ZodError>>()
 
-  const saveValue = <T extends Value['value'], E extends HTMLElement>(
-    formValue: T | undefined,
-    e?: SyntheticEvent<E>
-  ) => {
-    const now = Date.now()
-    // make sure that onBlur and onKeyDown don't run this twice
-    if (now - lastExecution.time < 20) {
-      return
-    } else {
-      lastExecution.time = now
-    }
+  const saveValue = <T extends Value['value']>(formValue: T | undefined) => {
     setError(undefined)
     const newValue = emptyToUndefined(formValue)
 
@@ -69,14 +55,9 @@ export const useEditorTools = (
           : valueDeleteFx(params)
       ).then(views.displayView)
     } else {
-      e?.preventDefault()
-      e?.stopPropagation()
       setError(result.error)
     }
   }
-
-  const saveFromEvent = (e: SyntheticEvent<HTMLInputElement | HTMLSelectElement>) =>
-    saveValue(e.currentTarget.value, e)
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const result = validator.safeParse(e.currentTarget.value)
@@ -86,7 +67,6 @@ export const useEditorTools = (
   return {
     saveValue,
     onChange,
-    saveFromEvent,
     error,
     setError,
     views

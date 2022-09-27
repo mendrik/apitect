@@ -1,11 +1,11 @@
-import { allPass, always, both, cond, equals, T } from 'ramda'
+import { allPass, always, both, cond, equals, pipe, T } from 'ramda'
 import { EventHandler, HTMLAttributes, useRef } from 'react'
 import { FocusableElement, tabbable } from 'tabbable'
 import { Maybe } from '~shared/types/generic'
 import { next, prev } from '~shared/utils/ramda'
 
 import { codeIn, withCtrl, withShift } from '../../utils/eventUtils'
-import { stopEvent } from '../../utils/stopPropagation'
+import { stopEvent } from '../../utils/events'
 
 type OwnProps = {
   columns?: number
@@ -31,7 +31,7 @@ export const FocusNavigator = ({
   const ctrl = ctrlKey ? withCtrl : T
 
   const moveFocus = (dir: Direction): EventHandler<any> =>
-    stopEvent(() => {
+    pipe(stopEvent, () => {
       const current = document.activeElement as Maybe<FocusableElement>
       if (ref.current != null && ref.current.matches(':focus-within') && current != null) {
         const focusables = tabbable(ref.current)

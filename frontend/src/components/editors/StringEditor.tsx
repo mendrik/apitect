@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { always, cond, identity, T } from 'ramda'
+import { always, cond, identity, pipe, T } from 'ramda'
 import { isNilOrEmpty } from 'ramda-adjunct'
 import { ReactNode } from 'react'
 import styled from 'styled-components'
@@ -12,7 +12,7 @@ import { getStringValidator } from '~shared/validators/stringValidator'
 import { $nodeSettings } from '~stores/$nodeSettingsStore'
 
 import { Palette } from '../../css/colors'
-import { codeIn } from '../../utils/eventUtils'
+import { codeIn, target } from '../../utils/eventUtils'
 import { EditorProps } from '../specific/VisualValue'
 
 export const TextInput = styled.input`
@@ -25,7 +25,9 @@ export const StringEditor = ({ node, value, tag }: EditorProps<StringValue>) => 
   const stringSettings = useStoreMap($nodeSettings, s => s[node.id] as StringSettings)
   const type = stringSettings?.validationType
   const validator = getStringValidator(stringSettings)
-  const { saveFromEvent, error, views, onChange } = useEditorTools(node, value, tag, validator)
+  const { saveValue, error, views, onChange } = useEditorTools(node, value, tag, validator)
+
+  const saveFromEvent = pipe(target.value, saveValue)
 
   const keyMap = cond([
     [codeIn('Tab', 'Enter'), saveFromEvent],

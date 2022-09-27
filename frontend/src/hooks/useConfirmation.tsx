@@ -1,4 +1,4 @@
-import { complement, cond, juxt } from 'ramda'
+import { complement, cond, juxt, pipe } from 'ramda'
 import { useCallback, useRef, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
@@ -8,7 +8,7 @@ import { Fn } from '~shared/types/generic'
 
 import { QuestionView } from '../components/QuestionView'
 import { codeIn } from '../utils/eventUtils'
-import { stopPropagation as sp } from '../utils/stopPropagation'
+import { stopPropagation } from '../utils/events'
 
 export const useConfirmation = (
   question: TFuncKey,
@@ -19,15 +19,15 @@ export const useConfirmation = (
   const [open, setOpen] = useState(false)
 
   const keyMap = cond([
-    [codeIn('Escape'), sp(close)],
-    [complement(codeIn('Tab')), sp()]
+    [codeIn('Escape'), pipe(stopPropagation, close)],
+    [complement(codeIn('Tab')), stopPropagation]
   ])
 
   const Confirm = useCallback(() => {
     const { t } = useTranslation()
     const refOk = useRef<HTMLButtonElement>(null)
     const close = () => setOpen(false)
-    const okClick = juxt([sp(close), onConfirm])
+    const okClick = juxt([pipe(stopPropagation, close), onConfirm])
 
     useFocus(refOk)
 

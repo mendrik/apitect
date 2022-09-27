@@ -76,7 +76,12 @@ export const NumberEditor = ({ value, node, tag }: EditorProps<NumberValue>) => 
     <ConditionalWrapper condition={hasSteps} wrapper={asStepper}>
       {views.isDisplayView() ? (
         <NumberText tabIndex={0} onKeyDown={keyMap} onFocus={views.editView}>
-          {val && [numberFormat(val), unit && <UnitSx>{unit}</UnitSx>]}
+          {val && (
+            <>
+              {numberFormat(val)}
+              {unit && <UnitSx>{unit}</UnitSx>}
+            </>
+          )}
         </NumberText>
       ) : (
         <Autogrow initial={val}>
