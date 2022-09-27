@@ -51,7 +51,6 @@ export const StringEditor = ({ node, value, tag }: EditorProps<StringValue>) => 
       autoFocus
       onKeyDown={keyMap}
       onChange={onChange}
-      onBlur={saveFromEvent}
       defaultValue={value?.value}
     />
   )
