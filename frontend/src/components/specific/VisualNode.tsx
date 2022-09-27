@@ -2,14 +2,15 @@ import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { includes, juxt, pathEq, prop } from 'ramda'
-import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
+import { cond, includes, juxt, pathEq, prop, range, T, unless } from 'ramda'
+import { isFalse, isNotNilOrEmpty, isTrue, mapIndexed } from 'ramda-adjunct'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
 import { iconMap, NodeType } from '~shared/types/domain/nodeType'
 import { Jsx } from '~shared/types/generic'
+import { matches } from '~shared/utils/ramda'
 import { $openNodes } from '~stores/$openNodesStore'
 import { $selectedNode } from '~stores/$selectedNode'
 
@@ -18,11 +19,12 @@ import { selectValue } from '../../events/values'
 import { Draggables } from '../../utils/draggables'
 import { Icon } from '../generic/Icon'
 import { NotEmptyList } from '../generic/NotEmptyList'
+import { DropMarker } from './DropMarker'
 
 type OwnProps = {
   node: TreeNode<Node>
   depth?: number
-  passive?: boolean
+  isDragGhost?: boolean
 }
 
 const Ol = styled.ol`
@@ -47,9 +49,10 @@ const NodeGrid = styled.div`
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
-  const id = node.value.id
-  const nodeType = node.value.nodeType
+export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) => {
+  const { id, name, nodeType } = node.value
+  const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
+  const open = useStoreMap($openNodes, prop(id))
 
   const {
     active,
@@ -57,7 +60,7 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
     listeners,
     transform,
     setNodeRef: dragRef,
-    setActivatorNodeRef
+    setActivatorNodeRef: activateRef
   } = useDraggable({
     id,
     data: [Draggables.TREE_NODE]
@@ -68,29 +71,33 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
     data: [Draggables.TREE_NODE]
   })
 
-  const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
-  const open = useStoreMap($openNodes, prop(id))
   const hasChildren = isNotNilOrEmpty(node.children)
   const isRoot = depth === 0
   const isDraggedDescendent =
-    active &&
     includes(
-      active.id,
+      active?.id,
       node.pathToRoot().map(n => n.id)
-    )
+    ) ?? false
+
+  // prettier-ignore
+  const possibleDropLevels = cond<[boolean, boolean, boolean], number[]>([
+    [matches(isFalse, T, T), () => []],
+    [matches(T, isTrue, T), () => []],
+    [matches(T, T, isFalse), () => range(0, depth + 1)],
+    [matches(T, T, isTrue), () => [depth + 1]],
+    [T, () => []]
+  ])(isOver, isDraggedDescendent, hasChildren)
 
   const style = {
     transform: CSS.Transform.toString(transform)
   }
 
-  const dndKit = passive
+  const dndKit = isDragGhost
     ? {}
     : {
-        ref: setActivatorNodeRef,
         id: node.value.id,
         ...attributes,
-        ...listeners,
-        style
+        ...listeners
       }
 
   const onFocus = () => {
@@ -100,16 +107,17 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
 
   return (
     <>
-      {(!isRoot || passive) && (
+      {(!isRoot || isDragGhost) && (
         <NodeGrid
           onFocus={onFocus}
           className={clsx('gap-1', { selectedNode: isActive })}
-          ref={juxt([dragRef, dropRef])}
+          ref={unless(() => isDragGhost, juxt([dragRef, dropRef]))}
+          {...dndKit}
         >
           {hasChildren ? (
             <Icon
               icon={IconChevronRight}
-              onClick={() => !passive && openNodeState([node, !open])}
+              onClick={() => !isDragGhost && openNodeState([node, !open])}
               iconClasses={clsx('rotate', { deg90: open })}
               size={14}
             />
@@ -120,31 +128,31 @@ export const VisualNode = ({ depth = 0, node, passive = false }: OwnProps) => {
           )}
           <div
             className={clsx('text-truncate', { thin: !hasChildren })}
-            title={node.value.name}
+            title={name}
             onMouseDown={() => {
-              if (document.activeElement?.id === node.value.id) {
+              if (document.activeElement?.id === id) {
                 selectNode(isActive ? null : node)
               }
             }}
-            {...dndKit}
+            ref={activateRef}
           >
-            {node.value.name}
+            {name}
           </div>
-          {!passive && nodeType === NodeType.Array && (
+          {!isDragGhost && nodeType === NodeType.Array && (
             <Icon icon={iconMap[nodeType]} size={14} disabled tabIndex={0} />
           )}
         </NodeGrid>
       )}
+      <DropMarker possibleDropLevels={possibleDropLevels} />
       {open && (
-        <NotEmptyList list={node.children} as={isRoot && !passive ? RootWrap : ListWrap}>
+        <NotEmptyList list={node.children} as={isRoot && !isDragGhost ? RootWrap : ListWrap}>
           {mapIndexed(node => (
-            <li key={node.value.id}>
-              <VisualNode node={node} depth={depth + 1} passive={passive} />
+            <li key={id}>
+              <VisualNode node={node} depth={depth + 1} isDragGhost={isDragGhost} />
             </li>
           ))}
         </NotEmptyList>
       )}
-      {isOver && !hasChildren && !isDraggedDescendent && <div>----------</div>}
     </>
   )
 }
