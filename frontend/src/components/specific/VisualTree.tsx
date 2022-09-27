@@ -1,5 +1,4 @@
 import {
-  closestCenter,
   DndContext,
   DragOverlay,
   MeasuringStrategy,
@@ -31,6 +30,7 @@ import { codeIn, keyIn, withoutModkey } from '../../utils/eventUtils'
 import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNode } from './VisualNode'
+import { verticalRowStrategy } from './verticalRowStrategy'
 
 const measuring = {
   droppable: { strategy: MeasuringStrategy.Always }
@@ -103,7 +103,7 @@ export const VisualTree = () => {
         onDragEnd={handleNodeDrop}
         onDragStart={handleNodeDrag}
         sensors={sensors}
-        collisionDetection={closestCenter}
+        collisionDetection={verticalRowStrategy}
         measuring={measuring}
         autoScroll
       >
