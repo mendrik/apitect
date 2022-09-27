@@ -8,8 +8,9 @@ import {
   useSensors
 } from '@dnd-kit/core'
 import { DragStartEvent } from '@dnd-kit/core/dist/types'
+import { SortableContext } from '@dnd-kit/sortable'
 import { useStore } from 'effector-react'
-import { always, both, cond, propEq } from 'ramda'
+import { always, append, both, cond, map, pipe, prop, propEq, without } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { SyntheticEvent, useState } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
@@ -19,6 +20,7 @@ import { Node } from '~shared/types/domain/node'
 import '~stores/$enumsStore'
 import { $canCreateNode, $selectedNode } from '~stores/$selectedNode'
 import { $treeStore } from '~stores/$treeStore'
+import { $visibleNodes } from '~stores/$visibileNodes'
 
 import {
   deleteNodeFx,
@@ -40,6 +42,7 @@ export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
   const canCreateNode = useStore($canCreateNode)
+  const visibleNodes = useStore($visibleNodes)
   const [draggedNode, setDraggedNode] = useState<TreeNode<Node> | null>(null)
 
   const sensors = useSensors(
@@ -87,6 +90,10 @@ export const VisualTree = () => {
     setDraggedNode(first ?? null)
   }
 
+  const draggedIds = draggedNode
+    ? pipe(map(prop('id')), append(draggedNode.value.id))(draggedNode.toArray())
+    : []
+
   return (
     <div onKeyDown={keyMap} id="doc-tree">
       <DndContext
@@ -97,7 +104,9 @@ export const VisualTree = () => {
         measuring={measuring}
         autoScroll
       >
-        <VisualNode node={root} />
+        <SortableContext items={without(draggedIds, visibleNodes)}>
+          <VisualNode node={root} />
+        </SortableContext>
         <DragOverlay>
           {draggedNode && (
             <div className="bg-white bg-opacity-75 border border-1 rounded border-dotted">

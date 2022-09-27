@@ -33,18 +33,24 @@ import { stopEvent, stopPropagation } from './events'
 export const validNumber = test(/^-?[0-9]\d*[,.]?\d*$/)
 
 export const codeIn = (...keys: string[]) => propSatisfies(included(keys), 'code')
+
 export const keyIn = (...keys: string[]) => propSatisfies(included(keys), 'key')
+
 export const withShift: Fn<boolean> = propEq('shiftKey', true)
+
 export const withCtrl: Fn<boolean> = both(
   propEq<string>('ctrlKey', true),
   propEq<string>('shiftKey', false)
 )
+
 export const withoutModkey: Fn<boolean> = both(
   propEq<string>('ctrlKey', false),
   propEq<string>('shiftKey', false)
 )
+
 export const spaceOrEnter = either(codeIn('Space'), keyIn('Enter'))
 
+/** Collection of often used event.target related operations **/
 export const target = {
   value: pathOr('', ['target', 'value']),
   valueIs: <T>(val: T) => pathEq(['target', 'value'], val),
@@ -80,6 +86,7 @@ type KEvent = KeyboardEvent<HTMLInputElement>
 
 const noOp = (_e: KEvent) => void 0
 
+/** reject non-digit characters **/
 export const onlyNumbers = cond<[KEvent], void>([
   [allPass([withShift, withCtrl, codeIn('ArrowLeft', 'ArrowRight')]), stopPropagation],
   [pipe(futureValue, isEmpty), noOp],
@@ -89,10 +96,7 @@ export const onlyNumbers = cond<[KEvent], void>([
 
 const clipboard = (e: ClipboardEvent<HTMLInputElement>) => e.clipboardData?.getData('Text')
 
-export const futurePasteResult: (ev: ClipboardEvent<HTMLInputElement>) => string = cond<
-  any[],
-  string
->([
+export const futurePasteResult = cond<[ClipboardEvent<HTMLInputElement>], string>([
   [
     both(target.hasSelection, pipe(clipboard, isNotNil)),
     converge(replaceSlice, [target.caretPosition, target.selectionEnd, clipboard, target.value])

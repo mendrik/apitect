@@ -75,14 +75,7 @@ export const NumberEditor = ({ value, node, tag }: EditorProps<NumberValue>) => 
   return (
     <ConditionalWrapper condition={hasSteps} wrapper={asStepper}>
       {views.isDisplayView() ? (
-        <NumberText
-          tabIndex={0}
-          onKeyDown={keyMap}
-          onFocus={views.editView}
-          style={{
-            paddingLeft: hasSteps ? 0 : 3
-          }}
-        >
+        <NumberText tabIndex={0} onFocus={views.editView} style={{ paddingLeft: hasSteps ? 0 : 3 }}>
           {val && (
             <>
               {numberFormat(val)}
