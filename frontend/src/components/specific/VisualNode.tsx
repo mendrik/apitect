@@ -14,6 +14,7 @@ import { matches } from '~shared/utils/ramda'
 import { $openNodes } from '~stores/$openNodesStore'
 import { $selectedNode } from '~stores/$selectedNode'
 
+import { canHaveChildrenNodes } from '../../constants'
 import { openNodeState, selectNode } from '../../events/tree'
 import { selectValue } from '../../events/values'
 import { Draggables } from '../../utils/draggables'
@@ -73,20 +74,21 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
 
   const hasChildren = isNotNilOrEmpty(node.children)
   const isRoot = depth === 0
-  const isDraggedDescendent =
+  const isDragDescendent = (node: TreeNode<Node>) =>
     includes(
       active?.id,
       node.pathToRoot().map(n => n.id)
     ) ?? false
+  const canDrop = (node: TreeNode<Node>) =>
+    canHaveChildrenNodes.includes(node.parent!.extract().nodeType)
 
-  // prettier-ignore
-  const possibleDropLevels = cond<[boolean, boolean, boolean], number[]>([
-    [matches(isFalse, T, T), () => []],
-    [matches(T, isTrue, T), () => []],
-    [matches(T, T, isFalse), () => range(0, depth + 1)],
-    [matches(T, T, isTrue), () => [depth + 1]],
+  const possibleDropLevels = cond<[boolean, TreeNode<Node>], number[]>([
+    [matches(isFalse, T), () => []],
+    [matches(isTrue, isDragDescendent), () => []],
+    [matches(isTrue, prop('isLast')), () => range(0, depth + 1)],
+    [matches(isTrue, canDrop), () => [depth + 1]],
     [T, () => []]
-  ])(isOver, isDraggedDescendent, hasChildren)
+  ])(isOver, node)
 
   const style = {
     transform: CSS.Transform.toString(transform)

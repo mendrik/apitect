@@ -4,6 +4,7 @@ import {
   defaultTo,
   equals,
   findIndex,
+  last,
   map,
   omit,
   pipe,
@@ -188,6 +189,10 @@ export class TreeNode<T> {
 
   get root(): TreeNode<T> {
     return this.$pathToRoot().pop()!
+  }
+
+  get isLast(): boolean {
+    return this.parent ? last(this.parent.children) === this : true
   }
 
   next = (
