@@ -1,8 +1,8 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import clsx from 'clsx'
-import { cond, includes, juxt, pathEq, prop, range, T, unless } from 'ramda'
-import { isFalse, isTrue, mapIndexed } from 'ramda-adjunct'
+import { cond, F, juxt, pathEq, prop, T, unless } from 'ramda'
+import { isFalse, isNotNil, isTrue, mapIndexed } from 'ramda-adjunct'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { TreeNode } from '~shared/algebraic/treeNode'
@@ -49,6 +49,7 @@ const NodeGrid = styled.div`
 
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
+const N = () => null
 
 export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) => {
   const { id } = node.value
@@ -74,20 +75,20 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
 
   const isRoot = depth === 0
   const selfHover = active?.id === id
-  const isDragDescendent = (node: TreeNode<Node>) =>
-    includes(
-      active?.id,
-      node.pathToRoot().map(n => n.id)
-    ) ?? false
-  const canDrop = (node: TreeNode<Node>) =>
-    canHaveChildrenNodes.includes(node.parent!.extract().nodeType)
 
-  const possibleDropLevels = cond<[boolean, TreeNode<Node>], number[]>([
-    [matches(isFalse, T), () => []],
-    [matches(isTrue, isDragDescendent), () => []],
-    [matches(isTrue, prop('isLast')), () => range(0, depth)],
-    [matches(isTrue, canDrop), () => [depth - 1]],
-    [T, () => []]
+  const isLast = (node: TreeNode<Node>) => node.isLast
+
+  const parentOk = (node: TreeNode<Node>) =>
+    canHaveChildrenNodes.includes(node.parent!.value.nodeType)
+
+  const isParent = (node: TreeNode<Node>) => canHaveChildrenNodes.includes(node.value.nodeType)
+
+  const canMoveLeft = cond<[boolean, TreeNode<Node>], boolean | null>([
+    [matches(isFalse, T), N],
+    [matches(isTrue, isParent), F],
+    [matches(isTrue, isLast), T],
+    [matches(isTrue, parentOk), F],
+    [T, N]
   ])(isOver, node)
 
   const style = {
@@ -117,7 +118,7 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
           <NodeFlavorIcon node={node} isDragGhost={isDragGhost} />
         </NodeGrid>
       )}
-      {possibleDropLevels.length > 0 && <DropMarker possibleDropLevels={possibleDropLevels} />}
+      {isNotNil(canMoveLeft) && <DropMarker depth={depth - 1} canMoveLeft={canMoveLeft} />}
       {open && (
         <NotEmptyList list={node.children} as={isRoot && !isDragGhost ? RootWrap : ListWrap}>
           {mapIndexed(node => (
