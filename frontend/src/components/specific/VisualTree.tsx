@@ -1,11 +1,4 @@
-import {
-  DndContext,
-  DragOverlay,
-  MeasuringStrategy,
-  MouseSensor,
-  useSensor,
-  useSensors
-} from '@dnd-kit/core'
+import { DndContext, DragOverlay, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { DragStartEvent } from '@dnd-kit/core/dist/types'
 import { useStore } from 'effector-react'
 import { always, both, cond, propEq } from 'ramda'
@@ -31,10 +24,6 @@ import { focus } from '../../utils/focus'
 import { preventDefault as pd } from '../../utils/preventDefault'
 import { VisualNode } from './VisualNode'
 import { verticalRowStrategy } from './verticalRowStrategy'
-
-const measuring = {
-  droppable: { strategy: MeasuringStrategy.Always }
-}
 
 export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
@@ -94,7 +83,6 @@ export const VisualTree = () => {
         onDragStart={handleNodeDrag}
         sensors={sensors}
         collisionDetection={verticalRowStrategy}
-        measuring={measuring}
         autoScroll
       >
         <VisualNode node={root} />

@@ -132,7 +132,7 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
             <div />
           )}
           <div
-            className={clsx('text-truncate', { thin: !hasChildren })}
+            className={clsx('text-truncate position-relative', { thin: !hasChildren })}
             title={name}
             onMouseDown={() => {
               if (document.activeElement?.id === id) {

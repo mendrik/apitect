@@ -1,5 +1,6 @@
 import { ClientRect, CollisionDetection } from '@dnd-kit/core'
-import { CollisionDescriptor } from '@dnd-kit/core/dist/utilities/algorithms/types'
+import type { Coordinates } from '@dnd-kit/core/dist/types'
+import type { CollisionDescriptor } from '@dnd-kit/core/dist/utilities/algorithms/types'
 
 type Ord<T> = (a: T, b: T) => number
 
@@ -8,14 +9,13 @@ const sortCollisionsDesc: Ord<CollisionDescriptor> = (
   { data: { value: b } }
 ) => a - b
 
-const getClosestRow = (entry: ClientRect, target: ClientRect): number => {
+const getClosestRow = (entry: ClientRect, pointer: Coordinates): number => {
   const eCenter = entry.top + (entry.height >> 1)
-  const tCenter = target.top + (target.height >> 1)
-  return Math.abs(eCenter - tCenter)
+  return Math.abs(eCenter - pointer.y)
 }
 
 export const verticalRowStrategy: CollisionDetection = ({
-  collisionRect,
+  pointerCoordinates: pointer,
   droppableRects,
   droppableContainers
 }) => {
@@ -25,8 +25,8 @@ export const verticalRowStrategy: CollisionDetection = ({
     const { id } = droppableContainer
     const rect = droppableRects.get(id)
 
-    if (rect) {
-      const distance = getClosestRow(rect, collisionRect)
+    if (rect && pointer) {
+      const distance = getClosestRow(rect, pointer)
       collisions.push({
         id,
         data: { droppableContainer, value: distance }
