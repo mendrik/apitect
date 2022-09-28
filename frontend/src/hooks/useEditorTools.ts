@@ -6,7 +6,7 @@ import { Node } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { Maybe } from '~shared/types/generic'
 
-import { valueDeleteFx, valueUpdateFx } from '../../events/values'
+import { valueDeleteFx, valueUpdateFx } from '../events/values'
 
 const emptyToUndefined = <T extends Value['value'] | undefined>(str: T): T | undefined =>
   typeof str === 'string' && /^\s*$/.test(str) ? undefined : (str as T)

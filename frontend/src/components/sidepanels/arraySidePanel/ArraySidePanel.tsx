@@ -6,11 +6,11 @@ import { $arrayItems, $selectedArrayItem } from '~stores/$arrayItemsStore'
 import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $currentTag } from '~stores/$currentTag'
 
-import { detailsPanelSize, navbarHeight } from '../../constants'
-import { Palette } from '../../css/colors'
-import { Icon } from '../generic/Icon'
-import { WithTooltip } from '../generic/WithTooltip'
-import { RenderedItem } from './components/RenderedItem'
+import { detailsPanelSize, navbarHeight } from '../../../constants'
+import { Palette } from '../../../css/colors'
+import { Icon } from '../../generic/Icon'
+import { WithTooltip } from '../../generic/WithTooltip'
+import { RenderedItem } from './RenderedItem'
 
 const ArraySidePanelSx = styled.div`
   min-width: ${detailsPanelSize}px;
