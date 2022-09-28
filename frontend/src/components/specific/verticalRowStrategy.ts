@@ -1,6 +1,7 @@
 import { ClientRect, CollisionDetection } from '@dnd-kit/core'
 import type { Coordinates } from '@dnd-kit/core/dist/types'
 import type { CollisionDescriptor } from '@dnd-kit/core/dist/utilities/algorithms/types'
+import { max } from 'ramda'
 
 type Ord<T> = (a: T, b: T) => number
 
@@ -29,7 +30,7 @@ export const verticalRowStrategy: CollisionDetection = ({
       const distance = getClosestRow(rect, pointer)
       collisions.push({
         id,
-        data: { droppableContainer, value: distance }
+        data: { droppableContainer, value: distance, indent: max(pointer.x - rect.left, 0) }
       })
     }
   }

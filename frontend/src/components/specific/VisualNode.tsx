@@ -86,8 +86,8 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
   const possibleDropLevels = cond<[boolean, TreeNode<Node>], number[]>([
     [matches(isFalse, T), () => []],
     [matches(isTrue, isDragDescendent), () => []],
-    [matches(isTrue, prop('isLast')), () => range(0, depth + 1)],
-    [matches(isTrue, canDrop), () => [depth + 1]],
+    [matches(isTrue, prop('isLast')), () => range(0, depth)],
+    [matches(isTrue, canDrop), () => [depth - 1]],
     [T, () => []]
   ])(isOver, node)
 
@@ -148,7 +148,7 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
           )}
         </NodeGrid>
       )}
-      <DropMarker possibleDropLevels={possibleDropLevels} />
+      {possibleDropLevels.length > 0 && <DropMarker possibleDropLevels={possibleDropLevels} />}
       {open && (
         <NotEmptyList list={node.children} as={isRoot && !isDragGhost ? RootWrap : ListWrap}>
           {mapIndexed(node => (
