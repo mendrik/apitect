@@ -74,6 +74,7 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
 
   const hasChildren = isNotNilOrEmpty(node.children)
   const isRoot = depth === 0
+  const selfHover = active?.id === id
   const isDragDescendent = (node: TreeNode<Node>) =>
     includes(
       active?.id,
@@ -97,7 +98,7 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
   const dndKit = isDragGhost
     ? {}
     : {
-        id: node.value.id,
+        id,
         ...attributes,
         ...listeners
       }
@@ -107,8 +108,10 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
     selectNode(node)
   }
 
-  return (
-    <>
+  return selfHover ? (
+    <div style={style} />
+  ) : (
+    <div style={style}>
       {(!isRoot || isDragGhost) && (
         <NodeGrid
           onFocus={onFocus}
@@ -149,12 +152,12 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
       {open && (
         <NotEmptyList list={node.children} as={isRoot && !isDragGhost ? RootWrap : ListWrap}>
           {mapIndexed(node => (
-            <li key={id}>
+            <li key={node.value.id}>
               <VisualNode node={node} depth={depth + 1} isDragGhost={isDragGhost} />
             </li>
           ))}
         </NotEmptyList>
       )}
-    </>
+    </div>
   )
 }
