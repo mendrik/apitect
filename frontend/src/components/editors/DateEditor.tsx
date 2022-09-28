@@ -14,7 +14,7 @@ import { $nodeSettings } from '~stores/$nodeSettingsStore'
 import { Palette } from '../../css/colors'
 import { codeIn, target } from '../../utils/eventUtils'
 import { StyledTuple } from '../generic/Tuple'
-import { EditorProps } from '../specific/VisualValue'
+import { EditorProps } from '../specific/value/VisualValue'
 
 export const DateInput = styled.input`
   padding-left: 3px;

@@ -13,7 +13,7 @@ import { whenDefined } from '../../utils/eventUtils'
 import { HGrid } from '../generic/HGrid'
 import { SimpleIcon } from '../generic/SimpleIcon'
 import { Scale, Tuple } from '../generic/Tuple'
-import { EditorProps } from '../specific/VisualValue'
+import { EditorProps } from '../specific/value/VisualValue'
 
 const EditorSx = styled.div`
   border-radius: 3px;

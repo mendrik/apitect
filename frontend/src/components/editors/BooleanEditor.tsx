@@ -5,7 +5,7 @@ import { BooleanValue } from '~shared/types/domain/values/booleanValue'
 
 import { valueUpdateFx } from '../../events/values'
 import { Placeholder } from '../generic/Placeholder'
-import { EditorProps } from '../specific/VisualValue'
+import { EditorProps } from '../specific/value/VisualValue'
 
 export const BooleanEditor = ({ value, node, tag, loading }: EditorProps<BooleanValue>) => {
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) =>

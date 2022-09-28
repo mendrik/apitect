@@ -10,8 +10,8 @@ import { ColumnHeader } from './specific/ColumnHeader'
 import { ProjectTreeHeader } from './specific/ProjectTreeHeader'
 import { SidePanel } from './specific/SidePanel'
 import { Toasts } from './specific/Toasts'
-import { VisualTree } from './specific/VisualTree'
-import { VisualValueList } from './specific/VisualValueList'
+import { VisualTree } from './specific/tree/VisualTree'
+import { VisualValueList } from './specific/value/VisualValueList'
 
 const AppFrame = styled.div`
   width: 100vw;

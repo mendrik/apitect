@@ -10,7 +10,7 @@ import { mapByProperty } from '~shared/utils/ramda'
 import { $valuesStore } from '~stores/$valuesStore'
 import { $visibleNodes } from '~stores/$visibileNodes'
 
-import { valueListFx } from '../../events/values'
+import { valueListFx } from '../../../events/values'
 import { VisualValue } from './VisualValue'
 
 type OwnProps = {

@@ -18,7 +18,7 @@ import { Autogrow } from '../generic/Autogrow'
 import { ConditionalWrapper } from '../generic/ConditionalWrapper'
 import { HGrid } from '../generic/HGrid'
 import { SimpleIcon } from '../generic/SimpleIcon'
-import { EditorProps } from '../specific/VisualValue'
+import { EditorProps } from '../specific/value/VisualValue'
 
 export const NumberInput = styled.input`
   margin-left: -3px;

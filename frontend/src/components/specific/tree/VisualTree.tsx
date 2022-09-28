@@ -18,12 +18,12 @@ import {
   nodeSettingsFx,
   openNodeState,
   selectNode
-} from '../../events/tree'
-import { codeIn, keyIn, withoutModkey } from '../../utils/eventUtils'
-import { focus } from '../../utils/focus'
-import { preventDefault as pd } from '../../utils/preventDefault'
-import { VisualNode } from './VisualNode'
-import { verticalRowStrategy } from './verticalRowStrategy'
+} from '../../../events/tree'
+import { codeIn, keyIn, withoutModkey } from '../../../utils/eventUtils'
+import { focus } from '../../../utils/focus'
+import { preventDefault as pd } from '../../../utils/preventDefault'
+import { VisualNode } from '../node/VisualNode'
+import { verticalRowStrategy } from '../utils/verticalRowStrategy'
 
 export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)

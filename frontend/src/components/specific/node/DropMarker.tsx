@@ -3,7 +3,7 @@ import { pathOr } from 'ramda'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { treeIndent } from '../../constants'
+import { treeIndent } from '../../../constants'
 
 type OwnProps = {
   possibleDropLevels: number[]

@@ -15,7 +15,7 @@ import { $nodeSettings } from '~stores/$nodeSettingsStore'
 import { Palette } from '../../css/colors'
 import { codeIn, target } from '../../utils/eventUtils'
 import { stopPropagation } from '../../utils/events'
-import { EditorProps } from '../specific/VisualValue'
+import { EditorProps } from '../specific/value/VisualValue'
 
 const SelectSx = styled.select`
   margin-left: -2px;

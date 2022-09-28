@@ -6,13 +6,13 @@ import { NodeType } from '~shared/types/domain/nodeType'
 import { Value } from '~shared/types/domain/values/value'
 import { $mappedNodesStore } from '~stores/$treeStore'
 
-import { selectValue } from '../../events/values'
-import { ArrayEditor } from '../editors/ArrayEditor'
-import { BooleanEditor } from '../editors/BooleanEditor'
-import { DateEditor } from '../editors/DateEditor'
-import { EnumEditor } from '../editors/EnumEditor'
-import { NumberEditor } from '../editors/NumberEditor'
-import { StringEditor } from '../editors/StringEditor'
+import { selectValue } from '../../../events/values'
+import { ArrayEditor } from '../../editors/ArrayEditor'
+import { BooleanEditor } from '../../editors/BooleanEditor'
+import { DateEditor } from '../../editors/DateEditor'
+import { EnumEditor } from '../../editors/EnumEditor'
+import { NumberEditor } from '../../editors/NumberEditor'
+import { StringEditor } from '../../editors/StringEditor'
 
 type OwnProps = {
   nodeId: NodeId
