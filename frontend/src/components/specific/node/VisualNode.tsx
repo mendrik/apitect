@@ -95,7 +95,6 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
 
   const canDrop =
     sameArrayNode() &&
-    !lastArrayNode() &&
     cond<[boolean, TreeNode<Node>], boolean>([
       [matches(isFalse, T), F],
       [matches(isTrue, parentOk), T],
@@ -130,7 +129,7 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
           <NodeFlavorIcon node={node} isDragGhost={isDragGhost} />
         </NodeGrid>
       )}
-      {canDrop && <DropMarker depth={depth} />}
+      {canDrop && <DropMarker node={node} depth={depth} />}
       {open && (
         <NotEmptyList list={node.children} as={isRoot && !isDragGhost ? RootWrap : ListWrap}>
           {mapIndexed(node => (
