@@ -19,7 +19,9 @@ export const NodeName = ({ node, activatorRef, isActive, children }: Jsx<OwnProp
 
   return (
     <div
-      className={clsx('text-truncate position-relative', { thin: !hasChildren })}
+      className={clsx('text-truncate position-relative d-flex flex-row align-items-center', {
+        thin: !hasChildren
+      })}
       title={name}
       onMouseDown={() => {
         if (document.activeElement?.id === id) {
@@ -28,7 +30,7 @@ export const NodeName = ({ node, activatorRef, isActive, children }: Jsx<OwnProp
       }}
       ref={activatorRef}
     >
-      {name}
+      <span>{name}</span>
       {children}
     </div>
   )

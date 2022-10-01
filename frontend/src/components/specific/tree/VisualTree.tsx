@@ -61,7 +61,7 @@ export const VisualTree = () => {
         <DragOverlay>
           {draggedNode && (
             <div className="bg-white bg-opacity-75 border border-1 rounded border-dotted">
-              <VisualNode node={draggedNode} isDragGhost />
+              <VisualNode node={draggedNode} />
             </div>
           )}
         </DragOverlay>

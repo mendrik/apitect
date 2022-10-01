@@ -16,14 +16,15 @@ import { selectNode } from '../../../events/tree'
 import { selectValue } from '../../../events/values'
 import { Draggables } from '../../../utils/draggables'
 import { NotEmptyList } from '../../generic/NotEmptyList'
+import { NodeChildCount } from './NodeChildCount'
 import { NodeFlavorIcon } from './NodeFlavorIcon'
 import { NodeIcon } from './NodeIcon'
 import { NodeName } from './NodeName'
+import { useIsDragged } from './useIsDragged'
 
 type OwnProps = {
   node: TreeNode<Node>
   depth?: number
-  isDragGhost?: boolean
 }
 
 const Ol = styled.ol`
@@ -48,7 +49,7 @@ const NodeGrid = styled.div`
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
-export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) => {
+export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   const { id } = node.value
   const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
   const open = useStoreMap($openNodes, prop(id))
@@ -61,21 +62,28 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
     transform,
     setNodeRef: dragRef,
     setActivatorNodeRef: activatorRef
-  } = useDraggable({ id, data: { type: Draggables.TREE_NODE, arrayNode } })
+  } = useDraggable({ id, data: { node, type: Draggables.TREE_NODE, arrayNode } })
 
   const { setNodeRef: dropRef } = useDroppable({
     id,
-    data: { type: Draggables.TREE_NODE, arrayNode }
+    data: { type: Draggables.TREE_NODE, arrayNode, node }
   })
 
+  const beingDragged = useIsDragged(node)
   const isRoot = depth === 0
-  const beingDragged = active?.id === id
+
+  if (active?.id === id) {
+    // don't render current dragged node
+    return null
+  }
+
+  const renderSelf = depth !== 0 || beingDragged
 
   const style = {
     transform: CSS.Transform.toString(transform)
   }
 
-  const dndKit = isDragGhost
+  const dndKit = beingDragged
     ? {}
     : { ref: juxt([dragRef, dropRef]), id, ...attributes, ...listeners }
 
@@ -84,24 +92,26 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
     selectNode(node)
   }
 
-  return beingDragged ? null : (
+  return (
     <div style={style}>
-      {(!isRoot || isDragGhost) && (
+      {renderSelf && (
         <NodeGrid
           onFocus={onFocus}
           className={clsx('gap-1', { selectedNode: isActive })}
           {...dndKit}
         >
-          <NodeIcon node={node} isDragGhost={isDragGhost} />
-          <NodeName node={node} activatorRef={activatorRef} isActive={isActive} />
-          <NodeFlavorIcon node={node} isDragGhost={isDragGhost} />
+          <NodeIcon node={node} />
+          <NodeName node={node} activatorRef={activatorRef} isActive={isActive}>
+            <NodeChildCount node={node} />
+          </NodeName>
+          <NodeFlavorIcon node={node} />
         </NodeGrid>
       )}
-      {open && (
-        <NotEmptyList list={node.children} as={isRoot && !isDragGhost ? RootWrap : ListWrap}>
+      {!beingDragged && open && (
+        <NotEmptyList list={node.children} as={isRoot && !beingDragged ? RootWrap : ListWrap}>
           {mapIndexed(node => (
             <li key={node.value.id}>
-              <VisualNode node={node} depth={depth + 1} isDragGhost={isDragGhost} />
+              <VisualNode node={node} depth={depth + 1} />
             </li>
           ))}
         </NotEmptyList>

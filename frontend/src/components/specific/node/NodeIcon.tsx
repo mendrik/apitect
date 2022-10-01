@@ -1,6 +1,6 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { prop, unless } from 'ramda'
+import { prop } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { TreeNode } from '~shared/algebraic/treeNode'
@@ -12,20 +12,18 @@ import { openNodeState } from '../../../events/tree'
 import { Icon } from '../../generic/Icon'
 
 type OwnProps = {
-  isDragGhost: boolean
   node: TreeNode<Node>
 }
 
-export const NodeIcon = ({ isDragGhost, node }: OwnProps) => {
+export const NodeIcon = ({ node }: OwnProps) => {
   const open = useStoreMap($openNodes, prop(node.value.id))
   const nodeType = node.value.nodeType
   const hasChildren = isNotNilOrEmpty(node.children)
-  const isGhost = () => isDragGhost
 
   return hasChildren ? (
     <Icon
       icon={IconChevronRight}
-      onClick={unless(isGhost, () => openNodeState([node, !open]))}
+      onClick={() => openNodeState([node, !open])}
       iconClasses={clsx('rotate', { deg90: open })}
       size={14}
     />
