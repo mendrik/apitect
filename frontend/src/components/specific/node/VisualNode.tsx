@@ -9,6 +9,7 @@ import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
 import { Jsx } from '~shared/types/generic'
 import { matches } from '~shared/utils/ramda'
+import { getArrayNode } from '~stores/$arrayStores'
 import { $openNodes } from '~stores/$openNodesStore'
 import { $selectedNode } from '~stores/$selectedNode'
 
@@ -49,12 +50,12 @@ const NodeGrid = styled.div`
 
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
-const N = () => null
 
 export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) => {
   const { id } = node.value
   const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
   const open = useStoreMap($openNodes, prop(id))
+  const arrayNodeId = getArrayNode(node)?.value.id ?? ''
 
   const {
     active,
@@ -65,12 +66,12 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
     setActivatorNodeRef: activatorRef
   } = useDraggable({
     id,
-    data: [Draggables.TREE_NODE]
+    data: [Draggables.TREE_NODE + arrayNodeId]
   })
 
   const { setNodeRef: dropRef, isOver } = useDroppable({
     id,
-    data: [Draggables.TREE_NODE]
+    data: [Draggables.TREE_NODE + arrayNodeId]
   })
 
   const isRoot = depth === 0

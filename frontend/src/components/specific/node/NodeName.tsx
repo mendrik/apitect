@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
+import { Jsx } from '~shared/types/generic'
 
 import { selectNode } from '../../../events/tree'
 
@@ -11,7 +12,7 @@ type OwnProps = {
   isActive: boolean
 }
 
-export const NodeName = ({ node, activatorRef, isActive }: OwnProps) => {
+export const NodeName = ({ node, activatorRef, isActive, children }: Jsx<OwnProps>) => {
   const id = node.value.id
   const hasChildren = isNotNilOrEmpty(node.children)
   const name = node.value.name
@@ -28,6 +29,7 @@ export const NodeName = ({ node, activatorRef, isActive }: OwnProps) => {
       ref={activatorRef}
     >
       {name}
+      {children}
     </div>
   )
 }
