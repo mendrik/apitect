@@ -4,6 +4,7 @@ import {
   defaultTo,
   equals,
   findIndex,
+  head,
   last,
   map,
   omit,
@@ -193,6 +194,10 @@ export class TreeNode<T> {
 
   get isLast(): boolean {
     return this.parent ? last(this.parent.children) === this : true
+  }
+
+  get isFirst(): boolean {
+    return this.parent ? head(this.parent.children) === this : true
   }
 
   next = (

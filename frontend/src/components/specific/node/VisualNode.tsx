@@ -2,7 +2,7 @@ import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import clsx from 'clsx'
 import { cond, F, juxt, pathEq, prop, T, unless } from 'ramda'
-import { isFalse, isNotNil, isTrue, mapIndexed } from 'ramda-adjunct'
+import { isFalse, isTrue, mapIndexed } from 'ramda-adjunct'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { TreeNode } from '~shared/algebraic/treeNode'
@@ -76,19 +76,13 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
   const isRoot = depth === 0
   const selfHover = active?.id === id
 
-  const isLast = (node: TreeNode<Node>) => node.isLast
-
   const parentOk = (node: TreeNode<Node>) =>
     canHaveChildrenNodes.includes(node.parent!.value.nodeType)
 
-  const isParent = (node: TreeNode<Node>) => canHaveChildrenNodes.includes(node.value.nodeType)
-
-  const canMoveLeft = cond<[boolean, TreeNode<Node>], boolean | null>([
-    [matches(isFalse, T), N],
-    [matches(isTrue, isParent), F],
-    [matches(isTrue, isLast), T],
-    [matches(isTrue, parentOk), F],
-    [T, N]
+  const canDrop = cond<[boolean, TreeNode<Node>], boolean | null>([
+    [matches(isFalse, T), F],
+    [matches(isTrue, parentOk), T],
+    [T, F]
   ])(isOver, node)
 
   const style = {
@@ -118,7 +112,7 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
           <NodeFlavorIcon node={node} isDragGhost={isDragGhost} />
         </NodeGrid>
       )}
-      {isNotNil(canMoveLeft) && <DropMarker depth={depth - 1} canMoveLeft={canMoveLeft} />}
+      {canDrop && <DropMarker depth={depth} />}
       {open && (
         <NotEmptyList list={node.children} as={isRoot && !isDragGhost ? RootWrap : ListWrap}>
           {mapIndexed(node => (
