@@ -1,6 +1,6 @@
 export enum Draggables {
   COLUMN_HEADER = 'COLUMN_HEADER',
-  TREE_NODE = 'COLUMN_HEADER'
+  TREE_NODE = 'TREE_NODE'
 }
 
 type HeaderDraggable = {

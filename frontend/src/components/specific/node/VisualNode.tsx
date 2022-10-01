@@ -1,14 +1,15 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import clsx from 'clsx'
-import { cond, F, juxt, pathEq, prop, T, unless } from 'ramda'
-import { isFalse, isTrue, mapIndexed } from 'ramda-adjunct'
+import { cond, eqBy, F, juxt, path, pathEq, prop, T, unless } from 'ramda'
+import { isFalse, isNotNil, isTrue, mapIndexed } from 'ramda-adjunct'
 import styled from 'styled-components'
 import { useStoreMap } from '~hooks/useStoreMap'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
 import { Jsx } from '~shared/types/generic'
 import { matches } from '~shared/utils/ramda'
+import { withoutBlanks as λ } from '~shared/utils/strings'
 import { getArrayNode } from '~stores/$arrayStores'
 import { $openNodes } from '~stores/$openNodesStore'
 import { $selectedNode } from '~stores/$selectedNode'
@@ -50,12 +51,14 @@ const NodeGrid = styled.div`
 
 const RootWrap = ({ children }: Jsx) => <Ol>{children}</Ol>
 const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
+export const sameType = eqBy(path(['data', 'current', 'type']))
 
 export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) => {
   const { id } = node.value
   const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
   const open = useStoreMap($openNodes, prop(id))
-  const arrayNodeId = getArrayNode(node)?.value.id ?? ''
+  const arrayNode = getArrayNode(node)
+  const arrayNodeId = λ`_${arrayNode?.value.id}`
 
   const {
     active,
@@ -66,12 +69,19 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
     setActivatorNodeRef: activatorRef
   } = useDraggable({
     id,
-    data: [Draggables.TREE_NODE + arrayNodeId]
+    data: { type: Draggables.TREE_NODE + arrayNodeId }
   })
 
-  const { setNodeRef: dropRef, isOver } = useDroppable({
+  const {
+    setNodeRef: dropRef,
+    isOver,
+    over
+  } = useDroppable({
     id,
-    data: [Draggables.TREE_NODE + arrayNodeId]
+    data: {
+      type: Draggables.TREE_NODE + arrayNodeId,
+      isLastArrayNode: node.isLast && isNotNil(arrayNode)
+    }
   })
 
   const isRoot = depth === 0
@@ -80,11 +90,18 @@ export const VisualNode = ({ depth = 0, node, isDragGhost = false }: OwnProps) =
   const parentOk = (node: TreeNode<Node>) =>
     canHaveChildrenNodes.includes(node.parent!.value.nodeType)
 
-  const canDrop = cond<[boolean, TreeNode<Node>], boolean | null>([
-    [matches(isFalse, T), F],
-    [matches(isTrue, parentOk), T],
-    [T, F]
-  ])(isOver, node)
+  const sameArrayNode = () => active != null && over != null && sameType(over, active)
+  const lastArrayNode = () => over != null && path(['data', 'current', 'isLastArrayNode'], over)
+
+  const canDrop =
+    sameArrayNode() &&
+    !lastArrayNode() &&
+    cond<[boolean, TreeNode<Node>], boolean>([
+      [matches(isFalse, T), F],
+      [matches(isTrue, parentOk), T],
+      [matches(isTrue), F],
+      [T, F]
+    ])(isOver, node)
 
   const style = {
     transform: CSS.Transform.toString(transform)
