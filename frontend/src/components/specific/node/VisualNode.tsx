@@ -60,9 +60,12 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
     attributes,
     listeners,
     transform,
+    over,
     setNodeRef: dragRef,
     setActivatorNodeRef: activatorRef
   } = useDraggable({ id, data: { node, type: Draggables.TREE_NODE, arrayNode } })
+
+  const disabled = over?.id !== id
 
   const { setNodeRef: dropRef } = useDroppable({
     id,
@@ -97,12 +100,15 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
       {renderSelf && (
         <NodeGrid
           onFocus={onFocus}
-          className={clsx('gap-1', { selectedNode: isActive })}
+          className={clsx('gap-1', {
+            selectedNode: isActive,
+            'opacity-25': disabled
+          })}
           {...dndKit}
         >
           <NodeIcon node={node} />
           <NodeName node={node} activatorRef={activatorRef} isActive={isActive}>
-            <NodeChildCount node={node} />
+            <NodeChildCount node={node} /> {disabled ? 0 : 1}
           </NodeName>
           <NodeFlavorIcon node={node} />
         </NodeGrid>
