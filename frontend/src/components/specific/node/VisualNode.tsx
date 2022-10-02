@@ -65,7 +65,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
     setActivatorNodeRef: activatorRef
   } = useDraggable({ id, data: { node, type: Draggables.TREE_NODE, arrayNode } })
 
-  const disabled = over?.id !== id
+  const disabled = false // over?.id !== id
 
   const { setNodeRef: dropRef } = useDroppable({
     id,
@@ -108,7 +108,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
         >
           <NodeIcon node={node} />
           <NodeName node={node} activatorRef={activatorRef} isActive={isActive}>
-            <NodeChildCount node={node} /> {disabled ? 0 : 1}
+            <NodeChildCount node={node} />
           </NodeName>
           <NodeFlavorIcon node={node} />
         </NodeGrid>
