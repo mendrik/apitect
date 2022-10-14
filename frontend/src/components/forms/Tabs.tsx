@@ -9,6 +9,7 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { FocusNavigator } from '../generic/FocusNavigator'
 import { OwnProps as TabProps } from './Tab'
 
 type TabContext = {
@@ -29,20 +30,22 @@ export const Tabs = ({ initialTab = 0, children, onTabClick, ...props }: OwnProp
   return (
     <div {...props}>
       <tabContext.Provider value={{ activeTab }}>
-        <ul className="nav nav-tabs mb-4" onClick={onTabClick}>
-          {Children.map(children, (child: ReactElement, i) => (
-            <li className="nav-item">
-              <button
-                type="button"
-                className={clsx('nav-link', { active: i === activeTab })}
-                aria-current="page"
-                onClick={() => setTab(i)}
-              >
-                {t(child.props.title)}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <FocusNavigator rotated ctrlKey={false} columns={Children.count(children)}>
+          <ul className="nav nav-tabs mb-4" onClick={onTabClick}>
+            {Children.map(children, (child: ReactElement, i) => (
+              <li className="nav-item">
+                <button
+                  type="button"
+                  className={clsx('nav-link', { active: i === activeTab })}
+                  aria-current="page"
+                  onClick={() => setTab(i)}
+                >
+                  {t(child.props.title)}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </FocusNavigator>
         {children[activeTab]}
       </tabContext.Provider>
     </div>
