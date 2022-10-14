@@ -1,7 +1,7 @@
+import { useStoreMap } from 'effector-react'
 import { prop } from 'ramda'
 import { Badge } from 'react-bootstrap'
 import styled from 'styled-components'
-import { useStoreMap } from '~hooks/useStoreMap'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
 import { $openNodes } from '~stores/$openNodesStore'

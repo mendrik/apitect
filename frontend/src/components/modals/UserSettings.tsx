@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { FieldSet } from '~forms/FieldSet'
 import { SocketForm } from '~forms/SocketForm'
-import { useLocation } from '~hooks/useLocation'
+import { useModal } from '~hooks/useModal'
 import { UserSettings as Settings, ZUserSettings } from '~shared/types/forms/userSettings'
 import { $tagStore } from '~stores/$tagStore'
 
@@ -12,7 +12,7 @@ import { updateUserSettingsFx } from '../../events/user'
 import { ModalFC } from '../ModalStub'
 
 const UserSettings: ModalFC = ({ close }) => {
-  const { state } = useLocation<Settings>()
+  const state = useModal<Settings>()
   const { tags } = useStore($tagStore)
   const form = useForm<Settings>({
     resolver: zodResolver(ZUserSettings),

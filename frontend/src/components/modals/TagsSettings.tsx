@@ -5,14 +5,14 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
-import { useLocation } from '~hooks/useLocation'
+import { useModal } from '~hooks/useModal'
 import { TagsSettings as Settings, ZTagsSettings } from '~shared/types/forms/tagsSettings'
 
 import { updateTagsSettingsFx } from '../../events/tagSettings'
 import { ModalFC } from '../ModalStub'
 
 const TagsSettings: ModalFC = ({ close }) => {
-  const { state } = useLocation<Settings>()
+  const state = useModal<Settings>()
   const { t } = useTranslation()
 
   const form = useForm<Settings>({

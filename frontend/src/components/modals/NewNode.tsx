@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { SocketForm } from '~forms/SocketForm'
 import { TextInput } from '~forms/TextInput'
-import { useLocation } from '~hooks/useLocation'
+import { useModal } from '~hooks/useModal'
 import { Node } from '~shared/types/domain/node'
 import { iconMap, NodeType } from '~shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '~shared/types/forms/newNode'
@@ -63,7 +63,7 @@ export type SelectedNode = {
 const NewNode: ModalFC = ({ close }) => {
   const canAddArray = useStore($selectedArrayNode) == null
   const canCreateNode = useStore($canCreateNode)
-  const { state } = useLocation<SelectedNode>()
+  const state = useModal<SelectedNode>()
   const selectedNode = state?.selectedNode
   const form = useForm<NewNodeType>({
     resolver: zodResolver(TNewNode),

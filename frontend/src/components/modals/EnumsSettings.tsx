@@ -8,7 +8,7 @@ import { array, object, string, TypeOf } from 'zod'
 import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
 import { TextInput } from '~forms/TextInput'
-import { useLocation } from '~hooks/useLocation'
+import { useModal } from '~hooks/useModal'
 import { lastItemOptional } from '~shared/codecs/lastItemOptional'
 import { EnumItem, Enums, ZEnum } from '~shared/types/domain/enums'
 import { asNumber } from '~shared/utils/ramda'
@@ -26,7 +26,7 @@ export const ZEnumsSettings = lastItemOptional(
 type EnumsSettings = TypeOf<typeof ZEnumsSettings>
 
 const EnumsSettings: ModalFC = ({ close }) => {
-  const { state } = useLocation<Enums>()
+  const state = useModal<Enums>()
   const { t } = useTranslation()
   const deleteButtonRef = useRef<HTMLButtonElement>(null)
 

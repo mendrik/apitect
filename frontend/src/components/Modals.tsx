@@ -1,33 +1,13 @@
 import { useStore } from 'effector-react'
-import { Suspense, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Suspense } from 'react'
 import { ModalNames } from '~shared/types/modals'
-import { $currentNode, $selectedNode } from '~stores/$selectedNode'
+import { $currentNode } from '~stores/$selectedNode'
 
-import { closeModal, openModal } from '../events/modals'
-import { addParams, removeParams } from '../utils/url'
 import { ModalStub } from './ModalStub'
 import { Loader } from './generic/Loader'
 
 export const Modals = () => {
-  const navigate = useNavigate()
   const node = useStore($currentNode)
-  const treeNode = useStore($selectedNode)
-
-  useEffect(
-    () =>
-      openModal.watch(config => {
-        const to = addParams({ modal: config.name })
-        navigate(to, { state: config.params })
-
-        const unsub = closeModal.watch(() => {
-          navigate(removeParams(['modal']))
-          document.getElementById(treeNode?.value.id ?? '')?.focus()
-          unsub()
-        })
-      }),
-    [treeNode]
-  )
 
   return (
     <Suspense fallback={<Loader className="d-fixed inset-0 min-vh-100" />}>

@@ -1,10 +1,10 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import clsx from 'clsx'
+import { useStore, useStoreMap } from 'effector-react'
 import { juxt, pathEq, prop } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import styled from 'styled-components'
-import { useStoreMap } from '~hooks/useStoreMap'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
 import { Jsx } from '~shared/types/generic'
@@ -51,6 +51,7 @@ const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   const { id } = node.value
+  const openNodes = useStore($openNodes)
   const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
   const open = useStoreMap($openNodes, prop(id))
   const arrayNode = getArrayNode(node)
@@ -60,7 +61,6 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
     attributes,
     listeners,
     transform,
-    over,
     setNodeRef: dragRef,
     setActivatorNodeRef: activatorRef
   } = useDraggable({ id, data: { node, type: Draggables.TREE_NODE, arrayNode } })
@@ -80,7 +80,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
     return null
   }
 
-  const renderSelf = depth !== 0 || beingDragged
+  const renderSelf = !isRoot || beingDragged
 
   const style = {
     transform: CSS.Transform.toString(transform)
@@ -113,7 +113,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
           <NodeFlavorIcon node={node} />
         </NodeGrid>
       )}
-      {!beingDragged && open && (
+      {(isRoot || open) && !beingDragged ? (
         <NotEmptyList list={node.children} as={isRoot && !beingDragged ? RootWrap : ListWrap}>
           {mapIndexed(node => (
             <li key={node.value.id}>
@@ -121,7 +121,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
             </li>
           ))}
         </NotEmptyList>
-      )}
+      ) : null}
     </div>
   )
 }

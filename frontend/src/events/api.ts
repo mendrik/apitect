@@ -1,5 +1,5 @@
-import { createEffect, createStore } from 'effector'
 import { sample } from 'effector'
+import { createEffect, createStore } from 'effector'
 import { nthArg } from 'ramda'
 import { Api } from '~shared/apiTypes'
 import { ArgFn } from '~shared/types/generic'

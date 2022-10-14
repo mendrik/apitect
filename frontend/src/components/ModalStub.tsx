@@ -4,11 +4,10 @@ import { useStore } from 'effector-react'
 import { useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { TFuncKey, useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { useLocation } from '~hooks/useLocation'
-import { useQueryParams } from '~hooks/useQueryParams'
 import { Fn } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
+import { $modalStore } from '~stores/$modalStore'
 
 import { $moduleError, $moduleStore, clearModuleFx, Import, loadModuleFx } from '../events/import'
 import { closeModal } from '../events/modals'
@@ -33,11 +32,10 @@ const ModalStub = ({
   ...modalProps
 }: OwnProps): JSX.Element | null => {
   const { state } = useLocation<Record<string, string>>()
-  const { modal } = useQueryParams()
-  const modalMatch = modal === name
+  const modal = useStore($modalStore)
+  const modalMatch = modal?.name === name
 
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const Module = useStore($moduleStore)
   const loading = useStore(loadModuleFx.pending)
   const error = useStore($moduleError)
