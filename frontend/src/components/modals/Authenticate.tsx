@@ -6,13 +6,13 @@ import { LoginForm } from '../../forms/LoginForm'
 import { RegisterForm } from '../../forms/RegisterForm'
 import { ModalFC } from '../ModalStub'
 
-const Authenticate: ModalFC = ({ close }) => (
+const Authenticate: ModalFC = () => (
   <Tabs className="w-100" onTabClick={() => clearApiError()}>
     <Tab title="modals.authenticate.login.title">
-      <LoginForm close={close} />
+      <LoginForm />
     </Tab>
     <Tab title="modals.authenticate.register.title">
-      <RegisterForm close={close} />
+      <RegisterForm />
     </Tab>
   </Tabs>
 )

@@ -25,7 +25,7 @@ export const ZEnumsSettings = lastItemOptional(
 )
 type EnumsSettings = TypeOf<typeof ZEnumsSettings>
 
-const EnumsSettings: ModalFC = ({ close }) => {
+const EnumsSettings: ModalFC = () => {
   const state = useModal<Enums>()
   const { t } = useTranslation()
   const deleteButtonRef = useRef<HTMLButtonElement>(null)
@@ -54,7 +54,6 @@ const EnumsSettings: ModalFC = ({ close }) => {
     <SocketForm
       form={form}
       onValid={updateEnumsFx}
-      close={close}
       submitButton="common.save"
       buttonRowExtras={deleteButton}
     >

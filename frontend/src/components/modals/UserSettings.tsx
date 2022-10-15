@@ -11,7 +11,7 @@ import { $tagStore } from '~stores/$tagStore'
 import { updateUserSettingsFx } from '../../events/user'
 import { ModalFC } from '../ModalStub'
 
-const UserSettings: ModalFC = ({ close }) => {
+const UserSettings: ModalFC = () => {
   const state = useModal<Settings>()
   const { tags } = useStore($tagStore)
   const form = useForm<Settings>({
@@ -19,7 +19,7 @@ const UserSettings: ModalFC = ({ close }) => {
     defaultValues: state
   })
   return (
-    <SocketForm form={form} onValid={updateUserSettingsFx} close={close} submitButton="common.save">
+    <SocketForm form={form} onValid={updateUserSettingsFx} submitButton="common.save">
       <FieldSet title="modals.userSettings.visibleTags">
         {tags.map(tag => (
           <Form.Check key={tag.name}>

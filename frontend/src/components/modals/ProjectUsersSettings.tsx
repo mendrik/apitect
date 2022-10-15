@@ -14,7 +14,7 @@ import { $treeStore } from '~stores/$treeStore'
 import { updateProjectUserSettingsFx } from '../../events/projectUsers'
 import { ModalFC } from '../ModalStub'
 
-const ProjectUsersSettings: ModalFC = ({ close }) => {
+const ProjectUsersSettings: ModalFC = () => {
   const state = useModal<Settings>()
   const root = useStore($treeStore)
 
@@ -25,12 +25,7 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
 
   return (
     root && (
-      <SocketForm
-        form={form}
-        onValid={updateProjectUserSettingsFx}
-        close={close}
-        submitButton="common.save"
-      >
+      <SocketForm form={form} onValid={updateProjectUserSettingsFx} submitButton="common.save">
         <TreeInput
           label="form.fields.emailId"
           tree={root}

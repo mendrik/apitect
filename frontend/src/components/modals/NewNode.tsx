@@ -60,7 +60,7 @@ export type SelectedNode = {
   selectedNode: Maybe<Node>
 }
 
-const NewNode: ModalFC = ({ close }) => {
+const NewNode: ModalFC = () => {
   const canAddArray = useStore($selectedArrayNode) == null
   const canCreateNode = useStore($canCreateNode)
   const state = useModal<SelectedNode>()
@@ -80,7 +80,6 @@ const NewNode: ModalFC = ({ close }) => {
     <SocketForm
       form={form}
       onValid={node => (arrayCheck ? createNodeFx(node) : Promise.reject())}
-      close={close}
       submitButton="modals.newNode.submit"
     >
       <TextInput

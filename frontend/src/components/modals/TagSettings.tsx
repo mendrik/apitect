@@ -13,7 +13,7 @@ import { $tagStore } from '~stores/$tagStore'
 import { updateTagsSettingsFx } from '../../events/tagSettings'
 import { ModalFC } from '../ModalStub'
 
-const TagSettings: ModalFC = ({ close }) => {
+const TagSettings: ModalFC = () => {
   const tag = useModal<Tag>()
   const { tags } = useStore($tagStore)
 
@@ -34,7 +34,6 @@ const TagSettings: ModalFC = ({ close }) => {
       onValid={data =>
         updateTagsSettingsFx({ tags: updateArrayBy(propEq('name', tag.name), always(data), tags) })
       }
-      close={close}
       submitButton="common.save"
     >
       <TextInput

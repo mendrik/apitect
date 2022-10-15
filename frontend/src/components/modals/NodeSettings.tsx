@@ -101,7 +101,7 @@ const resolver = (nodeType: NodeType) => {
   }
 }
 
-const NodeSettings: ModalFC = ({ close }) => {
+const NodeSettings: ModalFC = () => {
   const selectedNode = useStore($currentNode)
   const state = useModal<NodeSettingsType>()
 
@@ -128,7 +128,7 @@ const NodeSettings: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm form={form} onValid={updateNodeSettingsFx} close={close} submitButton="common.save">
+    <SocketForm form={form} onValid={updateNodeSettingsFx} submitButton="common.save">
       <TextInput
         name="name"
         label="form.fields.nodeName"

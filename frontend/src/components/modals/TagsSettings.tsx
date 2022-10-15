@@ -11,7 +11,7 @@ import { TagsSettings as Settings, ZTagsSettings } from '~shared/types/forms/tag
 import { updateTagsSettingsFx } from '../../events/tagSettings'
 import { ModalFC } from '../ModalStub'
 
-const TagsSettings: ModalFC = ({ close }) => {
+const TagsSettings: ModalFC = () => {
   const state = useModal<Settings>()
   const { t } = useTranslation()
 
@@ -21,7 +21,7 @@ const TagsSettings: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm form={form} onValid={updateTagsSettingsFx} close={close} submitButton="common.save">
+    <SocketForm form={form} onValid={updateTagsSettingsFx} submitButton="common.save">
       <Alert variant="info" className="mb-3">
         {t('modals.tagsSettings.info')}
       </Alert>
