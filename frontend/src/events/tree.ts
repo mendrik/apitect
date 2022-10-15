@@ -6,6 +6,7 @@ import { Node } from '~shared/types/domain/node'
 import { OptNode } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 
+import { focus } from '../utils/focus'
 import { api } from './api'
 import { openModal } from './modals'
 import { projectFx } from './project'
@@ -33,5 +34,14 @@ export const newNodeFx = createEffect((params: OptNode) =>
 )
 
 focusNode.watch(node => {
-  document.getElementById(node.value.id)?.focus()
+  const modal = document.querySelector('.modal.show')
+  if (modal?.parentElement) {
+    const mo = new MutationObserver(() => {
+      mo.disconnect()
+      focus(document.getElementById(node.value.id))
+    })
+    mo.observe(modal.parentElement, { childList: true })
+  } else {
+    focus(document.getElementById(node.value.id))
+  }
 })
