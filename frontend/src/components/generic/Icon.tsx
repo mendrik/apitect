@@ -50,7 +50,6 @@ export const Icon = ({
   disabled = false,
   size = 16,
   iconClasses,
-  tabIndex = -1,
   ...props
 }: OwnProps) => (
   <Wrap
@@ -65,7 +64,7 @@ export const Icon = ({
       width={size}
       height={size}
       stroke={1}
-      tabIndex={tabIndex}
+      tabIndex={-1}
     />
   </Wrap>
 )

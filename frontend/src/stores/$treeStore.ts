@@ -73,12 +73,7 @@ sample({
 })
 
 focusNode.watch(node => {
-  requestAnimationFrame(() => {
+  setTimeout(() => {
     document.getElementById(node.value.id)?.focus()
-
-    setTimeout(() => {
-      // eslint-disable-next-line no-console
-      console.log(document.activeElement)
-    }, 400)
-  })
+  }, 100)
 })

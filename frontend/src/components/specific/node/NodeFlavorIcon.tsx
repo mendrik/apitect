@@ -13,5 +13,5 @@ export const NodeFlavorIcon = ({ node }: OwnProps) => {
   const isDragged = useIsDragged(node)
   const nodeType = node.value.nodeType
   const shouldRender = !isDragged && nodeType === NodeType.Array
-  return shouldRender ? <Icon icon={iconMap[nodeType]} size={14} disabled tabIndex={0} /> : null
+  return shouldRender ? <Icon icon={iconMap[nodeType]} size={14} disabled tabIndex={-1} /> : null
 }
