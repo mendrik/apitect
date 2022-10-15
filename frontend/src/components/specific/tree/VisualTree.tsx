@@ -4,7 +4,6 @@ import { always, both, cond } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { SyntheticEvent } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
-import { useDefinedEffect } from '~hooks/useDefinedEffect'
 import '~stores/$enumsStore'
 import { $canCreateNode, $selectedNode } from '~stores/$selectedNode'
 import { $treeStore } from '~stores/$treeStore'
@@ -17,7 +16,6 @@ import {
   selectNode
 } from '../../../events/tree'
 import { codeIn, keyIn, withoutModkey } from '../../../utils/eventUtils'
-import { focus } from '../../../utils/focus'
 import { preventDefault as pd } from '../../../utils/preventDefault'
 import { VisualNode } from '../node/VisualNode'
 import { useDnd } from './useDnD'
@@ -28,8 +26,6 @@ export const VisualTree = () => {
   const canCreateNode = useStore($canCreateNode)
 
   const { draggedNode, ...dnd } = useDnd(root)
-
-  useDefinedEffect(sn => focus(document.getElementById(sn.value.id)), selectedNode)
 
   const [DeleteModal, confirmDelete] = useConfirmation(
     'common.questions.delete',

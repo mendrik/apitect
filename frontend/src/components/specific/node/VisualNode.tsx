@@ -64,8 +64,6 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
     setActivatorNodeRef: activatorRef
   } = useDraggable({ id, data: { node, type: Draggables.TREE_NODE, arrayNode } })
 
-  const disabled = false // over?.id !== id
-
   const { setNodeRef: dropRef } = useDroppable({
     id,
     data: { type: Draggables.TREE_NODE, arrayNode, node }
@@ -73,16 +71,12 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
 
   const beingDragged = useIsDragged(node)
   const isRoot = depth === 0
+  const renderSelf = !isRoot || beingDragged
+  const style = { transform: CSS.Transform.toString(transform) }
 
   if (active?.id === id) {
     // don't render current dragged node
-    return null
-  }
-
-  const renderSelf = !isRoot || beingDragged
-
-  const style = {
-    transform: CSS.Transform.toString(transform)
+    return <div />
   }
 
   const dndKit = beingDragged
@@ -99,10 +93,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
       {renderSelf && (
         <NodeGrid
           onFocus={onFocus}
-          className={clsx('gap-1', {
-            selectedNode: isActive,
-            'opacity-25': disabled
-          })}
+          className={clsx('gap-1', { selectedNode: isActive })}
           {...dndKit}
         >
           <NodeIcon node={node} />
@@ -112,7 +103,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
           <NodeFlavorIcon node={node} />
         </NodeGrid>
       )}
-      {(isRoot || open) && !beingDragged ? (
+      {(isRoot || open) && !beingDragged && (
         <NotEmptyList list={node.children} as={isRoot && !beingDragged ? RootWrap : ListWrap}>
           {mapIndexed(node => (
             <li key={node.value.id}>
@@ -120,7 +111,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
             </li>
           ))}
         </NotEmptyList>
-      ) : null}
+      )}
     </div>
   )
 }

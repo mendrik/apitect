@@ -36,6 +36,7 @@ const ModalStub = ({
       centered
       onHide={() => closeModal()}
       key={name}
+      enforceFocus
       className={clsx('custom-scrollbars', className)}
       restoreFocus
       {...modalProps}
