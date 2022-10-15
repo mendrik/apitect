@@ -24,6 +24,7 @@
     "no-void": ["off", { "allowAsStatement": true }],
     "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
     "prettier/prettier": ["error", { "singleQuote": true }],
-    "unused-imports/no-unused-imports": "error"
+    "unused-imports/no-unused-imports": "error",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
   }
 }

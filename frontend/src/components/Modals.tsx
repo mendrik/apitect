@@ -1,10 +1,8 @@
 import { useStore } from 'effector-react'
-import { Suspense } from 'react'
 import { ModalNames } from '~shared/types/modals'
 import { $currentNode } from '~stores/$selectedNode'
 
 import { ModalStub } from './ModalStub'
-import { Loader } from './generic/Loader'
 import Authenticate from './modals/Authenticate'
 import EnumsSettings from './modals/EnumsSettings'
 import ForgotPasswordForm from './modals/ForgotPasswordForm'
@@ -19,14 +17,19 @@ export const Modals = () => {
   const node = useStore($currentNode)
 
   return (
-    <Suspense fallback={<Loader className="d-fixed inset-0 min-vh-100" />}>
+    <>
       <ModalStub title="modals.authenticate.title" content={Authenticate} name={ModalNames.LOGIN} />
       <ModalStub
         title="modals.forgotPassword.title"
         content={ForgotPasswordForm}
         name={ModalNames.FORGOT_PASSWORD}
       />
-      <ModalStub title="modals.newNode.title" content={NewNode} name={ModalNames.NEW_NODE} />
+      <ModalStub
+        title="modals.newNode.title"
+        content={NewNode}
+        name={ModalNames.NEW_NODE}
+        restoreFocus={false}
+      />
       <ModalStub
         title="modals.nodeSettings.title"
         titleOptions={{ property: node?.value.name ?? '' }}
@@ -58,6 +61,6 @@ export const Modals = () => {
         content={UserSettings}
         name={ModalNames.USER_SETTINGS}
       />
-    </Suspense>
+    </>
   )
 }

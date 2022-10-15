@@ -1,7 +1,7 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import clsx from 'clsx'
-import { useStore, useStoreMap } from 'effector-react'
+import { useStoreMap } from 'effector-react'
 import { juxt, pathEq, prop } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import styled from 'styled-components'
@@ -51,7 +51,6 @@ const ListWrap = ({ children }: Jsx) => <Ol className="ps-3">{children}</Ol>
 
 export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   const { id } = node.value
-  const openNodes = useStore($openNodes)
   const isActive = useStoreMap($selectedNode, pathEq(['value', 'id'], id))
   const open = useStoreMap($openNodes, prop(id))
   const arrayNode = getArrayNode(node)
@@ -87,7 +86,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   }
 
   const dndKit = beingDragged
-    ? {}
+    ? { id }
     : { ref: juxt([dragRef, dropRef]), id, ...attributes, ...listeners }
 
   const onFocus = () => {

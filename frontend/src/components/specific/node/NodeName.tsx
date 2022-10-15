@@ -29,9 +29,7 @@ export const NodeName = ({
     <div
       className={clsx(
         'text-truncate position-relative d-flex flex-row align-items-center',
-        {
-          thin: !hasChildren
-        },
+        { thin: !hasChildren },
         className
       )}
       title={name}

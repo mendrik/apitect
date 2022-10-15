@@ -4,6 +4,7 @@ import { useStore } from 'effector-react'
 import { pipe, toLower, values, when } from 'ramda'
 import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { ErrorInfo } from '~forms/ErrorInfo'
 import { SocketForm } from '~forms/SocketForm'
 import { TextInput } from '~forms/TextInput'
 import { useModal } from '~hooks/useModal'
@@ -95,8 +96,9 @@ const NewNode: ModalFC = () => {
         defaultValue={NodeType.Object}
         render={({ field }) => (
           <TypeGrid role="grid" columns={4} ctrlKey={false}>
-            {values(NodeType).map((nodeType, _, __, Icon = iconMap[nodeType]) => {
+            {values(NodeType).map(nodeType => {
               const disabled = (nodeType === NodeType.Array && !canAddArray) || !canCreateNode
+              const Icon = iconMap[nodeType]
               return (
                 <div
                   key={nodeType}
@@ -117,6 +119,7 @@ const NewNode: ModalFC = () => {
           </TypeGrid>
         )}
       />
+      <ErrorInfo name="nodeType" />
     </SocketForm>
   )
 }

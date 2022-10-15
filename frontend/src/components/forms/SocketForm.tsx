@@ -24,8 +24,7 @@ export const SocketForm = <M extends FormApiMethod, F extends FieldValues>({
   children,
   onValid,
   submitButton,
-  buttonRowExtras,
-  close
+  buttonRowExtras
 }: PropsWithChildren<OwnProps<M, F>>): ReactElement | null => {
   const [error, setError] = useState<Error | null>(null)
   const [running, setRunning] = useState(false)
