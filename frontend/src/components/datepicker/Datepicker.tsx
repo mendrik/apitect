@@ -121,7 +121,6 @@ const bodyCls = document.body.classList
 
 export const Datepicker = ({
   currentDate: $current,
-  children,
   onDateSelected,
   color,
   iconSize = 20,

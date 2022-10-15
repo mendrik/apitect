@@ -46,7 +46,7 @@ const ArraySidePanelHeader = () => {
 }
 
 const ArraySidePanel = () => {
-  const list = useList($arrayItems, ({ values }, index) => (
+  const list = useList($arrayItems, ({ values }) => (
     <li>
       <RenderedItem values={values} />
     </li>

@@ -62,6 +62,7 @@ export const useConfirmation = (
         </Modal.Body>
       </Modal>
     ) : null
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, onConfirm])
 
   const openFn = useCallback(() => {

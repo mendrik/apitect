@@ -23,7 +23,6 @@ const ModalStub = ({
   content: Content,
   title,
   titleOptions,
-  enforceFocus = true,
   className,
   ...modalProps
 }: OwnProps): JSX.Element | null => {

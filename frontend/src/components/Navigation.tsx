@@ -2,7 +2,6 @@ import { IconDownload, IconLogin, IconTags, IconTrees, IconWorldUpload } from '@
 import { useStore } from 'effector-react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLogout } from '~hooks/useLogout'
 import { ModalNames } from '~shared/types/modals'
@@ -40,7 +39,6 @@ const LogoText = styled.span`
 
 export const Navigation = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const arrayNode = useStore($selectedArrayNode)
   const logout = useLogout()
   const user = useStore($user)

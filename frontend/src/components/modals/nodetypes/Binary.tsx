@@ -1,9 +1,3 @@
-import { useTranslation } from 'react-i18next'
-
-const Binary = () => {
-  const { t } = useTranslation()
-
-  return <div>Binary</div>
-}
+const Binary = () => <div>Binary</div>
 
 export default Binary

@@ -10,18 +10,9 @@ import { selectNode } from '../../../events/tree'
 type OwnProps = {
   node: TreeNode<Node>
   activatorRef: (element: HTMLElement | null) => void
-  isActive: boolean
 } & HTMLAttributes<HTMLDivElement>
 
-export const NodeName = ({
-  node,
-  activatorRef,
-  isActive,
-  children,
-  className,
-  ...div
-}: Jsx<OwnProps>) => {
-  const id = node.value.id
+export const NodeName = ({ node, activatorRef, children, className, ...div }: Jsx<OwnProps>) => {
   const hasChildren = isNotNilOrEmpty(node.children)
   const name = node.value.name
 
@@ -33,11 +24,7 @@ export const NodeName = ({
         className
       )}
       title={name}
-      onMouseDown={() => {
-        if (document.activeElement?.id === id) {
-          selectNode(isActive ? null : node)
-        }
-      }}
+      onClick={() => selectNode(node)}
       ref={activatorRef}
       {...div}
     >

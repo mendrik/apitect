@@ -20,16 +20,22 @@ export const useDnd = (root: TreeNode<Node>) => {
   const [draggedNode, setDraggedNode] = useState<TreeNode<Node> | null>(null)
   const sensors = useSensors(useSensor(MouseSensor, { activationConstraint: { distance: 5 } }))
 
-  const onDragEnd = (ev: DragEndEvent) => {}
+  const onDragEnd = (ev: DragEndEvent) => {
+    // eslint-disable-next-line no-console
+    console.log(ev)
+  }
 
-  const onDragMove = (ev: DragMoveEvent) => {}
+  const onDragMove = (ev: DragMoveEvent) => {
+    // eslint-disable-next-line no-console
+    console.log(ev)
+  }
 
   const onDragStart = (ev: DragStartEvent) => {
     const first = root.first(propEq('id', ev.active.id))
     setDraggedNode(first ?? null)
   }
 
-  const onDragOver = (ev: DragOverEvent) => {}
+  const onDragOver = (_ev: DragOverEvent) => {}
 
   return {
     onDragStart,

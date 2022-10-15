@@ -65,7 +65,7 @@ export const Icon = ({
       width={size}
       height={size}
       stroke={1}
-      tabIndex={-1}
+      tabIndex={tabIndex}
     />
   </Wrap>
 )

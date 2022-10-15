@@ -1,4 +1,3 @@
-import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { useEffect } from 'react'
 import { useLocalStorage } from 'react-use'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
@@ -19,17 +18,17 @@ export const WithSocket = ({ children }: Jsx) => {
     if (readyState === ReadyState.OPEN) {
       void socketEstablished(sendJsonMessage)
     }
-  }, [readyState, socketEstablished, sendJsonMessage])
+  }, [readyState, sendJsonMessage])
 
   useEffect(() => {
-    if (isNotNilOrEmpty(lastMessage?.data)) {
+    if (lastMessage?.data) {
       try {
-        apiResponse(JSON.parse(lastMessage?.data))
+        apiResponse(JSON.parse(lastMessage.data))
       } catch (e) {
-        logger.error('Failed to parse server message:', lastMessage?.data)
+        logger.error('Failed to parse server message:', lastMessage.data)
       }
     }
-  }, [lastMessage, apiResponse])
+  }, [lastMessage])
 
   return readyState === ReadyState.OPEN ? <>{children}</> : null
 }

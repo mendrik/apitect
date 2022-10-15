@@ -106,7 +106,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
           {...dndKit}
         >
           <NodeIcon node={node} />
-          <NodeName node={node} activatorRef={activatorRef} isActive={isActive}>
+          <NodeName node={node} activatorRef={activatorRef}>
             <NodeChildCount node={node} />
           </NodeName>
           <NodeFlavorIcon node={node} />

@@ -25,7 +25,7 @@ $valuesStore.on(valueListFx.doneData, (state, result) =>
 )
 
 // after creating a new array item let's todo
-$valuesStore.on(arrayItemCreateFx.doneData, (state, result) => state)
+$valuesStore.on(arrayItemCreateFx.doneData, state => state)
 
 $valuesStore.on(valueUpdateFx.doneData, (state, result) =>
   uniqBy(byIdAndTag, [result].concat(state))

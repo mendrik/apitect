@@ -5,10 +5,17 @@ import { ApiResult } from '~shared/apiTypes'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { mapByProperty } from '~shared/utils/ramda'
+import { throwError } from '~shared/utils/throwError'
 
 import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
-import { createNodeFx, deleteNodeFx, selectNode, updateNodeSettingsFx } from '../events/tree'
+import {
+  createNodeFx,
+  deleteNodeFx,
+  focusNode,
+  selectNode,
+  updateNodeSettingsFx
+} from '../events/tree'
 
 const rawTreeCreateNode = createEvent<ApiResult<'nodeCreate'>>()
 const treeCreateNode = createEvent<ApiResult<'nodeCreate'>>()
@@ -39,8 +46,9 @@ export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
 sample({
   clock: treeCreateNode,
   source: $treeStore,
-  fn: (rootNode, result) => rootNode.first(propEq('id', result.nodeId)) ?? null,
-  target: selectNode
+  fn: (rootNode, result) =>
+    rootNode.first(propEq('id', result.nodeId)) ?? throwError('no node after creastion?!'),
+  target: [selectNode, focusNode]
 })
 
 /**
@@ -62,4 +70,15 @@ sample({
 sample({
   clock: createNodeFx.doneData,
   target: [rawTreeCreateNode, treeCreateNode]
+})
+
+focusNode.watch(node => {
+  requestAnimationFrame(() => {
+    document.getElementById(node.value.id)?.focus()
+
+    setTimeout(() => {
+      // eslint-disable-next-line no-console
+      console.log(document.activeElement)
+    }, 400)
+  })
 })
