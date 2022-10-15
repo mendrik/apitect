@@ -70,6 +70,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   })
 
   const beingDragged = useIsDragged(node)
+
   const isRoot = depth === 0
   const renderSelf = !isRoot || beingDragged
   const style = { transform: CSS.Transform.toString(transform) }

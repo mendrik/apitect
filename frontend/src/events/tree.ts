@@ -31,3 +31,7 @@ export const nodeSettingsFx = createEffect<Api['nodeSettings']>(id =>
 export const newNodeFx = createEffect((params: OptNode) =>
   openModal({ name: ModalNames.NEW_NODE, params })
 )
+
+focusNode.watch(node => {
+  document.getElementById(node.value.id)?.focus()
+})

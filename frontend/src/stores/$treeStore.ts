@@ -15,7 +15,6 @@ import {
   selectNode,
   updateNodeSettingsFx
 } from '../events/tree'
-import { focus } from '../utils/focus'
 
 const $rawTree = createStore<Node>({
   nodeType: NodeType.Object,
@@ -59,10 +58,4 @@ sample({
     return parent?.children[result.position - 1] ?? parent ?? null
   },
   target: [selectNode, focusNode]
-})
-
-focusNode.watch(node => {
-  focus(document.getElementById(node.value.id))
-  // eslint-disable-next-line no-console
-  console.log('focus ', node)
 })
