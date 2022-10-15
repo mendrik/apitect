@@ -1,11 +1,8 @@
 import { createStore, sample } from 'effector'
 import { always, cond, identity, ifElse, isNil, pathEq, T } from 'ramda'
-import { TreeNode } from '~shared/algebraic/treeNode'
-import { Node } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
-import { $currentNode } from '~stores/$selectedNode'
-
-type OptNode = TreeNode<Node> | null
+import { OptNode } from '~shared/types/generic'
+import { $canCreateArray, $currentNode } from '~stores/$selectedNode'
 
 export const $selectedArrayNode = createStore<OptNode>(null)
 
@@ -28,4 +25,10 @@ sample({
     [T, getArrayNode]
   ]),
   target: $selectedArrayNode
+})
+
+sample({
+  source: $selectedArrayNode,
+  fn: node => node == null,
+  target: $canCreateArray
 })

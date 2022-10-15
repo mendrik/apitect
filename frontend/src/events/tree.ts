@@ -3,6 +3,7 @@ import { tap } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Api } from '~shared/apiTypes'
 import { Node } from '~shared/types/domain/node'
+import { OptNode } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 
 import { api } from './api'
@@ -26,10 +27,6 @@ export const nodeSettingsFx = createEffect<Api['nodeSettings']>(id =>
     .then(tap(params => openModal({ name: ModalNames.NODE_SETTINGS, params })))
 )
 
-export const newNodeFx = createEffect((selectedNode?: Node) =>
-  openModal({ name: ModalNames.NEW_NODE, params: { selectedNode } })
+export const newNodeFx = createEffect((params: OptNode) =>
+  openModal({ name: ModalNames.NEW_NODE, params })
 )
-
-createNodeFx.doneData.watch(data => {
-  document.getElementById(data.nodeId)?.focus()
-})

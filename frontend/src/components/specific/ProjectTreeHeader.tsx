@@ -2,6 +2,7 @@ import { IconCirclePlus, IconColumns, IconSettings, IconTrash } from '@tabler/ic
 import { useStore } from 'effector-react'
 import { useTranslation } from 'react-i18next'
 import { useConfirmation } from '~hooks/useConfirmation'
+import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $documentStore } from '~stores/$documentStore'
 import { $canCreateNode, $currentNode } from '~stores/$selectedNode'
 
@@ -17,6 +18,7 @@ import { WithTooltip } from '../generic/WithTooltip'
 export const ProjectTreeHeader = () => {
   const { t } = useTranslation()
   const selectedNode = useStore($currentNode)
+  const selectedArrayNode = useStore($selectedArrayNode)
   const canCreateNode = useStore($canCreateNode)
   const document = useStore($documentStore)
 
@@ -38,7 +40,7 @@ export const ProjectTreeHeader = () => {
           <Icon
             icon={IconCirclePlus}
             disabled={!canCreateNode}
-            onClick={() => newNodeFx(selectedNode?.value)}
+            onClick={() => newNodeFx(selectedNode)}
           />
         </WithTooltip>
         <WithTooltip tooltipText={t('tooltips.nodeSettings')} shortcut="Enter">

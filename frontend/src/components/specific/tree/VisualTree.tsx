@@ -49,7 +49,7 @@ export const VisualTree = () => {
     [both(keyIn('ArrowRight'), withoutModkey), setOpen(true)],
     [both(keyIn('ArrowLeft'), withoutModkey), setOpen(false)],
     [keyIn('Delete'), confirmDelete],
-    [both(always(canCreateNode), keyIn('n')), pd(() => newNodeFx(selectedNode?.value))],
+    [both(always(canCreateNode), keyIn('n')), pd(() => newNodeFx(selectedNode))],
     [keyIn('Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],
     [codeIn('Escape'), pd(() => selectNode(null))]
   ])

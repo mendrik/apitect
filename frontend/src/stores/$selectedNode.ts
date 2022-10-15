@@ -50,6 +50,7 @@ sample({
 })
 
 export const $canCreateNode = createStore<boolean>(true).reset(resetProject)
+export const $canCreateArray = createStore<boolean>(true).reset(resetProject)
 
 sample({
   source: $currentNode,
