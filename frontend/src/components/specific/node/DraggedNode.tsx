@@ -13,7 +13,7 @@ type OwnProps = {
 
 export const DraggedNode = ({ node }: OwnProps) => (
   <div
-    className="bg-opacity-75 border border-1 rounded border-dotted"
+    className="bg-opacity-75 border border-px rounded border-dotted"
     style={{ backgroundColor: '#f1f7e199' }}
   >
     <NodeGrid>
