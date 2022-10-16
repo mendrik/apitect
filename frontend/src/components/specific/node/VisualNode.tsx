@@ -20,6 +20,7 @@ import { NodeChildCount } from './NodeChildCount'
 import { NodeFlavorIcon } from './NodeFlavorIcon'
 import { NodeIcon } from './NodeIcon'
 import { NodeName } from './NodeName'
+import { DndOver } from './types'
 
 type OwnProps = {
   node: TreeNode<Node>
@@ -57,9 +58,9 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   const { active, attributes, listeners, transform, setNodeRef, setActivatorNodeRef } =
     useDraggable({ id, data: { node, type: Draggables.TREE_NODE, arrayNode } })
 
-  const { setNodeRef: dropRef } = useDroppable({
+  const { setNodeRef: dropRef, isOver } = useDroppable({
     id,
-    data: { type: Draggables.TREE_NODE, arrayNode, node }
+    data: { type: Draggables.TREE_NODE, arrayNode, node } as DndOver
   })
 
   const isRoot = depth === 0
@@ -93,6 +94,7 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
           <NodeFlavorIcon node={node} />
         </NodeGrid>
       )}
+      {isOver && <div style={{ height: 24 }} />}
       {renderChildren && (
         <NotEmptyList list={node.children} as={isRoot ? RootWrap : ListWrap}>
           {mapIndexed(node => (
