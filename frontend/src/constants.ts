@@ -5,4 +5,4 @@ export const detailsPanelSize: Pixels = 300
 export const navbarHeight: Pixels = 57
 export const canHaveChildrenNodes = [NodeType.Array, NodeType.Object]
 export const defaultPageSize = 100
-export const treeIndent: Pixels = 30
+export const treeIndent: Pixels = 16

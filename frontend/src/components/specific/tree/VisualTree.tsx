@@ -2,11 +2,13 @@ import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
 import { always, both, cond } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import { SyntheticEvent } from 'react'
+import { SyntheticEvent, useMemo } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
 import '~stores/$enumsStore'
+import { $openNodes } from '~stores/$openNodesStore'
 import { $canCreateNode, $selectedNode } from '~stores/$selectedNode'
 import { $treeStore } from '~stores/$treeStore'
+import { $visibleNodes } from '~stores/$visibileNodes'
 
 import {
   deleteNodeFx,
@@ -26,6 +28,8 @@ export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
   const canCreateNode = useStore($canCreateNode)
+  const openNodes = useStore($openNodes)
+  const visibleNodes = useStore($visibleNodes)
 
   const { draggedNode, ...dnd } = useDnd(root)
 
@@ -52,11 +56,13 @@ export const VisualTree = () => {
     [codeIn('Escape'), pd(() => selectNode(null))]
   ])
 
+  const modifier = useMemo(() => snapToNode(openNodes, visibleNodes), [openNodes, visibleNodes])
+
   return (
     <div onKeyDown={keyMap} id="doc-tree">
       <DndContext {...dnd}>
         <VisualNode node={root} />
-        <DragOverlay modifiers={[snapToNode]} dropAnimation={null}>
+        <DragOverlay modifiers={[modifier]} dropAnimation={null}>
           {draggedNode && <DraggedNode node={draggedNode} />}
         </DragOverlay>
       </DndContext>
