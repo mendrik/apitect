@@ -20,7 +20,6 @@ import { NodeChildCount } from './NodeChildCount'
 import { NodeFlavorIcon } from './NodeFlavorIcon'
 import { NodeIcon } from './NodeIcon'
 import { NodeName } from './NodeName'
-import { useIsDragged } from './useIsDragged'
 
 type OwnProps = {
   node: TreeNode<Node>
@@ -55,34 +54,24 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
   const open = useStoreMap($openNodes, prop(id))
   const arrayNode = getArrayNode(node)
 
-  const {
-    active,
-    attributes,
-    listeners,
-    transform,
-    setNodeRef: dragRef,
-    setActivatorNodeRef: activatorRef
-  } = useDraggable({ id, data: { node, type: Draggables.TREE_NODE, arrayNode } })
+  const { active, attributes, listeners, transform, setNodeRef, setActivatorNodeRef } =
+    useDraggable({ id, data: { node, type: Draggables.TREE_NODE, arrayNode } })
 
   const { setNodeRef: dropRef } = useDroppable({
     id,
     data: { type: Draggables.TREE_NODE, arrayNode, node }
   })
 
-  const beingDragged = useIsDragged(node)
-
   const isRoot = depth === 0
-  const renderSelf = !isRoot || beingDragged
+  const renderSelf = !isRoot
+  const renderChildren = isRoot || open
   const style = { transform: CSS.Transform.toString(transform) }
 
   if (active?.id === id) {
-    // don't render current dragged node
-    return <div />
+    return <div /> // don't render current dragged node
   }
 
-  const dndKit = beingDragged
-    ? { id }
-    : { ref: juxt([dragRef, dropRef]), id, ...attributes, ...listeners }
+  const dndKit = { ref: juxt([setNodeRef, dropRef]), id, ...attributes, ...listeners }
 
   const onFocus = () => {
     selectValue(null)
@@ -98,14 +87,14 @@ export const VisualNode = ({ depth = 0, node }: OwnProps) => {
           {...dndKit}
         >
           <NodeIcon node={node} />
-          <NodeName node={node} activatorRef={activatorRef}>
+          <NodeName node={node} activatorRef={setActivatorNodeRef}>
             <NodeChildCount node={node} />
           </NodeName>
           <NodeFlavorIcon node={node} />
         </NodeGrid>
       )}
-      {(isRoot || open) && !beingDragged && (
-        <NotEmptyList list={node.children} as={isRoot && !beingDragged ? RootWrap : ListWrap}>
+      {renderChildren && (
+        <NotEmptyList list={node.children} as={isRoot ? RootWrap : ListWrap}>
           {mapIndexed(node => (
             <li key={node.value.id}>
               <VisualNode node={node} depth={depth + 1} />

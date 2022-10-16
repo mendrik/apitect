@@ -14,7 +14,8 @@ type OwnProps = {
 
 const BadgeSx = styled(Badge)`
   font-size: 0.6rem;
-  background-color: #2b9137 !important;
+  background-color: #f1f7e1 !important;
+  color: #666;
 `
 
 export const NodeChildCount = ({ node }: OwnProps) => {

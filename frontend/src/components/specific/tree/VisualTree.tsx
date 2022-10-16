@@ -17,6 +17,7 @@ import {
 } from '../../../events/tree'
 import { codeIn, keyIn, withoutModkey } from '../../../utils/eventUtils'
 import { preventDefault as pd } from '../../../utils/preventDefault'
+import { DraggedNode } from '../node/DraggedNode'
 import { VisualNode } from '../node/VisualNode'
 import { useDnd } from './useDnD'
 
@@ -54,13 +55,7 @@ export const VisualTree = () => {
     <div onKeyDown={keyMap} id="doc-tree">
       <DndContext {...dnd}>
         <VisualNode node={root} />
-        <DragOverlay>
-          {draggedNode && (
-            <div className="bg-white bg-opacity-75 border border-1 rounded border-dotted">
-              <VisualNode node={draggedNode} />
-            </div>
-          )}
-        </DragOverlay>
+        <DragOverlay>{draggedNode && <DraggedNode node={draggedNode} />}</DragOverlay>
       </DndContext>
       <DeleteModal />
     </div>

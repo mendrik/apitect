@@ -9,7 +9,7 @@ import { selectNode } from '../../../events/tree'
 
 type OwnProps = {
   node: TreeNode<Node>
-  activatorRef: (element: HTMLElement | null) => void
+  activatorRef?: (element: HTMLElement | null) => void
 } & HTMLAttributes<HTMLDivElement>
 
 export const NodeName = ({ node, activatorRef, children, className, ...div }: Jsx<OwnProps>) => {

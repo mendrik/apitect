@@ -7,14 +7,12 @@ import {
   useSensors
 } from '@dnd-kit/core'
 import { DragStartEvent } from '@dnd-kit/core/dist/types'
-import { eqBy, path, propEq } from 'ramda'
+import { propEq } from 'ramda'
 import { useState } from 'react'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Node } from '~shared/types/domain/node'
 
 import { verticalRowStrategy } from '../utils/verticalRowStrategy'
-
-export const sameType = eqBy(path(['data', 'current', 'type']))
 
 export const useDnd = (root: TreeNode<Node>) => {
   const [draggedNode, setDraggedNode] = useState<TreeNode<Node> | null>(null)

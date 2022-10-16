@@ -4,6 +4,5 @@ import { Node } from '~shared/types/domain/node'
 
 export const useIsDragged = (node: TreeNode<Node>): boolean => {
   const { active } = useDndContext()
-
   return active?.id === node.value.id
 }
