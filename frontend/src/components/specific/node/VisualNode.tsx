@@ -33,7 +33,7 @@ const Ol = styled.ol`
   list-style: none;
 `
 
-const NodeGrid = styled.div`
+export const NodeGrid = styled.div`
   display: grid;
   grid-template-columns: 20px auto 20px;
   align-items: center;

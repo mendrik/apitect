@@ -14,9 +14,10 @@ export const snapToNode: Modifier = ({ transform, over }) => {
   }
   const openNodes = getOpenNodes()
   const isOpen = openNodes[nodeData.node.value.id] ?? false
-  const depth = nodeData.node.depth + (isOpen ? 1 : 0)
+  const depth = nodeData.node.depth + (isOpen ? 1 : 0) - 1
   return {
     ...transform,
-    x: depth * 15
+    x: depth * 16 + 2,
+    y: transform.y
   }
 }

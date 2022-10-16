@@ -11,7 +11,7 @@ const sortCollisionsDesc: Ord<CollisionDescriptor> = (
 
 const getClosestRow = (entry: ClientRect, pointer: Coordinates): number => {
   const eCenter = entry.top + (entry.height >> 1)
-  return Math.abs(eCenter - pointer.y)
+  return Math.abs(eCenter - pointer.y + entry.height)
 }
 
 export const verticalRowStrategy: CollisionDetection = ({

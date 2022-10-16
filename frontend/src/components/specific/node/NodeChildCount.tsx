@@ -14,7 +14,7 @@ type OwnProps = {
 
 const BadgeSx = styled(Badge)`
   font-size: 0.6rem;
-  background-color: #f1f7e1 !important;
+  background-color: white !important;
   color: #666;
 `
 

@@ -56,7 +56,7 @@ export const VisualTree = () => {
     <div onKeyDown={keyMap} id="doc-tree">
       <DndContext {...dnd}>
         <VisualNode node={root} />
-        <DragOverlay modifiers={[snapToNode]} dropAnimation={null} adjustScale>
+        <DragOverlay modifiers={[snapToNode]} dropAnimation={null}>
           {draggedNode && <DraggedNode node={draggedNode} />}
         </DragOverlay>
       </DndContext>
