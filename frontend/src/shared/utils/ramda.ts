@@ -10,7 +10,6 @@ import {
   groupBy,
   head,
   identity,
-  indexOf,
   insert,
   isNil,
   join,
@@ -140,13 +139,13 @@ export const matchesArr = <TArgs extends any[]>(
   ...predicates: Pred[]
 ): ((args: TArgs) => boolean) => apply(matches(...predicates))
 
-const nextIndex = <T>(item: T): ((arr: T[]) => number) => pipe(indexOf(item), add(1))
+const nextIndex = <T>(pred: Pred<[T]>): ((arr: T[]) => number) => pipe(findIndex(pred), add(1))
 
-export const lensNext = <T>(item: T): Lens<T[], T | undefined> =>
+export const lensNext = <T>(pred: Pred<[T]>): Lens<T[], T | undefined> =>
   lens(
-    converge<T | undefined, [Fn<number>, Fn<T[]>]>(nth, [nextIndex(item), identity]),
+    converge<T | undefined, [Fn<number>, Fn<T[]>]>(nth, [nextIndex(pred), identity]),
     converge<T[], [Fn<number>, Fn<T>, Fn<T[]>]>(update, [
-      pipe(nthArg(1), nextIndex(item)),
+      pipe(nthArg(1), nextIndex(pred)),
       nthArg(0),
       nthArg(1)
     ])
