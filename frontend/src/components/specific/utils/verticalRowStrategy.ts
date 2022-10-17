@@ -1,6 +1,7 @@
 import { ClientRect, CollisionDetection } from '@dnd-kit/core'
 import type { Coordinates } from '@dnd-kit/core/dist/types'
 import type { CollisionDescriptor } from '@dnd-kit/core/dist/utilities/algorithms/types'
+import { take } from 'ramda'
 
 type Ord<T> = (a: T, b: T) => number
 
@@ -10,7 +11,7 @@ const sortCollisionsDesc: Ord<CollisionDescriptor> = (
 ) => a - b
 
 const getClosestRow = (entry: ClientRect, pointer: Coordinates): number => {
-  const eCenter = entry.top + (entry.height >> 1)
+  const eCenter = entry.bottom + (entry.height >> 1)
   return Math.abs(eCenter - pointer.y)
 }
 
@@ -44,5 +45,5 @@ export const verticalRowStrategy: CollisionDetection = ({
   }
 
   const sortedCols = collisions.sort(sortCollisionsDesc)
-  return [sortedCols[0]]
+  return take(1, sortedCols)
 }

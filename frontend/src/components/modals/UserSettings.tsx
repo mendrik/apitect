@@ -4,22 +4,22 @@ import { Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { FieldSet } from '~forms/FieldSet'
 import { SocketForm } from '~forms/SocketForm'
-import { useLocation } from '~hooks/useLocation'
+import { useModal } from '~hooks/useModal'
 import { UserSettings as Settings, ZUserSettings } from '~shared/types/forms/userSettings'
 import { $tagStore } from '~stores/$tagStore'
 
 import { updateUserSettingsFx } from '../../events/user'
 import { ModalFC } from '../ModalStub'
 
-const UserSettings: ModalFC = ({ close }) => {
-  const { state } = useLocation<Settings>()
+const UserSettings: ModalFC = () => {
+  const state = useModal<Settings>()
   const { tags } = useStore($tagStore)
   const form = useForm<Settings>({
     resolver: zodResolver(ZUserSettings),
     defaultValues: state
   })
   return (
-    <SocketForm form={form} onValid={updateUserSettingsFx} close={close} submitButton="common.save">
+    <SocketForm form={form} onValid={updateUserSettingsFx} submitButton="common.save">
       <FieldSet title="modals.userSettings.visibleTags">
         {tags.map(tag => (
           <Form.Check key={tag.name}>

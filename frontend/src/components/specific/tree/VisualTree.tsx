@@ -1,16 +1,14 @@
-import { DndContext, DragOverlay, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { DragStartEvent } from '@dnd-kit/core/dist/types'
+import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { useStore } from 'effector-react'
-import { always, both, cond, propEq } from 'ramda'
+import { always, both, cond } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useMemo } from 'react'
 import { useConfirmation } from '~hooks/useConfirmation'
-import { useDefinedEffect } from '~hooks/useDefinedEffect'
-import { TreeNode } from '~shared/algebraic/treeNode'
-import { Node } from '~shared/types/domain/node'
 import '~stores/$enumsStore'
+import { $openNodes } from '~stores/$openNodesStore'
 import { $canCreateNode, $selectedNode } from '~stores/$selectedNode'
 import { $treeStore } from '~stores/$treeStore'
+import { $visibleNodes } from '~stores/$visibileNodes'
 
 import {
   deleteNodeFx,
@@ -20,28 +18,20 @@ import {
   selectNode
 } from '../../../events/tree'
 import { codeIn, keyIn, withoutModkey } from '../../../utils/eventUtils'
-import { focus } from '../../../utils/focus'
 import { preventDefault as pd } from '../../../utils/preventDefault'
+import { DraggedNode } from '../node/DraggedNode'
 import { VisualNode } from '../node/VisualNode'
-import { verticalRowStrategy } from '../utils/verticalRowStrategy'
+import { snapToNode } from '../utils/snapToNode'
+import { useDnd } from './useDnD'
 
 export const VisualTree = () => {
   const selectedNode = useStore($selectedNode)
   const root = useStore($treeStore)
   const canCreateNode = useStore($canCreateNode)
-  const [draggedNode, setDraggedNode] = useState<TreeNode<Node> | null>(null)
+  const openNodes = useStore($openNodes)
+  const visibleNodes = useStore($visibleNodes)
 
-  const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        distance: 5
-      }
-    })
-  )
-
-  useDefinedEffect(sn => {
-    focus(document.getElementById(sn.value.id))
-  }, selectedNode)
+  const { draggedNode, ...dnd } = useDnd(root)
 
   const [DeleteModal, confirmDelete] = useConfirmation(
     'common.questions.delete',
@@ -61,37 +51,19 @@ export const VisualTree = () => {
     [both(keyIn('ArrowRight'), withoutModkey), setOpen(true)],
     [both(keyIn('ArrowLeft'), withoutModkey), setOpen(false)],
     [keyIn('Delete'), confirmDelete],
-    [both(always(canCreateNode), keyIn('n')), pd(() => newNodeFx(selectedNode?.value))],
+    [both(always(canCreateNode), keyIn('n')), pd(() => newNodeFx(selectedNode))],
     [keyIn('Enter'), pd(() => selectedNode && nodeSettingsFx(selectedNode.value.id))],
     [codeIn('Escape'), pd(() => selectNode(null))]
   ])
 
-  const handleNodeDrop = () => {
-    // eslint-disable-next-line no-console
-    console.log('drop')
-  }
-
-  const handleNodeDrag = (ev: DragStartEvent) => {
-    const first = root.first(propEq('id', ev.active.id))
-    setDraggedNode(first ?? null)
-  }
+  const modifier = useMemo(() => snapToNode(openNodes), [openNodes])
 
   return (
     <div onKeyDown={keyMap} id="doc-tree">
-      <DndContext
-        onDragEnd={handleNodeDrop}
-        onDragStart={handleNodeDrag}
-        sensors={sensors}
-        collisionDetection={verticalRowStrategy}
-        autoScroll
-      >
+      <DndContext {...dnd}>
         <VisualNode node={root} />
-        <DragOverlay>
-          {draggedNode && (
-            <div className="bg-white bg-opacity-75 border border-1 rounded border-dotted">
-              <VisualNode node={draggedNode} isDragGhost />
-            </div>
-          )}
+        <DragOverlay modifiers={[modifier]} dropAnimation={null}>
+          {draggedNode && <DraggedNode node={draggedNode} />}
         </DragOverlay>
       </DndContext>
       <DeleteModal />

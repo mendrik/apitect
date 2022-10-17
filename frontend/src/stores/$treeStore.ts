@@ -1,17 +1,20 @@
-import { createEvent, createStore, sample, Store } from 'effector'
+import { createStore, sample, Store } from 'effector'
 import { isNil, prop, propEq, unless } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
-import { ApiResult } from '~shared/apiTypes'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { mapByProperty } from '~shared/utils/ramda'
+import { throwError } from '~shared/utils/throwError'
 
 import { projectFx } from '../events/project'
 import { resetProject } from '../events/reset'
-import { createNodeFx, deleteNodeFx, selectNode, updateNodeSettingsFx } from '../events/tree'
-
-const rawTreeCreateNode = createEvent<ApiResult<'nodeCreate'>>()
-const treeCreateNode = createEvent<ApiResult<'nodeCreate'>>()
+import {
+  createNodeFx,
+  deleteNodeFx,
+  focusNode,
+  selectNode,
+  updateNodeSettingsFx
+} from '../events/tree'
 
 const $rawTree = createStore<Node>({
   nodeType: NodeType.Object,
@@ -21,7 +24,7 @@ const $rawTree = createStore<Node>({
 })
   .on(projectFx.doneData, (state, result) => result.document.tree)
   .on(deleteNodeFx.doneData, (state, result) => result.tree)
-  .on(rawTreeCreateNode, (state, result) => result.tree)
+  .on(createNodeFx.doneData, (state, result) => result.tree)
   .on(updateNodeSettingsFx.doneData, (state, result) => result)
   .reset(resetProject)
 
@@ -37,10 +40,11 @@ export const $mappedNodesStore = $treeStore.map<Record<NodeId, Node>>(root =>
  * After node has been created select it
  */
 sample({
-  clock: treeCreateNode,
+  clock: createNodeFx.doneData,
   source: $treeStore,
-  fn: (rootNode, result) => rootNode.first(propEq('id', result.nodeId)) ?? null,
-  target: selectNode
+  fn: (rootNode, result) =>
+    rootNode.first(propEq('id', result.nodeId)) ?? throwError('no node after creation?!'),
+  target: [selectNode, focusNode]
 })
 
 /**
@@ -53,13 +57,5 @@ sample({
     const parent = rootNode.first(propEq('id', result.parentNode))
     return parent?.children[result.position - 1] ?? parent ?? null
   },
-  target: selectNode
-})
-
-/**
- * when node has been created, notify tree and rawTree
- */
-sample({
-  clock: createNodeFx.doneData,
-  target: [rawTreeCreateNode, treeCreateNode]
+  target: [selectNode, focusNode]
 })

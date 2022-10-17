@@ -12,23 +12,18 @@ import { SubmitButton } from '~forms/SubmitButton'
 import { TextInput } from '~forms/TextInput'
 import { useView } from '~hooks/useView'
 import { Login, ZLogin } from '~shared/types/forms/login'
-import { Fn } from '~shared/types/generic'
 
 import ForgotPasswordForm from '../components/modals/ForgotPasswordForm'
 import { $apiError, apiFx } from '../events/api'
 import { whoAmIFx } from '../events/user'
 import { login } from '../utils/restApi'
 
-type OwnProps = {
-  close: Fn
-}
-
 enum Views {
   Login,
   ForgotPassword
 }
 
-export const LoginForm = ({ close }: OwnProps) => {
+export const LoginForm = () => {
   const { t } = useTranslation()
   const { view, loginView, forgotPasswordView } = useView(Views)
   const error = useStore($apiError)

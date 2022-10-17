@@ -4,16 +4,15 @@ import { useStore } from 'effector-react'
 import { pipe, toLower, values, when } from 'ramda'
 import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { ErrorInfo } from '~forms/ErrorInfo'
 import { SocketForm } from '~forms/SocketForm'
 import { TextInput } from '~forms/TextInput'
-import { useLocation } from '~hooks/useLocation'
-import { Node } from '~shared/types/domain/node'
+import { useModal } from '~hooks/useModal'
 import { iconMap, NodeType } from '~shared/types/domain/nodeType'
 import { NewNode as NewNodeType, TNewNode } from '~shared/types/forms/newNode'
-import { Maybe } from '~shared/types/generic'
+import { OptNode } from '~shared/types/generic'
 import { capitalize } from '~shared/utils/ramda'
-import { $selectedArrayNode } from '~stores/$arrayStores'
-import { $canCreateNode } from '~stores/$selectedNode'
+import { $canCreateArray, $canCreateNode } from '~stores/$selectedNode'
 
 import { Palette } from '../../css/colors'
 import { insetFocus } from '../../css/insetFocus'
@@ -56,20 +55,16 @@ const TypeGrid = styled(FocusNavigator)`
   }
 `
 
-export type SelectedNode = {
-  selectedNode: Maybe<Node>
-}
-
-const NewNode: ModalFC = ({ close }) => {
-  const canAddArray = useStore($selectedArrayNode) == null
+const NewNode: ModalFC = () => {
   const canCreateNode = useStore($canCreateNode)
-  const { state } = useLocation<SelectedNode>()
-  const selectedNode = state?.selectedNode
+  const canAddArray = useStore($canCreateArray)
+  const parentNode = useModal<OptNode>()
+
   const form = useForm<NewNodeType>({
     resolver: zodResolver(TNewNode),
     defaultValues: {
-      parentNode: selectedNode?.id,
-      nodeType: selectedNode?.nodeType ?? NodeType.Object,
+      parentNode: parentNode?.value.id,
+      nodeType: NodeType.Object,
       name: ''
     }
   })
@@ -80,7 +75,6 @@ const NewNode: ModalFC = ({ close }) => {
     <SocketForm
       form={form}
       onValid={node => (arrayCheck ? createNodeFx(node) : Promise.reject())}
-      close={close}
       submitButton="modals.newNode.submit"
     >
       <TextInput
@@ -96,8 +90,9 @@ const NewNode: ModalFC = ({ close }) => {
         defaultValue={NodeType.Object}
         render={({ field }) => (
           <TypeGrid role="grid" columns={4} ctrlKey={false}>
-            {values(NodeType).map((nodeType, _, __, Icon = iconMap[nodeType]) => {
+            {values(NodeType).map(nodeType => {
               const disabled = (nodeType === NodeType.Array && !canAddArray) || !canCreateNode
+              const Icon = iconMap[nodeType]
               return (
                 <div
                   key={nodeType}
@@ -118,6 +113,7 @@ const NewNode: ModalFC = ({ close }) => {
           </TypeGrid>
         )}
       />
+      <ErrorInfo name="nodeType" />
     </SocketForm>
   )
 }

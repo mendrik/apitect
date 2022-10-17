@@ -1,5 +1,6 @@
 /* eslint-disable unused-imports/no-unused-imports */
 // noinspection ES6UnusedImports
+// eslint-disable-next-line no-unused-vars
 import * as ramda from 'ramda'
 
 declare module 'ramda' {

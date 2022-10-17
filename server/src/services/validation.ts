@@ -59,18 +59,21 @@ const validateNode = async (
     [T, () => any({ description: 'always valid' })]
   ])
 
-  return node.toArray().map(valueNode => {
-    const value = values.find(propEq('nodeId', valueNode.id))
-    const validator = primitiveValidator(valueNode)
-    const res = validator.safeParse(value?.value, {
-      path: [node.extract().name, valueNode.name, valueNode.id]
+  return node
+    .toArray()
+    .slice(1)
+    .map(valueNode => {
+      const value = values.find(propEq('nodeId', valueNode.id))
+      const validator = primitiveValidator(valueNode)
+      const res = validator.safeParse(value?.value, {
+        path: [node.extract().name, valueNode.name, valueNode.id]
+      })
+      logger.debug(
+        `Validating ${docId}/${tag}/${valueNode.name}/${value?.value} - ${validator.description}`,
+        res
+      )
+      return Object.assign(res, { data: value })
     })
-    logger.debug(
-      `Validating ${docId}/${tag}/${valueNode.name}/${value?.value} - ${validator.description}`,
-      res
-    )
-    return res
-  })
 }
 
 export const validateArrayNode = async (

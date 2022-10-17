@@ -20,12 +20,9 @@ type OwnProps = {
 export const Dropdown = ({
   name,
   label,
-  className,
-  placeholder,
   containerClassNames,
   controllerProps,
   required,
-  autoFocus,
   options,
   ...props
 }: OwnProps) => {

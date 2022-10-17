@@ -2,11 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useStore } from 'effector-react'
 import { PropsWithChildren } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { SocketForm } from '~forms/SocketForm'
 import { TextInput } from '~forms/TextInput'
-import { useLocation } from '~hooks/useLocation'
-import { useUndefinedEffect } from '~hooks/useUndefinedEffect'
+import { useModal } from '~hooks/useModal'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { ZArraySettings } from '~shared/types/forms/nodetypes/arraySettings'
 import { ZBinarySettings } from '~shared/types/forms/nodetypes/binarySettings'
@@ -24,7 +22,6 @@ import { ZStringSettings } from '~shared/types/forms/nodetypes/stringSettings'
 import { $currentNode } from '~stores/$selectedNode'
 
 import { updateNodeSettingsFx } from '../../events/tree'
-import { removeParams } from '../../utils/url'
 import { generateDefaults } from '../../utils/zod'
 import { ModalFC } from '../ModalStub'
 import ArraySettings from './nodetypes/Array'
@@ -104,14 +101,9 @@ const resolver = (nodeType: NodeType) => {
   }
 }
 
-const NodeSettings: ModalFC = ({ close }) => {
+const NodeSettings: ModalFC = () => {
   const selectedNode = useStore($currentNode)
-  const navigate = useNavigate()
-  const { state } = useLocation<NodeSettingsType>()
-
-  useUndefinedEffect(() => {
-    navigate(removeParams(['modal']))
-  }, selectedNode)
+  const state = useModal<NodeSettingsType>()
 
   if (!selectedNode) {
     return null
@@ -136,7 +128,7 @@ const NodeSettings: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm form={form} onValid={updateNodeSettingsFx} close={close} submitButton="common.save">
+    <SocketForm form={form} onValid={updateNodeSettingsFx} submitButton="common.save">
       <TextInput
         name="name"
         label="form.fields.nodeName"

@@ -4,7 +4,7 @@ import { prop } from 'ramda'
 import { useForm } from 'react-hook-form'
 import { SocketForm } from '~forms/SocketForm'
 import { TreeInput } from '~forms/TreeInput'
-import { useLocation } from '~hooks/useLocation'
+import { useModal } from '~hooks/useModal'
 import {
   ProjectUsersSettings as Settings,
   ZProjectUsersSettings
@@ -14,8 +14,8 @@ import { $treeStore } from '~stores/$treeStore'
 import { updateProjectUserSettingsFx } from '../../events/projectUsers'
 import { ModalFC } from '../ModalStub'
 
-const ProjectUsersSettings: ModalFC = ({ close }) => {
-  const { state } = useLocation<Settings>()
+const ProjectUsersSettings: ModalFC = () => {
+  const state = useModal<Settings>()
   const root = useStore($treeStore)
 
   const form = useForm<Settings>({
@@ -25,12 +25,7 @@ const ProjectUsersSettings: ModalFC = ({ close }) => {
 
   return (
     root && (
-      <SocketForm
-        form={form}
-        onValid={updateProjectUserSettingsFx}
-        close={close}
-        submitButton="common.save"
-      >
+      <SocketForm form={form} onValid={updateProjectUserSettingsFx} submitButton="common.save">
         <TreeInput
           label="form.fields.emailId"
           tree={root}

@@ -3,6 +3,7 @@ export const getCaretPosition = (x: number, y: number): number => {
     const range = document.caretRangeFromPoint(x, y)
     return range?.startOffset ?? 0
   } else if ('caretPositionFromPoint' in document) {
+    // @ts-ignore
     const range = document.caretPositionFromPoint(x, y)
     return range?.offset ?? 0
   } else {

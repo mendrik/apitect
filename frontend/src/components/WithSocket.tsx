@@ -23,9 +23,9 @@ export const WithSocket = ({ children }: Jsx) => {
   useEffect(() => {
     if (lastMessage?.data) {
       try {
-        apiResponse(JSON.parse(lastMessage?.data))
+        apiResponse(JSON.parse(lastMessage.data))
       } catch (e) {
-        logger.error('Failed to parse server message:', lastMessage?.data)
+        logger.error('Failed to parse server message:', lastMessage.data)
       }
     }
   }, [lastMessage])

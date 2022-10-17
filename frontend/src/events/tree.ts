@@ -3,14 +3,17 @@ import { tap } from 'ramda'
 import { TreeNode } from '~shared/algebraic/treeNode'
 import { Api } from '~shared/apiTypes'
 import { Node } from '~shared/types/domain/node'
+import { OptNode } from '~shared/types/generic'
 import { ModalNames } from '~shared/types/modals'
 
+import { focus } from '../utils/focus'
 import { api } from './api'
 import { openModal } from './modals'
 import { projectFx } from './project'
 
 export const openNodeState = createEvent<[TreeNode<Node>, boolean]>('toggle node')
 export const selectNode = createEvent<TreeNode<Node> | null>('select node')
+export const focusNode = createEvent<TreeNode<Node>>('focus node')
 
 export const createNodeFx = createEffect<Api['nodeCreate']>(node => api().nodeCreate(node))
 export const deleteNodeFx = createEffect<Api['nodeDelete']>(id => api().nodeDelete(id))
@@ -26,6 +29,19 @@ export const nodeSettingsFx = createEffect<Api['nodeSettings']>(id =>
     .then(tap(params => openModal({ name: ModalNames.NODE_SETTINGS, params })))
 )
 
-export const newNodeFx = createEffect((selectedNode?: Node) =>
-  openModal({ name: ModalNames.NEW_NODE, params: { selectedNode } })
+export const newNodeFx = createEffect((params: OptNode) =>
+  openModal({ name: ModalNames.NEW_NODE, params })
 )
+
+focusNode.watch(node => {
+  const modal = document.querySelector('.modal.show')
+  if (modal?.parentElement) {
+    const mo = new MutationObserver(() => {
+      mo.disconnect()
+      focus(document.getElementById(node.value.id))
+    })
+    mo.observe(modal.parentElement, { childList: true })
+  } else {
+    focus(document.getElementById(node.value.id))
+  }
+})

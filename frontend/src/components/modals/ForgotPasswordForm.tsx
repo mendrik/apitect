@@ -21,7 +21,7 @@ enum Views {
   Success
 }
 
-const ForgotPasswordForm: ModalFC = ({ close }) => {
+const ForgotPasswordForm: ModalFC = () => {
   const { t } = useTranslation()
   const form = useForm<ForgotPassword>({
     resolver: zodResolver(TForgotPassword),

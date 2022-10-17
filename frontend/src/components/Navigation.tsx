@@ -2,17 +2,17 @@ import { IconDownload, IconLogin, IconTags, IconTrees, IconWorldUpload } from '@
 import { useStore } from 'effector-react'
 import { Button, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLogout } from '~hooks/useLogout'
+import { ModalNames } from '~shared/types/modals'
 import { $selectedArrayNode } from '~stores/$arrayStores'
 import { $user } from '~stores/$userStore'
 
 import { Palette } from '../css/colors'
 import { enumsFx } from '../events/enums'
+import { openModal } from '../events/modals'
 import { projectUserSettingsFx } from '../events/projectUsers'
 import { tagsSettingsFx } from '../events/tagSettings'
-import { addParams } from '../utils/url'
 import { Scale, Tuple } from './generic/Tuple'
 
 const Item = styled(Nav.Item)`
@@ -39,7 +39,6 @@ const LogoText = styled.span`
 
 export const Navigation = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const arrayNode = useStore($selectedArrayNode)
   const logout = useLogout()
   const user = useStore($user)
@@ -99,7 +98,7 @@ export const Navigation = () => {
             <NavDropdown.Item onClick={logout}>{t('app.logout')}</NavDropdown.Item>
           </NavDropdown>
         ) : (
-          <Button onClick={() => navigate(addParams({ modal: 'login' }))} className="ps-2 d-flex">
+          <Button onClick={() => openModal({ name: ModalNames.LOGIN })} className="ps-2 d-flex">
             <div className="d-flex gap-1 align-items-center">
               <IconLogin className="icon-xs ms-1" />
               <span>{t('app.login')}</span>

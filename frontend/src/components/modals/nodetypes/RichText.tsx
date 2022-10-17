@@ -1,9 +1,3 @@
-import { useTranslation } from 'react-i18next'
-
-const RichText = () => {
-  const { t } = useTranslation()
-
-  return <div>RichText</div>
-}
+const RichText = () => <div>RichText</div>
 
 export default RichText

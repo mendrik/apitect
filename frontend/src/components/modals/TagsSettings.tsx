@@ -5,14 +5,14 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { SocketForm } from '~forms/SocketForm'
 import { TagInput } from '~forms/TagInput'
-import { useLocation } from '~hooks/useLocation'
+import { useModal } from '~hooks/useModal'
 import { TagsSettings as Settings, ZTagsSettings } from '~shared/types/forms/tagsSettings'
 
 import { updateTagsSettingsFx } from '../../events/tagSettings'
 import { ModalFC } from '../ModalStub'
 
-const TagsSettings: ModalFC = ({ close }) => {
-  const { state } = useLocation<Settings>()
+const TagsSettings: ModalFC = () => {
+  const state = useModal<Settings>()
   const { t } = useTranslation()
 
   const form = useForm<Settings>({
@@ -21,7 +21,7 @@ const TagsSettings: ModalFC = ({ close }) => {
   })
 
   return (
-    <SocketForm form={form} onValid={updateTagsSettingsFx} close={close} submitButton="common.save">
+    <SocketForm form={form} onValid={updateTagsSettingsFx} submitButton="common.save">
       <Alert variant="info" className="mb-3">
         {t('modals.tagsSettings.info')}
       </Alert>

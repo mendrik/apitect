@@ -16,11 +16,10 @@ export const useConfirmation = (
   confirmButton: TFuncKey = 'common.confirm',
   cancelButton: TFuncKey = 'common.cancel'
 ): [Fn<JSX.Element | null>, Fn] => {
-  const focusElement = useRef<HTMLElement>()
   const [open, setOpen] = useState(false)
+
   const close = () => {
     setOpen(false)
-    focusElement.current?.focus?.()
   }
 
   const keyMap = cond([
@@ -62,10 +61,10 @@ export const useConfirmation = (
         </Modal.Body>
       </Modal>
     ) : null
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, onConfirm])
 
   const openFn = useCallback(() => {
-    focusElement.current = document.activeElement as HTMLElement
     setOpen(true)
   }, [])
   return [Confirm, openFn]

@@ -103,7 +103,7 @@ export class TreeNode<T> {
   [fl.zero] = () => TreeNode.of(null, [])
   zero = this[fl.zero];
 
-  [fl.equals] = <R>(that: TreeNode<T>): boolean =>
+  [fl.equals] = (that: TreeNode<T>): boolean =>
     equals(this.value, that.value) && equals(this.children, that.children)
   equals = this[fl.equals];
 

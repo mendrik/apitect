@@ -1,6 +1,6 @@
+import { useStoreMap } from 'effector-react'
 import { prop } from 'ramda'
 import styled from 'styled-components'
-import { useStoreMap } from '~hooks/useStoreMap'
 import { Node, NodeId } from '~shared/types/domain/node'
 import { NodeType } from '~shared/types/domain/nodeType'
 import { Value } from '~shared/types/domain/values/value'

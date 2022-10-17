@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Dropdown } from '~forms/Dropdown'
 import { SocketForm } from '~forms/SocketForm'
 import { TextInput } from '~forms/TextInput'
-import { useLocation } from '~hooks/useLocation'
+import { useModal } from '~hooks/useModal'
 import { Tag, ZTag } from '~shared/types/domain/tag'
 import { isCyclic, updateArrayBy } from '~shared/utils/ramda'
 import { $tagStore } from '~stores/$tagStore'
@@ -13,8 +13,8 @@ import { $tagStore } from '~stores/$tagStore'
 import { updateTagsSettingsFx } from '../../events/tagSettings'
 import { ModalFC } from '../ModalStub'
 
-const TagSettings: ModalFC = ({ close }) => {
-  const { state: tag } = useLocation<Tag>()
+const TagSettings: ModalFC = () => {
+  const tag = useModal<Tag>()
   const { tags } = useStore($tagStore)
 
   const form = useForm<Tag>({
@@ -34,7 +34,6 @@ const TagSettings: ModalFC = ({ close }) => {
       onValid={data =>
         updateTagsSettingsFx({ tags: updateArrayBy(propEq('name', tag.name), always(data), tags) })
       }
-      close={close}
       submitButton="common.save"
     >
       <TextInput

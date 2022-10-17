@@ -38,7 +38,7 @@ export const ProjectTreeHeader = () => {
           <Icon
             icon={IconCirclePlus}
             disabled={!canCreateNode}
-            onClick={() => newNodeFx(selectedNode?.value)}
+            onClick={() => newNodeFx(selectedNode)}
           />
         </WithTooltip>
         <WithTooltip tooltipText={t('tooltips.nodeSettings')} shortcut="Enter">

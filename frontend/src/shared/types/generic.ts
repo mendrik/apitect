@@ -1,5 +1,7 @@
 import { Dictionary } from 'ramda'
 import { Dispatch, PropsWithChildren, SetStateAction, SyntheticEvent } from 'react'
+import { TreeNode } from '~shared/algebraic/treeNode'
+import { Node } from '~shared/types/domain/node'
 
 export type Fn<R = void> = (...args: any[]) => R
 export type ArgFn<A, R = void> = (arg: A) => R
@@ -11,6 +13,8 @@ export type Fr = number
 export type Pixels = number
 export type Width = number
 export type Index = number
+
+export type OptNode = TreeNode<Node> | null
 
 export type Maybe<T> = T | undefined | null
 
