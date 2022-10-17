@@ -7,7 +7,7 @@ import { NodeId } from '~shared/types/domain/node'
 import { Value } from '~shared/types/domain/values/value'
 import { mapByProperty } from '~shared/utils/ramda'
 import { $valuesStore } from '~stores/$valuesStore'
-import { $visibleNodes } from '~stores/$visibileNodes'
+import { $visibleNodeIds } from '~stores/$visibileNodes'
 
 import { valueListFx } from '../../../events/values'
 import { VisualValue } from './VisualValue'
@@ -29,7 +29,7 @@ const Values = styled.ol`
 
 export const VisualValueList = ({ tag }: OwnProps) => {
   const loading = useStore(valueListFx.pending)
-  const nodeIds = useStore($visibleNodes)
+  const nodeIds = useStore($visibleNodeIds)
   const values: Record<NodeId, Value> = useStoreMap(
     $valuesStore,
     pipe(filter(propEq('tag', tag)), mapByProperty('nodeId'))

@@ -1,4 +1,5 @@
 import {
+  add,
   always,
   aperture,
   append,
@@ -9,12 +10,17 @@ import {
   groupBy,
   head,
   identity,
+  indexOf,
   insert,
   isNil,
   join,
   juxt,
   last,
+  Lens,
+  lens,
   map,
+  nth,
+  nthArg,
   o,
   pickBy,
   pipe,
@@ -34,7 +40,7 @@ import {
 } from 'ramda'
 import { allEqualTo, findOr, isNotNil, sliceFrom, sliceTo } from 'ramda-adjunct'
 
-import { ArgFn, Maybe } from '../types/generic'
+import { ArgFn, Fn, Maybe } from '../types/generic'
 
 type Str = string
 
@@ -133,3 +139,15 @@ export const matches = <TArgs extends any[]>(
 export const matchesArr = <TArgs extends any[]>(
   ...predicates: Pred[]
 ): ((args: TArgs) => boolean) => apply(matches(...predicates))
+
+const nextIndex = <T>(item: T): ((arr: T[]) => number) => pipe(indexOf(item), add(1))
+
+export const lensNext = <T>(item: T): Lens<T[], T | undefined> =>
+  lens(
+    converge<T | undefined, [Fn<number>, Fn<T[]>]>(nth, [nextIndex(item), identity]),
+    converge<T[], [Fn<number>, Fn<T>, Fn<T[]>]>(update, [
+      pipe(nthArg(1), nextIndex(item)),
+      nthArg(0),
+      nthArg(1)
+    ])
+  ) as any
