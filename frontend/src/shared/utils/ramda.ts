@@ -6,6 +6,7 @@ import {
   apply,
   converge,
   curry,
+  equals,
   findIndex,
   groupBy,
   head,
@@ -18,7 +19,6 @@ import {
   Lens,
   lens,
   map,
-  nth,
   nthArg,
   o,
   pickBy,
@@ -139,12 +139,18 @@ export const matchesArr = <TArgs extends any[]>(
   ...predicates: Pred[]
 ): ((args: TArgs) => boolean) => apply(matches(...predicates))
 
-const nextIndex = <T>(pred: Pred<[T]>): ((arr: T[]) => number) => pipe(findIndex(pred), add(1))
+// don't allow negative indices
+const nthAlt = <T>(idx: number, arr: T[]): T | undefined => arr[idx]
+const updateAlt = <T>(idx: number, value: T, arr: T[]): T[] =>
+  idx < 0 ? arr : update<T>(idx, value, arr)
+
+const nextIndex = <T>(pred: Pred<[T]>): ((arr: T[]) => number) =>
+  pipe(findIndex(pred), unless(equals(-1), add(1)))
 
 export const lensNext = <T>(pred: Pred<[T]>): Lens<T[], T | undefined> =>
   lens(
-    converge<T | undefined, [Fn<number>, Fn<T[]>]>(nth, [nextIndex(pred), identity]),
-    converge<T[], [Fn<number>, Fn<T>, Fn<T[]>]>(update, [
+    converge<T | undefined, [Fn<number>, Fn<T[]>]>(nthAlt, [nextIndex(pred), identity]),
+    converge<T[], [Fn<number>, Fn<T>, Fn<T[]>]>(updateAlt, [
       pipe(nthArg(1), nextIndex(pred)),
       nthArg(0),
       nthArg(1)
