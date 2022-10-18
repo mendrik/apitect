@@ -4,6 +4,7 @@ import {
   aperture,
   append,
   apply,
+  chain,
   converge,
   curry,
   equals,
@@ -140,7 +141,7 @@ export const matchesArr = <TArgs extends any[]>(
 ): ((args: TArgs) => boolean) => apply(matches(...predicates))
 
 // don't allow negative indices
-const nthAlt = <T>(idx: number, arr: T[]): T | undefined => arr[idx]
+const nthAlt = curry(<T>(idx: number, arr: T[]): T | undefined => arr[idx])
 const updateAlt = <T>(idx: number, value: T, arr: T[]): T[] =>
   idx < 0 ? arr : update<T>(idx, value, arr)
 
@@ -149,10 +150,10 @@ const nextIndex = <T>(pred: Pred<[T]>): ((arr: T[]) => number) =>
 
 export const lensNext = <T>(pred: Pred<[T]>): Lens<T[], T | undefined> =>
   lens(
-    converge<T | undefined, [Fn<number>, Fn<T[]>]>(nthAlt, [nextIndex(pred), identity]),
+    chain<any, any, any>(nthAlt, nextIndex(pred)),
     converge<T[], [Fn<number>, Fn<T>, Fn<T[]>]>(updateAlt, [
       pipe(nthArg(1), nextIndex(pred)),
       nthArg(0),
       nthArg(1)
-    ])
-  ) as any
+    ]) as any
+  )
