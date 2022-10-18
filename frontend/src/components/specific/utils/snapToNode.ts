@@ -20,7 +20,7 @@ export const snapToNode =
     const isOpen = openNodes[overNode.value.id] ?? false
     const byOverId: Pred<[TreeNode<Node>]> = pathEq(['value', 'id'], overNode.value.id)
     const depth = overNode.depth + (isOpen || overNode.value.nodeType === NodeType.Object ? 1 : 0)
-    const nextDepth = min(view(lensNext(byOverId), visibleNodes)?.depth ?? depth, depth)
+    const nextDepth = min(view(lensNext(byOverId), visibleNodes)?.depth ?? 1, depth)
     const clampedX = clamp(nextDepth, depth, (transform.x / treeIndent) | 0)
     return {
       ...transform,
