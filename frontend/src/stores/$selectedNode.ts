@@ -6,7 +6,7 @@ import { Node } from '~shared/types/domain/node'
 import { TypeOfSources } from '~shared/types/effector'
 import { matchesArr } from '~shared/utils/ramda'
 import { $selectedValueNode } from '~stores/$valuesStore'
-import { $visibleNodes } from '~stores/$visibileNodes'
+import { $visibleNodeIds } from '~stores/$visibileNodes'
 
 import { canHaveChildrenNodes } from '../constants'
 import { resetProject } from '../events/reset'
@@ -20,7 +20,7 @@ export const $selectedNode = createStore<TreeNode<Node> | null>(null)
 
 export const $selectedRow = createStore<number | null>(null)
 
-type Stores = [typeof $selectedNode, typeof $selectedValueNode, typeof $visibleNodes]
+type Stores = [typeof $selectedNode, typeof $selectedValueNode, typeof $visibleNodeIds]
 type StoresTypes = TypeOfSources<Stores>
 
 const nodeId =
@@ -32,7 +32,7 @@ const nodeId =
  * Get current table row from either selected value or selected tree node
  */
 sample({
-  source: [$selectedNode, $selectedValueNode, $visibleNodes] as Stores,
+  source: [$selectedNode, $selectedValueNode, $visibleNodeIds] as Stores,
   fn: cond<[StoresTypes], number | null>([
     [matchesArr(T, isNotNil, T), nodeId(1)],
     [matchesArr(isNotNil, T, T), nodeId(0)],
