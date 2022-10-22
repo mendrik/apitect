@@ -22,7 +22,7 @@ const OK =
 
 export const noContent = always({})
 
-type Collector = Record<string, ZodSchema<any> | ((req: FastifyRequest) => Promise<any> | any)>
+type Collector = Record<string, ZodSchema<any> | ((_req: FastifyRequest) => Promise<any> | any)>
 
 export const body =
   <S>({ parse }: ZodSchema<S>) =>
@@ -59,18 +59,20 @@ const endpointErrorHandler = (reply: FastifyReply) => (e: Error) => {
 }
 
 export const endpoint =
-  // prettier-ignore
-  <D extends Collector, R = {
-    [K in keyof D]: D[K] extends (...args: any[]) => Promise<infer P>
-      ? P
-      : D[K] extends (...args: any[]) => any
+  <
+    D extends Collector,
+    R = {
+      [K in keyof D]: D[K] extends (..._a: any[]) => Promise<infer P>
+        ? P
+        : D[K] extends (..._a: any[]) => any
         ? ReturnType<D[K]>
         : D[K] extends ZodSchema<infer S>
-          ? S
-          : D[K]
-  }>(
+        ? S
+        : D[K]
+    }
+  >(
     dependencies: D,
-    body: (obj: R) => Promise<RouteGenericInterface['Reply']>
+    body: (_o: R) => Promise<RouteGenericInterface['Reply']>
   ): RouteHandlerMethod =>
   (req, reply) => {
     try {
