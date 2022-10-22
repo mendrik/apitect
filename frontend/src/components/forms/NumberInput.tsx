@@ -1,6 +1,5 @@
 import { IconChevronDown, IconChevronUp } from '@tabler/icons'
 import clsx from 'clsx'
-import type { TFuncKey } from 'i18next'
 import { both, clamp, complement, cond, identity, path, T } from 'ramda'
 import { isNaN, isNumber, isString } from 'ramda-adjunct'
 import { InputHTMLAttributes } from 'react'
@@ -12,11 +11,12 @@ import { useId } from '~hooks/useId'
 import { Fn } from '~shared/types/generic'
 import { asNumber, undef } from '~shared/utils/ramda'
 
+import { LocaleKey } from '../../type-patches/locales'
 import { onlyNumbers, onlyNumbersPaste, validNumber } from '../../utils/eventUtils'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {
-  label: TFuncKey
+  label: LocaleKey
   name: string
   options?: RegisterOptions
   containerClassNames?: string

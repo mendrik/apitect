@@ -1,12 +1,12 @@
-import type { TFuncKey } from 'i18next'
 import { Jsx } from '~shared/types/generic'
 
 import { ReactComponent as Success } from '../assets/success.svg'
+import { LocaleKey } from '../type-patches/locales'
 import { ImageView } from './generic/ImageView'
 
 type OwnProps = {
-  title: TFuncKey
-  body: TFuncKey
+  title: LocaleKey
+  body: LocaleKey
 }
 
 export const SuccessView = ({ title, body, children }: Jsx<OwnProps>) => (

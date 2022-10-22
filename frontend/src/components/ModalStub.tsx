@@ -1,7 +1,6 @@
 import { BaseModalProps } from '@restart/ui/Modal'
 import clsx from 'clsx'
 import { useStore } from 'effector-react'
-import type { TFuncKey } from 'i18next'
 import { FunctionComponent } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -9,11 +8,12 @@ import { ModalNames } from '~shared/types/modals'
 import { $modalStore } from '~stores/$modalStore'
 
 import { closeModal } from '../events/modals'
+import { LocaleKey } from '../type-patches/locales'
 
 type OwnProps = {
   content: FunctionComponent<any>
   name: ModalNames
-  title: TFuncKey
+  title: LocaleKey
   titleOptions?: Record<string, string>
 } & BaseModalProps
 

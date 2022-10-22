@@ -1,4 +1,3 @@
-import { TFuncKey } from 'i18next'
 import { complement, cond, juxt, pipe } from 'ramda'
 import { useCallback, useRef, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
@@ -8,14 +7,15 @@ import { useFocus } from '~hooks/useFocus'
 import { Fn } from '~shared/types/generic'
 
 import { QuestionView } from '../components/QuestionView'
+import { LocaleKey } from '../type-patches/locales'
 import { codeIn } from '../utils/eventUtils'
 import { stopPropagation } from '../utils/events'
 
 export const useConfirmation = (
-  question: TFuncKey,
+  question: LocaleKey,
   onConfirm: Fn,
-  confirmButton: TFuncKey = 'common.confirm',
-  cancelButton: TFuncKey = 'common.cancel'
+  confirmButton: LocaleKey = 'common.confirm',
+  cancelButton: LocaleKey = 'common.cancel'
 ): [Fn<JSX.Element | null>, Fn] => {
   const [open, setOpen] = useState(false)
 

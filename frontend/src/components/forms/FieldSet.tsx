@@ -1,9 +1,10 @@
-import type { TFuncKey } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { Jsx } from '~shared/types/generic'
 
+import { LocaleKey } from '../../type-patches/locales'
+
 type OwnProps = {
-  title: TFuncKey
+  title: LocaleKey
 }
 
 export const FieldSet = ({ title, children }: Jsx<OwnProps>) => {

@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import { parse } from 'date-fns'
-import type { TFuncKey } from 'i18next'
 import { path } from 'ramda'
 import { InputHTMLAttributes } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
@@ -10,10 +9,11 @@ import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useDatepicker } from '~hooks/useDatepicker'
 import { useId } from '~hooks/useId'
 
+import { LocaleKey } from '../../type-patches/locales'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {
-  label: TFuncKey
+  label: LocaleKey
   name: string
   options?: RegisterOptions
   containerClasses?: string

@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import type { TFuncKey } from 'i18next'
 import { path } from 'ramda'
 import { isEmptyString } from 'ramda-adjunct'
 import { InputHTMLAttributes } from 'react'
@@ -9,10 +8,11 @@ import { useTranslation } from 'react-i18next'
 import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useId } from '~hooks/useId'
 
+import { LocaleKey } from '../../type-patches/locales'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {
-  label: TFuncKey
+  label: LocaleKey
   name: string
   options?: RegisterOptions
   containerClasses?: string

@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { TFuncKey } from 'i18next'
 import { append, cond, path, pipe, propEq, remove, unless, when } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { HTMLAttributes, useRef, useState } from 'react'
@@ -8,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { Palette } from '../../css/colors'
+import { LocaleKey } from '../../type-patches/locales'
 import { keyIn, target } from '../../utils/eventUtils'
 import { stopEvent } from '../../utils/events'
 import { preventDefault } from '../../utils/preventDefault'
@@ -16,7 +16,7 @@ import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps<T> = {
   name: string
-  label: TFuncKey<'en-GB'>
+  label: LocaleKey
   containerClasses?: string
   apply: (value: string) => T
   unapply: (tag: T) => string

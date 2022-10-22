@@ -31,7 +31,9 @@ export const useDnd = (root: TreeNode<Node>) => {
     setDraggedNode(first ?? null)
   }
 
-  const onDragOver = (_ev: DragOverEvent) => {}
+  const onDragOver = (_ev: DragOverEvent) => {
+    //
+  }
 
   return {
     onDragStart,

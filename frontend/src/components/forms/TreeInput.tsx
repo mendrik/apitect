@@ -1,6 +1,5 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
-import { TFuncKey } from 'i18next'
 import { all, cond, F, ifElse, not, path, pipe, propEq, propOr, T as RT } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import {
@@ -31,6 +30,7 @@ import {
   Selected,
   StyledTreeInput
 } from '../../css/TreeInput.css'
+import { LocaleKey } from '../../type-patches/locales'
 import { codeIn, keyIn } from '../../utils/eventUtils'
 import { stopPropagation } from '../../utils/events'
 import { offset, sameWidth } from '../../utils/sameWidthMod'
@@ -49,7 +49,7 @@ type TreeSelectConfig<T extends WithId> = {
 
 type OwnProps<T extends WithId> = {
   tree: TreeNode<T>
-  label: TFuncKey
+  label: LocaleKey
   containerClasses?: string
 } & TreeSelectConfig<T>
 

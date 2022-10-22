@@ -1,5 +1,4 @@
 import { EffectByHandler } from 'effector'
-import type { TFuncKey } from 'i18next'
 import { PropsWithChildren, ReactElement, ReactNode, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
@@ -8,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { Api, FormApiMethod } from '~shared/apiTypes'
 
 import { closeModal } from '../../events/modals'
+import { LocaleKey } from '../../type-patches/locales'
 import { Scale, Tuple } from '../generic/Tuple'
 import { ButtonRow } from './ButtonRow'
 import { GenericError, isExtendedError } from './GenericError'
@@ -16,7 +16,7 @@ import { SubmitButton } from './SubmitButton'
 type OwnProps<M extends FormApiMethod, F extends FieldValues> = {
   form: UseFormReturn<F>
   onValid: (arg: F) => ReturnType<EffectByHandler<Api[M], Error>>
-  submitButton: TFuncKey
+  submitButton: LocaleKey
   buttonRowExtras?: ReactNode
 }
 

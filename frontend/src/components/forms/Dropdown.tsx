@@ -9,10 +9,11 @@ import { ControllerProps } from 'react-hook-form/dist/types'
 import { useTranslation } from 'react-i18next'
 import { useId } from '~hooks/useId'
 
+import { LocaleKey } from '../../type-patches/locales'
 import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps = {
-  label: TFuncKey
+  label: LocaleKey
   options: Array<[string, string]>
   name: string
   controllerProps?: ControllerProps
