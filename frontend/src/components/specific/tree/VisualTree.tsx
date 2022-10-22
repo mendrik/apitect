@@ -56,7 +56,7 @@ export const VisualTree = () => {
     [codeIn('Escape'), pd(() => selectNode(null))]
   ])
 
-  const modifier = useMemo(() => snapToNode(openNodes), [openNodes])
+  const modifier = useMemo(() => snapToNode(openNodes, visibleNodes), [openNodes, visibleNodes])
 
   return (
     <div onKeyDown={keyMap} id="doc-tree">

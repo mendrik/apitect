@@ -1,8 +1,17 @@
-import { equals, isNil } from 'ramda'
+import { equals, isNil, set, view } from 'ramda'
 import { isNaturalNumber, isString } from 'ramda-adjunct'
 
 import { TreeNode } from '../algebraic/treeNode'
-import { mapByProperty, matches, matchesArr, next, prev, replaceSlice, satiated } from './ramda'
+import {
+  lensNext,
+  mapByProperty,
+  matches,
+  matchesArr,
+  next,
+  prev,
+  replaceSlice,
+  satiated
+} from './ramda'
 
 describe('ramda', () => {
   it('next(pred)(arr) works', () => {
@@ -74,5 +83,19 @@ describe('ramda', () => {
   it('matchesArr', () => {
     expect(matchesArr(isNil, isString, isNaturalNumber)([null, 'a', 3])).toBe(true)
     expect(matchesArr(isNil, isNaturalNumber, isNaturalNumber)([null, 'a', 3])).toBe(false)
+  })
+
+  it('lensNext works', () => {
+    const arr = [2, 4, 6, 8, 10]
+    const copy = [...arr]
+
+    expect(view(lensNext(equals(2)), arr)).toEqual(4)
+    expect(view(lensNext(equals(6)), arr)).toEqual(8)
+    expect(view(lensNext(equals(10)), arr)).toBeUndefined()
+    expect(view(lensNext(equals(11)), arr)).toBeUndefined()
+    expect(arr).toStrictEqual(copy)
+
+    expect(set(lensNext(equals(2)), 5, arr)).toEqual([2, 5, 6, 8, 10])
+    expect(set(lensNext(equals(11)), 5, arr)).toEqual([2, 4, 6, 8, 10])
   })
 })
