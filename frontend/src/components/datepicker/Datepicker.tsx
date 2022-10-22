@@ -2,22 +2,25 @@ import { IconCalendar } from '@tabler/icons'
 import clsx from 'clsx'
 import { addYears, format, isSameYear, isValid, parse, setDate, setMonth } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
-import { cond, pipe, propOr, range, when } from 'ramda'
+import { cond, pipe, range, when } from 'ramda'
 import { mapIndexed } from 'ramda-adjunct'
 import { HTMLAttributes, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { ButtonRow } from '~forms/ButtonRow'
 import { ArgFn } from '~shared/types/generic'
 
 import { fullscreenScale } from '../../animations/fullscreenScale'
-import { Palette } from '../../css/colors'
 import { codeIn } from '../../utils/eventUtils'
 import { stopEvent, stopPropagation } from '../../utils/events'
 import { Scrollable } from '../generic/Scrollable'
 import { SimpleIcon } from '../generic/SimpleIcon'
 import { Month } from './Month'
+import { CalendarButton } from './styled/CalendarButton'
+import { FullYear } from './styled/FullYear'
+import { GridButtonRow } from './styled/GridButtonRow'
+import { Layout } from './styled/Layout'
+import { Year } from './styled/Year'
+import { Years } from './styled/Years'
 
 export const FMT = 'dd-MM-yyyy'
 
@@ -27,95 +30,6 @@ type OwnProps = {
   iconSize?: number
   stroke?: number
 } & HTMLAttributes<HTMLDivElement>
-
-const Layout = styled.div`
-  display: grid;
-  grid-gap: 0.5rem;
-  max-height: 100vh;
-  width: 100vw;
-  grid-template-columns: min-content 1fr;
-  grid-template-rows: 1fr max-content;
-`
-
-const Years = styled.ol`
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  grid-column: 1;
-  grid-row: 1;
-  padding: 0 0.5rem;
-`
-
-const Year = styled.li`
-  font-weight: 300;
-  padding: 0.25rem 0;
-
-  &.currentYear {
-    color: black;
-    font-weight: 600;
-  }
-`
-
-const FullYear = styled.ol`
-  margin: 0;
-  padding: 0;
-  grid-column: 2;
-  grid-row: 1;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(12, 1fr);
-  margin: 0 auto;
-
-  @media only screen and (min-width: 560px) {
-    align-items: flex-start;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(6, 1fr);
-  }
-
-  @media only screen and (min-width: 769px) {
-    max-width: 1024px;
-    align-items: flex-start;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: repeat(4, 1fr);
-  }
-
-  @media only screen and (min-width: 1380px) {
-    max-width: 1400px;
-    align-items: flex-start;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: repeat(3, 1fr);
-  }
-
-  .day[data-date='${propOr('', 'data-selected')}'] {
-    background-color: ${Palette.selected};
-    font-weight: 600;
-    border-radius: 4px;
-  }
-
-  .day[data-date='${propOr('', 'data-today')}'] {
-    color: #aa0000;
-    font-weight: 600;
-  }
-
-  > li {
-    padding: 0 1rem 1.5rem 1rem;
-  }
-`
-
-const GridButtonRow = styled(ButtonRow)`
-  grid-column: 1 / span 2;
-  grid-row: 2;
-`
-
-const CalendarButton = styled.div`
-  padding: 1px;
-  box-shadow: none !important;
-  color: #999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`
 
 const bodyCls = document.body.classList
 
