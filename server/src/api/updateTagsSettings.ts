@@ -1,5 +1,18 @@
-import { flip, fromPairs, isNil, map, mapObjIndexed, pipe, prop, reject, unless, zip } from 'ramda'
+import {
+  complement,
+  equals,
+  flip,
+  fromPairs,
+  isNil,
+  mapObjIndexed,
+  pickBy,
+  pipe,
+  prop,
+  unless,
+  zipWith
+} from 'ramda'
 import { ServerApiMethod } from '~shared/apiResponse'
+import { Tag } from '~shared/types/domain/tag'
 import { TagsSettings } from '~shared/types/forms/tagsSettings'
 import { Fn } from '~shared/types/generic'
 import { failOn } from '~shared/utils/failOn'
@@ -8,12 +21,10 @@ import { resolvePromised } from '~shared/utils/promise'
 import { collection, Collections } from '../services/database'
 import { renameTag } from '../services/tags'
 
-const renameMap: Fn<Record<string, string>> = pipe<any, any, any, any, any, Record<string, string>>(
-  zip as any,
-  map(map(prop('name'))),
+export const renameMap = pipe(
+  zipWith((a: Tag, b: Tag) => [a.name, b.name] as const),
   fromPairs,
-  mapObjIndexed((v, k) => (k === v ? undefined : v)),
-  reject(isNil)
+  pickBy(complement(equals)) as Fn<Record<string, string>>
 )
 
 export const updateTagsSettings: ServerApiMethod<'updateTagsSettings'> = ({
