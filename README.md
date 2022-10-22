@@ -3,13 +3,15 @@
 
 ![image](https://user-images.githubusercontent.com/160805/197213640-f05683e4-9bf7-4640-933b-fc228a13f411.png)
 
-Apitect is a hobby project of mine, that I work on occasionally. It's gonna be basically a glorified json editor with different lenses on different value types.
-However, unlike json it will also support binary data storage and external sources that work as data providers for array nodes. Each document has different _tags_, so one can use them to have, for example, different json configs for different environments or multiple languages of the same locale document.
+Apitect is a hobby project of mine, that I work on occasionally. Basically this is going to be a json editor with different lenses on different value types (i.e. color pickers, markdown editors, media files, external databases as source for array nodes, et alii). 
 
-Each object-typed json node exposes a REST endpoint which can be accessed via CRUD. 
-Document validation and versioning with publish option will be baked into the core.
+Furthermore, each document can have different _tags_, which can be used to have similar configs for different environments or multiple languages of the same locale file.
 
-Please note, this is no-where ready yet, but I like to work on it here and then. Feel free to explore the source code.
+Each object-typed json node, including the root node, exposes a REST endpoint which can be accessed via CRUD.
+Document validation and versioning with publish option will be baked into the core to ensure
+the published & retrieved documents are always schematically valid.
+
+Please note, this is still work in progress, but I like to work on it here and then. Feel free to explore the source code.
 
 # Run the project
 
