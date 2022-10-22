@@ -13,7 +13,7 @@ import {
   prop,
   propOr,
   reduce,
-  T as RT,
+  T,
   unless
 } from 'ramda'
 import { isArray, isFunction } from 'ramda-adjunct'
@@ -43,20 +43,20 @@ export class Queue<T> extends Array<T> {
   }
 }
 
-export class TreeNode<T> {
-  public parent?: TreeNode<T>
-  private constructor(public value: T, public children: TreeNode<T>[]) {
+export class TreeNode<N> {
+  public parent?: TreeNode<N>
+  private constructor(public value: N, public children: TreeNode<N>[]) {
     children.forEach(c => (c.parent = this))
   }
 
-  [fl.map] = <R>(fn: (v: T) => R): TreeNode<R> =>
+  [fl.map] = <R>(fn: (v: N) => R): TreeNode<R> =>
     TreeNode.of<R>(
       fn(this.value),
       map(c => c[fl.map](fn), this.children)
     )
   map = this[fl.map];
 
-  [fl.extract] = (): T => ({
+  [fl.extract] = (): N => ({
     ...this.value,
     children: this.children.map(c => c[fl.extract]())
   })
@@ -81,10 +81,10 @@ export class TreeNode<T> {
       return TreeNode.of(value, children as TreeNode<any>[]) as any
     }
 
-  flatten = (strategy: Strategy = Strategy.Breadth): TreeNode<T>[] => {
+  flatten = (strategy: Strategy = Strategy.Breadth): TreeNode<N>[] => {
     const arr =
-      strategy === Strategy.Depth ? Array.of<TreeNode<T>>(this) : Queue.of<TreeNode<T>>(this)
-    const res = Array.of<TreeNode<T>>()
+      strategy === Strategy.Depth ? Array.of<TreeNode<N>>(this) : Queue.of<TreeNode<N>>(this)
+    const res = Array.of<TreeNode<N>>()
     while (arr.length > 0) {
       const el = arr.shift()!
       res.push(el)
@@ -93,25 +93,25 @@ export class TreeNode<T> {
     return res
   }
 
-  toArray = (strategy: Strategy = Strategy.Breadth): T[] =>
+  toArray = (strategy: Strategy = Strategy.Breadth): N[] =>
     this.flatten(strategy).map(prop('value'));
 
-  [fl.reduce] = <R>(fn: (acc: R, c: T) => R, acc: R) =>
+  [fl.reduce] = <R>(fn: (acc: R, c: N) => R, acc: R) =>
     reduce(fn, acc, this.toArray(Strategy.Depth))
   reduce = this[fl.reduce];
 
   [fl.zero] = () => TreeNode.of(null, [])
   zero = this[fl.zero];
 
-  [fl.equals] = (that: TreeNode<T>): boolean =>
+  [fl.equals] = (that: TreeNode<N>): boolean =>
     equals(this.value, that.value) && equals(this.children, that.children)
   equals = this[fl.equals];
 
-  [fl.concat] = (...nodes: TreeNode<T>[]): TreeNode<T> =>
+  [fl.concat] = (...nodes: TreeNode<N>[]): TreeNode<N> =>
     TreeNode.of(this.value, concat(this.children)(nodes))
   concat = this[fl.concat];
 
-  [fl.filter] = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
+  [fl.filter] = (pred: (v: N) => boolean): Maybe<TreeNode<N>> =>
     pred(this.value)
       ? TreeNode.of(
           this.value,
@@ -120,18 +120,18 @@ export class TreeNode<T> {
       : undefined
   filter = this[fl.filter]
 
-  first = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
+  first = (pred: (v: N) => boolean): Maybe<TreeNode<N>> =>
     this.flatten(Strategy.Depth).find(node => pred(node.value))
 
-  closest = (pred: (v: T) => boolean): Maybe<TreeNode<T>> =>
+  closest = (pred: (v: N) => boolean): Maybe<TreeNode<N>> =>
     this.$pathToRoot().find(node => pred(node.value))
 
-  $pathToRoot = (): TreeNode<T>[] =>
+  $pathToRoot = (): TreeNode<N>[] =>
     this.parent ? [this.parent].concat(...this.parent.$pathToRoot()) : []
 
-  pathToRoot = (): T[] => this.$pathToRoot().map(prop('value'))
+  pathToRoot = (): N[] => this.$pathToRoot().map(prop('value'))
 
-  insert = (underNodePred: (v: T) => boolean, v: T, position?: number): ChildOperation<T> => {
+  insert = (underNodePred: (v: N) => boolean, v: N, position?: number): ChildOperation<N> => {
     const parent = this.first(underNodePred) ?? this
     const node = TreeNode.of(v)
     if (position) {
@@ -147,11 +147,11 @@ export class TreeNode<T> {
     }
   }
 
-  delete = (pred: (v: T) => boolean): ChildOperation<T> => {
+  delete = (pred: (v: N) => boolean): ChildOperation<N> => {
     const node = this.first(pred)
     if (node?.parent != null) {
       const children = node.parent.children
-      const position = findIndex<TreeNode<T>>(n => pred(n.value))(children)
+      const position = findIndex<TreeNode<N>>(n => pred(n.value))(children)
       if (position !== -1) {
         const del = children.splice(position, 1)
         return {
@@ -165,13 +165,13 @@ export class TreeNode<T> {
     throw Error('Update needs a valid node')
   }
 
-  update = (pred: (v: T) => boolean, fn: (v: T) => T): ChildOperation<T> => {
+  update = (pred: (v: N) => boolean, fn: (v: N) => N): ChildOperation<N> => {
     const node = this.first(pred)
     if (node?.parent != null) {
       const children = node.parent.children
-      const position = findIndex<TreeNode<T>>(n => pred(n.value))(children)
+      const position = findIndex<TreeNode<N>>(n => pred(n.value))(children)
       if (position !== -1) {
-        const newNode = TreeNode.of<T>(fn(children[position].value), children[position].children)
+        const newNode = TreeNode.of<N>(fn(children[position].value), children[position].children)
         children.splice(position, 1, newNode)
         return {
           self: this,
@@ -188,7 +188,7 @@ export class TreeNode<T> {
     return this.parent != null ? this.parent.depth + 1 : 0
   }
 
-  get root(): TreeNode<T> {
+  get root(): TreeNode<N> {
     return this.$pathToRoot().pop()!
   }
 
@@ -201,16 +201,30 @@ export class TreeNode<T> {
   }
 
   next = (
-    pred: Pred = RT,
+    skipRoot = true,
+    pred: Pred = T,
     isEqual: Pred = equals(this),
     strategy: Strategy = Strategy.Depth
-  ): Maybe<TreeNode<T>> => $next(isEqual)(this.root.flatten(strategy).slice(1).filter(pred))
+  ): Maybe<TreeNode<N>> =>
+    $next(isEqual)(
+      this.root
+        .flatten(strategy)
+        .slice(skipRoot ? 1 : 0)
+        .filter(pred)
+    )
 
   prev = (
-    pred: Pred = RT,
+    skipRoot = true,
+    pred: Pred = T,
     isEqual: Pred = equals(this),
     strategy: Strategy = Strategy.Depth
-  ): Maybe<TreeNode<T>> => $prev(isEqual)(this.root.flatten(strategy).slice(1).filter(pred))
+  ): Maybe<TreeNode<N>> =>
+    $prev(isEqual)(
+      this.root
+        .flatten(strategy)
+        .slice(skipRoot ? 1 : 0)
+        .filter(pred)
+    )
 
   toString = () =>
     JSON.stringify(

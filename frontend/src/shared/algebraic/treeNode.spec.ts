@@ -44,6 +44,20 @@ describe('TreeNode', () => {
     expect(x.reduce((acc, n) => [...acc, n], [] as number[])).toStrictEqual([1, 2, 3, 4, 5])
   })
 
+  it('Extract', () => {
+    const x = TreeNode.of({ id: 1 }, [
+      TreeNode.of({ id: 2 }, [TreeNode.of({ id: 3 })]),
+      TreeNode.of({ id: 4 }, [TreeNode.of({ id: 5 })])
+    ])
+    expect(x.extract()).toStrictEqual({
+      id: 1,
+      children: [
+        { id: 2, children: [{ id: 3, children: [] }] },
+        { id: 4, children: [{ id: 5, children: [] }] }
+      ]
+    })
+  })
+
   it('Filter tree', () => {
     const x = TreeNode.of(1, [
       TreeNode.of(2),
@@ -55,22 +69,30 @@ describe('TreeNode', () => {
 
   it('Node next', () => {
     const start = TreeNode.of(6)
+    const leaf = TreeNode.of(2)
     TreeNode.of(1, [
-      TreeNode.of(2),
+      leaf,
       TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
       TreeNode.of(4, [start])
     ])
     expect(start.next()?.value).toEqual(2)
+    expect(start.next(false)?.value).toEqual(1)
+    expect(leaf.next()?.value).toEqual(3)
+    expect(leaf.next(false)?.value).toEqual(3)
   })
 
   it('Node prev', () => {
     const start = TreeNode.of(2)
+    const last = TreeNode.of(6)
     TreeNode.of(1, [
       start,
       TreeNode.of(3, [TreeNode.of(5, [TreeNode.of(7)])]),
-      TreeNode.of(4, [TreeNode.of(6)])
+      TreeNode.of(4, [last])
     ])
     expect(start.prev()?.value).toEqual(6)
+    expect(start.prev(false)?.value).toEqual(1)
+    expect(last.prev()?.value).toEqual(4)
+    expect(last.prev(false)?.value).toEqual(4)
   })
 
   it('Tree equals', () => {
