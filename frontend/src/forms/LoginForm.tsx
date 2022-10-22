@@ -25,7 +25,7 @@ enum Views {
 
 export const LoginForm = () => {
   const { t } = useTranslation()
-  const { view, loginView, forgotPasswordView } = useView(Views)
+  const { view, forgotPasswordView } = useView(Views)
   const error = useStore($apiError)
   const running = useStore(apiFx.pending)
 
@@ -47,7 +47,7 @@ export const LoginForm = () => {
       .then(close)
 
   if (view === Views.ForgotPassword) {
-    return <ForgotPasswordForm close={loginView} />
+    return <ForgotPasswordForm />
   }
 
   return (

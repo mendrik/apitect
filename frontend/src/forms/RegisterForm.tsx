@@ -13,9 +13,9 @@ import { TextInput } from '~forms/TextInput'
 import { useView } from '~hooks/useView'
 import { Register, ZRegister } from '~shared/types/forms/register'
 
-import { ModalFC } from '../components/ModalStub'
 import { SuccessView } from '../components/SuccessView'
 import { $apiError, apiFx } from '../events/api'
+import { closeModal } from '../events/modals'
 import { whoAmIFx } from '../events/user'
 import { register } from '../utils/restApi'
 
@@ -24,7 +24,7 @@ enum Views {
   Success
 }
 
-export const RegisterForm: ModalFC = ({ close }) => {
+export const RegisterForm = () => {
   const { view, successView } = useView(Views)
   const [jwt, setJwt] = useLocalStorage('jwt')
   const { t } = useTranslation()
@@ -53,7 +53,7 @@ export const RegisterForm: ModalFC = ({ close }) => {
         <ButtonRow className="mt-4">
           <Button
             onClick={() => {
-              close()
+              closeModal()
               setJwt(jwt)
               void whoAmIFx()
             }}

@@ -4,9 +4,8 @@ import { Tabs } from '~forms/Tabs'
 import { clearApiError } from '../../events/api'
 import { LoginForm } from '../../forms/LoginForm'
 import { RegisterForm } from '../../forms/RegisterForm'
-import { ModalFC } from '../ModalStub'
 
-const Authenticate: ModalFC = () => (
+const Authenticate = () => (
   <Tabs className="w-100" onTabClick={() => clearApiError()}>
     <Tab title="modals.authenticate.login.title">
       <LoginForm />

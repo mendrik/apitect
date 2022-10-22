@@ -23,7 +23,6 @@ import { $currentNode } from '~stores/$selectedNode'
 
 import { updateNodeSettingsFx } from '../../events/tree'
 import { generateDefaults } from '../../utils/zod'
-import { ModalFC } from '../ModalStub'
 import ArraySettings from './nodetypes/Array'
 import BinarySettings from './nodetypes/Binary'
 import BooleanSettings from './nodetypes/Boolean'
@@ -101,7 +100,7 @@ const resolver = (nodeType: NodeType) => {
   }
 }
 
-const NodeSettings: ModalFC = () => {
+const NodeSettings = () => {
   const selectedNode = useStore($currentNode)
   const state = useModal<NodeSettingsType>()
 

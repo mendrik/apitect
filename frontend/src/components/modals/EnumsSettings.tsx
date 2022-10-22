@@ -14,7 +14,6 @@ import { EnumItem, Enums, ZEnum } from '~shared/types/domain/enums'
 import { asNumber } from '~shared/utils/ramda'
 
 import { updateEnumsFx } from '../../events/enums'
-import { ModalFC } from '../ModalStub'
 import { EditableObjectList } from '../generic/EditableObjectList'
 
 export const ZEnumsSettings = lastItemOptional(
@@ -25,7 +24,7 @@ export const ZEnumsSettings = lastItemOptional(
 )
 type EnumsSettings = TypeOf<typeof ZEnumsSettings>
 
-const EnumsSettings: ModalFC = () => {
+const EnumsSettings = () => {
   const state = useModal<Enums>()
   const { t } = useTranslation()
   const deleteButtonRef = useRef<HTMLButtonElement>(null)

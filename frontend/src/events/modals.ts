@@ -7,4 +7,4 @@ export type ModalParams<T> = {
 }
 
 export const openModal = createEvent<ModalParams<any>>('modal-open')
-export const closeModal = createEvent('modal-close')
+export const closeModal = createEvent<any>('modal-close')

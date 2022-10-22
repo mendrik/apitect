@@ -9,9 +9,8 @@ import { UserSettings as Settings, ZUserSettings } from '~shared/types/forms/use
 import { $tagStore } from '~stores/$tagStore'
 
 import { updateUserSettingsFx } from '../../events/user'
-import { ModalFC } from '../ModalStub'
 
-const UserSettings: ModalFC = () => {
+const UserSettings = () => {
   const state = useModal<Settings>()
   const { tags } = useStore($tagStore)
   const form = useForm<Settings>({

@@ -9,10 +9,8 @@ import { $modalStore } from '~stores/$modalStore'
 
 import { closeModal } from '../events/modals'
 
-export type ModalFC = FunctionComponent<any>
-
 type OwnProps = {
-  content: ModalFC
+  content: FunctionComponent<any>
   name: ModalNames
   title: TFuncKey
   titleOptions?: Record<string, string>
@@ -34,7 +32,7 @@ const ModalStub = ({
     <Modal
       show={modalMatch}
       centered
-      onHide={() => closeModal()}
+      onHide={closeModal}
       key={name}
       enforceFocus
       className={clsx('custom-scrollbars', className)}

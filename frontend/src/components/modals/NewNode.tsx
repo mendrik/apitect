@@ -18,7 +18,6 @@ import { Palette } from '../../css/colors'
 import { insetFocus } from '../../css/insetFocus'
 import { createNodeFx } from '../../events/tree'
 import { spaceOrEnter } from '../../utils/eventUtils'
-import { ModalFC } from '../ModalStub'
 import { FocusNavigator } from '../generic/FocusNavigator'
 
 const COLS = 4
@@ -55,7 +54,7 @@ const TypeGrid = styled(FocusNavigator)`
   }
 `
 
-const NewNode: ModalFC = () => {
+const NewNode = () => {
   const canCreateNode = useStore($canCreateNode)
   const canAddArray = useStore($canCreateArray)
   const parentNode = useModal<OptNode>()

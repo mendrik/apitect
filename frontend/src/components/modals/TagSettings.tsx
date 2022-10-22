@@ -11,9 +11,8 @@ import { isCyclic, updateArrayBy } from '~shared/utils/ramda'
 import { $tagStore } from '~stores/$tagStore'
 
 import { updateTagsSettingsFx } from '../../events/tagSettings'
-import { ModalFC } from '../ModalStub'
 
-const TagSettings: ModalFC = () => {
+const TagSettings = () => {
   const tag = useModal<Tag>()
   const { tags } = useStore($tagStore)
 

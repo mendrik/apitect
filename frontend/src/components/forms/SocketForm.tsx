@@ -36,7 +36,7 @@ export const SocketForm = <M extends FormApiMethod, F extends FieldValues>({
         onSubmit={form.handleSubmit(data => {
           setRunning(true)
           return onValid(data as F)
-            .then(() => closeModal())
+            .then(closeModal)
             .catch(e => {
               if (isExtendedError(e) && e.field != null) {
                 return form.setError(e.field as any, { message: e.message })
@@ -53,7 +53,7 @@ export const SocketForm = <M extends FormApiMethod, F extends FieldValues>({
         <Tuple first={Scale.MAX} second={Scale.CONTENT}>
           <div>{buttonRowExtras}</div>
           <ButtonRow className="mt-3">
-            <Button variant="outline-secondary" onClick={() => closeModal()}>
+            <Button variant="outline-secondary" onClick={closeModal}>
               {t('common.cancel')}
             </Button>
             <SubmitButton localeKey={submitButton} />

@@ -12,9 +12,8 @@ import {
 import { $treeStore } from '~stores/$treeStore'
 
 import { updateProjectUserSettingsFx } from '../../events/projectUsers'
-import { ModalFC } from '../ModalStub'
 
-const ProjectUsersSettings: ModalFC = () => {
+const ProjectUsersSettings = () => {
   const state = useModal<Settings>()
   const root = useStore($treeStore)
 

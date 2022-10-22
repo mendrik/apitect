@@ -12,8 +12,8 @@ import { useView } from '~hooks/useView'
 import { ForgotPassword, TForgotPassword } from '~shared/types/forms/forgotPassword'
 
 import { $apiError, apiFx } from '../../events/api'
+import { closeModal } from '../../events/modals'
 import { forgotPassword } from '../../utils/restApi'
-import { ModalFC } from '../ModalStub'
 import { SuccessView } from '../SuccessView'
 
 enum Views {
@@ -21,7 +21,7 @@ enum Views {
   Success
 }
 
-const ForgotPasswordForm: ModalFC = () => {
+const ForgotPasswordForm = () => {
   const { t } = useTranslation()
   const form = useForm<ForgotPassword>({
     resolver: zodResolver(TForgotPassword),
@@ -50,7 +50,7 @@ const ForgotPasswordForm: ModalFC = () => {
       <Alert variant="info">{t('modals.forgotPassword.info')}</Alert>
       <GenericError error={error} />
       <ButtonRow>
-        <Button variant="outline-primary" onClick={close}>
+        <Button variant="outline-primary" onClick={closeModal}>
           {t('common.back')}
         </Button>
         <SubmitButton localeKey="modals.forgotPassword.submit" />
