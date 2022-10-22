@@ -1,5 +1,6 @@
+import type { TFuncKey } from 'i18next'
 import { Alert } from 'react-bootstrap'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { ExtendedError } from '~shared/types/extendedError'
 
 export const isExtendedError = (e: any): e is ExtendedError => 'status' in e

@@ -1,29 +1,24 @@
-import { StringMap, TOptions } from 'i18next'
-import { DefaultNamespace, Namespace, TFuncKey } from 'react-i18next'
+import 'i18next'
+import { Namespace, TFuncKey, TOptions } from 'i18next'
 
 import en from '../locales/apitect.en-GB'
 
-declare module 'react-i18next' {
+export const resources = {
+  'en-GB': en
+} as const
+
+declare module 'i18next' {
   interface CustomTypeOptions {
-    defaultNS: 'translation'
-    resources: {
-      translation: typeof en
-    }
+    defaultNS: 'en-GB'
+    resources: typeof resources
   }
 
-  export interface TFunction<N extends Namespace = DefaultNamespace, TKPrefix = undefined> {
-    <
-      TKeys extends TFuncKey<N, TKPrefix> | TemplateStringsArray extends infer A ? A : never,
-      TInterpolationMap extends object = StringMap
-    >(
-      key: TKeys | TKeys[],
-      options?: TOptions<TInterpolationMap> | string
+  export interface TFunction<N extends Namespace = CustomTypeOptions['defaultNS']> {
+    <TInterpolationMap extends object>(
+      key: TFuncKey<N, undefined>,
+      options?: TOptions<TInterpolationMap>
     ): string
   }
 }
 
-export type LocaleKey = TFuncKey<'translation'>
-
-export const resources = {
-  'en-GB': { translation: { ...en } }
-}
+export type LocaleKey = TFuncKey<'en-GB'>

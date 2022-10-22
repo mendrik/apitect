@@ -1,8 +1,10 @@
 import { Button } from 'react-bootstrap'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
+
+import { LocaleKey } from '../../type-patches/locales'
 
 type OwnProps = {
-  localeKey: TFuncKey
+  localeKey: LocaleKey
 }
 
 export const SubmitButton = ({ localeKey }: OwnProps) => {

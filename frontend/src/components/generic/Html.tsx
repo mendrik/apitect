@@ -1,5 +1,7 @@
 import React, { HTMLAttributes } from 'react'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
+
+import { LocaleKey } from '../../type-patches/locales'
 
 /**
  * creating styled component dynamically gives a warning, so let's pre-create some
@@ -8,7 +10,7 @@ import { TFuncKey, useTranslation } from 'react-i18next'
 const supportedTags = ['div', 'p', 'ul', 'span', 'strong']
 
 interface OwnProps<T extends HTMLElement> extends HTMLAttributes<T> {
-  localeKey: TFuncKey
+  localeKey: LocaleKey
   as?: typeof supportedTags[number]
   options?: Record<string, any>
 }

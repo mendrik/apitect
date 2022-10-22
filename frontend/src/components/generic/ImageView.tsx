@@ -1,14 +1,15 @@
 import { FunctionComponent, SVGProps } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Jsx } from '~shared/types/generic'
 
+import { LocaleKey } from '../../type-patches/locales'
 import { Html } from './Html'
 
 type OwnProps = {
   image: FunctionComponent<SVGProps<SVGSVGElement>>
-  body: TFuncKey
-  title?: TFuncKey
+  body: LocaleKey
+  title?: LocaleKey
 }
 
 export const ImageView = ({ image: Image, body, title, children }: Jsx<OwnProps>) => {

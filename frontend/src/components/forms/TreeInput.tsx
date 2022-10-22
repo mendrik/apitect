@@ -14,7 +14,7 @@ import {
 } from 'react'
 import { Overlay } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { useSet } from 'react-use'
 import { Actions } from 'react-use/lib/useSet'
 import { useFocusOutside } from '~hooks/useFocusOutside'
@@ -30,6 +30,7 @@ import {
   Selected,
   StyledTreeInput
 } from '../../css/TreeInput.css'
+import { LocaleKey } from '../../type-patches/locales'
 import { codeIn, keyIn } from '../../utils/eventUtils'
 import { stopPropagation } from '../../utils/events'
 import { offset, sameWidth } from '../../utils/sameWidthMod'
@@ -48,7 +49,7 @@ type TreeSelectConfig<T extends WithId> = {
 
 type OwnProps<T extends WithId> = {
   tree: TreeNode<T>
-  label: TFuncKey
+  label: LocaleKey
   containerClasses?: string
 } & TreeSelectConfig<T>
 
@@ -194,7 +195,7 @@ TreeInput.Node = <T extends WithId>({ node }: TreeNodeProps<T>) => {
 
   const focus = (method: 'next' | 'prev') =>
     pipe(stopPropagation, () => {
-      const id = focusedNode?.[method](isVisible)?.value.id
+      const id = focusedNode?.[method]?.(true, isVisible)?.value.id
       document.getElementById(`${name}-${id}`)?.focus()
     })
 

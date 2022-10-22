@@ -3,16 +3,17 @@ import clsx from 'clsx'
 import { useStore } from 'effector-react'
 import { FunctionComponent } from 'react'
 import { Modal } from 'react-bootstrap'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { ModalNames } from '~shared/types/modals'
 import { $modalStore } from '~stores/$modalStore'
 
 import { closeModal } from '../events/modals'
+import { LocaleKey } from '../type-patches/locales'
 
 type OwnProps = {
   content: FunctionComponent<any>
   name: ModalNames
-  title: TFuncKey
+  title: LocaleKey
   titleOptions?: Record<string, string>
 } & BaseModalProps
 
@@ -40,7 +41,7 @@ const ModalStub = ({
       {...modalProps}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{t<any>(title, titleOptions ?? modal?.params)}</Modal.Title>
+        <Modal.Title>{t(title, titleOptions ?? modal?.params)}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Content />

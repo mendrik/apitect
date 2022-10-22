@@ -3,10 +3,11 @@ import { append, cond, path, pipe, propEq, remove, unless, when } from 'ramda'
 import { isNotNilOrEmpty } from 'ramda-adjunct'
 import { HTMLAttributes, useRef, useState } from 'react'
 import { Controller } from 'react-hook-form'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { Palette } from '../../css/colors'
+import { LocaleKey } from '../../type-patches/locales'
 import { keyIn, target } from '../../utils/eventUtils'
 import { stopEvent } from '../../utils/events'
 import { preventDefault } from '../../utils/preventDefault'
@@ -15,7 +16,7 @@ import { ErrorInfo } from './ErrorInfo'
 
 type OwnProps<T> = {
   name: string
-  label: TFuncKey
+  label: LocaleKey
   containerClasses?: string
   apply: (value: string) => T
   unapply: (tag: T) => string
@@ -63,7 +64,7 @@ export const TagInput = <T extends object>({
 }: OwnProps<T>) => {
   const [currentName, setCurrentName] = useState<string>('')
   const inpRef = useRef<HTMLInputElement>(null)
-  const { t } = useTranslation()
+  const { t } = useTranslation('en-GB')
 
   return (
     <Controller
