@@ -1,4 +1,5 @@
-import { TFuncKey, useTranslation } from 'react-i18next'
+import type { TFuncKey } from 'i18next'
+import { useTranslation } from 'react-i18next'
 import { Jsx } from '~shared/types/generic'
 
 type OwnProps = {

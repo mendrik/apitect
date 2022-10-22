@@ -1,10 +1,11 @@
 import clsx from 'clsx'
+import type { TFuncKey } from 'i18next'
 import { path } from 'ramda'
 import { isEmptyString } from 'ramda-adjunct'
 import { InputHTMLAttributes } from 'react'
 import type { RegisterOptions } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { useAutoFocus } from '~hooks/useAutoFocus'
 import { useId } from '~hooks/useId'
 
@@ -49,7 +50,7 @@ export const SelectInput = ({
         id={inpId}
         autoComplete="off"
         {...register(name, {
-          setValueAs: <T extends any>(u: T) => (isEmptyString(u) ? undefined : u),
+          setValueAs: <T,>(u: T) => (isEmptyString(u) ? undefined : u),
           ...options
         })}
         required={!!options?.required}

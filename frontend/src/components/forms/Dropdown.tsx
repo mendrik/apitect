@@ -1,10 +1,12 @@
 import clsx from 'clsx'
+import type { TFuncKey } from 'i18next'
 import { mapIndexed } from 'ramda-adjunct'
+import { ReactNode } from 'react'
 import { FloatingLabel, Form } from 'react-bootstrap'
 import { FormSelectProps } from 'react-bootstrap/FormSelect'
 import { Controller } from 'react-hook-form'
 import { ControllerProps } from 'react-hook-form/dist/types'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { useId } from '~hooks/useId'
 
 import { ErrorInfo } from './ErrorInfo'
@@ -35,13 +37,13 @@ export const Dropdown = ({
         {...controllerProps}
         name={name}
         render={({ field }) => (
-          <FloatingLabel controlId={inpId} label={t(label)}>
+          <FloatingLabel controlId={inpId} label={t(label) as ReactNode}>
             <Form.Select aria-label={t(label) as string} {...field} {...props}>
               {!required && <option value="">{t('form.dropDown.noValue')}</option>}
               {mapIndexed(
                 ([key, value]) => (
                   <option value={value} key={value}>
-                    {t(key as TFuncKey, key)}
+                    {t(key as TFuncKey, key) as string}
                   </option>
                 ),
                 options

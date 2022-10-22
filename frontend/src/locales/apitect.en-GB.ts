@@ -1,4 +1,4 @@
-const en = {
+export default {
   app: {
     name: '{ api/tect }',
     login: 'Login',
@@ -204,5 +204,3 @@ const en = {
     tags: 'Select tags'
   }
 }
-
-export default en

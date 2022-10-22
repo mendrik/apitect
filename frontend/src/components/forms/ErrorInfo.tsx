@@ -1,6 +1,6 @@
+import type { TFuncKey } from 'i18next'
 import { last, pathOr } from 'ramda'
 import { FieldError, useFormContext } from 'react-hook-form'
-import { TFuncKey } from 'react-i18next'
 
 import { Html } from '../generic/Html'
 

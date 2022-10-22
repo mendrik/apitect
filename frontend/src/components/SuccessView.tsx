@@ -1,4 +1,4 @@
-import { TFuncKey } from 'react-i18next'
+import type { TFuncKey } from 'i18next'
 import { Jsx } from '~shared/types/generic'
 
 import { ReactComponent as Success } from '../assets/success.svg'

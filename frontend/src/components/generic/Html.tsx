@@ -1,5 +1,6 @@
+import { TFuncKey } from 'i18next'
 import React, { HTMLAttributes } from 'react'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 /**
  * creating styled component dynamically gives a warning, so let's pre-create some

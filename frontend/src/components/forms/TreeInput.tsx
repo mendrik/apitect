@@ -1,5 +1,6 @@
 import { IconChevronRight } from '@tabler/icons'
 import clsx from 'clsx'
+import { TFuncKey } from 'i18next'
 import { all, cond, F, ifElse, not, path, pipe, propEq, propOr, T as RT } from 'ramda'
 import { isNotNilOrEmpty, mapIndexed } from 'ramda-adjunct'
 import {
@@ -14,7 +15,7 @@ import {
 } from 'react'
 import { Overlay } from 'react-bootstrap'
 import { useFormContext } from 'react-hook-form'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { useSet } from 'react-use'
 import { Actions } from 'react-use/lib/useSet'
 import { useFocusOutside } from '~hooks/useFocusOutside'
@@ -194,7 +195,7 @@ TreeInput.Node = <T extends WithId>({ node }: TreeNodeProps<T>) => {
 
   const focus = (method: 'next' | 'prev') =>
     pipe(stopPropagation, () => {
-      const id = focusedNode?.[method](isVisible)?.value.id
+      const id = focusedNode?.[method]?.(true, isVisible)?.value.id
       document.getElementById(`${name}-${id}`)?.focus()
     })
 

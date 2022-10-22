@@ -1,5 +1,6 @@
+import type { TFuncKey } from 'i18next'
 import { Button } from 'react-bootstrap'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 type OwnProps = {
   localeKey: TFuncKey

@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import type { TFuncKey } from 'i18next'
 import { assocPath, ifElse, pathEq } from 'ramda'
 import { HTMLAttributes } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -6,10 +7,8 @@ import { useTranslation } from 'react-i18next'
 import { ErrorInfo } from '~forms/ErrorInfo'
 import { useId } from '~hooks/useId'
 
-import { LocaleKey } from '../../type-patches/locales'
-
 type OwnProps = {
-  label: LocaleKey
+  label: TFuncKey
   name: string
   valueOn?: unknown
   valueOff?: unknown

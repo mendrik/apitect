@@ -10,9 +10,7 @@ export const initLocales = (): Promise<TFunction> =>
     fallbackLng: 'en-GB',
     lng: 'en-GB',
     resources,
-    react: {
-      nsMode: 'fallback'
-    },
+    react: { nsMode: 'fallback' },
     interpolation: {
       format: (value, format) => {
         if (format == null) {

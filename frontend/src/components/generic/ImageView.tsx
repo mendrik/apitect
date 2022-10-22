@@ -1,6 +1,7 @@
+import type { TFuncKey } from 'i18next'
 import { FunctionComponent, SVGProps } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Jsx } from '~shared/types/generic'
 
 import { Html } from './Html'

@@ -1,9 +1,10 @@
 import { EffectByHandler } from 'effector'
+import type { TFuncKey } from 'i18next'
 import { PropsWithChildren, ReactElement, ReactNode, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { FieldValues } from 'react-hook-form/dist/types/fields'
-import { TFuncKey, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Api, FormApiMethod } from '~shared/apiTypes'
 
 import { closeModal } from '../../events/modals'

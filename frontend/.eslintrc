@@ -5,8 +5,8 @@
     }
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["unused-imports","prettier", "effector", "react", "react-hooks"],
-  "extends": ["prettier", "plugin:effector/recommended", "plugin:react/recommended", "plugin:react/jsx-runtime"],
+  "plugins": ["@typescript-eslint","unused-imports","prettier", "effector", "react", "react-hooks"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier", "plugin:effector/recommended", "plugin:react/recommended", "plugin:react/jsx-runtime"],
   "parserOptions": {
     "sourceType": "module"
   },
@@ -15,6 +15,8 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/ban-types": "off",
     "no-useless-return": "warn",
     "arrow-body-style": ["error", "as-needed"],
     "import/extensions": "off",
@@ -53,6 +55,6 @@
       }
     ],
     "unused-imports/no-unused-imports": "error",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+    "no-unused-vars": "off"
   }
 }
