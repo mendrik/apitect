@@ -53,7 +53,7 @@ export const capitalize = pipe<[Str], Str, Str[], Str>(
 export const safeParseJson = <T>(data: unknown): T | undefined =>
   tryCatch(d => JSON.parse(`${d}`), always(undefined))(data)
 
-export const satiated = pickBy(isNotNil)
+export const withoutNils = pickBy(isNotNil)
 
 export const asNumber = (val: Maybe<Str>): number =>
   val != null ? parseFloat(val.replace(/,/, '.')) : NaN

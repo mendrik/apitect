@@ -8,8 +8,9 @@ import {
   useFieldArray,
   UseFormReturn
 } from 'react-hook-form'
+import { useEvent } from 'react-use'
 import { FormOptions } from '~forms/FormOptions'
-import { useEvent } from '~hooks/useEvent'
+// import { useEvent } from '~hooks/useEvent'
 import { Jsx } from '~shared/types/generic'
 import { asNumber } from '~shared/utils/ramda'
 
@@ -41,7 +42,7 @@ export const EditableObjectList = <T extends FieldValues>({
     remove(selected)
   }
 
-  useEvent('click', onDelete, deleteButtonRef)
+  useEvent('click', onDelete, deleteButtonRef.current)
 
   return (
     <FormOptions name={selectedName} values={map(String, range(0, fields.length))} className="mb-3">

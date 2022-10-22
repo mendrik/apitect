@@ -5,7 +5,7 @@ import { Login } from '~shared/types/forms/login'
 import { Register } from '~shared/types/forms/register'
 import { ZToken } from '~shared/types/response/token'
 import { failOn } from '~shared/utils/failOn'
-import { safeParseJson, satiated } from '~shared/utils/ramda'
+import { safeParseJson, withoutNils } from '~shared/utils/ramda'
 
 import { fetchError, FetchError } from './fetchError'
 import { PromiseCache } from './promiseCache'
@@ -17,7 +17,7 @@ const request =
   <B, S>(url: string, schema?: ZodSchema<S>, body?: B): Promise<S> =>
     fetch(apiUrl(url), {
       method,
-      headers: satiated({
+      headers: withoutNils({
         'content-type': 'application/json; charset=utf-8',
         'x-access-token': safeParseJson(localStorage.getItem('jwt'))
       }),

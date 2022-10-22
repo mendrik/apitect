@@ -10,7 +10,7 @@ import {
   next,
   prev,
   replaceSlice,
-  satiated
+  withoutNils
 } from './ramda'
 
 describe('ramda', () => {
@@ -49,14 +49,14 @@ describe('ramda', () => {
     expect(res).toBe('12abc567')
   })
 
-  it('satiated', () => {
+  it('withoutNils', () => {
     const obj = {
       a: 1,
       b: null,
       c: false,
       d: undefined
     }
-    expect(satiated(obj)).toEqual({ a: 1, c: false })
+    expect(withoutNils(obj)).toEqual({ a: 1, c: false })
   })
 
   it('mapByProperty', () => {

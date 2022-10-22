@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { EventHandler, HTMLAttributes, useCallback, useRef } from 'react'
+import { useEvent } from 'react-use'
 import styled from 'styled-components'
-import { useEvent } from '~hooks/useEvent'
 
 const VerticalFadeStyled = styled.div`
   --scrollOpacityTop: 0;
@@ -52,7 +52,7 @@ export const VerticalFade = ({ children, className, ...props }: HTMLAttributes<H
     [ref]
   )
 
-  useEvent<HTMLDivElement>('scroll', handler, ref, {
+  useEvent('scroll', handler, ref.current, {
     passive: true,
     capture: true
   })
