@@ -7,8 +7,8 @@ import { ZToken } from '~shared/types/response/token'
 import { failOn } from '~shared/utils/failOn'
 import { safeParseJson, withoutNils } from '~shared/utils/ramda'
 
+import { resetUser } from '../events/user'
 import { fetchError, FetchError } from './fetchError'
-import { PromiseCache } from './promiseCache'
 
 export const apiUrl = (url: string) => `http://localhost:3001/${url}`
 
@@ -30,16 +30,13 @@ const request =
         throw await e.data.json()
       })
 
-const promiseCache = new PromiseCache(100)
-
 export const get = request('get')
 export const post = request('post')
 export const del = request('delete')
 export const put = request('put')
 
-export const logout = () => del('logout').then(() => promiseCache.flush())
+export const logout = () => del('logout').then(resetUser)
 export const login = (data: Login) => post('login', ZToken, data)
 export const forgotPassword = (data: ForgotPassword) => put('forgot-password', undefined, data)
 export const register = (data: Register) => post('register', ZToken, data)
-
 export const whoAmI = () => get('whoami', ZUser)

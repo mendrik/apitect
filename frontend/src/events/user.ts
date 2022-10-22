@@ -1,4 +1,4 @@
-import { createEffect } from 'effector'
+import { createEffect, createEvent } from 'effector'
 import { tap } from 'ramda'
 import { Api } from '~shared/apiTypes'
 import { User } from '~shared/types/domain/user'
@@ -10,6 +10,7 @@ import { openModal } from './modals'
 import { projectFx } from './project'
 
 export const whoAmIFx = createEffect<() => Promise<User | null>>(() => whoAmI().catch(() => null))
+export const resetUser = createEvent<any>()
 
 export const userSettingsFx = createEffect<Api['userSettings']>(() =>
   api()

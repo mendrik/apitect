@@ -1,8 +1,9 @@
 import { createStore } from 'effector'
-import { nthArg } from 'ramda'
+import { always, nthArg } from 'ramda'
 import { User } from '~shared/types/domain/user'
 
-import { whoAmIFx } from '../events/user'
+import { resetUser, whoAmIFx } from '../events/user'
 
 export const $user = createStore<User | null>(null)
-$user.on(whoAmIFx.doneData, nthArg(1))
+  .on(whoAmIFx.doneData, nthArg(1))
+  .on(resetUser, always(null))
