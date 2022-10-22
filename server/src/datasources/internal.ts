@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { keys, prop } from 'ramda'
 import { newId } from '~shared/codecs/idCodec'
 import { Id } from '~shared/types/domain/id'

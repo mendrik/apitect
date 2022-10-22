@@ -17,6 +17,7 @@ export const addValue = async (nodeId: NodeId, value: string) => {
       tag,
       author: email,
       published: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       nodeType: node.value.nodeType as any,
       owner: email,
       nodeId,

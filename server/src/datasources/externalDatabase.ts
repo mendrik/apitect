@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Id } from '~shared/types/domain/id'
 import { Item } from '~shared/types/domain/item'
 import { NodeId } from '~shared/types/domain/node'

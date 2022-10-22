@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route'
 import { verify } from 'jsonwebtoken'

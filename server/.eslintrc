@@ -10,7 +10,7 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "import/extensions": "off",
     "import/no-cycle": "off",
     "import/no-unresolved": "off",
@@ -22,10 +22,10 @@
     "no-debugger": "warn",
     "no-return-assign": "off",
     "no-underscore-dangle": "off",
+    "no-unused-vars": "off",
     "no-void": ["off", { "allowAsStatement": true }],
     "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
     "prettier/prettier": ["error", { "singleQuote": true }],
-    "unused-imports/no-unused-imports": "error",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+    "unused-imports/no-unused-imports": "error"
   }
 }

@@ -25,7 +25,7 @@ import { allNodeSettings } from '../api/nodeSettings'
 import { valueList } from '../api/valueList'
 import { getNode } from './node'
 
-export type Validation = SafeParseReturnType<any, any>
+export type Validation = SafeParseReturnType<unknown, unknown>
 
 const typeIs = propEq('nodeType')
 
