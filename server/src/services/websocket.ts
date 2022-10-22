@@ -3,9 +3,10 @@ import { SocketStream } from '@fastify/websocket'
 import { FastifyInstance } from 'fastify'
 import { verify } from 'jsonwebtoken'
 import { ZApiRequest } from '~shared/apiRequest'
-import { ServerParam, ZApiResponse } from '~shared/apiResponse'
+import { ServerApiMethod, ServerParam, ZApiResponse } from '~shared/apiResponse'
 import { ApiMethod } from '~shared/apiTypes'
 import { JwtPayload } from '~shared/types/response/token'
+import { isError } from '~shared/utils/errors'
 import { logger } from '~shared/utils/logger'
 
 import { apiMapping } from '../api/serverApi'
@@ -38,17 +39,17 @@ const openWebsocket = (connection: SocketStream) => {
       try {
         const apiRequest = ZApiRequest.parse(data)
         logger.info(`${name} [${email}]/${apiRequest.method}`, data)
-        const apiCall = apiMapping[apiRequest.method]
+        const apiCall = apiMapping[apiRequest.method] as ServerApiMethod<ApiMethod>
         const param: ServerParam<ApiMethod> = {
           email,
           payload: apiRequest.payload,
           docId
         }
-        return apiCall(param as any)
+        return apiCall(param)
           .then(send(apiRequest.id, apiRequest.method))
           .catch(socketErrorHandler(connection.socket.send.bind(connection.socket), apiRequest.id))
       } catch (e) {
-        if (e instanceof Error) {
+        if (isError(e)) {
           logger.error(e.message + `[${email}]`, getStack(e))
         } else {
           throw e
@@ -58,8 +59,8 @@ const openWebsocket = (connection: SocketStream) => {
     connection.socket.on('close', () => {
       logger.info(`disconnect`, { email, name, docId })
     })
-  } catch (e: any) {
-    logger.error('Unauthorized socket access', e.message)
+  } catch (e) {
+    logger.error('Unauthorized socket access', isError(e) ? e.message : e)
   }
 }
 
